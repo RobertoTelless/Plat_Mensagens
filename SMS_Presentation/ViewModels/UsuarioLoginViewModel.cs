@@ -17,8 +17,6 @@ namespace PlatMensagem_Solution.ViewModels
         public int PERF_CD_ID { get; set; }
         public Nullable<int> CAUS_CD_ID { get; set; }
         public Nullable<int> CARG_CD_ID { get; set; }
-        public Nullable<int> UNID_CD_ID { get; set; }
-        public Nullable<int> COLA_CD_ID { get; set; }
         [StringLength(50, MinimumLength = 1, ErrorMessage = "O NOME deve ter no minimo 1 e no máximo 50 caracteres.")]
         public string USUA_NM_NOME { get; set; }
         [Required(ErrorMessage = "Campo LOGIN obrigatorio")]
@@ -35,7 +33,6 @@ namespace PlatMensagem_Solution.ViewModels
         public string USUA_NR_CELULAR { get; set; }
         [StringLength(50, ErrorMessage = "O WHATSAPP deve ter no máximo 50 caracteres.")]
         public string USUA_NR_WHATSAPP { get; set; }
-        public Nullable<int> USUA_IN_RESPONSAVEL { get; set; }
         [Required(ErrorMessage = "Campo SENHA obrigatorio")]
         [StringLength(10, MinimumLength = 1, ErrorMessage = "A SENHA deve ter no minimo 1 e no máximo 10 caracteres.")]
         public string USUA_NM_SENHA { get; set; }
@@ -69,19 +66,7 @@ namespace PlatMensagem_Solution.ViewModels
         public string USUA_NR_CPF { get; set; }
         [StringLength(20, ErrorMessage = "O RG deve ter no máximo 20 caracteres.")]
         public string USUA_NR_RG { get; set; }
-        [DataType(DataType.Date, ErrorMessage = "DATA DE ENTRADA Deve ser uma data válida")]
-        public Nullable<System.DateTime> USUA_DT_ENTRADA { get; set; }
-        [DataType(DataType.Date, ErrorMessage = "DATA DE SAÌDA Deve ser uma data válida")]
-        public Nullable<System.DateTime> USUA_DT_SAIDA { get; set; }
-        [StringLength(200, ErrorMessage = "O MOTIVO DA SAÌDA deve ter no máximo 200 caracteres.")]
-        public string USUA_DS_MOTIVO_SAIDA { get; set; }
-        public Nullable<int> USUA_IN_PROPRIETARIO { get; set; }
-        [StringLength(200, ErrorMessage = "A JUSTIFICATIVA deve ter no máximo 200 caracteres.")]
-        public string USUA_DS_JUSTIFICATIVA { get; set; }
         public Nullable<int> USUA_IN_SISTEMA { get; set; }
-        public Nullable<int> USUA_IN_MORADOR { get; set; }
-        public Nullable<int> USUA_IN_FUNCIONARIO { get; set; }
-
 
         public bool Bloqueio
         {
@@ -129,31 +114,14 @@ namespace PlatMensagem_Solution.ViewModels
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AGENDA> AGENDA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AGENDA> AGENDA1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AGENDA_VINCULO> AGENDA_VINCULO { get; set; }
         public virtual ASSINANTE ASSINANTE { get; set; }
         public virtual CARGO CARGO { get; set; }
         public virtual CATEGORIA_USUARIO CATEGORIA_USUARIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LOG> LOG { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NOTICIA_COMENTARIO> NOTICIA_COMENTARIO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NOTIFICACAO> NOTIFICACAO { get; set; }
         public virtual PERFIL PERFIL { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TAREFA> TAREFA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TAREFA_ACOMPANHAMENTO> TAREFA_ACOMPANHAMENTO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TAREFA_NOTIFICACAO> TAREFA_NOTIFICACAO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TAREFA_VINCULO> TAREFA_VINCULO { get; set; }
-        public virtual UNIDADE UNIDADE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USUARIO_ANEXO> USUARIO_ANEXO { get; set; }
     }
