@@ -18,8 +18,8 @@ namespace EntitiesServices.Model
         public USUARIO()
         {
             this.LOG = new HashSet<LOG>();
-            this.USUARIO_ANEXO = new HashSet<USUARIO_ANEXO>();
             this.NOTIFICACAO = new HashSet<NOTIFICACAO>();
+            this.USUARIO_ANEXO = new HashSet<USUARIO_ANEXO>();
         }
     
         public int USUA_CD_ID { get; set; }
@@ -61,10 +61,10 @@ namespace EntitiesServices.Model
         public virtual CATEGORIA_USUARIO CATEGORIA_USUARIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LOG> LOG { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NOTIFICACAO> NOTIFICACAO { get; set; }
         public virtual PERFIL PERFIL { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USUARIO_ANEXO> USUARIO_ANEXO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NOTIFICACAO> NOTIFICACAO { get; set; }
     }
 }

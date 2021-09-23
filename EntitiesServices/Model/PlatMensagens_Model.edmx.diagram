@@ -4,38 +4,37 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b8e8dfbcad7048a0b6489ae23b426114" Name="Diagram1">
-        <EntityTypeShape EntityType="PlatMensagensModel.ASSINANTE" Width="1.5" PointX="3" PointY="11.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="PlatMensagensModel.ASSINANTE_ANEXO" Width="1.5" PointX="5.25" PointY="8.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="PlatMensagensModel.CARGO" Width="1.5" PointX="9" PointY="9.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="PlatMensagensModel.CATEGORIA_NOTIFICACAO" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PlatMensagensModel.CATEGORIA_USUARIO" Width="1.5" PointX="9" PointY="17.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="PlatMensagensModel.CONFIGURACAO" Width="1.5" PointX="5.25" PointY="11.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="PlatMensagensModel.LOG" Width="1.5" PointX="8.25" PointY="12.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="PlatMensagensModel.PERFIL" Width="1.5" PointX="9" PointY="20.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="PlatMensagensModel.TEMPLATE" Width="1.5" PointX="5.25" PointY="20.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="PlatMensagensModel.TIPO_PESSOA" Width="1.5" PointX="0.75" PointY="13.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="PlatMensagensModel.UF" Width="1.5" PointX="0.75" PointY="10.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="PlatMensagensModel.USUARIO" Width="1.5" PointX="11.25" PointY="10.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="PlatMensagensModel.USUARIO_ANEXO" Width="1.5" PointX="13.5" PointY="13.125" IsExpanded="true" />
+      <Diagram DiagramId="46c9b3d5fe21408aa9bb4b877c53e563" Name="Diagram1">
+        <EntityTypeShape EntityType="PlatMensagensModel.ASSINANTE" Width="1.5" PointX="3" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlatMensagensModel.ASSINANTE_ANEXO" Width="1.5" PointX="5.25" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlatMensagensModel.CARGO" Width="1.5" PointX="9" PointY="17.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlatMensagensModel.CATEGORIA_NOTIFICACAO" Width="1.5" PointX="6" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlatMensagensModel.CATEGORIA_USUARIO" Width="1.5" PointX="9" PointY="20.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlatMensagensModel.CONFIGURACAO" Width="1.5" PointX="5.25" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlatMensagensModel.LOG" Width="1.5" PointX="8.25" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlatMensagensModel.NOTIFICACAO" Width="1.5" PointX="8.25" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlatMensagensModel.NOTIFICACAO_ANEXO" Width="1.5" PointX="10.5" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlatMensagensModel.PERFIL" Width="1.5" PointX="9" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlatMensagensModel.TEMPLATE" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlatMensagensModel.TIPO_PESSOA" Width="1.5" PointX="0.75" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlatMensagensModel.UF" Width="1.5" PointX="0.75" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlatMensagensModel.USUARIO" Width="1.5" PointX="11.25" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlatMensagensModel.USUARIO_ANEXO" Width="1.5" PointX="13.5" PointY="13.75" IsExpanded="true" />
         <AssociationConnector Association="PlatMensagensModel.FK_ASSINANTE_ANEXO_ASSINANTE" ManuallyRouted="false" />
         <AssociationConnector Association="PlatMensagensModel.FK_ASSINANTE_TIPO_PESSOA" ManuallyRouted="false" />
         <AssociationConnector Association="PlatMensagensModel.FK_ASSINANTE_UF" ManuallyRouted="false" />
         <AssociationConnector Association="PlatMensagensModel.FK_CONFIGURACAO_ASSINANTE" ManuallyRouted="false" />
         <AssociationConnector Association="PlatMensagensModel.FK_LOG_ASSINANTE" ManuallyRouted="false" />
-        <AssociationConnector Association="PlatMensagensModel.FK_TEMPLATE_ASSINANTE" ManuallyRouted="false" />
+        <AssociationConnector Association="PlatMensagensModel.FK_NOTIFICACAO_ASSINANTE" ManuallyRouted="false" />
         <AssociationConnector Association="PlatMensagensModel.FK_USUARIO_ASSINANTE" ManuallyRouted="false" />
         <AssociationConnector Association="PlatMensagensModel.FK_USUARIO_CARGO" ManuallyRouted="false" />
+        <AssociationConnector Association="PlatMensagensModel.FK_NOTIFICACAO_CATEGORIA_NOTIFICACAO" ManuallyRouted="false" />
         <AssociationConnector Association="PlatMensagensModel.FK_USUARIO_CATEGORIA_USUARIO" ManuallyRouted="false" />
         <AssociationConnector Association="PlatMensagensModel.FK_LOG_USUARIO" ManuallyRouted="false" />
+        <AssociationConnector Association="PlatMensagensModel.FK_NOTIFICACAO_ANEXO_NOTIFICACAO" ManuallyRouted="false" />
+        <AssociationConnector Association="PlatMensagensModel.FK_NOTIFICACAO_USUARIO" ManuallyRouted="false" />
         <AssociationConnector Association="PlatMensagensModel.FK_USUARIO_PERFIL" ManuallyRouted="false" />
         <AssociationConnector Association="PlatMensagensModel.FK_USUARIO_ANEXO_USUARIO" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="PlatMensagensModel.NOTIFICACAO" Width="1.5" PointX="13.5" PointY="7.5" />
-        <EntityTypeShape EntityType="PlatMensagensModel.NOTIFICACAO_ANEXO" Width="1.5" PointX="15.75" PointY="8.5" />
-        <AssociationConnector Association="PlatMensagensModel.FK_NOTIFICACAO_ASSINANTE" />
-        <AssociationConnector Association="PlatMensagensModel.FK_NOTIFICACAO_CATEGORIA_NOTIFICACAO" />
-        <AssociationConnector Association="PlatMensagensModel.FK_NOTIFICACAO_ANEXO_NOTIFICACAO" />
-        <AssociationConnector Association="PlatMensagensModel.FK_NOTIFICACAO_USUARIO" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

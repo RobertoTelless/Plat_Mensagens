@@ -32,13 +32,13 @@ namespace EntitiesServices.Model
         public virtual DbSet<CATEGORIA_USUARIO> CATEGORIA_USUARIO { get; set; }
         public virtual DbSet<CONFIGURACAO> CONFIGURACAO { get; set; }
         public virtual DbSet<LOG> LOG { get; set; }
+        public virtual DbSet<NOTIFICACAO> NOTIFICACAO { get; set; }
+        public virtual DbSet<NOTIFICACAO_ANEXO> NOTIFICACAO_ANEXO { get; set; }
         public virtual DbSet<PERFIL> PERFIL { get; set; }
         public virtual DbSet<TEMPLATE> TEMPLATE { get; set; }
         public virtual DbSet<TIPO_PESSOA> TIPO_PESSOA { get; set; }
         public virtual DbSet<UF> UF { get; set; }
         public virtual DbSet<USUARIO> USUARIO { get; set; }
         public virtual DbSet<USUARIO_ANEXO> USUARIO_ANEXO { get; set; }
-        public virtual DbSet<NOTIFICACAO> NOTIFICACAO { get; set; }
-        public virtual DbSet<NOTIFICACAO_ANEXO> NOTIFICACAO_ANEXO { get; set; }
     }
 }

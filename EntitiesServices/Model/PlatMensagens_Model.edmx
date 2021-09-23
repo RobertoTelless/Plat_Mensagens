@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="PlatMensagensModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="PlatMensagensModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ASSINANTE">
           <Key>
             <PropertyRef Name="ASSI_CD_ID" />
@@ -143,7 +143,6 @@
             <PropertyRef Name="TEMP_CD_ID" />
           </Key>
           <Property Name="TEMP_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ASSI_CD_ID" Type="int" Nullable="false" />
           <Property Name="TEMP_SG_SIGLA" Type="varchar" MaxLength="10" />
           <Property Name="TEMP_NM_NOME" Type="varchar" MaxLength="50" />
           <Property Name="TEMP_TX_CONTEUDO" Type="text" />
@@ -342,18 +341,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TEMPLATE_ASSINANTE">
-          <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="1" />
-          <End Role="TEMPLATE" Type="Self.TEMPLATE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ASSINANTE">
-              <PropertyRef Name="ASSI_CD_ID" />
-            </Principal>
-            <Dependent Role="TEMPLATE">
-              <PropertyRef Name="ASSI_CD_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_USUARIO_ANEXO_USUARIO">
           <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
           <End Role="USUARIO_ANEXO" Type="Self.USUARIO_ANEXO" Multiplicity="*" />
@@ -470,10 +457,6 @@
             <End Role="USUARIO" EntitySet="USUARIO" />
             <End Role="NOTIFICACAO" EntitySet="NOTIFICACAO" />
           </AssociationSet>
-          <AssociationSet Name="FK_TEMPLATE_ASSINANTE" Association="Self.FK_TEMPLATE_ASSINANTE">
-            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
-            <End Role="TEMPLATE" EntitySet="TEMPLATE" />
-          </AssociationSet>
           <AssociationSet Name="FK_USUARIO_ANEXO_USUARIO" Association="Self.FK_USUARIO_ANEXO_USUARIO">
             <End Role="USUARIO" EntitySet="USUARIO" />
             <End Role="USUARIO_ANEXO" EntitySet="USUARIO_ANEXO" />
@@ -495,7 +478,8 @@
             <End Role="USUARIO" EntitySet="USUARIO" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PlatMensagensModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -527,9 +511,8 @@
           <NavigationProperty Name="UF" Relationship="Self.FK_ASSINANTE_UF" FromRole="ASSINANTE" ToRole="UF" />
           <NavigationProperty Name="CONFIGURACAO" Relationship="Self.FK_CONFIGURACAO_ASSINANTE" FromRole="ASSINANTE" ToRole="CONFIGURACAO" />
           <NavigationProperty Name="LOG" Relationship="Self.FK_LOG_ASSINANTE" FromRole="ASSINANTE" ToRole="LOG" />
-          <NavigationProperty Name="TEMPLATE" Relationship="Self.FK_TEMPLATE_ASSINANTE" FromRole="ASSINANTE" ToRole="TEMPLATE" />
+          <NavigationProperty Name="NOTIFICACAO" Relationship="Self.FK_NOTIFICACAO_ASSINANTE" FromRole="ASSINANTE" ToRole="NOTIFICACAO" />
           <NavigationProperty Name="USUARIO" Relationship="Self.FK_USUARIO_ASSINANTE" FromRole="ASSINANTE" ToRole="USUARIO" />
-          <NavigationProperty Name="NOTIFICACAO" Relationship="PlatMensagensModel.FK_NOTIFICACAO_ASSINANTE" FromRole="ASSINANTE" ToRole="NOTIFICACAO" />
         </EntityType>
         <EntityType Name="ASSINANTE_ANEXO">
           <Key>
@@ -561,7 +544,7 @@
           <Property Name="CANO_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CANO_NM_NOME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CANO_IN_ATIVO" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="NOTIFICACAO" Relationship="PlatMensagensModel.FK_NOTIFICACAO_CATEGORIA_NOTIFICACAO" FromRole="CATEGORIA_NOTIFICACAO" ToRole="NOTIFICACAO" />
+          <NavigationProperty Name="NOTIFICACAO" Relationship="Self.FK_NOTIFICACAO_CATEGORIA_NOTIFICACAO" FromRole="CATEGORIA_NOTIFICACAO" ToRole="NOTIFICACAO" />
         </EntityType>
         <EntityType Name="CATEGORIA_USUARIO">
           <Key>
@@ -608,6 +591,42 @@
           <NavigationProperty Name="ASSINANTE" Relationship="Self.FK_LOG_ASSINANTE" FromRole="LOG" ToRole="ASSINANTE" />
           <NavigationProperty Name="USUARIO" Relationship="Self.FK_LOG_USUARIO" FromRole="LOG" ToRole="USUARIO" />
         </EntityType>
+        <EntityType Name="NOTIFICACAO">
+          <Key>
+            <PropertyRef Name="NOTI_CD_ID" />
+          </Key>
+          <Property Name="NOTI_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ASSI_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="USUA_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="CANO_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="NOTI_DT_EMISSAO" Type="DateTime" Precision="3" />
+          <Property Name="NOTI_IN_ATIVO" Type="Int32" Nullable="false" />
+          <Property Name="NOTI_IN_STATUS" Type="Int32" />
+          <Property Name="NOTI_TX_TEXTO" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+          <Property Name="NOTI_NM_TITULO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="NOTI_IN_VISTA" Type="Int32" />
+          <Property Name="NOTI_DT_VALIDADE" Type="DateTime" Precision="0" />
+          <Property Name="NOTI_DT_VISTA" Type="DateTime" Precision="3" />
+          <Property Name="NOTI_IN_ORIGEM" Type="Int32" />
+          <Property Name="NOTI_IN_NIVEL" Type="Int32" />
+          <NavigationProperty Name="ASSINANTE" Relationship="Self.FK_NOTIFICACAO_ASSINANTE" FromRole="NOTIFICACAO" ToRole="ASSINANTE" />
+          <NavigationProperty Name="CATEGORIA_NOTIFICACAO" Relationship="Self.FK_NOTIFICACAO_CATEGORIA_NOTIFICACAO" FromRole="NOTIFICACAO" ToRole="CATEGORIA_NOTIFICACAO" />
+          <NavigationProperty Name="NOTIFICACAO_ANEXO" Relationship="Self.FK_NOTIFICACAO_ANEXO_NOTIFICACAO" FromRole="NOTIFICACAO" ToRole="NOTIFICACAO_ANEXO" />
+          <NavigationProperty Name="USUARIO" Relationship="Self.FK_NOTIFICACAO_USUARIO" FromRole="NOTIFICACAO" ToRole="USUARIO" />
+        </EntityType>
+        <EntityType Name="NOTIFICACAO_ANEXO">
+          <Key>
+            <PropertyRef Name="NOAN_CD_ID" />
+          </Key>
+          <Property Name="NOAN_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOTI_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="NOAN_NM_TITULO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NOAN_DT_ANEXO" Type="DateTime" Precision="0" />
+          <Property Name="NOAN_IN_TIPO" Type="Int32" />
+          <Property Name="NOAN_AQ_ARQUIVO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="NOAN_IN_ATIVO" Type="Int32" />
+          <NavigationProperty Name="NOTIFICACAO" Relationship="Self.FK_NOTIFICACAO_ANEXO_NOTIFICACAO" FromRole="NOTIFICACAO_ANEXO" ToRole="NOTIFICACAO" />
+        </EntityType>
         <EntityType Name="PERFIL">
           <Key>
             <PropertyRef Name="PERF_CD_ID" />
@@ -622,7 +641,6 @@
             <PropertyRef Name="TEMP_CD_ID" />
           </Key>
           <Property Name="TEMP_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ASSI_CD_ID" Type="Int32" Nullable="false" />
           <Property Name="TEMP_SG_SIGLA" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="TEMP_NM_NOME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="TEMP_TX_CONTEUDO" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
@@ -633,7 +651,6 @@
           <Property Name="TEMP_TX_CORPO" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="TEMP_TX_DADOS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="TEMP_DT_CRIACAO" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="ASSINANTE" Relationship="Self.FK_TEMPLATE_ASSINANTE" FromRole="TEMPLATE" ToRole="ASSINANTE" />
         </EntityType>
         <EntityType Name="TIPO_PESSOA">
           <Key>
@@ -695,9 +712,9 @@
           <NavigationProperty Name="CARGO" Relationship="Self.FK_USUARIO_CARGO" FromRole="USUARIO" ToRole="CARGO" />
           <NavigationProperty Name="CATEGORIA_USUARIO" Relationship="Self.FK_USUARIO_CATEGORIA_USUARIO" FromRole="USUARIO" ToRole="CATEGORIA_USUARIO" />
           <NavigationProperty Name="LOG" Relationship="Self.FK_LOG_USUARIO" FromRole="USUARIO" ToRole="LOG" />
+          <NavigationProperty Name="NOTIFICACAO" Relationship="Self.FK_NOTIFICACAO_USUARIO" FromRole="USUARIO" ToRole="NOTIFICACAO" />
           <NavigationProperty Name="PERFIL" Relationship="Self.FK_USUARIO_PERFIL" FromRole="USUARIO" ToRole="PERFIL" />
           <NavigationProperty Name="USUARIO_ANEXO" Relationship="Self.FK_USUARIO_ANEXO_USUARIO" FromRole="USUARIO" ToRole="USUARIO_ANEXO" />
-          <NavigationProperty Name="NOTIFICACAO" Relationship="PlatMensagensModel.FK_NOTIFICACAO_USUARIO" FromRole="USUARIO" ToRole="NOTIFICACAO" />
         </EntityType>
         <EntityType Name="USUARIO_ANEXO">
           <Key>
@@ -772,14 +789,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TEMPLATE_ASSINANTE">
+        <Association Name="FK_NOTIFICACAO_ASSINANTE">
           <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="1" />
-          <End Role="TEMPLATE" Type="Self.TEMPLATE" Multiplicity="*" />
+          <End Role="NOTIFICACAO" Type="Self.NOTIFICACAO" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ASSINANTE">
               <PropertyRef Name="ASSI_CD_ID" />
             </Principal>
-            <Dependent Role="TEMPLATE">
+            <Dependent Role="NOTIFICACAO">
               <PropertyRef Name="ASSI_CD_ID" />
             </Dependent>
           </ReferentialConstraint>
@@ -808,6 +825,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_NOTIFICACAO_CATEGORIA_NOTIFICACAO">
+          <End Role="CATEGORIA_NOTIFICACAO" Type="Self.CATEGORIA_NOTIFICACAO" Multiplicity="1" />
+          <End Role="NOTIFICACAO" Type="Self.NOTIFICACAO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORIA_NOTIFICACAO">
+              <PropertyRef Name="CANO_CD_ID" />
+            </Principal>
+            <Dependent Role="NOTIFICACAO">
+              <PropertyRef Name="CANO_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_USUARIO_CATEGORIA_USUARIO">
           <End Role="CATEGORIA_USUARIO" Type="Self.CATEGORIA_USUARIO" Multiplicity="0..1" />
           <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="*" />
@@ -828,6 +857,30 @@
               <PropertyRef Name="USUA_CD_ID" />
             </Principal>
             <Dependent Role="LOG">
+              <PropertyRef Name="USUA_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NOTIFICACAO_ANEXO_NOTIFICACAO">
+          <End Role="NOTIFICACAO" Type="Self.NOTIFICACAO" Multiplicity="1" />
+          <End Role="NOTIFICACAO_ANEXO" Type="Self.NOTIFICACAO_ANEXO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NOTIFICACAO">
+              <PropertyRef Name="NOTI_CD_ID" />
+            </Principal>
+            <Dependent Role="NOTIFICACAO_ANEXO">
+              <PropertyRef Name="NOTI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NOTIFICACAO_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="NOTIFICACAO" Type="Self.NOTIFICACAO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="USUA_CD_ID" />
+            </Principal>
+            <Dependent Role="NOTIFICACAO">
               <PropertyRef Name="USUA_CD_ID" />
             </Dependent>
           </ReferentialConstraint>
@@ -864,6 +917,8 @@
           <EntitySet Name="CATEGORIA_USUARIO" EntityType="Self.CATEGORIA_USUARIO" />
           <EntitySet Name="CONFIGURACAO" EntityType="Self.CONFIGURACAO" />
           <EntitySet Name="LOG" EntityType="Self.LOG" />
+          <EntitySet Name="NOTIFICACAO" EntityType="Self.NOTIFICACAO" />
+          <EntitySet Name="NOTIFICACAO_ANEXO" EntityType="Self.NOTIFICACAO_ANEXO" />
           <EntitySet Name="PERFIL" EntityType="Self.PERFIL" />
           <EntitySet Name="TEMPLATE" EntityType="Self.TEMPLATE" />
           <EntitySet Name="TIPO_PESSOA" EntityType="Self.TIPO_PESSOA" />
@@ -890,9 +945,9 @@
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
             <End Role="LOG" EntitySet="LOG" />
           </AssociationSet>
-          <AssociationSet Name="FK_TEMPLATE_ASSINANTE" Association="Self.FK_TEMPLATE_ASSINANTE">
+          <AssociationSet Name="FK_NOTIFICACAO_ASSINANTE" Association="Self.FK_NOTIFICACAO_ASSINANTE">
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
-            <End Role="TEMPLATE" EntitySet="TEMPLATE" />
+            <End Role="NOTIFICACAO" EntitySet="NOTIFICACAO" />
           </AssociationSet>
           <AssociationSet Name="FK_USUARIO_ASSINANTE" Association="Self.FK_USUARIO_ASSINANTE">
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
@@ -902,6 +957,10 @@
             <End Role="CARGO" EntitySet="CARGO" />
             <End Role="USUARIO" EntitySet="USUARIO" />
           </AssociationSet>
+          <AssociationSet Name="FK_NOTIFICACAO_CATEGORIA_NOTIFICACAO" Association="Self.FK_NOTIFICACAO_CATEGORIA_NOTIFICACAO">
+            <End Role="CATEGORIA_NOTIFICACAO" EntitySet="CATEGORIA_NOTIFICACAO" />
+            <End Role="NOTIFICACAO" EntitySet="NOTIFICACAO" />
+          </AssociationSet>
           <AssociationSet Name="FK_USUARIO_CATEGORIA_USUARIO" Association="Self.FK_USUARIO_CATEGORIA_USUARIO">
             <End Role="CATEGORIA_USUARIO" EntitySet="CATEGORIA_USUARIO" />
             <End Role="USUARIO" EntitySet="USUARIO" />
@@ -909,6 +968,14 @@
           <AssociationSet Name="FK_LOG_USUARIO" Association="Self.FK_LOG_USUARIO">
             <End Role="USUARIO" EntitySet="USUARIO" />
             <End Role="LOG" EntitySet="LOG" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NOTIFICACAO_ANEXO_NOTIFICACAO" Association="Self.FK_NOTIFICACAO_ANEXO_NOTIFICACAO">
+            <End Role="NOTIFICACAO" EntitySet="NOTIFICACAO" />
+            <End Role="NOTIFICACAO_ANEXO" EntitySet="NOTIFICACAO_ANEXO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NOTIFICACAO_USUARIO" Association="Self.FK_NOTIFICACAO_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="NOTIFICACAO" EntitySet="NOTIFICACAO" />
           </AssociationSet>
           <AssociationSet Name="FK_USUARIO_PERFIL" Association="Self.FK_USUARIO_PERFIL">
             <End Role="PERFIL" EntitySet="PERFIL" />
@@ -918,109 +985,7 @@
             <End Role="USUARIO" EntitySet="USUARIO" />
             <End Role="USUARIO_ANEXO" EntitySet="USUARIO_ANEXO" />
           </AssociationSet>
-          <EntitySet Name="NOTIFICACAO" EntityType="PlatMensagensModel.NOTIFICACAO" />
-          <EntitySet Name="NOTIFICACAO_ANEXO" EntityType="PlatMensagensModel.NOTIFICACAO_ANEXO" />
-          <AssociationSet Name="FK_NOTIFICACAO_ASSINANTE" Association="PlatMensagensModel.FK_NOTIFICACAO_ASSINANTE">
-            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
-            <End Role="NOTIFICACAO" EntitySet="NOTIFICACAO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_NOTIFICACAO_CATEGORIA_NOTIFICACAO" Association="PlatMensagensModel.FK_NOTIFICACAO_CATEGORIA_NOTIFICACAO">
-            <End Role="CATEGORIA_NOTIFICACAO" EntitySet="CATEGORIA_NOTIFICACAO" />
-            <End Role="NOTIFICACAO" EntitySet="NOTIFICACAO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_NOTIFICACAO_ANEXO_NOTIFICACAO" Association="PlatMensagensModel.FK_NOTIFICACAO_ANEXO_NOTIFICACAO">
-            <End Role="NOTIFICACAO" EntitySet="NOTIFICACAO" />
-            <End Role="NOTIFICACAO_ANEXO" EntitySet="NOTIFICACAO_ANEXO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_NOTIFICACAO_USUARIO" Association="PlatMensagensModel.FK_NOTIFICACAO_USUARIO">
-            <End Role="USUARIO" EntitySet="USUARIO" />
-            <End Role="NOTIFICACAO" EntitySet="NOTIFICACAO" />
-          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="NOTIFICACAO">
-          <Key>
-            <PropertyRef Name="NOTI_CD_ID" />
-          </Key>
-          <Property Name="NOTI_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ASSI_CD_ID" Type="Int32" Nullable="false" />
-          <Property Name="USUA_CD_ID" Type="Int32" Nullable="false" />
-          <Property Name="CANO_CD_ID" Type="Int32" Nullable="false" />
-          <Property Name="NOTI_DT_EMISSAO" Type="DateTime" Precision="3" />
-          <Property Name="NOTI_IN_ATIVO" Type="Int32" Nullable="false" />
-          <Property Name="NOTI_IN_STATUS" Type="Int32" />
-          <Property Name="NOTI_TX_TEXTO" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
-          <Property Name="NOTI_NM_TITULO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="NOTI_IN_VISTA" Type="Int32" />
-          <Property Name="NOTI_DT_VALIDADE" Type="DateTime" Precision="0" />
-          <Property Name="NOTI_DT_VISTA" Type="DateTime" Precision="3" />
-          <Property Name="NOTI_IN_ORIGEM" Type="Int32" />
-          <Property Name="NOTI_IN_NIVEL" Type="Int32" />
-          <NavigationProperty Name="ASSINANTE" Relationship="PlatMensagensModel.FK_NOTIFICACAO_ASSINANTE" FromRole="NOTIFICACAO" ToRole="ASSINANTE" />
-          <NavigationProperty Name="CATEGORIA_NOTIFICACAO" Relationship="PlatMensagensModel.FK_NOTIFICACAO_CATEGORIA_NOTIFICACAO" FromRole="NOTIFICACAO" ToRole="CATEGORIA_NOTIFICACAO" />
-          <NavigationProperty Name="NOTIFICACAO_ANEXO" Relationship="PlatMensagensModel.FK_NOTIFICACAO_ANEXO_NOTIFICACAO" FromRole="NOTIFICACAO" ToRole="NOTIFICACAO_ANEXO" />
-          <NavigationProperty Name="USUARIO" Relationship="PlatMensagensModel.FK_NOTIFICACAO_USUARIO" FromRole="NOTIFICACAO" ToRole="USUARIO" />
-        </EntityType>
-        <EntityType Name="NOTIFICACAO_ANEXO">
-          <Key>
-            <PropertyRef Name="NOAN_CD_ID" />
-          </Key>
-          <Property Name="NOAN_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NOTI_CD_ID" Type="Int32" Nullable="false" />
-          <Property Name="NOAN_NM_TITULO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="NOAN_DT_ANEXO" Type="DateTime" Precision="0" />
-          <Property Name="NOAN_IN_TIPO" Type="Int32" />
-          <Property Name="NOAN_AQ_ARQUIVO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="NOAN_IN_ATIVO" Type="Int32" />
-          <NavigationProperty Name="NOTIFICACAO" Relationship="PlatMensagensModel.FK_NOTIFICACAO_ANEXO_NOTIFICACAO" FromRole="NOTIFICACAO_ANEXO" ToRole="NOTIFICACAO" />
-        </EntityType>
-        <Association Name="FK_NOTIFICACAO_ASSINANTE">
-          <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="1" />
-          <End Type="PlatMensagensModel.NOTIFICACAO" Role="NOTIFICACAO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ASSINANTE">
-              <PropertyRef Name="ASSI_CD_ID" />
-            </Principal>
-            <Dependent Role="NOTIFICACAO">
-              <PropertyRef Name="ASSI_CD_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_NOTIFICACAO_CATEGORIA_NOTIFICACAO">
-          <End Type="PlatMensagensModel.CATEGORIA_NOTIFICACAO" Role="CATEGORIA_NOTIFICACAO" Multiplicity="1" />
-          <End Type="PlatMensagensModel.NOTIFICACAO" Role="NOTIFICACAO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CATEGORIA_NOTIFICACAO">
-              <PropertyRef Name="CANO_CD_ID" />
-            </Principal>
-            <Dependent Role="NOTIFICACAO">
-              <PropertyRef Name="CANO_CD_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_NOTIFICACAO_ANEXO_NOTIFICACAO">
-          <End Type="PlatMensagensModel.NOTIFICACAO" Role="NOTIFICACAO" Multiplicity="1" />
-          <End Type="PlatMensagensModel.NOTIFICACAO_ANEXO" Role="NOTIFICACAO_ANEXO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NOTIFICACAO">
-              <PropertyRef Name="NOTI_CD_ID" />
-            </Principal>
-            <Dependent Role="NOTIFICACAO_ANEXO">
-              <PropertyRef Name="NOTI_CD_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_NOTIFICACAO_USUARIO">
-          <End Type="PlatMensagensModel.USUARIO" Role="USUARIO" Multiplicity="1" />
-          <End Type="PlatMensagensModel.NOTIFICACAO" Role="NOTIFICACAO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="USUARIO">
-              <PropertyRef Name="USUA_CD_ID" />
-            </Principal>
-            <Dependent Role="NOTIFICACAO">
-              <PropertyRef Name="USUA_CD_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1128,6 +1093,39 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="NOTIFICACAO">
+            <EntityTypeMapping TypeName="PlatMensagensModel.NOTIFICACAO">
+              <MappingFragment StoreEntitySet="NOTIFICACAO">
+                <ScalarProperty Name="NOTI_CD_ID" ColumnName="NOTI_CD_ID" />
+                <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
+                <ScalarProperty Name="USUA_CD_ID" ColumnName="USUA_CD_ID" />
+                <ScalarProperty Name="CANO_CD_ID" ColumnName="CANO_CD_ID" />
+                <ScalarProperty Name="NOTI_DT_EMISSAO" ColumnName="NOTI_DT_EMISSAO" />
+                <ScalarProperty Name="NOTI_IN_ATIVO" ColumnName="NOTI_IN_ATIVO" />
+                <ScalarProperty Name="NOTI_IN_STATUS" ColumnName="NOTI_IN_STATUS" />
+                <ScalarProperty Name="NOTI_TX_TEXTO" ColumnName="NOTI_TX_TEXTO" />
+                <ScalarProperty Name="NOTI_NM_TITULO" ColumnName="NOTI_NM_TITULO" />
+                <ScalarProperty Name="NOTI_IN_VISTA" ColumnName="NOTI_IN_VISTA" />
+                <ScalarProperty Name="NOTI_DT_VALIDADE" ColumnName="NOTI_DT_VALIDADE" />
+                <ScalarProperty Name="NOTI_DT_VISTA" ColumnName="NOTI_DT_VISTA" />
+                <ScalarProperty Name="NOTI_IN_ORIGEM" ColumnName="NOTI_IN_ORIGEM" />
+                <ScalarProperty Name="NOTI_IN_NIVEL" ColumnName="NOTI_IN_NIVEL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NOTIFICACAO_ANEXO">
+            <EntityTypeMapping TypeName="PlatMensagensModel.NOTIFICACAO_ANEXO">
+              <MappingFragment StoreEntitySet="NOTIFICACAO_ANEXO">
+                <ScalarProperty Name="NOAN_CD_ID" ColumnName="NOAN_CD_ID" />
+                <ScalarProperty Name="NOTI_CD_ID" ColumnName="NOTI_CD_ID" />
+                <ScalarProperty Name="NOAN_NM_TITULO" ColumnName="NOAN_NM_TITULO" />
+                <ScalarProperty Name="NOAN_DT_ANEXO" ColumnName="NOAN_DT_ANEXO" />
+                <ScalarProperty Name="NOAN_IN_TIPO" ColumnName="NOAN_IN_TIPO" />
+                <ScalarProperty Name="NOAN_AQ_ARQUIVO" ColumnName="NOAN_AQ_ARQUIVO" />
+                <ScalarProperty Name="NOAN_IN_ATIVO" ColumnName="NOAN_IN_ATIVO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="PERFIL">
             <EntityTypeMapping TypeName="PlatMensagensModel.PERFIL">
               <MappingFragment StoreEntitySet="PERFIL">
@@ -1141,7 +1139,6 @@
             <EntityTypeMapping TypeName="PlatMensagensModel.TEMPLATE">
               <MappingFragment StoreEntitySet="TEMPLATE">
                 <ScalarProperty Name="TEMP_CD_ID" ColumnName="TEMP_CD_ID" />
-                <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
                 <ScalarProperty Name="TEMP_SG_SIGLA" ColumnName="TEMP_SG_SIGLA" />
                 <ScalarProperty Name="TEMP_NM_NOME" ColumnName="TEMP_NM_NOME" />
                 <ScalarProperty Name="TEMP_TX_CONTEUDO" ColumnName="TEMP_TX_CONTEUDO" />
@@ -1223,39 +1220,6 @@
                 <ScalarProperty Name="USAN_IN_TIPO" ColumnName="USAN_IN_TIPO" />
                 <ScalarProperty Name="USAN_IN_ATIVO" ColumnName="USAN_IN_ATIVO" />
                 <ScalarProperty Name="USAN_AQ_ARQUIVO" ColumnName="USAN_AQ_ARQUIVO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="NOTIFICACAO">
-            <EntityTypeMapping TypeName="PlatMensagensModel.NOTIFICACAO">
-              <MappingFragment StoreEntitySet="NOTIFICACAO">
-                <ScalarProperty Name="NOTI_IN_NIVEL" ColumnName="NOTI_IN_NIVEL" />
-                <ScalarProperty Name="NOTI_IN_ORIGEM" ColumnName="NOTI_IN_ORIGEM" />
-                <ScalarProperty Name="NOTI_DT_VISTA" ColumnName="NOTI_DT_VISTA" />
-                <ScalarProperty Name="NOTI_DT_VALIDADE" ColumnName="NOTI_DT_VALIDADE" />
-                <ScalarProperty Name="NOTI_IN_VISTA" ColumnName="NOTI_IN_VISTA" />
-                <ScalarProperty Name="NOTI_NM_TITULO" ColumnName="NOTI_NM_TITULO" />
-                <ScalarProperty Name="NOTI_TX_TEXTO" ColumnName="NOTI_TX_TEXTO" />
-                <ScalarProperty Name="NOTI_IN_STATUS" ColumnName="NOTI_IN_STATUS" />
-                <ScalarProperty Name="NOTI_IN_ATIVO" ColumnName="NOTI_IN_ATIVO" />
-                <ScalarProperty Name="NOTI_DT_EMISSAO" ColumnName="NOTI_DT_EMISSAO" />
-                <ScalarProperty Name="CANO_CD_ID" ColumnName="CANO_CD_ID" />
-                <ScalarProperty Name="USUA_CD_ID" ColumnName="USUA_CD_ID" />
-                <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
-                <ScalarProperty Name="NOTI_CD_ID" ColumnName="NOTI_CD_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="NOTIFICACAO_ANEXO">
-            <EntityTypeMapping TypeName="PlatMensagensModel.NOTIFICACAO_ANEXO">
-              <MappingFragment StoreEntitySet="NOTIFICACAO_ANEXO">
-                <ScalarProperty Name="NOAN_IN_ATIVO" ColumnName="NOAN_IN_ATIVO" />
-                <ScalarProperty Name="NOAN_AQ_ARQUIVO" ColumnName="NOAN_AQ_ARQUIVO" />
-                <ScalarProperty Name="NOAN_IN_TIPO" ColumnName="NOAN_IN_TIPO" />
-                <ScalarProperty Name="NOAN_DT_ANEXO" ColumnName="NOAN_DT_ANEXO" />
-                <ScalarProperty Name="NOAN_NM_TITULO" ColumnName="NOAN_NM_TITULO" />
-                <ScalarProperty Name="NOTI_CD_ID" ColumnName="NOTI_CD_ID" />
-                <ScalarProperty Name="NOAN_CD_ID" ColumnName="NOAN_CD_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
