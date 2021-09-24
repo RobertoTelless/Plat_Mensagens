@@ -7,20 +7,14 @@ using ApplicationServices.Interfaces;
 using EntitiesServices.Model;
 using System.Globalization;
 using SMS_Presentation.App_Start;
-using EntitiesServices.WorkClasses;
+using EntitiesServices.Work_Classes;
 using AutoMapper;
 using PlatMensagem_Solution.ViewModels;
 using System.IO;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
-using System.Collections;
-using System.Web.UI.WebControls;
-using System.Runtime.Caching;
-using Image = iTextSharp.text.Image;
 
 namespace SMS_Presentation.Controllers
 {
-    public class LogController : Controller
+    public class AuditoriaController : Controller
     {
         private readonly IUsuarioAppService baseApp;
         private readonly ILogAppService logApp;
@@ -36,7 +30,7 @@ namespace SMS_Presentation.Controllers
         List<LOG> listaMasterLog = new List<LOG>();
         String extensao;
 
-        public LogController(IUsuarioAppService baseApps, ILogAppService logApps)
+        public AuditoriaController(IUsuarioAppService baseApps, ILogAppService logApps)
         {
             baseApp = baseApps;
             logApp = logApps;
@@ -63,7 +57,7 @@ namespace SMS_Presentation.Controllers
         }
 
         [HttpGet]
-        public ActionResult MontarTelaLog()
+        public ActionResult MontarTelaAudit()
         {
             // Verifica se tem usuario logado
             USUARIO usuario = new USUARIO();
@@ -123,7 +117,7 @@ namespace SMS_Presentation.Controllers
             }
             Session["ListaLog"] = null;
             Session["FiltroLog"] = null;
-            return RedirectToAction("MontarTelaLog");
+            return RedirectToAction("MontarTelaAudit");
         }
 
         [HttpPost]
@@ -145,19 +139,19 @@ namespace SMS_Presentation.Controllers
                 if (volta == 1)
                 {
                     Session["MensLog"] = 1;
-                    return RedirectToAction("MontarTelaLog");
+                    return RedirectToAction("MontarTelaAudit");
                 }
 
                 // Sucesso
                 listaMasterLog = listaObj;
                 Session["ListaLog"] = listaMasterLog;
                 Session["MensLog"] = 0;
-                return RedirectToAction("MontarTelaLog");
+                return RedirectToAction("MontarTelaAudit");
             }
             catch (Exception ex)
             {
                 ViewBag.Message = ex.Message;
-                return RedirectToAction("MontarTelaLog");
+                return RedirectToAction("MontarTelaAudit");
             }
         }
 
@@ -181,7 +175,7 @@ namespace SMS_Presentation.Controllers
             {
                 return RedirectToAction("Login", "ControleAcesso");
             }
-            return RedirectToAction("MontarTelaLog");
+            return RedirectToAction("MontarTelaAudit");
         }
 
         public ActionResult VoltarLog()
