@@ -56,6 +56,11 @@ namespace ApplicationServices.Services
             return _usuarioService.GetAllItens(idAss);
         }
 
+        public List<CARGO> GetAllCargos()
+        {
+            return _usuarioService.GetAllCargos();
+        }
+
         public USUARIO GetAdministrador(Int32 idAss)
         {
             return _usuarioService.GetAdministrador(idAss);
@@ -286,14 +291,6 @@ namespace ApplicationServices.Services
                     if (usu.USUA_CD_ID != usuario.USUA_CD_ID)
                     {
                         return 2;
-                    }
-                }
-                usu = _usuarioService.GetByLogin(usuario.USUA_NM_LOGIN, usuarioLogado.ASSI_CD_ID);
-                if (usu != null)
-                {
-                    if (usu.USUA_CD_ID != usuario.USUA_CD_ID)
-                    {
-                        return 3;
                     }
                 }
 

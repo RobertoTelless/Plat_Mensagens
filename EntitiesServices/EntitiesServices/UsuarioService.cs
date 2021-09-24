@@ -25,9 +25,10 @@ namespace ModelServices.EntitiesServices
         private readonly ITemplateRepository _tempRepository;
         private readonly IUsuarioAnexoRepository _anexoRepository;
         private readonly INotificacaoRepository _notRepository;
+        private readonly ICargoRepository _carRepository;
         protected PlatMensagensEntities Db = new PlatMensagensEntities();
 
-        public UsuarioService(IUsuarioRepository usuarioRepository, ILogRepository logRepository, IConfiguracaoRepository configuracaoRepository, IPerfilRepository perfRepository, ITemplateRepository tempRepository, IUsuarioAnexoRepository anexoRepository, INotificacaoRepository notRepository) : base(usuarioRepository)
+        public UsuarioService(IUsuarioRepository usuarioRepository, ILogRepository logRepository, IConfiguracaoRepository configuracaoRepository, IPerfilRepository perfRepository, ITemplateRepository tempRepository, IUsuarioAnexoRepository anexoRepository, INotificacaoRepository notRepository, ICargoRepository carRepository) : base(usuarioRepository)
         {
             _usuarioRepository = usuarioRepository;
             _logRepository = logRepository;
@@ -36,6 +37,7 @@ namespace ModelServices.EntitiesServices
             _tempRepository = tempRepository;
             _anexoRepository = anexoRepository;
             _notRepository = notRepository;
+            _carRepository = carRepository;
         }
 
         public USUARIO RetriveUserByEmail(String email)
@@ -101,6 +103,11 @@ namespace ModelServices.EntitiesServices
         public List<USUARIO> GetAllItens(Int32 idAss)
         {
             return _usuarioRepository.GetAllItens(idAss);
+        }
+
+        public List<CARGO> GetAllCargos()
+        {
+            return _carRepository.GetAllItens();
         }
 
         public List<USUARIO> GetAllItensBloqueados(Int32 idAss)

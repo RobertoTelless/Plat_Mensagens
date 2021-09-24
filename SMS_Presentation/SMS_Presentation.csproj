@@ -309,6 +309,7 @@
     <Compile Include="Controllers\ControleAcessoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NotificacaoController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Extensions\HMTLHelperExtensions.cs" />
     <Compile Include="Extensions\MVCButtonExtensions.cs" />
     <Compile Include="Extensions\WebMvcExtensions.cs" />
@@ -2908,6 +2909,11 @@
     <Content Include="Views\Notificacao\ExcluirNotificacao.cshtml" />
     <Content Include="Views\Notificacao\ReativarNotificacao.cshtml" />
     <Content Include="Views\Notificacao\VerAnexoNotificacaoGeral.cshtml" />
+    <Content Include="Views\Usuario\MontarTelaUsuario.cshtml" />
+    <Content Include="Views\Usuario\VerAnexoUsuario.cshtml" />
+    <Content Include="Views\Usuario\VerUsuario.cshtml" />
+    <Content Include="Views\Usuario\IncluirUsuario.cshtml" />
+    <Content Include="Views\Usuario\EditarUsuario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

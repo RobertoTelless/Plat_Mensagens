@@ -196,6 +196,24 @@ namespace SMS_Presentation.App_Start {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Usuário já cadastrado.
+        /// </summary>
+        internal static string M0044 {
+            get {
+                return ResourceManager.GetString("M0044", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não é possível excluir esse usuário. Existem informações vinculadas a ele.
+        /// </summary>
+        internal static string M0045 {
+            get {
+                return ResourceManager.GetString("M0045", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a A Senha não pode ficar em branco.
         /// </summary>
         internal static string M0073 {
@@ -228,6 +246,24 @@ namespace SMS_Presentation.App_Start {
         internal static string M0109 {
             get {
                 return ResourceManager.GetString("M0109", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a E-Mail já existente.
+        /// </summary>
+        internal static string M0110 {
+            get {
+                return ResourceManager.GetString("M0110", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Login já existente.
+        /// </summary>
+        internal static string M0111 {
+            get {
+                return ResourceManager.GetString("M0111", resourceCulture);
             }
         }
     }
