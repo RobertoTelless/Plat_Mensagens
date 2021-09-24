@@ -307,6 +307,8 @@
     <Compile Include="Controllers\BaseAdminController.cs" />
     <Compile Include="Controllers\ControleAcessoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LogController.cs" />
+    <Compile Include="Controllers\NotificacaoController.cs" />
     <Compile Include="Extensions\HMTLHelperExtensions.cs" />
     <Compile Include="Extensions\MVCButtonExtensions.cs" />
     <Compile Include="Extensions\WebMvcExtensions.cs" />
@@ -2895,12 +2897,15 @@
     <Content Include="Views\ControleAcesso\TrocarSenha.cshtml" />
     <Content Include="Views\ControleAcesso\TrocarSenhaInicio.cshtml" />
     <Content Include="Views\ControleAcesso\GerarSenha.cshtml" />
+    <Content Include="Views\Log\MontarTelaLog.cshtml" />
+    <Content Include="Views\Log\VerLog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Imagens\1\Notificacao\" />
     <Folder Include="Imagens\1\Usuario\1\Anexos\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Notificacao\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
