@@ -9,7 +9,7 @@ using System.Globalization;
 using EntitiesServices.Work_Classes;
 using AutoMapper;
 using PlatMensagem_Solution.ViewModels;
-using PlatMensagem_Solution.App_Start;
+using SMS_Presentation.App_Start;
 using System.IO;
 using System.Collections;
 using System.Web.UI.WebControls;
@@ -103,6 +103,10 @@ namespace SMS_Presentation.Controllers
             Session["MensConfiguracao"] = 0;
 
             Session["VoltaNotificacao"] = 3;
+
+            // Configuracao
+            CONFIGURACAO conf = confApp.GetItemById(idAss);
+            Session["MaxUsuarios"] = conf.CONF_IN_NUMERO_USUARIOS;
 
             USUARIO usu = new USUARIO();
             UsuarioViewModel vm = new UsuarioViewModel();

@@ -35,6 +35,25 @@
         <AssociationConnector Association="PlatMensagensModel.FK_NOTIFICACAO_USUARIO" ManuallyRouted="false" />
         <AssociationConnector Association="PlatMensagensModel.FK_USUARIO_PERFIL" ManuallyRouted="false" />
         <AssociationConnector Association="PlatMensagensModel.FK_USUARIO_ANEXO_USUARIO" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="PlatMensagensModel.CATEGORIA_CLIENTE" Width="1.5" PointX="14.25" PointY="10.25" />
+        <EntityTypeShape EntityType="PlatMensagensModel.CLIENTE" Width="1.5" PointX="16.5" PointY="10.375" />
+        <EntityTypeShape EntityType="PlatMensagensModel.CLIENTE_ANEXO" Width="1.5" PointX="18.75" PointY="20.125" />
+        <EntityTypeShape EntityType="PlatMensagensModel.CLIENTE_CONTATO" Width="1.5" PointX="18.75" PointY="10.375" />
+        <EntityTypeShape EntityType="PlatMensagensModel.CLIENTE_QUADRO_SOCIETARIO" Width="1.5" PointX="18.75" PointY="13.875" />
+        <EntityTypeShape EntityType="PlatMensagensModel.GRUPO" Width="1.5" PointX="13.5" PointY="17.75" />
+        <EntityTypeShape EntityType="PlatMensagensModel.GRUPO_CLIENTE" Width="1.5" PointX="21.75" PointY="15.5" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CLIENTE_ASSINANTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_GRUPO_ASSINANTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CLIENTE_CATEGORIA_CLIENTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CLIENTE_ANEXO_CLIENTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CLIENTE_CONTATO_CLIENTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CLIENTE_QUADRO_SOCIETARIO_CLIENTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CLIENTE_TIPO_PESSOA" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CLIENTE_UF" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CLIENTE_USUARIO" />
+        <AssociationConnector Association="PlatMensagensModel.FK_GRUPO_CLIENTE_CLIENTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_GRUPO_CLIENTE_GRUPO" />
+        <AssociationConnector Association="PlatMensagensModel.FK_GRUPO_USUARIO" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

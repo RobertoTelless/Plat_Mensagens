@@ -104,6 +104,9 @@ namespace SMS_Presentation.Controllers
 
             // Recupera numero de usuarios do assinante
             Session["NumUsuarios"] = listaUsu.Count;
+            Int32 usuariosPossiveis = ((Int32)Session["MaxUsuarios"]) - listaUsu.Count;
+            ViewBag.UsuariosPossiveis = usuariosPossiveis;
+
 
             // Mensagens
             if (Session["MensUsuario"] != null)
@@ -255,6 +258,17 @@ namespace SMS_Presentation.Controllers
             {
                 return RedirectToAction("Login", "ControleAcesso");
             }
+            Int32 idUsu = (Int32)Session["IdUsuario"];
+            return RedirectToAction("EditarUsuario", new { id = idUsu });
+        }
+
+        public ActionResult EditarPerfilUsuario()
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Session["VoltaUsu"] = 2;
             Int32 idUsu = (Int32)Session["IdUsuario"];
             return RedirectToAction("EditarUsuario", new { id = idUsu });
         }
@@ -437,6 +451,7 @@ namespace SMS_Presentation.Controllers
             objetoAntes = item;
             Session["Usuario"] = item;
             Session["IdUsuario"] = id;
+            Session["VoltaUsu"] = 1;
             UsuarioViewModel vm = Mapper.Map<USUARIO, UsuarioViewModel>(item);
             return View(vm);
         }
@@ -485,7 +500,14 @@ namespace SMS_Presentation.Controllers
                     listaMaster = new List<USUARIO>();
                     Session["ListaUsuario"] = null;
                     Session["MensUsuario"] = 0;
-                    return RedirectToAction("MontarTelaUsuario");
+                    if ((Int32)Session["VoltaUsu"] == 1)
+                    {
+                        return RedirectToAction("MontarTelaUsuario");
+                    }
+                    else
+                    {
+                        return RedirectToAction("CarregarBase", "BaseAdmin");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -1021,5 +1043,597 @@ namespace SMS_Presentation.Controllers
             }
             return RedirectToAction("VoltarAnexoUsuario");
         }
+
+        public ActionResult GerarRelatorioLista()
+        {
+            
+            // Prepara geração
+            String data = DateTime.Today.Date.ToShortDateString();
+            data = data.Substring(0, 2) + data.Substring(3, 2) + data.Substring(6, 4);
+            String nomeRel = "UsuarioLista" + "_" + data + ".pdf";
+            List<USUARIO> lista = (List<USUARIO>)Session["ListaUsuario"];
+            USUARIO filtro = (USUARIO)Session["FiltroUsuario"];
+            Font meuFont = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            Font meuFont1 = FontFactory.GetFont("Arial", 9, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            Font meuFont2 = FontFactory.GetFont("Arial", 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+
+            // Cria documento
+            Document pdfDoc = new Document(PageSize.A4.Rotate(), 10, 10, 10, 10);
+            PdfWriter pdfWriter = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
+            pdfDoc.Open();
+
+            // Linha horizontal
+            Paragraph line = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLUE, Element.ALIGN_LEFT, 1)));
+            pdfDoc.Add(line);
+
+            // Cabeçalho
+            PdfPTable table = new PdfPTable(5);
+            table.WidthPercentage = 100;
+            table.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+            table.SpacingBefore = 1f;
+            table.SpacingAfter = 1f;
+
+            PdfPCell cell = new PdfPCell();
+            cell.Border = 0;
+            Image image = Image.GetInstance(Server.MapPath("~/Images/5.png"));
+            image.ScaleAbsolute(50, 50);
+            cell.AddElement(image);
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Paragraph("Usuários - Listagem", meuFont2))
+            {
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                HorizontalAlignment = Element.ALIGN_CENTER
+            };
+            cell.Border = 0;
+            cell.Colspan = 4;
+            table.AddCell(cell);
+            pdfDoc.Add(table);
+
+            // Linha Horizontal
+            Paragraph line1 = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLUE, Element.ALIGN_LEFT, 1)));
+            pdfDoc.Add(line1);
+            line1 = new Paragraph("  ");
+            pdfDoc.Add(line1);
+
+            // Grid
+            table = new PdfPTable(new float[] { 120f, 120f, 60f, 80f, 50f, 60f, 60f, 80f});
+            table.WidthPercentage = 100;
+            table.HorizontalAlignment = 0;
+            table.SpacingBefore = 1f;
+            table.SpacingAfter = 1f;
+
+            cell = new PdfPCell(new Paragraph("Usuários selecionados pelos parametros de filtro abaixo", meuFont1))
+            {
+                VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_LEFT
+            };
+            cell.Colspan = 8;
+            cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Paragraph("Nome", meuFont))
+            {
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                HorizontalAlignment = Element.ALIGN_LEFT
+            };
+            cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+            table.AddCell(cell);
+            cell = new PdfPCell(new Paragraph("E-Mail", meuFont))
+            {
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                HorizontalAlignment = Element.ALIGN_LEFT
+            };
+            cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+            table.AddCell(cell);
+            cell = new PdfPCell(new Paragraph("Login", meuFont))
+            {
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                HorizontalAlignment = Element.ALIGN_LEFT
+            };
+            cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+            table.AddCell(cell);
+            cell = new PdfPCell(new Paragraph("Cargo", meuFont))
+            {
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                HorizontalAlignment = Element.ALIGN_LEFT
+            };
+            cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+            table.AddCell(cell);
+            cell = new PdfPCell(new Paragraph("Perfil", meuFont))
+            {
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                HorizontalAlignment = Element.ALIGN_LEFT
+            };
+            cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+            table.AddCell(cell);
+            cell = new PdfPCell(new Paragraph("Bloqueado", meuFont))
+            {
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                HorizontalAlignment = Element.ALIGN_LEFT
+            };
+            cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+            table.AddCell(cell);
+            cell = new PdfPCell(new Paragraph("Acessos", meuFont))
+            {
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                HorizontalAlignment = Element.ALIGN_LEFT
+            };
+            cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+            table.AddCell(cell);
+            cell = new PdfPCell(new Paragraph("Foto", meuFont))
+            {
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                HorizontalAlignment = Element.ALIGN_LEFT
+            };
+            cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+            table.AddCell(cell);
+
+            foreach (USUARIO item in lista)
+            {
+                cell = new PdfPCell(new Paragraph(item.USUA_NM_NOME, meuFont))
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                table.AddCell(cell);
+                cell = new PdfPCell(new Paragraph(item.USUA_NM_EMAIL, meuFont))
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                table.AddCell(cell);
+                cell = new PdfPCell(new Paragraph(item.USUA_NM_LOGIN, meuFont))
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                table.AddCell(cell);
+                cell = new PdfPCell(new Paragraph(item.CARGO.CARG_NM_NOME, meuFont))
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                table.AddCell(cell);
+                cell = new PdfPCell(new Paragraph(item.PERFIL.PERF_NM_NOME, meuFont))
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                table.AddCell(cell);
+                cell = new PdfPCell(new Paragraph(item.USUA_IN_BLOQUEADO == 1 ? "Sim" : "Não", meuFont))
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                table.AddCell(cell);
+                cell = new PdfPCell(new Paragraph(item.USUA_NR_ACESSOS.Value.ToString(), meuFont))
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                table.AddCell(cell);
+                if (System.IO.File.Exists(Server.MapPath(item.USUA_AQ_FOTO)))
+                {
+                    cell = new PdfPCell();
+                    image = Image.GetInstance(Server.MapPath(item.USUA_AQ_FOTO));
+                    image.ScaleAbsolute(20, 20);
+                    cell.AddElement(image);
+                    table.AddCell(cell);
+                }
+                else
+                {
+                    cell = new PdfPCell(new Paragraph("-", meuFont))
+                    {
+                        VerticalAlignment = Element.ALIGN_MIDDLE,
+                        HorizontalAlignment = Element.ALIGN_LEFT
+                    };
+                    table.AddCell(cell);
+                }
+            }
+            pdfDoc.Add(table);
+
+            // Linha Horizontal
+            Paragraph line2 = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLUE, Element.ALIGN_LEFT, 1)));
+            pdfDoc.Add(line2);
+
+            // Rodapé
+            Chunk chunk1 = new Chunk("Parâmetros de filtro: ", FontFactory.GetFont("Arial", 10, Font.NORMAL, BaseColor.BLACK));
+            pdfDoc.Add(chunk1);
+
+            String parametros = String.Empty;
+            Int32 ja = 0;
+            if (filtro != null)
+            {
+                if (filtro.USUA_NM_NOME != null)
+                {
+                    parametros += "Nome: " + filtro.USUA_NM_NOME;
+                    ja = 1;
+                }
+                if (filtro.USUA_NM_LOGIN != null)
+                {
+                    if (ja == 0)
+                    {
+                        parametros += "Login: " + filtro.USUA_NM_LOGIN;
+                        ja = 1;
+                    }
+                    else
+                    {
+                        parametros +=  " e Login: " + filtro.USUA_NM_LOGIN;
+                    }
+                }
+                if (filtro.USUA_NM_EMAIL != null)
+                {
+                    if (ja == 0)
+                    {
+                        parametros += "E-Mail: " + filtro.USUA_NM_EMAIL;
+                        ja = 1;
+                    }
+                    else
+                    {
+                        parametros += " e E-Mail: " + filtro.USUA_NM_EMAIL;
+                    }
+                }
+                if (filtro.PERF_CD_ID > 0)
+                {
+                    if (ja == 0)
+                    {
+                        parametros += "Perfil: " + filtro.PERFIL.PERF_NM_NOME;
+                        ja = 1;
+                    }
+                    else
+                    {
+                        parametros += " e Perfil: " + filtro.PERFIL.PERF_NM_NOME;
+                    }
+                }
+                if (ja == 0)
+                {
+                    parametros = "Nenhum filtro definido.";
+                }
+            }
+            else
+            {
+                parametros = "Nenhum filtro definido.";
+            }
+            Chunk chunk = new Chunk(parametros, FontFactory.GetFont("Arial", 9, Font.NORMAL, BaseColor.BLACK));
+            pdfDoc.Add(chunk);
+
+            // Linha Horizontal
+            Paragraph line3 = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLUE, Element.ALIGN_LEFT, 1)));
+            pdfDoc.Add(line3);
+
+            // Finaliza
+            pdfWriter.CloseStream = false;
+            pdfDoc.Close();
+            Response.Buffer = true;
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=" + nomeRel);
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Write(pdfDoc);
+            Response.End();
+
+            return RedirectToAction("MontarTelaUsuario");
+        }
+
+        public ActionResult GerarRelatorioDetalhe()
+        {
+            
+            // Prepara geração
+            USUARIO aten = baseApp.GetItemById((Int32)Session["IdUsuario"]);
+            String data = DateTime.Today.Date.ToShortDateString();
+            data = data.Substring(0, 2) + data.Substring(3, 2) + data.Substring(6, 4);
+            String nomeRel = "Usuario_" + aten.USUA_CD_ID.ToString() + "_" + data + ".pdf";
+            Font meuFont = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            Font meuFont1 = FontFactory.GetFont("Arial", 9, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            Font meuFont2 = FontFactory.GetFont("Arial", 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            Font meuFontBold = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            Font meuFontGreen = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.NORMAL, BaseColor.GREEN);
+
+            // Cria documento
+            Document pdfDoc = new Document(PageSize.A4, 10, 10, 10, 10);
+            PdfWriter pdfWriter = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
+            pdfDoc.Open();
+
+            // Linha horizontal
+            Paragraph line1 = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLUE, Element.ALIGN_LEFT, 1)));
+            pdfDoc.Add(line1);
+
+            // Cabeçalho
+            PdfPTable table = new PdfPTable(5);
+            table.WidthPercentage = 100;
+            table.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+            table.SpacingBefore = 1f;
+            table.SpacingAfter = 1f;
+
+            PdfPCell cell = new PdfPCell();
+            cell.Border = 0;
+            Image image = Image.GetInstance(Server.MapPath("~/Images/5.png"));
+            image.ScaleAbsolute(50, 50);
+            cell.AddElement(image);
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Paragraph("Usuário - Detalhes", meuFont2))
+            {
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                HorizontalAlignment = Element.ALIGN_CENTER
+            };
+            cell.Border = 0;
+            cell.Colspan = 4;
+            table.AddCell(cell);
+
+            pdfDoc.Add(table);
+
+            // Linha Horizontal
+            line1 = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLUE, Element.ALIGN_LEFT, 1)));
+            pdfDoc.Add(line1);
+            line1 = new Paragraph("  ");
+            pdfDoc.Add(line1);
+
+            // Dados Gerais
+            table = new PdfPTable(new float[] { 120f, 120f, 120f, 120f });
+            table.WidthPercentage = 100;
+            table.HorizontalAlignment = 0;
+            table.SpacingBefore = 1f;
+            table.SpacingAfter = 1f;
+
+            cell = new PdfPCell(new Paragraph("Dados Gerais", meuFontBold));
+            cell.Border = 0;
+            cell.Colspan = 4;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+            
+            cell = new PdfPCell();
+            cell.Border = 0;
+            cell.Colspan = 1;
+            image = Image.GetInstance(Server.MapPath(aten.USUA_AQ_FOTO));
+            image.ScaleAbsolute(50, 50);
+            cell.AddElement(image);
+            table.AddCell(cell);
+            cell = new PdfPCell(new Paragraph(" ", meuFontBold));
+            cell.Border = 0;
+            cell.Colspan = 3;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Paragraph("Nome: " + aten.USUA_NM_NOME, meuFontGreen));
+            cell.Border = 0;
+            cell.Colspan = 4;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Paragraph("E-Mail: " + aten.USUA_NM_EMAIL, meuFont));
+            cell.Border = 0;
+            cell.Colspan = 3;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+            cell = new PdfPCell(new Paragraph("Login: " + aten.USUA_NM_LOGIN, meuFont));
+            cell.Border = 0;
+            cell.Colspan = 1;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Paragraph("Cargo: " + aten.CARGO.CARG_NM_NOME, meuFont));
+            cell.Border = 0;
+            cell.Colspan = 1;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+            cell = new PdfPCell(new Paragraph("Perfil: " + aten.PERFIL.PERF_NM_NOME, meuFont));
+            cell.Border = 0;
+            cell.Colspan = 3;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+            pdfDoc.Add(table);
+
+            // Linha Horizontal
+            line1 = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLUE, Element.ALIGN_LEFT, 1)));
+            pdfDoc.Add(line1);
+
+            // Acessos
+            table = new PdfPTable(new float[] { 120f, 120f, 120f, 120f });
+            table.WidthPercentage = 100;
+            table.HorizontalAlignment = 0;
+            table.SpacingBefore = 1f;
+            table.SpacingAfter = 1f;
+
+            cell = new PdfPCell(new Paragraph("Dados de Acesso", meuFontBold));
+            cell.Border = 0;
+            cell.Colspan = 4;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+
+            if (aten.USUA_IN_BLOQUEADO == 1)
+            {
+                cell = new PdfPCell(new Paragraph("Bloqueado: Sim", meuFont));
+                cell.Border = 0;
+                cell.Colspan = 1;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+            else
+            {
+                cell = new PdfPCell(new Paragraph("Bloqueado: Não", meuFont));
+                cell.Border = 0;
+                cell.Colspan = 1;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+            if (aten.USUA_DT_BLOQUEADO != null)
+            {
+                cell = new PdfPCell(new Paragraph("Data Bloqueio: " + aten.USUA_DT_BLOQUEADO.Value.ToShortDateString(), meuFont));
+                cell.Border = 0;
+                cell.Colspan = 1;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+            else
+            {
+                cell = new PdfPCell(new Paragraph("Data Bloqueio: -", meuFont));
+                cell.Border = 0;
+                cell.Colspan = 1;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+            if (aten.USUA_IN_PROVISORIO == 1)
+            {
+                cell = new PdfPCell(new Paragraph("Senha Provisória: Sim", meuFont));
+                cell.Border = 0;
+                cell.Colspan = 1;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+            else
+            {
+                cell = new PdfPCell(new Paragraph("Senha Provisória: Não", meuFont));
+                cell.Border = 0;
+                cell.Colspan = 1;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+            if (aten.USUA_IN_LOGIN_PROVISORIO == 1)
+            {
+                cell = new PdfPCell(new Paragraph("Login Provisório: Sim", meuFont));
+                cell.Border = 0;
+                cell.Colspan = 1;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+            else
+            {
+                cell = new PdfPCell(new Paragraph("Login Provisório: Não", meuFont));
+                cell.Border = 0;
+                cell.Colspan = 1;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+
+            if (aten.USUA_DT_ALTERACAO != null)
+            {
+                cell = new PdfPCell(new Paragraph("Data Alteração: " + aten.USUA_DT_ALTERACAO.Value.ToShortDateString(), meuFont));
+                cell.Border = 0;
+                cell.Colspan = 1;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+            else
+            {
+                cell = new PdfPCell(new Paragraph("Data Alteração: -", meuFont));
+                cell.Border = 0;
+                cell.Colspan = 1;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+            if (aten.USUA_DT_TROCA_SENHA != null)
+            {
+                cell = new PdfPCell(new Paragraph("Data Alteração de Senha: " + aten.USUA_DT_TROCA_SENHA.Value.ToShortDateString(), meuFont));
+                cell.Border = 0;
+                cell.Colspan = 3;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+            else
+            {
+                cell = new PdfPCell(new Paragraph("Data Alteração de Senha: -", meuFont));
+                cell.Border = 0;
+                cell.Colspan = 3;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+
+            cell = new PdfPCell(new Paragraph("Acessos: " + CrossCutting.Formatters.DecimalFormatter(aten.USUA_NR_ACESSOS.Value), meuFont));
+            cell.Border = 0;
+            cell.Colspan = 1;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+            if (aten.USUA_DT_ACESSO != null)
+            {
+                cell = new PdfPCell(new Paragraph("Data Último Acesso: " + aten.USUA_DT_ACESSO.Value.ToShortDateString(), meuFont));
+                cell.Border = 0;
+                cell.Colspan = 1;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+            else
+            {
+                cell = new PdfPCell(new Paragraph("Data Último Acesso: -", meuFont));
+                cell.Border = 0;
+                cell.Colspan = 1;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+            cell = new PdfPCell(new Paragraph("Falhas de Login: " + CrossCutting.Formatters.DecimalFormatter(aten.USUA_NR_FALHAS.Value), meuFont));
+            cell.Border = 0;
+            cell.Colspan = 1;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+            if (aten.USUA_DT_ULTIMA_FALHA != null)
+            {
+                cell = new PdfPCell(new Paragraph("Data Última Falha: " + aten.USUA_DT_ULTIMA_FALHA.Value.ToShortDateString(), meuFont));
+                cell.Border = 0;
+                cell.Colspan = 1;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+            else
+            {
+                cell = new PdfPCell(new Paragraph("Data Última Falha: -", meuFont));
+                cell.Border = 0;
+                cell.Colspan = 1;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+            pdfDoc.Add(table);
+
+            // Linha Horizontal
+            line1 = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLUE, Element.ALIGN_LEFT, 1)));
+            pdfDoc.Add(line1);
+
+            // Observações
+            Chunk chunk1 = new Chunk("Observações: " + aten.USUA_TX_OBSERVACOES, FontFactory.GetFont("Arial", 8, Font.NORMAL, BaseColor.BLACK));
+            pdfDoc.Add(chunk1);
+
+            // Finaliza
+            pdfWriter.CloseStream = false;
+            pdfDoc.Close();
+            Response.Buffer = true;
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=" + nomeRel);
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Write(pdfDoc);
+            Response.End();
+
+            return RedirectToAction("VoltarAnexoUsuario");
+        }
+
+        [HttpGet]
+        public ActionResult TrocarSenha(Int32 id)
+        {
+            
+            // Prepara view
+            return RedirectToAction("TrocarSenha", "ControleAcesso");
+        }
+
     }
 }

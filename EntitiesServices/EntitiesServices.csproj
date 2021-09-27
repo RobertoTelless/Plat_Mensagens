@@ -177,15 +177,19 @@
     <Compile Include="Attributes\CustomValidationCPFAttribute.cs" />
     <Compile Include="Attributes\DataAnteriorAttribute.cs" />
     <Compile Include="EntitiesServices\AssinanteService.cs" />
+    <Compile Include="EntitiesServices\ClienteService.cs" />
     <Compile Include="EntitiesServices\ConfiguracaoService.cs" />
     <Compile Include="EntitiesServices\LogService.cs" />
+    <Compile Include="EntitiesServices\ClienteCnpjService.cs" />
     <Compile Include="EntitiesServices\NotificacaoService.cs" />
     <Compile Include="EntitiesServices\ServiceBase.cs" />
     <Compile Include="EntitiesServices\TemplateService.cs" />
     <Compile Include="EntitiesServices\UsuarioService.cs" />
     <Compile Include="Interfaces\EntitiesServices\IAssinanteService.cs" />
+    <Compile Include="Interfaces\EntitiesServices\IClienteService.cs" />
     <Compile Include="Interfaces\EntitiesServices\IConfiguracaoService.cs" />
     <Compile Include="Interfaces\EntitiesServices\ILogService.cs" />
+    <Compile Include="Interfaces\EntitiesServices\IClienteCnpjService.cs" />
     <Compile Include="Interfaces\EntitiesServices\INotificacaoService.cs" />
     <Compile Include="Interfaces\EntitiesServices\IServiceBase.cs" />
     <Compile Include="Interfaces\EntitiesServices\ITemplateService.cs" />
@@ -193,10 +197,15 @@
     <Compile Include="Interfaces\Repositories\IAssinanteAnexoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IAssinanteRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICargoRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ICategoriaClienteRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICategoriaNotificacaoRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICategoriaUsuarioRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IClienteRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IClienteContatoRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IClienteCnpjRepository.cs" />
     <Compile Include="Interfaces\Repositories\IConfiguracaoRepository.cs" />
     <Compile Include="Interfaces\Repositories\ILogRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IClienteAnexoRepository.cs" />
     <Compile Include="Interfaces\Repositories\INotificacaoAnexoRepository.cs" />
     <Compile Include="Interfaces\Repositories\INotificacaoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IPerfilRepository.cs" />
@@ -215,13 +224,34 @@
     <Compile Include="Model\CARGO.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\CATEGORIA_CLIENTE.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\CATEGORIA_NOTIFICACAO.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CATEGORIA_USUARIO.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\CLIENTE.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CLIENTE_ANEXO.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CLIENTE_CONTATO.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CLIENTE_QUADRO_SOCIETARIO.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\CONFIGURACAO.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GRUPO.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GRUPO_CLIENTE.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\LOG.cs">

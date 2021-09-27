@@ -40,5 +40,12 @@ namespace EntitiesServices.Model
         public virtual DbSet<UF> UF { get; set; }
         public virtual DbSet<USUARIO> USUARIO { get; set; }
         public virtual DbSet<USUARIO_ANEXO> USUARIO_ANEXO { get; set; }
+        public virtual DbSet<CATEGORIA_CLIENTE> CATEGORIA_CLIENTE { get; set; }
+        public virtual DbSet<CLIENTE> CLIENTE { get; set; }
+        public virtual DbSet<CLIENTE_ANEXO> CLIENTE_ANEXO { get; set; }
+        public virtual DbSet<CLIENTE_CONTATO> CLIENTE_CONTATO { get; set; }
+        public virtual DbSet<CLIENTE_QUADRO_SOCIETARIO> CLIENTE_QUADRO_SOCIETARIO { get; set; }
+        public virtual DbSet<GRUPO> GRUPO { get; set; }
+        public virtual DbSet<GRUPO_CLIENTE> GRUPO_CLIENTE { get; set; }
     }
 }

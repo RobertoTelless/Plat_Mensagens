@@ -12,23 +12,24 @@ namespace EntitiesServices.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class UF
+    public partial class GRUPO
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public UF()
+        public GRUPO()
         {
-            this.ASSINANTE = new HashSet<ASSINANTE>();
-            this.CLIENTE = new HashSet<CLIENTE>();
+            this.GRUPO_CLIENTE = new HashSet<GRUPO_CLIENTE>();
         }
     
-        public int UF_CD_ID { get; set; }
-        public string UF_SG_SIGLA { get; set; }
-        public string UF_NM_NOME { get; set; }
-        public Nullable<int> UF_IN_ATIVO { get; set; }
+        public int GRUP_CD_ID { get; set; }
+        public int ASSI_CD_ID { get; set; }
+        public int USUA_CD_ID { get; set; }
+        public string GRUP_NM_NOME { get; set; }
+        public System.DateTime GRUP_DT_CADASTRO { get; set; }
+        public int GRUP_IN_ATIVO { get; set; }
     
+        public virtual ASSINANTE ASSINANTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ASSINANTE> ASSINANTE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CLIENTE> CLIENTE { get; set; }
+        public virtual ICollection<GRUPO_CLIENTE> GRUPO_CLIENTE { get; set; }
+        public virtual USUARIO USUARIO { get; set; }
     }
 }

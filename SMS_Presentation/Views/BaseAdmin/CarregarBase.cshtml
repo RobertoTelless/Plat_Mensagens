@@ -30,11 +30,11 @@
                         <p class="font-bold">@((String)Session["NomeGreeting"])</p>
 
                         <div class="text-center">
-                            @Html.ButtonLinkIndex(text: "Perfil", action: "MontarTelaPerfilUsuario", controller: "Usuario", buttonClass: "btn btn-xs btn-white")
-                            @if (Model.PERFIL.PERF_SG_SIGLA == "ADM")
+                            @Html.ButtonLinkIndex(text: "Perfil", action: "EditarPerfilUsuario", controller: "Usuario", buttonClass: "btn btn-xs btn-white")
+                            @*@if (Model.PERFIL.PERF_SG_SIGLA == "ADM")
                             {
                                 @Html.ButtonLinkIndex(text: "Dashboard Gerencial", action: "CarregarDesenvolvimento", controller: "BaseAdmin", buttonClass: "btn btn-xs btn-primary")
-                            }
+                            }*@
                         </div>
                     </div>
                 </div>

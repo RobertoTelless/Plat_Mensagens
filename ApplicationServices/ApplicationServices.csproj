@@ -168,16 +168,20 @@
   <ItemGroup>
     <Compile Include="Interfaces\IAppServiceBase.cs" />
     <Compile Include="Interfaces\IAssinanteAppService.cs" />
+    <Compile Include="Interfaces\IClienteAppService.cs" />
     <Compile Include="Interfaces\IConfiguracaoAppService.cs" />
     <Compile Include="Interfaces\ILogAppService.cs" />
+    <Compile Include="Interfaces\IClienteCnpjAppService.cs" />
     <Compile Include="Interfaces\INotificacaoAppService.cs" />
     <Compile Include="Interfaces\ITemplateAppService.cs" />
     <Compile Include="Interfaces\IUsuarioAppService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AppServiceBase.cs" />
     <Compile Include="Services\AssinanteAppService.cs" />
+    <Compile Include="Services\ClienteAppService.cs" />
     <Compile Include="Services\ConfiguracaoAppService.cs" />
     <Compile Include="Services\LogAppService.cs" />
+    <Compile Include="Services\ClienteCnpjAppService.cs" />
     <Compile Include="Services\NotificacaoAppService.cs" />
     <Compile Include="Services\TemplateAppService.cs" />
     <Compile Include="Services\UsuarioAppService.cs" />

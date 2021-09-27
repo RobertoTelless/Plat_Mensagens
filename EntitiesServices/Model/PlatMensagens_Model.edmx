@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="PlatMensagensModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="PlatMensagensModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ASSINANTE">
           <Key>
             <PropertyRef Name="ASSI_CD_ID" />
@@ -50,6 +50,14 @@
           <Property Name="CARG_IN_ATIVO" Type="int" />
           <Property Name="CARG_IN_TIPO" Type="int" />
         </EntityType>
+        <EntityType Name="CATEGORIA_CLIENTE">
+          <Key>
+            <PropertyRef Name="CACL_CD_ID" />
+          </Key>
+          <Property Name="CACL_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CACL_NM_NOME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CACL_IN_ATIVO" Type="int" />
+        </EntityType>
         <EntityType Name="CATEGORIA_NOTIFICACAO">
           <Key>
             <PropertyRef Name="CANO_CD_ID" />
@@ -65,6 +73,85 @@
           <Property Name="CAUS_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CAUS_NM_NOME" Type="varchar" MaxLength="50" />
           <Property Name="CAUS_IN_ATIVO" Type="int" />
+        </EntityType>
+        <EntityType Name="CLIENTE">
+          <Key>
+            <PropertyRef Name="CLIE_CD_ID" />
+          </Key>
+          <Property Name="CLIE_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ASSI_CD_ID" Type="int" Nullable="false" />
+          <Property Name="CACL_CD_ID" Type="int" />
+          <Property Name="USUA_CD_ID" Type="int" />
+          <Property Name="TIPE_CD_ID" Type="int" />
+          <Property Name="CLIE_NM_NOME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CLIE_NM_RAZAO" Type="varchar" MaxLength="100" />
+          <Property Name="CLIE_NR_CPF" Type="varchar" MaxLength="20" />
+          <Property Name="CLIE_NR_CNPJ" Type="varchar" MaxLength="20" />
+          <Property Name="CLIE_NM_EMAIL" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CLIE_NR_TELEFONE" Type="varchar" MaxLength="250" />
+          <Property Name="CLIE_NM_REDES_SOCIAIS" Type="varchar" MaxLength="250" />
+          <Property Name="CLIE_NM_ENDERECO" Type="varchar" MaxLength="100" />
+          <Property Name="CLIE_NR_NUMERO" Type="varchar" MaxLength="50" />
+          <Property Name="CLIE_NM_BAIRRO" Type="varchar" MaxLength="50" />
+          <Property Name="CLIE_NM_CIDADE" Type="varchar" MaxLength="50" />
+          <Property Name="CLIE_NR_CEP" Type="varchar" MaxLength="10" />
+          <Property Name="CLIE_DT_CADASTRO" Type="date" Nullable="false" />
+          <Property Name="CLIE_IN_ATIVO" Type="int" Nullable="false" />
+          <Property Name="CLIE_AQ_FOTO" Type="varchar" MaxLength="250" />
+          <Property Name="CLIE_NR_INSCRICAO_ESTADUAL" Type="varchar" MaxLength="50" />
+          <Property Name="CLIE_NR_INSCRICAO_MUNICIPAL" Type="varchar" MaxLength="50" />
+          <Property Name="CLIE_NR_CELULAR" Type="varchar" MaxLength="50" />
+          <Property Name="CLIE_NM_WEBSITE" Type="varchar" MaxLength="200" />
+          <Property Name="CLIE_NM_PAI" Type="varchar" MaxLength="50" />
+          <Property Name="CLIE_NM_MAE" Type="varchar" MaxLength="50" />
+          <Property Name="CLIE_DT_NASCIMENTO" Type="date" />
+          <Property Name="CLIE_NM_NATURALIDADE" Type="varchar" MaxLength="50" />
+          <Property Name="CLIE_SG_NATURALIADE_UF" Type="varchar" MaxLength="2" />
+          <Property Name="CLIE_NM_NACIONALIDADE" Type="varchar" MaxLength="50" />
+          <Property Name="CLIE_TX_OBSERVACOES" Type="text" />
+          <Property Name="CLIE_NR_TELEFONE_ADICIONAL" Type="varchar" MaxLength="50" />
+          <Property Name="UF_CD_ID" Type="int" />
+          <Property Name="CLIE_NM_COMPLEMENTO" Type="varchar" MaxLength="50" />
+          <Property Name="CLIE_NR_WHATSAPP" Type="varchar" MaxLength="50" />
+          <Property Name="CLIE_IN_SEXO" Type="int" />
+        </EntityType>
+        <EntityType Name="CLIENTE_ANEXO">
+          <Key>
+            <PropertyRef Name="CLAN_CD_ID" />
+          </Key>
+          <Property Name="CLAN_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CLIE_CD_ID" Type="int" Nullable="false" />
+          <Property Name="CLAN_NM_TITULO" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CLAN_IN_TIPO" Type="int" Nullable="false" />
+          <Property Name="CLAN_DT_ANEXO" Type="date" Nullable="false" />
+          <Property Name="CLAN_AQ_ARQUIVO" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="CLAN_IN_ATIVO" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CLIENTE_CONTATO">
+          <Key>
+            <PropertyRef Name="CLCO_CD_ID" />
+          </Key>
+          <Property Name="CLCO_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CLIE_CD_ID" Type="int" Nullable="false" />
+          <Property Name="CLCO_NM_NOME" Type="varchar" MaxLength="50" />
+          <Property Name="CLCO_NM_CARGO" Type="varchar" MaxLength="50" />
+          <Property Name="CLCO_NM_EMAIL" Type="varchar" MaxLength="100" />
+          <Property Name="CLCO_NM_TELEFONE" Type="varchar" MaxLength="50" />
+          <Property Name="CLCO_DS_OBSERVACOES" Type="varchar" MaxLength="1000" />
+          <Property Name="CLCO_IN_ATIVO" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CLIENTE_QUADRO_SOCIETARIO">
+          <Key>
+            <PropertyRef Name="CLQS_CD_ID" />
+          </Key>
+          <Property Name="CLQS_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CLIE_CD_ID" Type="int" Nullable="false" />
+          <Property Name="CLQS_NM_QUALIFICACAO" Type="varchar" MaxLength="100" />
+          <Property Name="CLQS_NM_PAIS_ORIGEM" Type="varchar" MaxLength="50" />
+          <Property Name="CLQS_NM_REPRESENTANTE_LEGAL" Type="varchar" MaxLength="50" />
+          <Property Name="CLQS_NM_QUALIFICACAO_REP_LEGAL" Type="varchar" MaxLength="100" />
+          <Property Name="CLQS_NM_NOME" Type="varchar" MaxLength="150" />
+          <Property Name="CLQS_IN_ATIVO" Type="int" />
         </EntityType>
         <EntityType Name="CONFIGURACAO">
           <Key>
@@ -85,6 +172,26 @@
           <Property Name="CONF_SG_LOGIN_SMS" Type="varchar" MaxLength="50" />
           <Property Name="CONF_SG_SENHA_SMS" Type="varchar" MaxLength="50" />
           <Property Name="CONF_IN_LIMITE_HORA_VEICULO" Type="int" />
+          <Property Name="CONF_IN_NUMERO_USUARIOS" Type="int" />
+        </EntityType>
+        <EntityType Name="GRUPO">
+          <Key>
+            <PropertyRef Name="GRUP_CD_ID" />
+          </Key>
+          <Property Name="GRUP_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ASSI_CD_ID" Type="int" Nullable="false" />
+          <Property Name="USUA_CD_ID" Type="int" Nullable="false" />
+          <Property Name="GRUP_NM_NOME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="GRUP_DT_CADASTRO" Type="date" Nullable="false" />
+          <Property Name="GRUP_IN_ATIVO" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GRUPO_CLIENTE">
+          <Key>
+            <PropertyRef Name="GRCL_CD_ID" />
+          </Key>
+          <Property Name="GRCL_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GRUP_CD_ID" Type="int" Nullable="false" />
+          <Property Name="CLIE_CD_ID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="LOG">
           <Key>
@@ -257,6 +364,102 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CLIENTE_ANEXO_CLIENTE">
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="1" />
+          <End Role="CLIENTE_ANEXO" Type="Self.CLIENTE_ANEXO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Principal>
+            <Dependent Role="CLIENTE_ANEXO">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CLIENTE_ASSINANTE">
+          <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="1" />
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CLIENTE_CATEGORIA_CLIENTE">
+          <End Role="CATEGORIA_CLIENTE" Type="Self.CATEGORIA_CLIENTE" Multiplicity="0..1" />
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORIA_CLIENTE">
+              <PropertyRef Name="CACL_CD_ID" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="CACL_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CLIENTE_CONTATO_CLIENTE">
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="1" />
+          <End Role="CLIENTE_CONTATO" Type="Self.CLIENTE_CONTATO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Principal>
+            <Dependent Role="CLIENTE_CONTATO">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CLIENTE_QUADRO_SOCIETARIO_CLIENTE">
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="1" />
+          <End Role="CLIENTE_QUADRO_SOCIETARIO" Type="Self.CLIENTE_QUADRO_SOCIETARIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Principal>
+            <Dependent Role="CLIENTE_QUADRO_SOCIETARIO">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CLIENTE_TIPO_PESSOA">
+          <End Role="TIPO_PESSOA" Type="Self.TIPO_PESSOA" Multiplicity="0..1" />
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPO_PESSOA">
+              <PropertyRef Name="TIPE_CD_ID" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="TIPE_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CLIENTE_UF">
+          <End Role="UF" Type="Self.UF" Multiplicity="0..1" />
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UF">
+              <PropertyRef Name="UF_CD_ID" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="UF_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CLIENTE_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="USUA_CD_ID" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="USUA_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CONFIGURACAO_ASSINANTE">
           <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="1" />
           <End Role="CONFIGURACAO" Type="Self.CONFIGURACAO" Multiplicity="*" />
@@ -266,6 +469,54 @@
             </Principal>
             <Dependent Role="CONFIGURACAO">
               <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GRUPO_ASSINANTE">
+          <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="1" />
+          <End Role="GRUPO" Type="Self.GRUPO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="GRUPO">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GRUPO_CLIENTE_CLIENTE">
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="1" />
+          <End Role="GRUPO_CLIENTE" Type="Self.GRUPO_CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Principal>
+            <Dependent Role="GRUPO_CLIENTE">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GRUPO_CLIENTE_GRUPO">
+          <End Role="GRUPO" Type="Self.GRUPO" Multiplicity="1" />
+          <End Role="GRUPO_CLIENTE" Type="Self.GRUPO_CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GRUPO">
+              <PropertyRef Name="GRUP_CD_ID" />
+            </Principal>
+            <Dependent Role="GRUPO_CLIENTE">
+              <PropertyRef Name="GRUP_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GRUPO_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="GRUPO" Type="Self.GRUPO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="USUA_CD_ID" />
+            </Principal>
+            <Dependent Role="GRUPO">
+              <PropertyRef Name="USUA_CD_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -405,9 +656,16 @@
           <EntitySet Name="ASSINANTE" EntityType="Self.ASSINANTE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ASSINANTE_ANEXO" EntityType="Self.ASSINANTE_ANEXO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CARGO" EntityType="Self.CARGO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CATEGORIA_CLIENTE" EntityType="Self.CATEGORIA_CLIENTE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CATEGORIA_NOTIFICACAO" EntityType="Self.CATEGORIA_NOTIFICACAO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CATEGORIA_USUARIO" EntityType="Self.CATEGORIA_USUARIO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CLIENTE" EntityType="Self.CLIENTE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CLIENTE_ANEXO" EntityType="Self.CLIENTE_ANEXO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CLIENTE_CONTATO" EntityType="Self.CLIENTE_CONTATO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CLIENTE_QUADRO_SOCIETARIO" EntityType="Self.CLIENTE_QUADRO_SOCIETARIO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CONFIGURACAO" EntityType="Self.CONFIGURACAO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GRUPO" EntityType="Self.GRUPO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GRUPO_CLIENTE" EntityType="Self.GRUPO_CLIENTE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LOG" EntityType="Self.LOG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NOTIFICACAO" EntityType="Self.NOTIFICACAO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NOTIFICACAO_ANEXO" EntityType="Self.NOTIFICACAO_ANEXO" Schema="dbo" store:Type="Tables" />
@@ -429,9 +687,57 @@
             <End Role="UF" EntitySet="UF" />
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
           </AssociationSet>
+          <AssociationSet Name="FK_CLIENTE_ANEXO_CLIENTE" Association="Self.FK_CLIENTE_ANEXO_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+            <End Role="CLIENTE_ANEXO" EntitySet="CLIENTE_ANEXO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CLIENTE_ASSINANTE" Association="Self.FK_CLIENTE_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CLIENTE_CATEGORIA_CLIENTE" Association="Self.FK_CLIENTE_CATEGORIA_CLIENTE">
+            <End Role="CATEGORIA_CLIENTE" EntitySet="CATEGORIA_CLIENTE" />
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CLIENTE_CONTATO_CLIENTE" Association="Self.FK_CLIENTE_CONTATO_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+            <End Role="CLIENTE_CONTATO" EntitySet="CLIENTE_CONTATO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CLIENTE_QUADRO_SOCIETARIO_CLIENTE" Association="Self.FK_CLIENTE_QUADRO_SOCIETARIO_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+            <End Role="CLIENTE_QUADRO_SOCIETARIO" EntitySet="CLIENTE_QUADRO_SOCIETARIO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CLIENTE_TIPO_PESSOA" Association="Self.FK_CLIENTE_TIPO_PESSOA">
+            <End Role="TIPO_PESSOA" EntitySet="TIPO_PESSOA" />
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CLIENTE_UF" Association="Self.FK_CLIENTE_UF">
+            <End Role="UF" EntitySet="UF" />
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CLIENTE_USUARIO" Association="Self.FK_CLIENTE_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+          </AssociationSet>
           <AssociationSet Name="FK_CONFIGURACAO_ASSINANTE" Association="Self.FK_CONFIGURACAO_ASSINANTE">
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
             <End Role="CONFIGURACAO" EntitySet="CONFIGURACAO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GRUPO_ASSINANTE" Association="Self.FK_GRUPO_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="GRUPO" EntitySet="GRUPO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GRUPO_CLIENTE_CLIENTE" Association="Self.FK_GRUPO_CLIENTE_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+            <End Role="GRUPO_CLIENTE" EntitySet="GRUPO_CLIENTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GRUPO_CLIENTE_GRUPO" Association="Self.FK_GRUPO_CLIENTE_GRUPO">
+            <End Role="GRUPO" EntitySet="GRUPO" />
+            <End Role="GRUPO_CLIENTE" EntitySet="GRUPO_CLIENTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GRUPO_USUARIO" Association="Self.FK_GRUPO_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="GRUPO" EntitySet="GRUPO" />
           </AssociationSet>
           <AssociationSet Name="FK_LOG_ASSINANTE" Association="Self.FK_LOG_ASSINANTE">
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
@@ -478,8 +784,7 @@
             <End Role="USUARIO" EntitySet="USUARIO" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PlatMensagensModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -513,6 +818,8 @@
           <NavigationProperty Name="LOG" Relationship="Self.FK_LOG_ASSINANTE" FromRole="ASSINANTE" ToRole="LOG" />
           <NavigationProperty Name="NOTIFICACAO" Relationship="Self.FK_NOTIFICACAO_ASSINANTE" FromRole="ASSINANTE" ToRole="NOTIFICACAO" />
           <NavigationProperty Name="USUARIO" Relationship="Self.FK_USUARIO_ASSINANTE" FromRole="ASSINANTE" ToRole="USUARIO" />
+          <NavigationProperty Name="CLIENTE" Relationship="PlatMensagensModel.FK_CLIENTE_ASSINANTE" FromRole="ASSINANTE" ToRole="CLIENTE" />
+          <NavigationProperty Name="GRUPO" Relationship="PlatMensagensModel.FK_GRUPO_ASSINANTE" FromRole="ASSINANTE" ToRole="GRUPO" />
         </EntityType>
         <EntityType Name="ASSINANTE_ANEXO">
           <Key>
@@ -575,6 +882,7 @@
           <Property Name="CONF_SG_SENHA_SMS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CONF_IN_LIMITE_HORA_VEICULO" Type="Int32" />
           <NavigationProperty Name="ASSINANTE" Relationship="Self.FK_CONFIGURACAO_ASSINANTE" FromRole="CONFIGURACAO" ToRole="ASSINANTE" />
+          <Property Name="CONF_IN_NUMERO_USUARIOS" Type="Int32" />
         </EntityType>
         <EntityType Name="LOG">
           <Key>
@@ -660,6 +968,7 @@
           <Property Name="TIPE_NM_NOME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="TIPE_IN_ATIVO" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ASSINANTE" Relationship="Self.FK_ASSINANTE_TIPO_PESSOA" FromRole="TIPO_PESSOA" ToRole="ASSINANTE" />
+          <NavigationProperty Name="CLIENTE" Relationship="PlatMensagensModel.FK_CLIENTE_TIPO_PESSOA" FromRole="TIPO_PESSOA" ToRole="CLIENTE" />
         </EntityType>
         <EntityType Name="UF">
           <Key>
@@ -670,6 +979,7 @@
           <Property Name="UF_NM_NOME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="UF_IN_ATIVO" Type="Int32" />
           <NavigationProperty Name="ASSINANTE" Relationship="Self.FK_ASSINANTE_UF" FromRole="UF" ToRole="ASSINANTE" />
+          <NavigationProperty Name="CLIENTE" Relationship="PlatMensagensModel.FK_CLIENTE_UF" FromRole="UF" ToRole="CLIENTE" />
         </EntityType>
         <EntityType Name="USUARIO">
           <Key>
@@ -715,6 +1025,8 @@
           <NavigationProperty Name="NOTIFICACAO" Relationship="Self.FK_NOTIFICACAO_USUARIO" FromRole="USUARIO" ToRole="NOTIFICACAO" />
           <NavigationProperty Name="PERFIL" Relationship="Self.FK_USUARIO_PERFIL" FromRole="USUARIO" ToRole="PERFIL" />
           <NavigationProperty Name="USUARIO_ANEXO" Relationship="Self.FK_USUARIO_ANEXO_USUARIO" FromRole="USUARIO" ToRole="USUARIO_ANEXO" />
+          <NavigationProperty Name="CLIENTE" Relationship="PlatMensagensModel.FK_CLIENTE_USUARIO" FromRole="USUARIO" ToRole="CLIENTE" />
+          <NavigationProperty Name="GRUPO" Relationship="PlatMensagensModel.FK_GRUPO_USUARIO" FromRole="USUARIO" ToRole="GRUPO" />
         </EntityType>
         <EntityType Name="USUARIO_ANEXO">
           <Key>
@@ -985,7 +1297,330 @@
             <End Role="USUARIO" EntitySet="USUARIO" />
             <End Role="USUARIO_ANEXO" EntitySet="USUARIO_ANEXO" />
           </AssociationSet>
+          <EntitySet Name="CATEGORIA_CLIENTE" EntityType="PlatMensagensModel.CATEGORIA_CLIENTE" />
+          <EntitySet Name="CLIENTE" EntityType="PlatMensagensModel.CLIENTE" />
+          <EntitySet Name="CLIENTE_ANEXO" EntityType="PlatMensagensModel.CLIENTE_ANEXO" />
+          <EntitySet Name="CLIENTE_CONTATO" EntityType="PlatMensagensModel.CLIENTE_CONTATO" />
+          <EntitySet Name="CLIENTE_QUADRO_SOCIETARIO" EntityType="PlatMensagensModel.CLIENTE_QUADRO_SOCIETARIO" />
+          <EntitySet Name="GRUPO" EntityType="PlatMensagensModel.GRUPO" />
+          <EntitySet Name="GRUPO_CLIENTE" EntityType="PlatMensagensModel.GRUPO_CLIENTE" />
+          <AssociationSet Name="FK_CLIENTE_ASSINANTE" Association="PlatMensagensModel.FK_CLIENTE_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GRUPO_ASSINANTE" Association="PlatMensagensModel.FK_GRUPO_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="GRUPO" EntitySet="GRUPO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CLIENTE_CATEGORIA_CLIENTE" Association="PlatMensagensModel.FK_CLIENTE_CATEGORIA_CLIENTE">
+            <End Role="CATEGORIA_CLIENTE" EntitySet="CATEGORIA_CLIENTE" />
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CLIENTE_ANEXO_CLIENTE" Association="PlatMensagensModel.FK_CLIENTE_ANEXO_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+            <End Role="CLIENTE_ANEXO" EntitySet="CLIENTE_ANEXO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CLIENTE_CONTATO_CLIENTE" Association="PlatMensagensModel.FK_CLIENTE_CONTATO_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+            <End Role="CLIENTE_CONTATO" EntitySet="CLIENTE_CONTATO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CLIENTE_QUADRO_SOCIETARIO_CLIENTE" Association="PlatMensagensModel.FK_CLIENTE_QUADRO_SOCIETARIO_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+            <End Role="CLIENTE_QUADRO_SOCIETARIO" EntitySet="CLIENTE_QUADRO_SOCIETARIO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CLIENTE_TIPO_PESSOA" Association="PlatMensagensModel.FK_CLIENTE_TIPO_PESSOA">
+            <End Role="TIPO_PESSOA" EntitySet="TIPO_PESSOA" />
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CLIENTE_UF" Association="PlatMensagensModel.FK_CLIENTE_UF">
+            <End Role="UF" EntitySet="UF" />
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CLIENTE_USUARIO" Association="PlatMensagensModel.FK_CLIENTE_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GRUPO_CLIENTE_CLIENTE" Association="PlatMensagensModel.FK_GRUPO_CLIENTE_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+            <End Role="GRUPO_CLIENTE" EntitySet="GRUPO_CLIENTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GRUPO_CLIENTE_GRUPO" Association="PlatMensagensModel.FK_GRUPO_CLIENTE_GRUPO">
+            <End Role="GRUPO" EntitySet="GRUPO" />
+            <End Role="GRUPO_CLIENTE" EntitySet="GRUPO_CLIENTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GRUPO_USUARIO" Association="PlatMensagensModel.FK_GRUPO_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="GRUPO" EntitySet="GRUPO" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="CATEGORIA_CLIENTE">
+          <Key>
+            <PropertyRef Name="CACL_CD_ID" />
+          </Key>
+          <Property Name="CACL_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CACL_NM_NOME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CACL_IN_ATIVO" Type="Int32" />
+          <NavigationProperty Name="CLIENTE" Relationship="PlatMensagensModel.FK_CLIENTE_CATEGORIA_CLIENTE" FromRole="CATEGORIA_CLIENTE" ToRole="CLIENTE" />
+        </EntityType>
+        <EntityType Name="CLIENTE">
+          <Key>
+            <PropertyRef Name="CLIE_CD_ID" />
+          </Key>
+          <Property Name="CLIE_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ASSI_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="CACL_CD_ID" Type="Int32" />
+          <Property Name="USUA_CD_ID" Type="Int32" />
+          <Property Name="TIPE_CD_ID" Type="Int32" />
+          <Property Name="CLIE_NM_NOME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NM_RAZAO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NR_CPF" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NR_CNPJ" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NM_EMAIL" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NR_TELEFONE" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NM_REDES_SOCIAIS" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NM_ENDERECO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NR_NUMERO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NM_BAIRRO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NM_CIDADE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NR_CEP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_DT_CADASTRO" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CLIE_IN_ATIVO" Type="Int32" Nullable="false" />
+          <Property Name="CLIE_AQ_FOTO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NR_INSCRICAO_ESTADUAL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NR_INSCRICAO_MUNICIPAL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NR_CELULAR" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NM_WEBSITE" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NM_PAI" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NM_MAE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_DT_NASCIMENTO" Type="DateTime" Precision="0" />
+          <Property Name="CLIE_NM_NATURALIDADE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_SG_NATURALIADE_UF" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NM_NACIONALIDADE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_TX_OBSERVACOES" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NR_TELEFONE_ADICIONAL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UF_CD_ID" Type="Int32" />
+          <Property Name="CLIE_NM_COMPLEMENTO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_NR_WHATSAPP" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_IN_SEXO" Type="Int32" />
+          <NavigationProperty Name="ASSINANTE" Relationship="PlatMensagensModel.FK_CLIENTE_ASSINANTE" FromRole="CLIENTE" ToRole="ASSINANTE" />
+          <NavigationProperty Name="CATEGORIA_CLIENTE" Relationship="PlatMensagensModel.FK_CLIENTE_CATEGORIA_CLIENTE" FromRole="CLIENTE" ToRole="CATEGORIA_CLIENTE" />
+          <NavigationProperty Name="CLIENTE_ANEXO" Relationship="PlatMensagensModel.FK_CLIENTE_ANEXO_CLIENTE" FromRole="CLIENTE" ToRole="CLIENTE_ANEXO" />
+          <NavigationProperty Name="CLIENTE_CONTATO" Relationship="PlatMensagensModel.FK_CLIENTE_CONTATO_CLIENTE" FromRole="CLIENTE" ToRole="CLIENTE_CONTATO" />
+          <NavigationProperty Name="CLIENTE_QUADRO_SOCIETARIO" Relationship="PlatMensagensModel.FK_CLIENTE_QUADRO_SOCIETARIO_CLIENTE" FromRole="CLIENTE" ToRole="CLIENTE_QUADRO_SOCIETARIO" />
+          <NavigationProperty Name="TIPO_PESSOA" Relationship="PlatMensagensModel.FK_CLIENTE_TIPO_PESSOA" FromRole="CLIENTE" ToRole="TIPO_PESSOA" />
+          <NavigationProperty Name="UF" Relationship="PlatMensagensModel.FK_CLIENTE_UF" FromRole="CLIENTE" ToRole="UF" />
+          <NavigationProperty Name="USUARIO" Relationship="PlatMensagensModel.FK_CLIENTE_USUARIO" FromRole="CLIENTE" ToRole="USUARIO" />
+          <NavigationProperty Name="GRUPO_CLIENTE" Relationship="PlatMensagensModel.FK_GRUPO_CLIENTE_CLIENTE" FromRole="CLIENTE" ToRole="GRUPO_CLIENTE" />
+        </EntityType>
+        <EntityType Name="CLIENTE_ANEXO">
+          <Key>
+            <PropertyRef Name="CLAN_CD_ID" />
+          </Key>
+          <Property Name="CLAN_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CLIE_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="CLAN_NM_TITULO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLAN_IN_TIPO" Type="Int32" Nullable="false" />
+          <Property Name="CLAN_DT_ANEXO" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CLAN_AQ_ARQUIVO" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CLAN_IN_ATIVO" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CLIENTE" Relationship="PlatMensagensModel.FK_CLIENTE_ANEXO_CLIENTE" FromRole="CLIENTE_ANEXO" ToRole="CLIENTE" />
+        </EntityType>
+        <EntityType Name="CLIENTE_CONTATO">
+          <Key>
+            <PropertyRef Name="CLCO_CD_ID" />
+          </Key>
+          <Property Name="CLCO_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CLIE_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="CLCO_NM_NOME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLCO_NM_CARGO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLCO_NM_EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CLCO_NM_TELEFONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLCO_DS_OBSERVACOES" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="CLCO_IN_ATIVO" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CLIENTE" Relationship="PlatMensagensModel.FK_CLIENTE_CONTATO_CLIENTE" FromRole="CLIENTE_CONTATO" ToRole="CLIENTE" />
+        </EntityType>
+        <EntityType Name="CLIENTE_QUADRO_SOCIETARIO">
+          <Key>
+            <PropertyRef Name="CLQS_CD_ID" />
+          </Key>
+          <Property Name="CLQS_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CLIE_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="CLQS_NM_QUALIFICACAO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CLQS_NM_PAIS_ORIGEM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLQS_NM_REPRESENTANTE_LEGAL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLQS_NM_QUALIFICACAO_REP_LEGAL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CLQS_NM_NOME" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="CLQS_IN_ATIVO" Type="Int32" />
+          <NavigationProperty Name="CLIENTE" Relationship="PlatMensagensModel.FK_CLIENTE_QUADRO_SOCIETARIO_CLIENTE" FromRole="CLIENTE_QUADRO_SOCIETARIO" ToRole="CLIENTE" />
+        </EntityType>
+        <EntityType Name="GRUPO">
+          <Key>
+            <PropertyRef Name="GRUP_CD_ID" />
+          </Key>
+          <Property Name="GRUP_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ASSI_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="USUA_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="GRUP_NM_NOME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GRUP_DT_CADASTRO" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="GRUP_IN_ATIVO" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ASSINANTE" Relationship="PlatMensagensModel.FK_GRUPO_ASSINANTE" FromRole="GRUPO" ToRole="ASSINANTE" />
+          <NavigationProperty Name="GRUPO_CLIENTE" Relationship="PlatMensagensModel.FK_GRUPO_CLIENTE_GRUPO" FromRole="GRUPO" ToRole="GRUPO_CLIENTE" />
+          <NavigationProperty Name="USUARIO" Relationship="PlatMensagensModel.FK_GRUPO_USUARIO" FromRole="GRUPO" ToRole="USUARIO" />
+        </EntityType>
+        <EntityType Name="GRUPO_CLIENTE">
+          <Key>
+            <PropertyRef Name="GRCL_CD_ID" />
+          </Key>
+          <Property Name="GRCL_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GRUP_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="CLIE_CD_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CLIENTE" Relationship="PlatMensagensModel.FK_GRUPO_CLIENTE_CLIENTE" FromRole="GRUPO_CLIENTE" ToRole="CLIENTE" />
+          <NavigationProperty Name="GRUPO" Relationship="PlatMensagensModel.FK_GRUPO_CLIENTE_GRUPO" FromRole="GRUPO_CLIENTE" ToRole="GRUPO" />
+        </EntityType>
+        <Association Name="FK_CLIENTE_ASSINANTE">
+          <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="1" />
+          <End Type="PlatMensagensModel.CLIENTE" Role="CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GRUPO_ASSINANTE">
+          <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="1" />
+          <End Type="PlatMensagensModel.GRUPO" Role="GRUPO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="GRUPO">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CLIENTE_CATEGORIA_CLIENTE">
+          <End Type="PlatMensagensModel.CATEGORIA_CLIENTE" Role="CATEGORIA_CLIENTE" Multiplicity="0..1" />
+          <End Type="PlatMensagensModel.CLIENTE" Role="CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORIA_CLIENTE">
+              <PropertyRef Name="CACL_CD_ID" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="CACL_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CLIENTE_ANEXO_CLIENTE">
+          <End Type="PlatMensagensModel.CLIENTE" Role="CLIENTE" Multiplicity="1" />
+          <End Type="PlatMensagensModel.CLIENTE_ANEXO" Role="CLIENTE_ANEXO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Principal>
+            <Dependent Role="CLIENTE_ANEXO">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CLIENTE_CONTATO_CLIENTE">
+          <End Type="PlatMensagensModel.CLIENTE" Role="CLIENTE" Multiplicity="1" />
+          <End Type="PlatMensagensModel.CLIENTE_CONTATO" Role="CLIENTE_CONTATO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Principal>
+            <Dependent Role="CLIENTE_CONTATO">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CLIENTE_QUADRO_SOCIETARIO_CLIENTE">
+          <End Type="PlatMensagensModel.CLIENTE" Role="CLIENTE" Multiplicity="1" />
+          <End Type="PlatMensagensModel.CLIENTE_QUADRO_SOCIETARIO" Role="CLIENTE_QUADRO_SOCIETARIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Principal>
+            <Dependent Role="CLIENTE_QUADRO_SOCIETARIO">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CLIENTE_TIPO_PESSOA">
+          <End Type="PlatMensagensModel.TIPO_PESSOA" Role="TIPO_PESSOA" Multiplicity="0..1" />
+          <End Type="PlatMensagensModel.CLIENTE" Role="CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPO_PESSOA">
+              <PropertyRef Name="TIPE_CD_ID" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="TIPE_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CLIENTE_UF">
+          <End Type="PlatMensagensModel.UF" Role="UF" Multiplicity="0..1" />
+          <End Type="PlatMensagensModel.CLIENTE" Role="CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UF">
+              <PropertyRef Name="UF_CD_ID" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="UF_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CLIENTE_USUARIO">
+          <End Type="PlatMensagensModel.USUARIO" Role="USUARIO" Multiplicity="0..1" />
+          <End Type="PlatMensagensModel.CLIENTE" Role="CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="USUA_CD_ID" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="USUA_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GRUPO_CLIENTE_CLIENTE">
+          <End Type="PlatMensagensModel.CLIENTE" Role="CLIENTE" Multiplicity="1" />
+          <End Type="PlatMensagensModel.GRUPO_CLIENTE" Role="GRUPO_CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Principal>
+            <Dependent Role="GRUPO_CLIENTE">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GRUPO_CLIENTE_GRUPO">
+          <End Type="PlatMensagensModel.GRUPO" Role="GRUPO" Multiplicity="1" />
+          <End Type="PlatMensagensModel.GRUPO_CLIENTE" Role="GRUPO_CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GRUPO">
+              <PropertyRef Name="GRUP_CD_ID" />
+            </Principal>
+            <Dependent Role="GRUPO_CLIENTE">
+              <PropertyRef Name="GRUP_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GRUPO_USUARIO">
+          <End Type="PlatMensagensModel.USUARIO" Role="USUARIO" Multiplicity="1" />
+          <End Type="PlatMensagensModel.GRUPO" Role="GRUPO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="USUA_CD_ID" />
+            </Principal>
+            <Dependent Role="GRUPO">
+              <PropertyRef Name="USUA_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1061,6 +1696,7 @@
           <EntitySetMapping Name="CONFIGURACAO">
             <EntityTypeMapping TypeName="PlatMensagensModel.CONFIGURACAO">
               <MappingFragment StoreEntitySet="CONFIGURACAO">
+                <ScalarProperty Name="CONF_IN_NUMERO_USUARIOS" ColumnName="CONF_IN_NUMERO_USUARIOS" />
                 <ScalarProperty Name="CONF_CD_ID" ColumnName="CONF_CD_ID" />
                 <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
                 <ScalarProperty Name="CONF_NR_FALHAS_DIA" ColumnName="CONF_NR_FALHAS_DIA" />
@@ -1220,6 +1856,119 @@
                 <ScalarProperty Name="USAN_IN_TIPO" ColumnName="USAN_IN_TIPO" />
                 <ScalarProperty Name="USAN_IN_ATIVO" ColumnName="USAN_IN_ATIVO" />
                 <ScalarProperty Name="USAN_AQ_ARQUIVO" ColumnName="USAN_AQ_ARQUIVO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CATEGORIA_CLIENTE">
+            <EntityTypeMapping TypeName="PlatMensagensModel.CATEGORIA_CLIENTE">
+              <MappingFragment StoreEntitySet="CATEGORIA_CLIENTE">
+                <ScalarProperty Name="CACL_IN_ATIVO" ColumnName="CACL_IN_ATIVO" />
+                <ScalarProperty Name="CACL_NM_NOME" ColumnName="CACL_NM_NOME" />
+                <ScalarProperty Name="CACL_CD_ID" ColumnName="CACL_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CLIENTE">
+            <EntityTypeMapping TypeName="PlatMensagensModel.CLIENTE">
+              <MappingFragment StoreEntitySet="CLIENTE">
+                <ScalarProperty Name="CLIE_IN_SEXO" ColumnName="CLIE_IN_SEXO" />
+                <ScalarProperty Name="CLIE_NR_WHATSAPP" ColumnName="CLIE_NR_WHATSAPP" />
+                <ScalarProperty Name="CLIE_NM_COMPLEMENTO" ColumnName="CLIE_NM_COMPLEMENTO" />
+                <ScalarProperty Name="UF_CD_ID" ColumnName="UF_CD_ID" />
+                <ScalarProperty Name="CLIE_NR_TELEFONE_ADICIONAL" ColumnName="CLIE_NR_TELEFONE_ADICIONAL" />
+                <ScalarProperty Name="CLIE_TX_OBSERVACOES" ColumnName="CLIE_TX_OBSERVACOES" />
+                <ScalarProperty Name="CLIE_NM_NACIONALIDADE" ColumnName="CLIE_NM_NACIONALIDADE" />
+                <ScalarProperty Name="CLIE_SG_NATURALIADE_UF" ColumnName="CLIE_SG_NATURALIADE_UF" />
+                <ScalarProperty Name="CLIE_NM_NATURALIDADE" ColumnName="CLIE_NM_NATURALIDADE" />
+                <ScalarProperty Name="CLIE_DT_NASCIMENTO" ColumnName="CLIE_DT_NASCIMENTO" />
+                <ScalarProperty Name="CLIE_NM_MAE" ColumnName="CLIE_NM_MAE" />
+                <ScalarProperty Name="CLIE_NM_PAI" ColumnName="CLIE_NM_PAI" />
+                <ScalarProperty Name="CLIE_NM_WEBSITE" ColumnName="CLIE_NM_WEBSITE" />
+                <ScalarProperty Name="CLIE_NR_CELULAR" ColumnName="CLIE_NR_CELULAR" />
+                <ScalarProperty Name="CLIE_NR_INSCRICAO_MUNICIPAL" ColumnName="CLIE_NR_INSCRICAO_MUNICIPAL" />
+                <ScalarProperty Name="CLIE_NR_INSCRICAO_ESTADUAL" ColumnName="CLIE_NR_INSCRICAO_ESTADUAL" />
+                <ScalarProperty Name="CLIE_AQ_FOTO" ColumnName="CLIE_AQ_FOTO" />
+                <ScalarProperty Name="CLIE_IN_ATIVO" ColumnName="CLIE_IN_ATIVO" />
+                <ScalarProperty Name="CLIE_DT_CADASTRO" ColumnName="CLIE_DT_CADASTRO" />
+                <ScalarProperty Name="CLIE_NR_CEP" ColumnName="CLIE_NR_CEP" />
+                <ScalarProperty Name="CLIE_NM_CIDADE" ColumnName="CLIE_NM_CIDADE" />
+                <ScalarProperty Name="CLIE_NM_BAIRRO" ColumnName="CLIE_NM_BAIRRO" />
+                <ScalarProperty Name="CLIE_NR_NUMERO" ColumnName="CLIE_NR_NUMERO" />
+                <ScalarProperty Name="CLIE_NM_ENDERECO" ColumnName="CLIE_NM_ENDERECO" />
+                <ScalarProperty Name="CLIE_NM_REDES_SOCIAIS" ColumnName="CLIE_NM_REDES_SOCIAIS" />
+                <ScalarProperty Name="CLIE_NR_TELEFONE" ColumnName="CLIE_NR_TELEFONE" />
+                <ScalarProperty Name="CLIE_NM_EMAIL" ColumnName="CLIE_NM_EMAIL" />
+                <ScalarProperty Name="CLIE_NR_CNPJ" ColumnName="CLIE_NR_CNPJ" />
+                <ScalarProperty Name="CLIE_NR_CPF" ColumnName="CLIE_NR_CPF" />
+                <ScalarProperty Name="CLIE_NM_RAZAO" ColumnName="CLIE_NM_RAZAO" />
+                <ScalarProperty Name="CLIE_NM_NOME" ColumnName="CLIE_NM_NOME" />
+                <ScalarProperty Name="TIPE_CD_ID" ColumnName="TIPE_CD_ID" />
+                <ScalarProperty Name="USUA_CD_ID" ColumnName="USUA_CD_ID" />
+                <ScalarProperty Name="CACL_CD_ID" ColumnName="CACL_CD_ID" />
+                <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
+                <ScalarProperty Name="CLIE_CD_ID" ColumnName="CLIE_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CLIENTE_ANEXO">
+            <EntityTypeMapping TypeName="PlatMensagensModel.CLIENTE_ANEXO">
+              <MappingFragment StoreEntitySet="CLIENTE_ANEXO">
+                <ScalarProperty Name="CLAN_IN_ATIVO" ColumnName="CLAN_IN_ATIVO" />
+                <ScalarProperty Name="CLAN_AQ_ARQUIVO" ColumnName="CLAN_AQ_ARQUIVO" />
+                <ScalarProperty Name="CLAN_DT_ANEXO" ColumnName="CLAN_DT_ANEXO" />
+                <ScalarProperty Name="CLAN_IN_TIPO" ColumnName="CLAN_IN_TIPO" />
+                <ScalarProperty Name="CLAN_NM_TITULO" ColumnName="CLAN_NM_TITULO" />
+                <ScalarProperty Name="CLIE_CD_ID" ColumnName="CLIE_CD_ID" />
+                <ScalarProperty Name="CLAN_CD_ID" ColumnName="CLAN_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CLIENTE_CONTATO">
+            <EntityTypeMapping TypeName="PlatMensagensModel.CLIENTE_CONTATO">
+              <MappingFragment StoreEntitySet="CLIENTE_CONTATO">
+                <ScalarProperty Name="CLCO_IN_ATIVO" ColumnName="CLCO_IN_ATIVO" />
+                <ScalarProperty Name="CLCO_DS_OBSERVACOES" ColumnName="CLCO_DS_OBSERVACOES" />
+                <ScalarProperty Name="CLCO_NM_TELEFONE" ColumnName="CLCO_NM_TELEFONE" />
+                <ScalarProperty Name="CLCO_NM_EMAIL" ColumnName="CLCO_NM_EMAIL" />
+                <ScalarProperty Name="CLCO_NM_CARGO" ColumnName="CLCO_NM_CARGO" />
+                <ScalarProperty Name="CLCO_NM_NOME" ColumnName="CLCO_NM_NOME" />
+                <ScalarProperty Name="CLIE_CD_ID" ColumnName="CLIE_CD_ID" />
+                <ScalarProperty Name="CLCO_CD_ID" ColumnName="CLCO_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CLIENTE_QUADRO_SOCIETARIO">
+            <EntityTypeMapping TypeName="PlatMensagensModel.CLIENTE_QUADRO_SOCIETARIO">
+              <MappingFragment StoreEntitySet="CLIENTE_QUADRO_SOCIETARIO">
+                <ScalarProperty Name="CLQS_IN_ATIVO" ColumnName="CLQS_IN_ATIVO" />
+                <ScalarProperty Name="CLQS_NM_NOME" ColumnName="CLQS_NM_NOME" />
+                <ScalarProperty Name="CLQS_NM_QUALIFICACAO_REP_LEGAL" ColumnName="CLQS_NM_QUALIFICACAO_REP_LEGAL" />
+                <ScalarProperty Name="CLQS_NM_REPRESENTANTE_LEGAL" ColumnName="CLQS_NM_REPRESENTANTE_LEGAL" />
+                <ScalarProperty Name="CLQS_NM_PAIS_ORIGEM" ColumnName="CLQS_NM_PAIS_ORIGEM" />
+                <ScalarProperty Name="CLQS_NM_QUALIFICACAO" ColumnName="CLQS_NM_QUALIFICACAO" />
+                <ScalarProperty Name="CLIE_CD_ID" ColumnName="CLIE_CD_ID" />
+                <ScalarProperty Name="CLQS_CD_ID" ColumnName="CLQS_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GRUPO">
+            <EntityTypeMapping TypeName="PlatMensagensModel.GRUPO">
+              <MappingFragment StoreEntitySet="GRUPO">
+                <ScalarProperty Name="GRUP_IN_ATIVO" ColumnName="GRUP_IN_ATIVO" />
+                <ScalarProperty Name="GRUP_DT_CADASTRO" ColumnName="GRUP_DT_CADASTRO" />
+                <ScalarProperty Name="GRUP_NM_NOME" ColumnName="GRUP_NM_NOME" />
+                <ScalarProperty Name="USUA_CD_ID" ColumnName="USUA_CD_ID" />
+                <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
+                <ScalarProperty Name="GRUP_CD_ID" ColumnName="GRUP_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GRUPO_CLIENTE">
+            <EntityTypeMapping TypeName="PlatMensagensModel.GRUPO_CLIENTE">
+              <MappingFragment StoreEntitySet="GRUPO_CLIENTE">
+                <ScalarProperty Name="CLIE_CD_ID" ColumnName="CLIE_CD_ID" />
+                <ScalarProperty Name="GRUP_CD_ID" ColumnName="GRUP_CD_ID" />
+                <ScalarProperty Name="GRCL_CD_ID" ColumnName="GRCL_CD_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

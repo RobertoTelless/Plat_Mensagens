@@ -12,22 +12,18 @@ namespace EntitiesServices.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class UF
+    public partial class CATEGORIA_CLIENTE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public UF()
+        public CATEGORIA_CLIENTE()
         {
-            this.ASSINANTE = new HashSet<ASSINANTE>();
             this.CLIENTE = new HashSet<CLIENTE>();
         }
     
-        public int UF_CD_ID { get; set; }
-        public string UF_SG_SIGLA { get; set; }
-        public string UF_NM_NOME { get; set; }
-        public Nullable<int> UF_IN_ATIVO { get; set; }
+        public int CACL_CD_ID { get; set; }
+        public string CACL_NM_NOME { get; set; }
+        public Nullable<int> CACL_IN_ATIVO { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ASSINANTE> ASSINANTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CLIENTE> CLIENTE { get; set; }
     }
