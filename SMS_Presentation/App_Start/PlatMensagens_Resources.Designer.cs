@@ -187,6 +187,15 @@ namespace SMS_Presentation.App_Start {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Contato já cadastrado.
+        /// </summary>
+        internal static string M0021 {
+            get {
+                return ResourceManager.GetString("M0021", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Nome do arquivo muito longo.
         /// </summary>
         internal static string M0024 {

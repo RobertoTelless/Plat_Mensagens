@@ -59,6 +59,7 @@ namespace EntitiesServices.Model
         public string CLIE_NM_COMPLEMENTO { get; set; }
         public string CLIE_NR_WHATSAPP { get; set; }
         public Nullable<int> CLIE_IN_SEXO { get; set; }
+        public string CLIE_NM_SITUACAO { get; set; }
     
         public virtual ASSINANTE ASSINANTE { get; set; }
         public virtual CATEGORIA_CLIENTE CATEGORIA_CLIENTE { get; set; }

@@ -114,6 +114,7 @@
           <Property Name="CLIE_NM_COMPLEMENTO" Type="varchar" MaxLength="50" />
           <Property Name="CLIE_NR_WHATSAPP" Type="varchar" MaxLength="50" />
           <Property Name="CLIE_IN_SEXO" Type="int" />
+          <Property Name="CLIE_NM_SITUACAO" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="CLIENTE_ANEXO">
           <Key>
@@ -1411,6 +1412,7 @@
           <NavigationProperty Name="UF" Relationship="PlatMensagensModel.FK_CLIENTE_UF" FromRole="CLIENTE" ToRole="UF" />
           <NavigationProperty Name="USUARIO" Relationship="PlatMensagensModel.FK_CLIENTE_USUARIO" FromRole="CLIENTE" ToRole="USUARIO" />
           <NavigationProperty Name="GRUPO_CLIENTE" Relationship="PlatMensagensModel.FK_GRUPO_CLIENTE_CLIENTE" FromRole="CLIENTE" ToRole="GRUPO_CLIENTE" />
+          <Property Name="CLIE_NM_SITUACAO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="CLIENTE_ANEXO">
           <Key>
@@ -1871,6 +1873,7 @@
           <EntitySetMapping Name="CLIENTE">
             <EntityTypeMapping TypeName="PlatMensagensModel.CLIENTE">
               <MappingFragment StoreEntitySet="CLIENTE">
+                <ScalarProperty Name="CLIE_NM_SITUACAO" ColumnName="CLIE_NM_SITUACAO" />
                 <ScalarProperty Name="CLIE_IN_SEXO" ColumnName="CLIE_IN_SEXO" />
                 <ScalarProperty Name="CLIE_NR_WHATSAPP" ColumnName="CLIE_NR_WHATSAPP" />
                 <ScalarProperty Name="CLIE_NM_COMPLEMENTO" ColumnName="CLIE_NM_COMPLEMENTO" />

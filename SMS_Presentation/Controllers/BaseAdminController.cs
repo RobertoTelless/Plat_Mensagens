@@ -101,6 +101,7 @@ namespace SMS_Presentation.Controllers
             Session["MensUsuarioAdm"] = 0;
             Session["MensTemplate"] = 0;
             Session["MensConfiguracao"] = 0;
+            Session["MensCliente"] = 0;
 
             Session["VoltaNotificacao"] = 3;
 
@@ -178,6 +179,10 @@ namespace SMS_Presentation.Controllers
                 ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0011", CultureInfo.CurrentCulture));
             }
             if ((Int32)Session["MensConfiguracao"] == 2)
+            {
+                ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0011", CultureInfo.CurrentCulture));
+            }
+            if ((Int32)Session["MensCliente"] == 2)
             {
                 ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0011", CultureInfo.CurrentCulture));
             }
