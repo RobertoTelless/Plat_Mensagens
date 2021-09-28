@@ -51,8 +51,8 @@
     <Reference Include="BouncyCastle.Crypto, Version=1.8.6.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>..\packages\BouncyCastle.1.8.6.1\lib\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
-    <Reference Include="Canducci.Zip, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CanducciCep.4.0.0\lib\netstandard1.6\Canducci.Zip.dll</HintPath>
+    <Reference Include="Canducci.Zip, Version=3.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CanducciCep.3.0.1\lib\net451\Canducci.Zip.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <HintPath>..\packages\Common.Logging.3.4.1\lib\net40\Common.Logging.dll</HintPath>
@@ -2919,6 +2919,13 @@
     <Content Include="Views\Usuario\EditarUsuario.cshtml" />
     <Content Include="Views\Cliente\MontarTelaCliente.cshtml" />
     <Content Include="Views\Cliente\IncluirCliente.cshtml" />
+    <Content Include="Views\Cliente\EditarCliente.cshtml" />
+    <Content Include="Views\Cliente\ExcluirCliente.cshtml" />
+    <Content Include="Views\Cliente\ReativarCliente.cshtml" />
+    <Content Include="Views\Cliente\VerCardsCliente.cshtml" />
+    <Content Include="Views\Cliente\VerAnexoCliente.cshtml" />
+    <Content Include="Views\Cliente\EditarContato.cshtml" />
+    <Content Include="Views\Cliente\IncluirContato.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

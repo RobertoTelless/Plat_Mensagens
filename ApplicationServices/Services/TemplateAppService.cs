@@ -83,7 +83,6 @@ namespace ApplicationServices.Services
                 }
 
                 // Completa objeto
-                item.ASSI_CD_ID = usuario.ASSI_CD_ID;
                 item.TEMP_IN_ATIVO = 1;
 
                 // Monta Log
