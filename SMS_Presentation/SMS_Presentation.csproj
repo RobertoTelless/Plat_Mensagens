@@ -314,8 +314,6 @@
     <Compile Include="Extensions\HMTLHelperExtensions.cs" />
     <Compile Include="Extensions\MVCButtonExtensions.cs" />
     <Compile Include="Extensions\WebMvcExtensions.cs" />
-    <Compile Include="Filters\LoginAuthenticationFilter.cs" />
-    <Compile Include="Filters\ProfileAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -323,6 +321,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AssinanteViewModel.cs" />
     <Compile Include="ViewModels\ClienteViewModel.cs" />
+    <Compile Include="ViewModels\ModeloViewModel.cs" />
     <Compile Include="ViewModels\LogViewModel.cs" />
     <Compile Include="ViewModels\ClienteContatoViewModel.cs" />
     <Compile Include="ViewModels\NotificacaoViewModel.cs" />
@@ -661,6 +660,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Imagens\1\Cliente\5\Anexos\email_2.jpg" />
+    <Content Include="Imagens\1\Cliente\5\Fotos\a4.jpg" />
     <Content Include="Imagens\1\Usuario\1\Fotos\FotoOficial.jpg" />
     <Content Include="Imagens\Base\FotoBase.jpg" />
     <Content Include="Imagens\Base\icone_imagem.jpg" />
@@ -2045,6 +2046,9 @@
     <Content Include="Scripts\api\typehead_collection.json" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
+    <Content Include="Imagens\1\Cliente\6\Anexos\carteira.pdf" />
+    <None Include="Properties\PublishProfiles\ERPCondominio - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\PlataformaMensagensWeb - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\characterCount.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
@@ -2926,10 +2930,19 @@
     <Content Include="Views\Cliente\VerAnexoCliente.cshtml" />
     <Content Include="Views\Cliente\EditarContato.cshtml" />
     <Content Include="Views\Cliente\IncluirContato.cshtml" />
+    <Content Include="Views\Cliente\VerCliente.cshtml" />
+    <Content Include="Views\BaseAdmin\VerEMailExpansao.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Imagens\1\Notificacao\" />
+    <Folder Include="Filters\" />
+    <Folder Include="Imagens\1\Cliente\3\Anexos\" />
+    <Folder Include="Imagens\1\Cliente\3\Fotos\" />
+    <Folder Include="Imagens\1\Cliente\4\Anexos\" />
+    <Folder Include="Imagens\1\Cliente\4\Fotos\" />
+    <Folder Include="Imagens\1\Cliente\6\Fotos\" />
+    <Folder Include="Imagens\1\Notificacao\1\Anexos\" />
+    <Folder Include="Imagens\1\Notificacao\2\Anexos\" />
     <Folder Include="Imagens\1\Usuario\1\Anexos\" />
     <Folder Include="Models\" />
   </ItemGroup>

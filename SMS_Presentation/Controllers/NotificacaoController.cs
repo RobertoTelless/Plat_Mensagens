@@ -503,7 +503,7 @@ namespace SMS_Presentation.Controllers
             // Prepara view
             NOTIFICACAO item = new NOTIFICACAO();
             NotificacaoViewModel vm = Mapper.Map<NOTIFICACAO, NotificacaoViewModel>(item);
-            vm.NOTI_DT_EMISSAO = DateTime.Today.Date;
+            vm.NOTI_DT_EMISSAO = DateTime.Now;
             vm.NOTI_IN_ATIVO = 1;
             vm.ASSI_CD_ID = idAss;
             vm.NOTI_DT_VALIDADE = DateTime.Today.Date.AddDays(30);

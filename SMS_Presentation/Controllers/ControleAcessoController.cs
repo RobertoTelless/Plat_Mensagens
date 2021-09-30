@@ -113,6 +113,7 @@ namespace SMS_Presentation.Controllers
                 Session["IdAssinante"] = usuario.ASSI_CD_ID;
                 Session["TipoAssinante"] = usuario.ASSINANTE.ASSI_IN_TIPO.Value;
                 Session["Assinante"] = usuario.ASSINANTE;
+                Session["IdUsuario"] = usuario.USUA_CD_ID;
 
                 // Atualiza view
                 String frase = String.Empty;

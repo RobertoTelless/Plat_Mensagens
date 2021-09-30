@@ -26,7 +26,6 @@ using EntitiesServices.Attributes;
 using OfficeOpenXml.Table;
 using EntitiesServices.WorkClasses;
 using System.Threading.Tasks;
-using SystemBRPresentation.Filters;
 
 namespace SMS_Presentation.Controllers
 {
@@ -557,6 +556,7 @@ namespace SMS_Presentation.Controllers
             // Prepara listas
             ViewBag.Tipos = new SelectList(baseApp.GetAllTipos().OrderBy(p => p.CACL_NM_NOME), "CACL_CD_ID", "CACL_NM_NOME");
             ViewBag.UF = new SelectList(baseApp.GetAllUF().OrderBy(p => p.UF_SG_SIGLA), "UF_CD_ID", "UF_NM_NOME");
+            ViewBag.TiposPessoa = new SelectList(baseApp.GetAllTiposPessoa().OrderBy(p => p.TIPE_NM_NOME), "TIPE_CD_ID", "TIPE_NM_NOME");
             Session["Cliente"] = null;
             List<SelectListItem> ativo = new List<SelectListItem>();
             ativo.Add(new SelectListItem() { Text = "Ativo", Value = "1" });
@@ -599,6 +599,7 @@ namespace SMS_Presentation.Controllers
 
             ViewBag.Tipos = new SelectList(baseApp.GetAllTipos().OrderBy(p => p.CACL_NM_NOME), "CACL_CD_ID", "CACL_NM_NOME");
             ViewBag.UF = new SelectList(baseApp.GetAllUF().OrderBy(p => p.UF_SG_SIGLA), "UF_CD_ID", "UF_NM_NOME");
+            ViewBag.TiposPessoa = new SelectList(baseApp.GetAllTiposPessoa().OrderBy(p => p.TIPE_NM_NOME), "TIPE_CD_ID", "TIPE_NM_NOME");
             Session["Cliente"] = null;
             List<SelectListItem> ativo = new List<SelectListItem>();
             ativo.Add(new SelectListItem() { Text = "Ativo", Value = "1" });
@@ -633,13 +634,13 @@ namespace SMS_Presentation.Controllers
                     }
 
                     // Carrega foto e processa alteracao
-                    item.CLIE_AQ_FOTO = "~/Imagens/Base/FotoBase.jpg";
+                    item.CLIE_AQ_FOTO = "~/Images/icone_imagem.jpg";
                     volta = baseApp.ValidateEdit(item, item, usuario);
 
                     // Cria pastas
-                    String caminho = "/Imagens/" + idAss.ToString() + "/Clientes/" + item.CLIE_CD_ID.ToString() + "/Fotos/";
+                    String caminho = "/Imagens/" + idAss.ToString() + "/Cliente/" + item.CLIE_CD_ID.ToString() + "/Fotos/";
                     Directory.CreateDirectory(Server.MapPath(caminho));
-                    caminho = "/Imagens/" + idAss.ToString() + "/Clientes/" + item.CLIE_CD_ID.ToString() + "/Anexos/";
+                    caminho = "/Imagens/" + idAss.ToString() + "/Cliente/" + item.CLIE_CD_ID.ToString() + "/Anexos/";
                     Directory.CreateDirectory(Server.MapPath(caminho));
 
                     // Sucesso
@@ -726,6 +727,7 @@ namespace SMS_Presentation.Controllers
 
             ViewBag.Tipos = new SelectList(baseApp.GetAllTipos().OrderBy(p => p.CACL_NM_NOME), "CACL_CD_ID", "CACL_NM_NOME");
             ViewBag.UF = new SelectList(baseApp.GetAllUF().OrderBy(p => p.UF_SG_SIGLA), "UF_CD_ID", "UF_NM_NOME");
+            ViewBag.TiposPessoa = new SelectList(baseApp.GetAllTiposPessoa().OrderBy(p => p.TIPE_NM_NOME), "TIPE_CD_ID", "TIPE_NM_NOME");
             List<SelectListItem> sexo = new List<SelectListItem>();
             sexo.Add(new SelectListItem() { Text = "Masculino", Value = "1" });
             sexo.Add(new SelectListItem() { Text = "Feminino", Value = "2" });
@@ -774,6 +776,7 @@ namespace SMS_Presentation.Controllers
 
             ViewBag.Tipos = new SelectList(baseApp.GetAllTipos().OrderBy(p => p.CACL_NM_NOME), "CACL_CD_ID", "CACL_NM_NOME");
             ViewBag.UF = new SelectList(baseApp.GetAllUF().OrderBy(p => p.UF_SG_SIGLA), "UF_CD_ID", "UF_NM_NOME");
+            ViewBag.TiposPessoa = new SelectList(baseApp.GetAllTiposPessoa().OrderBy(p => p.TIPE_NM_NOME), "TIPE_CD_ID", "TIPE_NM_NOME");
             List<SelectListItem> sexo = new List<SelectListItem>();
             sexo.Add(new SelectListItem() { Text = "Masculino", Value = "1" });
             sexo.Add(new SelectListItem() { Text = "Feminino", Value = "2" });
@@ -828,6 +831,38 @@ namespace SMS_Presentation.Controllers
                 vm = Mapper.Map<CLIENTE, ClienteViewModel>(clie);
                 return View(vm);
             }
+        }
+
+        [HttpGet]
+        public ActionResult VerCliente(Int32 id)
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCliente"] = 2;
+                    return RedirectToAction("MontarTelaCliente", "Cliente");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            Session["IdCliente"] = id;
+            CLIENTE item = baseApp.GetItemById(id);
+            ClienteViewModel vm = Mapper.Map<CLIENTE, ClienteViewModel>(item);
+            return View(vm);
         }
 
         [HttpGet]
@@ -1102,7 +1137,7 @@ namespace SMS_Presentation.Controllers
                 return RedirectToAction("VoltarAnexoCliente");
             }
 
-            CLIENTE item = (CLIENTE)Session["Cliente"];
+            CLIENTE item = baseApp.GetItemById(idNot);
             USUARIO usu = (USUARIO)Session["UserCredentials"];
             var fileName = file.Name;
             if (fileName.Length > 250)
@@ -1165,7 +1200,7 @@ namespace SMS_Presentation.Controllers
                 return RedirectToAction("VoltarAnexoCliente");
             }
 
-            CLIENTE item = (CLIENTE)Session["Cliente"];
+            CLIENTE item = baseApp.GetItemById(idNot);
             USUARIO usu = (USUARIO)Session["UserCredentials"];
             var fileName = Path.GetFileName(file.FileName);
             if (fileName.Length > 250)
@@ -1228,7 +1263,7 @@ namespace SMS_Presentation.Controllers
                 return RedirectToAction("VoltarAnexoCliente");
             }
 
-            CLIENTE item = (CLIENTE)Session["Cliente"];
+            CLIENTE item = baseApp.GetItemById(idUsu);
             USUARIO usu = (USUARIO)Session["UserCredentials"];
             var fileName = file.Name;
             if (fileName.Length > 250)
@@ -1276,7 +1311,7 @@ namespace SMS_Presentation.Controllers
                 return RedirectToAction("VoltarAnexoCliente");
             }
 
-            CLIENTE item = (CLIENTE)Session["Cliente"];
+            CLIENTE item = baseApp.GetItemById(idNot);
             USUARIO usu = (USUARIO)Session["UserCredentials"];
             var fileName = Path.GetFileName(file.FileName);
             if (fileName.Length > 250)

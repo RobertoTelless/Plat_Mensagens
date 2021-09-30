@@ -107,6 +107,7 @@ namespace Presentation.Start
             kernel.Bind<IClienteAnexoRepository>().To<ClienteAnexoRepository>();
             kernel.Bind<IClienteContatoRepository>().To<ClienteContatoRepository>();
             kernel.Bind<IClienteCnpjRepository>().To<ClienteCnpjRepository>();
+            kernel.Bind<ICargoRepository>().To<CargoRepository>();
 
         }
     }

@@ -188,5 +188,22 @@ namespace SMS_Presentation.Controllers
             }
             return View(vm);
         }
+
+        public ActionResult VerEMailExpansao()
+        {
+            // Prepara view
+            List<ModeloViewModel> lista = new List<ModeloViewModel>();
+            for (int i = 2; i < 10; i++)
+            {
+                ModeloViewModel mod = new ModeloViewModel();
+                mod.Data = i.ToString() + "/2021";
+                mod.Valor = 12 * i;
+                mod.Valor1 = 2 * i;
+                lista.Add(mod);
+            }
+            ViewBag.Lista = lista;
+            return View();
+        }
+
     }
 }

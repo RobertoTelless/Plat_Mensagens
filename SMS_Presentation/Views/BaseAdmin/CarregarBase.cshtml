@@ -18,6 +18,27 @@
 </div>
 
 <div id="content" style="filter: blur(4px);" class="wraper container-fluid">
+    <div id="containerModalDesc">
+        <div class="modal fade" id="modalDesc" tabindex="-1" role="dialog" aria-labelledby="modalDesc" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalDesc">Descrição</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div id="modalDescBody" class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="row">
@@ -30,7 +51,7 @@
                         <p class="font-bold">@((String)Session["NomeGreeting"])</p>
 
                         <div class="text-center">
-                            @Html.ButtonLinkIndex(text: "Perfil", action: "EditarPerfilUsuario", controller: "Usuario", buttonClass: "btn btn-xs btn-white")
+                            @Html.ButtonLinkIndex(text: "Ver Perfil", action: "EditarPerfilUsuario", controller: "Usuario", buttonClass: "btn btn-xs btn-white")
                             @*@if (Model.PERFIL.PERF_SG_SIGLA == "ADM")
                             {
                                 @Html.ButtonLinkIndex(text: "Dashboard Gerencial", action: "CarregarDesenvolvimento", controller: "BaseAdmin", buttonClass: "btn btn-xs btn-primary")
@@ -103,7 +124,7 @@
                         <div class="ibox-content">
                             <div class="row">
                                 <div class="col-xs-4">
-                                    <small class="stats-label">Total de Mensagens</small>
+                                    <small class="stats-label">Total</small>
                                     <h4>1.344</h4>
                                 </div>
 
@@ -126,17 +147,16 @@
                                     <h4>12</h4>
                                 </div>
                                 <div class="col-xs-4">
-                                    @Html.ButtonLinkIndex(text: "Central de Mensagens", action: "MontarTelaMensagens", controller: "Mensagens")
+                                    @Html.ButtonLinkIndex(text: "Mensagens", action: "MontarTelaMensagens", controller: "Mensagens")
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
+            <br />
             <div class="row">
                 <div class="col-lg-4">
-                    <br />
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>Notificações</h5>
@@ -159,7 +179,7 @@
                                 <div class="feed-activity-list">
                                     @if (Model.NOTIFICACAO.Count > 0)
                                     {
-                                        foreach (var cond in (Model.NOTIFICACAO).OrderByDescending(a => a.NOTI_DT_EMISSAO).Take(6))
+                                        foreach (var cond in Model.NOTIFICACAO)
                                         {
                                             if (cond.NOTI_DT_VALIDADE >= DateTime.Today)
                                             {
@@ -222,10 +242,56 @@
                 </div>
 
                 <div class="col-lg-8">
-
-
-
-
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Indicadores</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                                <a class="close-link">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content ibox-heading">
+                            <h3><i class="fa fa-line-chart"></i> Indicadores</h3>
+                            <small><i class="fa fa-tim"></i> Valores acumulados/atualizados até hoje</small>
+                        </div>
+                        <div class="ibox-content"  style="height: 500px">
+                            <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
+                                <div class="col-lg-4">
+                                    <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 2px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; background-color: azure" >
+                                        <div class="ibox-title">
+                                            <span class="label label-success pull-right">TESTE</span>
+                                            <h5>E-Mails enviados</h5>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <h2 class="no-margins">32</h2>
+                                            <br />
+                                            <br />
+                                            @Html.ButtonLinkIndex(text: "Expandir", controller: "BaseAdmin", action: "VerEMailExpansao", buttonClass: "white")
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 2px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; background-color: azure" >
+                                        <div class="ibox-title">
+                                            <span class="label label-primary pull-right">TESTE</span>
+                                            <h5>Contatos Cadastrados</h5>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <h2 class="no-margins">361</h2>
+                                            <br />
+                                            <br />
+                                            <br />
+                                            <br />
+                                        </div>
+                                    </div>
+                                </div>                                                      
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -233,24 +299,36 @@
 </div>
 
 @section Styles {
-    <link href="~/Content/themes/base/all.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/all.css" rel="stylesheet" />  
     @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
     @Styles.Render("~/plugins/jasnyBootstrapStyles")
-    @Styles.Render("~/Content/loadingDots.css")
     @Styles.Render("~/plugins/toastrStyles")
+    @Styles.Render("~/plugins/touchSpinStyles")
+    @Styles.Render("~/Content/plugins/iCheck/iCheckStyles")
+    @Styles.Render("~/Content/plugins/ionRangeSlider/ionRangeStyles")
 }
 
 @section Scripts {
 
+    @Scripts.Render("~/plugins/toastr")
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
     @Scripts.Render("~/plugins/dataTables")
     @Scripts.Render("~/bundles/inputmask")
     @Scripts.Render("~/plugins/jasnyBootstrap")
+    @Scripts.Render("~/plugins/touchSpin")
+    @Scripts.Render("~/plugins/iCheck")
     @Scripts.Render("~/plugins/sparkline")
+    @Scripts.Render("~/plugins/switchery")
+    @Scripts.Render("~/plugins/ionRange")
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.js"></script>
 
-    @Scripts.Render("~/Scripts/notifier.js")
-    @Scripts.Render("~/Scripts/notificationHandler.js")
-
+    <script>
+        function mostrarDesc(desc) {
+            $('#modalDescBody').html(desc);
+            $('#modalDesc').modal('show');
+        }
+    </script>
     <script type="text/javascript">
         $(document).ready(function () {
 
