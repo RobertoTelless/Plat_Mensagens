@@ -24,6 +24,7 @@ namespace EntitiesServices.Model
             this.USUARIO = new HashSet<USUARIO>();
             this.CLIENTE = new HashSet<CLIENTE>();
             this.GRUPO = new HashSet<GRUPO>();
+            this.MENSAGENS = new HashSet<MENSAGENS>();
         }
     
         public int ASSI_CD_ID { get; set; }
@@ -62,5 +63,7 @@ namespace EntitiesServices.Model
         public virtual ICollection<CLIENTE> CLIENTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GRUPO> GRUPO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MENSAGENS> MENSAGENS { get; set; }
     }
 }

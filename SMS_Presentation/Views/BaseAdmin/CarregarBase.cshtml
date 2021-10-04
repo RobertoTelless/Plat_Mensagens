@@ -267,7 +267,7 @@
                                             <h5>E-Mails enviados</h5>
                                         </div>
                                         <div class="ibox-content">
-                                            <h2 class="no-margins">32</h2>
+                                            <h2 class="no-margins">1</h2>
                                             <br />
                                             <br />
                                             @Html.ButtonLinkIndex(text: "Expandir", controller: "BaseAdmin", action: "VerEMailExpansao", buttonClass: "white")
@@ -278,14 +278,13 @@
                                     <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 2px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; background-color: azure" >
                                         <div class="ibox-title">
                                             <span class="label label-primary pull-right">TESTE</span>
-                                            <h5>Contatos Cadastrados</h5>
+                                            <h5>Contatos</h5>
                                         </div>
                                         <div class="ibox-content">
-                                            <h2 class="no-margins">361</h2>
+                                            <h2 class="no-margins">@ViewBag.NumClientes</h2>
                                             <br />
                                             <br />
-                                            <br />
-                                            <br />
+                                            @Html.ButtonLinkIndex(text: "Expandir", controller: "Cliente", action: "MontarTelaCliente", buttonClass: "white")
                                         </div>
                                     </div>
                                 </div>                                                      

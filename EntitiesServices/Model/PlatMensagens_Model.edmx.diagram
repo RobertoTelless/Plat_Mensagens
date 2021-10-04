@@ -54,6 +54,14 @@
         <AssociationConnector Association="PlatMensagensModel.FK_GRUPO_CLIENTE_CLIENTE" />
         <AssociationConnector Association="PlatMensagensModel.FK_GRUPO_CLIENTE_GRUPO" />
         <AssociationConnector Association="PlatMensagensModel.FK_GRUPO_USUARIO" />
+        <EntityTypeShape EntityType="PlatMensagensModel.MENSAGENS" Width="1.5" PointX="13.5" PointY="5.25" />
+        <EntityTypeShape EntityType="PlatMensagensModel.MENSAGENS_DESTINOS" Width="1.5" PointX="21.75" PointY="11.625" />
+        <AssociationConnector Association="PlatMensagensModel.FK_MENSAGENS_ASSINANTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_MENSAGENS_DESTINOS_CLIENTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_MENSAGENS_DESTINOS_GRUPO" />
+        <AssociationConnector Association="PlatMensagensModel.FK_MENSAGENS_DESTINOS_MENSAGENS" />
+        <AssociationConnector Association="PlatMensagensModel.FK_MENSAGENS_TEMPLATE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_MENSAGENS_USUARIO" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

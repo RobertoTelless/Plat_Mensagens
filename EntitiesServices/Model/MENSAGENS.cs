@@ -12,27 +12,31 @@ namespace EntitiesServices.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class GRUPO
+    public partial class MENSAGENS
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public GRUPO()
+        public MENSAGENS()
         {
-            this.GRUPO_CLIENTE = new HashSet<GRUPO_CLIENTE>();
             this.MENSAGENS_DESTINOS = new HashSet<MENSAGENS_DESTINOS>();
         }
     
-        public int GRUP_CD_ID { get; set; }
+        public int MENS_CD_ID { get; set; }
         public int ASSI_CD_ID { get; set; }
         public int USUA_CD_ID { get; set; }
-        public string GRUP_NM_NOME { get; set; }
-        public System.DateTime GRUP_DT_CADASTRO { get; set; }
-        public int GRUP_IN_ATIVO { get; set; }
+        public Nullable<int> TEMP_CD_ID { get; set; }
+        public Nullable<int> MENS_IN_ATIVO { get; set; }
+        public Nullable<System.DateTime> MENS_DT_CRIACAO { get; set; }
+        public string MENS_NM_CAMPANHA { get; set; }
+        public string MENS_TX_TEXTO { get; set; }
+        public Nullable<int> MENS_IN_TIPO { get; set; }
+        public Nullable<System.DateTime> MENS_DT_AGENDAMENTO { get; set; }
+        public Nullable<System.DateTime> MENS_DT_ENVIO { get; set; }
+        public string MENS_TX_RETORNO { get; set; }
     
         public virtual ASSINANTE ASSINANTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<GRUPO_CLIENTE> GRUPO_CLIENTE { get; set; }
-        public virtual USUARIO USUARIO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MENSAGENS_DESTINOS> MENSAGENS_DESTINOS { get; set; }
+        public virtual TEMPLATE TEMPLATE { get; set; }
+        public virtual USUARIO USUARIO { get; set; }
     }
 }

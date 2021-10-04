@@ -26,7 +26,7 @@ namespace ApplicationServices.Interfaces
         CLIENTE_CONTATO GetContatoById(Int32 id);
         List<UF> GetAllUF();
         UF GetUFbySigla(String sigla);
-        Int32 ExecuteFilter(Int32? id, Int32? catId, String razao, String nome, String cpf, String cnpj, String email, String cidade, Int32? uf, Int32? ativo, Int32 idAss, out List<CLIENTE> objeto);
+        Int32 ExecuteFilter(Int32? id, Int32? catId, String razao, String nome, String cpf, String cnpj, String email, String cidade, Int32? uf, Int32? status, Int32? ativo, Int32 idAss, out List<CLIENTE> objeto);
 
         Int32 ValidateEditContato(CLIENTE_CONTATO item);
         Int32 ValidateCreateContato(CLIENTE_CONTATO item);

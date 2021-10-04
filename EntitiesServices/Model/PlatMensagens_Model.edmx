@@ -115,6 +115,7 @@
           <Property Name="CLIE_NR_WHATSAPP" Type="varchar" MaxLength="50" />
           <Property Name="CLIE_IN_SEXO" Type="int" />
           <Property Name="CLIE_NM_SITUACAO" Type="varchar" MaxLength="100" />
+          <Property Name="CLIE_IN_STATUS" Type="int" />
         </EntityType>
         <EntityType Name="CLIENTE_ANEXO">
           <Key>
@@ -206,6 +207,37 @@
           <Property Name="LOG_TX_REGISTRO" Type="text" />
           <Property Name="LOG_TX_REGISTRO_ANTES" Type="text" />
           <Property Name="LOG_IN_ATIVO" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MENSAGENS">
+          <Key>
+            <PropertyRef Name="MENS_CD_ID" />
+          </Key>
+          <Property Name="MENS_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ASSI_CD_ID" Type="int" Nullable="false" />
+          <Property Name="USUA_CD_ID" Type="int" Nullable="false" />
+          <Property Name="TEMP_CD_ID" Type="int" />
+          <Property Name="MENS_IN_ATIVO" Type="int" />
+          <Property Name="MENS_DT_CRIACAO" Type="datetime" />
+          <Property Name="MENS_NM_CAMPANHA" Type="varchar" MaxLength="50" />
+          <Property Name="MENS_TX_TEXTO" Type="text" />
+          <Property Name="MENS_IN_TIPO" Type="int" />
+          <Property Name="MENS_DT_AGENDAMENTO" Type="datetime" />
+          <Property Name="MENS_DT_ENVIO" Type="datetime" />
+          <Property Name="MENS_TX_RETORNO" Type="text" />
+        </EntityType>
+        <EntityType Name="MENSAGENS_DESTINOS">
+          <Key>
+            <PropertyRef Name="MEDE_CD_ID" />
+          </Key>
+          <Property Name="MEDE_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MENS_CD_ID" Type="int" Nullable="false" />
+          <Property Name="CLIE_CD_ID" Type="int" />
+          <Property Name="GRUP_CD_ID" Type="int" />
+          <Property Name="CAMP_CD_ID" Type="int" />
+          <Property Name="MEDE_IN_ATIVO" Type="int" Nullable="false" />
+          <Property Name="MEDE_IN_STATUS" Type="int" />
+          <Property Name="MEDE_IN_POSICAO" Type="int" />
+          <Property Name="MEDE_TX_OBSERVACOES" Type="text" />
         </EntityType>
         <EntityType Name="NOTIFICACAO">
           <Key>
@@ -545,6 +577,78 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MENSAGENS_ASSINANTE">
+          <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="1" />
+          <End Role="MENSAGENS" Type="Self.MENSAGENS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="MENSAGENS">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MENSAGENS_DESTINOS_CLIENTE">
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="0..1" />
+          <End Role="MENSAGENS_DESTINOS" Type="Self.MENSAGENS_DESTINOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Principal>
+            <Dependent Role="MENSAGENS_DESTINOS">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MENSAGENS_DESTINOS_GRUPO">
+          <End Role="GRUPO" Type="Self.GRUPO" Multiplicity="0..1" />
+          <End Role="MENSAGENS_DESTINOS" Type="Self.MENSAGENS_DESTINOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GRUPO">
+              <PropertyRef Name="GRUP_CD_ID" />
+            </Principal>
+            <Dependent Role="MENSAGENS_DESTINOS">
+              <PropertyRef Name="GRUP_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MENSAGENS_DESTINOS_MENSAGENS">
+          <End Role="MENSAGENS" Type="Self.MENSAGENS" Multiplicity="1" />
+          <End Role="MENSAGENS_DESTINOS" Type="Self.MENSAGENS_DESTINOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MENSAGENS">
+              <PropertyRef Name="MENS_CD_ID" />
+            </Principal>
+            <Dependent Role="MENSAGENS_DESTINOS">
+              <PropertyRef Name="MENS_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MENSAGENS_TEMPLATE">
+          <End Role="TEMPLATE" Type="Self.TEMPLATE" Multiplicity="0..1" />
+          <End Role="MENSAGENS" Type="Self.MENSAGENS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEMPLATE">
+              <PropertyRef Name="TEMP_CD_ID" />
+            </Principal>
+            <Dependent Role="MENSAGENS">
+              <PropertyRef Name="TEMP_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MENSAGENS_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="MENSAGENS" Type="Self.MENSAGENS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="USUA_CD_ID" />
+            </Principal>
+            <Dependent Role="MENSAGENS">
+              <PropertyRef Name="USUA_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_NOTIFICACAO_ANEXO_NOTIFICACAO">
           <End Role="NOTIFICACAO" Type="Self.NOTIFICACAO" Multiplicity="1" />
           <End Role="NOTIFICACAO_ANEXO" Type="Self.NOTIFICACAO_ANEXO" Multiplicity="*" />
@@ -668,6 +772,8 @@
           <EntitySet Name="GRUPO" EntityType="Self.GRUPO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GRUPO_CLIENTE" EntityType="Self.GRUPO_CLIENTE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LOG" EntityType="Self.LOG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MENSAGENS" EntityType="Self.MENSAGENS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MENSAGENS_DESTINOS" EntityType="Self.MENSAGENS_DESTINOS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NOTIFICACAO" EntityType="Self.NOTIFICACAO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NOTIFICACAO_ANEXO" EntityType="Self.NOTIFICACAO_ANEXO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PERFIL" EntityType="Self.PERFIL" Schema="dbo" store:Type="Tables" />
@@ -748,6 +854,30 @@
             <End Role="USUARIO" EntitySet="USUARIO" />
             <End Role="LOG" EntitySet="LOG" />
           </AssociationSet>
+          <AssociationSet Name="FK_MENSAGENS_ASSINANTE" Association="Self.FK_MENSAGENS_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="MENSAGENS" EntitySet="MENSAGENS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MENSAGENS_DESTINOS_CLIENTE" Association="Self.FK_MENSAGENS_DESTINOS_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+            <End Role="MENSAGENS_DESTINOS" EntitySet="MENSAGENS_DESTINOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MENSAGENS_DESTINOS_GRUPO" Association="Self.FK_MENSAGENS_DESTINOS_GRUPO">
+            <End Role="GRUPO" EntitySet="GRUPO" />
+            <End Role="MENSAGENS_DESTINOS" EntitySet="MENSAGENS_DESTINOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MENSAGENS_DESTINOS_MENSAGENS" Association="Self.FK_MENSAGENS_DESTINOS_MENSAGENS">
+            <End Role="MENSAGENS" EntitySet="MENSAGENS" />
+            <End Role="MENSAGENS_DESTINOS" EntitySet="MENSAGENS_DESTINOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MENSAGENS_TEMPLATE" Association="Self.FK_MENSAGENS_TEMPLATE">
+            <End Role="TEMPLATE" EntitySet="TEMPLATE" />
+            <End Role="MENSAGENS" EntitySet="MENSAGENS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MENSAGENS_USUARIO" Association="Self.FK_MENSAGENS_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="MENSAGENS" EntitySet="MENSAGENS" />
+          </AssociationSet>
           <AssociationSet Name="FK_NOTIFICACAO_ANEXO_NOTIFICACAO" Association="Self.FK_NOTIFICACAO_ANEXO_NOTIFICACAO">
             <End Role="NOTIFICACAO" EntitySet="NOTIFICACAO" />
             <End Role="NOTIFICACAO_ANEXO" EntitySet="NOTIFICACAO_ANEXO" />
@@ -821,6 +951,7 @@
           <NavigationProperty Name="USUARIO" Relationship="Self.FK_USUARIO_ASSINANTE" FromRole="ASSINANTE" ToRole="USUARIO" />
           <NavigationProperty Name="CLIENTE" Relationship="PlatMensagensModel.FK_CLIENTE_ASSINANTE" FromRole="ASSINANTE" ToRole="CLIENTE" />
           <NavigationProperty Name="GRUPO" Relationship="PlatMensagensModel.FK_GRUPO_ASSINANTE" FromRole="ASSINANTE" ToRole="GRUPO" />
+          <NavigationProperty Name="MENSAGENS" Relationship="PlatMensagensModel.FK_MENSAGENS_ASSINANTE" FromRole="ASSINANTE" ToRole="MENSAGENS" />
         </EntityType>
         <EntityType Name="ASSINANTE_ANEXO">
           <Key>
@@ -960,6 +1091,7 @@
           <Property Name="TEMP_TX_CORPO" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="TEMP_TX_DADOS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="TEMP_DT_CRIACAO" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="MENSAGENS" Relationship="PlatMensagensModel.FK_MENSAGENS_TEMPLATE" FromRole="TEMPLATE" ToRole="MENSAGENS" />
         </EntityType>
         <EntityType Name="TIPO_PESSOA">
           <Key>
@@ -1028,6 +1160,7 @@
           <NavigationProperty Name="USUARIO_ANEXO" Relationship="Self.FK_USUARIO_ANEXO_USUARIO" FromRole="USUARIO" ToRole="USUARIO_ANEXO" />
           <NavigationProperty Name="CLIENTE" Relationship="PlatMensagensModel.FK_CLIENTE_USUARIO" FromRole="USUARIO" ToRole="CLIENTE" />
           <NavigationProperty Name="GRUPO" Relationship="PlatMensagensModel.FK_GRUPO_USUARIO" FromRole="USUARIO" ToRole="GRUPO" />
+          <NavigationProperty Name="MENSAGENS" Relationship="PlatMensagensModel.FK_MENSAGENS_USUARIO" FromRole="USUARIO" ToRole="MENSAGENS" />
         </EntityType>
         <EntityType Name="USUARIO_ANEXO">
           <Key>
@@ -1353,6 +1486,32 @@
             <End Role="USUARIO" EntitySet="USUARIO" />
             <End Role="GRUPO" EntitySet="GRUPO" />
           </AssociationSet>
+          <EntitySet Name="MENSAGENS" EntityType="PlatMensagensModel.MENSAGENS" />
+          <EntitySet Name="MENSAGENS_DESTINOS" EntityType="PlatMensagensModel.MENSAGENS_DESTINOS" />
+          <AssociationSet Name="FK_MENSAGENS_ASSINANTE" Association="PlatMensagensModel.FK_MENSAGENS_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="MENSAGENS" EntitySet="MENSAGENS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MENSAGENS_DESTINOS_CLIENTE" Association="PlatMensagensModel.FK_MENSAGENS_DESTINOS_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+            <End Role="MENSAGENS_DESTINOS" EntitySet="MENSAGENS_DESTINOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MENSAGENS_DESTINOS_GRUPO" Association="PlatMensagensModel.FK_MENSAGENS_DESTINOS_GRUPO">
+            <End Role="GRUPO" EntitySet="GRUPO" />
+            <End Role="MENSAGENS_DESTINOS" EntitySet="MENSAGENS_DESTINOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MENSAGENS_DESTINOS_MENSAGENS" Association="PlatMensagensModel.FK_MENSAGENS_DESTINOS_MENSAGENS">
+            <End Role="MENSAGENS" EntitySet="MENSAGENS" />
+            <End Role="MENSAGENS_DESTINOS" EntitySet="MENSAGENS_DESTINOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MENSAGENS_TEMPLATE" Association="PlatMensagensModel.FK_MENSAGENS_TEMPLATE">
+            <End Role="TEMPLATE" EntitySet="TEMPLATE" />
+            <End Role="MENSAGENS" EntitySet="MENSAGENS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MENSAGENS_USUARIO" Association="PlatMensagensModel.FK_MENSAGENS_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="MENSAGENS" EntitySet="MENSAGENS" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="CATEGORIA_CLIENTE">
           <Key>
@@ -1413,6 +1572,8 @@
           <NavigationProperty Name="USUARIO" Relationship="PlatMensagensModel.FK_CLIENTE_USUARIO" FromRole="CLIENTE" ToRole="USUARIO" />
           <NavigationProperty Name="GRUPO_CLIENTE" Relationship="PlatMensagensModel.FK_GRUPO_CLIENTE_CLIENTE" FromRole="CLIENTE" ToRole="GRUPO_CLIENTE" />
           <Property Name="CLIE_NM_SITUACAO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CLIE_IN_STATUS" Type="Int32" />
+          <NavigationProperty Name="MENSAGENS_DESTINOS" Relationship="PlatMensagensModel.FK_MENSAGENS_DESTINOS_CLIENTE" FromRole="CLIENTE" ToRole="MENSAGENS_DESTINOS" />
         </EntityType>
         <EntityType Name="CLIENTE_ANEXO">
           <Key>
@@ -1468,6 +1629,7 @@
           <NavigationProperty Name="ASSINANTE" Relationship="PlatMensagensModel.FK_GRUPO_ASSINANTE" FromRole="GRUPO" ToRole="ASSINANTE" />
           <NavigationProperty Name="GRUPO_CLIENTE" Relationship="PlatMensagensModel.FK_GRUPO_CLIENTE_GRUPO" FromRole="GRUPO" ToRole="GRUPO_CLIENTE" />
           <NavigationProperty Name="USUARIO" Relationship="PlatMensagensModel.FK_GRUPO_USUARIO" FromRole="GRUPO" ToRole="USUARIO" />
+          <NavigationProperty Name="MENSAGENS_DESTINOS" Relationship="PlatMensagensModel.FK_MENSAGENS_DESTINOS_GRUPO" FromRole="GRUPO" ToRole="MENSAGENS_DESTINOS" />
         </EntityType>
         <EntityType Name="GRUPO_CLIENTE">
           <Key>
@@ -1619,6 +1781,116 @@
               <PropertyRef Name="USUA_CD_ID" />
             </Principal>
             <Dependent Role="GRUPO">
+              <PropertyRef Name="USUA_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MENSAGENS">
+          <Key>
+            <PropertyRef Name="MENS_CD_ID" />
+          </Key>
+          <Property Name="MENS_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ASSI_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="USUA_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="TEMP_CD_ID" Type="Int32" />
+          <Property Name="MENS_IN_ATIVO" Type="Int32" />
+          <Property Name="MENS_DT_CRIACAO" Type="DateTime" Precision="3" />
+          <Property Name="MENS_NM_CAMPANHA" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MENS_TX_TEXTO" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="MENS_IN_TIPO" Type="Int32" />
+          <Property Name="MENS_DT_AGENDAMENTO" Type="DateTime" Precision="3" />
+          <Property Name="MENS_DT_ENVIO" Type="DateTime" Precision="3" />
+          <Property Name="MENS_TX_RETORNO" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ASSINANTE" Relationship="PlatMensagensModel.FK_MENSAGENS_ASSINANTE" FromRole="MENSAGENS" ToRole="ASSINANTE" />
+          <NavigationProperty Name="MENSAGENS_DESTINOS" Relationship="PlatMensagensModel.FK_MENSAGENS_DESTINOS_MENSAGENS" FromRole="MENSAGENS" ToRole="MENSAGENS_DESTINOS" />
+          <NavigationProperty Name="TEMPLATE" Relationship="PlatMensagensModel.FK_MENSAGENS_TEMPLATE" FromRole="MENSAGENS" ToRole="TEMPLATE" />
+          <NavigationProperty Name="USUARIO" Relationship="PlatMensagensModel.FK_MENSAGENS_USUARIO" FromRole="MENSAGENS" ToRole="USUARIO" />
+        </EntityType>
+        <EntityType Name="MENSAGENS_DESTINOS">
+          <Key>
+            <PropertyRef Name="MEDE_CD_ID" />
+          </Key>
+          <Property Name="MEDE_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MENS_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="CLIE_CD_ID" Type="Int32" />
+          <Property Name="GRUP_CD_ID" Type="Int32" />
+          <Property Name="CAMP_CD_ID" Type="Int32" />
+          <Property Name="MEDE_IN_ATIVO" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CLIENTE" Relationship="PlatMensagensModel.FK_MENSAGENS_DESTINOS_CLIENTE" FromRole="MENSAGENS_DESTINOS" ToRole="CLIENTE" />
+          <NavigationProperty Name="GRUPO" Relationship="PlatMensagensModel.FK_MENSAGENS_DESTINOS_GRUPO" FromRole="MENSAGENS_DESTINOS" ToRole="GRUPO" />
+          <NavigationProperty Name="MENSAGENS" Relationship="PlatMensagensModel.FK_MENSAGENS_DESTINOS_MENSAGENS" FromRole="MENSAGENS_DESTINOS" ToRole="MENSAGENS" />
+          <Property Name="MEDE_IN_STATUS" Type="Int32" />
+          <Property Name="MEDE_IN_POSICAO" Type="Int32" />
+          <Property Name="MEDE_TX_OBSERVACOES" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_MENSAGENS_ASSINANTE">
+          <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="1" />
+          <End Type="PlatMensagensModel.MENSAGENS" Role="MENSAGENS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="MENSAGENS">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MENSAGENS_DESTINOS_CLIENTE">
+          <End Type="PlatMensagensModel.CLIENTE" Role="CLIENTE" Multiplicity="0..1" />
+          <End Type="PlatMensagensModel.MENSAGENS_DESTINOS" Role="MENSAGENS_DESTINOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Principal>
+            <Dependent Role="MENSAGENS_DESTINOS">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MENSAGENS_DESTINOS_GRUPO">
+          <End Type="PlatMensagensModel.GRUPO" Role="GRUPO" Multiplicity="0..1" />
+          <End Type="PlatMensagensModel.MENSAGENS_DESTINOS" Role="MENSAGENS_DESTINOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GRUPO">
+              <PropertyRef Name="GRUP_CD_ID" />
+            </Principal>
+            <Dependent Role="MENSAGENS_DESTINOS">
+              <PropertyRef Name="GRUP_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MENSAGENS_DESTINOS_MENSAGENS">
+          <End Type="PlatMensagensModel.MENSAGENS" Role="MENSAGENS" Multiplicity="1" />
+          <End Type="PlatMensagensModel.MENSAGENS_DESTINOS" Role="MENSAGENS_DESTINOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MENSAGENS">
+              <PropertyRef Name="MENS_CD_ID" />
+            </Principal>
+            <Dependent Role="MENSAGENS_DESTINOS">
+              <PropertyRef Name="MENS_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MENSAGENS_TEMPLATE">
+          <End Type="PlatMensagensModel.TEMPLATE" Role="TEMPLATE" Multiplicity="0..1" />
+          <End Type="PlatMensagensModel.MENSAGENS" Role="MENSAGENS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEMPLATE">
+              <PropertyRef Name="TEMP_CD_ID" />
+            </Principal>
+            <Dependent Role="MENSAGENS">
+              <PropertyRef Name="TEMP_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MENSAGENS_USUARIO">
+          <End Type="PlatMensagensModel.USUARIO" Role="USUARIO" Multiplicity="1" />
+          <End Type="PlatMensagensModel.MENSAGENS" Role="MENSAGENS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="USUA_CD_ID" />
+            </Principal>
+            <Dependent Role="MENSAGENS">
               <PropertyRef Name="USUA_CD_ID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1873,6 +2145,7 @@
           <EntitySetMapping Name="CLIENTE">
             <EntityTypeMapping TypeName="PlatMensagensModel.CLIENTE">
               <MappingFragment StoreEntitySet="CLIENTE">
+                <ScalarProperty Name="CLIE_IN_STATUS" ColumnName="CLIE_IN_STATUS" />
                 <ScalarProperty Name="CLIE_NM_SITUACAO" ColumnName="CLIE_NM_SITUACAO" />
                 <ScalarProperty Name="CLIE_IN_SEXO" ColumnName="CLIE_IN_SEXO" />
                 <ScalarProperty Name="CLIE_NR_WHATSAPP" ColumnName="CLIE_NR_WHATSAPP" />
@@ -1972,6 +2245,39 @@
                 <ScalarProperty Name="CLIE_CD_ID" ColumnName="CLIE_CD_ID" />
                 <ScalarProperty Name="GRUP_CD_ID" ColumnName="GRUP_CD_ID" />
                 <ScalarProperty Name="GRCL_CD_ID" ColumnName="GRCL_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MENSAGENS">
+            <EntityTypeMapping TypeName="PlatMensagensModel.MENSAGENS">
+              <MappingFragment StoreEntitySet="MENSAGENS">
+                <ScalarProperty Name="MENS_TX_RETORNO" ColumnName="MENS_TX_RETORNO" />
+                <ScalarProperty Name="MENS_DT_ENVIO" ColumnName="MENS_DT_ENVIO" />
+                <ScalarProperty Name="MENS_DT_AGENDAMENTO" ColumnName="MENS_DT_AGENDAMENTO" />
+                <ScalarProperty Name="MENS_IN_TIPO" ColumnName="MENS_IN_TIPO" />
+                <ScalarProperty Name="MENS_TX_TEXTO" ColumnName="MENS_TX_TEXTO" />
+                <ScalarProperty Name="MENS_NM_CAMPANHA" ColumnName="MENS_NM_CAMPANHA" />
+                <ScalarProperty Name="MENS_DT_CRIACAO" ColumnName="MENS_DT_CRIACAO" />
+                <ScalarProperty Name="MENS_IN_ATIVO" ColumnName="MENS_IN_ATIVO" />
+                <ScalarProperty Name="TEMP_CD_ID" ColumnName="TEMP_CD_ID" />
+                <ScalarProperty Name="USUA_CD_ID" ColumnName="USUA_CD_ID" />
+                <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
+                <ScalarProperty Name="MENS_CD_ID" ColumnName="MENS_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MENSAGENS_DESTINOS">
+            <EntityTypeMapping TypeName="PlatMensagensModel.MENSAGENS_DESTINOS">
+              <MappingFragment StoreEntitySet="MENSAGENS_DESTINOS">
+                <ScalarProperty Name="MEDE_TX_OBSERVACOES" ColumnName="MEDE_TX_OBSERVACOES" />
+                <ScalarProperty Name="MEDE_IN_POSICAO" ColumnName="MEDE_IN_POSICAO" />
+                <ScalarProperty Name="MEDE_IN_STATUS" ColumnName="MEDE_IN_STATUS" />
+                <ScalarProperty Name="MEDE_IN_ATIVO" ColumnName="MEDE_IN_ATIVO" />
+                <ScalarProperty Name="CAMP_CD_ID" ColumnName="CAMP_CD_ID" />
+                <ScalarProperty Name="GRUP_CD_ID" ColumnName="GRUP_CD_ID" />
+                <ScalarProperty Name="CLIE_CD_ID" ColumnName="CLIE_CD_ID" />
+                <ScalarProperty Name="MENS_CD_ID" ColumnName="MENS_CD_ID" />
+                <ScalarProperty Name="MEDE_CD_ID" ColumnName="MEDE_CD_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -80,7 +80,7 @@
                                 Categoria
                                 @Html.DropDownListFor(m => m.CACL_CD_ID, (SelectList)ViewBag.Tipos, "Selecionar", new { @class = "form-control", autofocus = true })
                             </div>
-                            <div class="col-lg-6 col-md-6 col-xs-12">
+                            <div class="col-lg-4 col-md-4 col-xs-12">
                                 Nome/Razão Social
                                 <select name="CLIE_CD_ID" id="lstCliente" class="form-control" data-val="true" style="display: none;">
                                     <option>Selecionar</option>
@@ -93,6 +93,10 @@
                             <div class="col-lg-2 col-md-2 col-xs-12">
                                 CNPJ
                                 @Html.TextBoxFor(m => m.CLIE_NR_CNPJ, new { @class = "form-control", @id = "cnpj", autofocus = true })
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-xs-12">
+                                Status
+                                @Html.DropDownListFor(m => m.CLIE_IN_STATUS, (SelectList)ViewBag.Status, "Selecionar", new { @class = "form-control", autofocus = true })
                             </div>
                         </div>
                         <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
@@ -110,7 +114,7 @@
                             </div>
                             <div class="col-lg-2 col-md-2 col-xs-12">
                                 Ativo?
-                                @Html.DropDownListFor(m => m.CLIE_IN_ATIVO, (SelectList)ViewBag.Ativos, new { @class = "form-control" })
+                                @Html.DropDownListFor(m => m.CLIE_IN_ATIVO, (SelectList)ViewBag.Ativos, "Selecionar", new { @class = "form-control", autofocus = true })
                             </div>
                         </div>
                         <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
@@ -118,7 +122,7 @@
                                 @Html.ButtonActionSubmit(text: "Filtrar")
                                 @Html.ButtonLinkIndex(text: "Retirar Filtro", controller: "Cliente", action: "RetirarFiltroCliente")
                                 @Html.ButtonLinkIndex(text: "Exibir Todos", controller: "Cliente", action: "MostrarTudoCliente")
-                                @Html.ButtonLinkIndex(text: "Novo Cliente", controller: "Cliente", action: "IncluirCliente")
+                                @Html.ButtonLinkIndex(text: "Novo Contato", controller: "Cliente", action: "IncluirCliente")
                                 @Html.ButtonLinkIndex(text: "Exibir Cards", controller: "Cliente", action: "VerCardsCliente")
                                 @Html.ButtonLinkIndex(text: "Gerar Relatório", controller: "Cliente", action: "GerarRelatorioLista")
                                 @Html.ButtonLinkIndex(text: "Voltar", controller: "Cliente", action: "Voltar")
@@ -170,13 +174,14 @@
                                 <thead style="background-color:lightsteelblue">
                                     <tr>
                                         <th>Nome/Razão Social</th>
+                                        <th style="width: auto">Status</th>
                                         <th style="width: auto">CPF</th>
-                                        <th>CNPJ</th>
-                                        <th>E-Mail</th>
-                                        <th>Celular</th>
-                                        <th>WhatsApp</th>
-                                        <th>Cidade</th>
-                                        <th>UF</th>
+                                        <th style="width: auto">CNPJ</th>
+                                        <th style="width: auto">E-Mail</th>
+                                        <th style="width: auto">Celular</th>
+                                        <th style="width: auto">WhatsApp</th>
+                                        <th style="width: auto">Cidade</th>
+                                        <th style="width: auto">UF</th>
                                         <th></th>
                                         <th class="td-one-action">Ações</th>
                                     </tr>
@@ -184,7 +189,7 @@
                                 <tbody>
                                     @foreach (var cond in (ViewBag.Listas as List<EntitiesServices.Model.CLIENTE>))
                                     {
-                                        <tr style="background: #c7ffc7;">
+                                        <tr>
                                             @if (cond.CLIE_NM_RAZAO != null)
                                             {
                                                 <td>@cond.CLIE_NM_RAZAO</td>
@@ -193,19 +198,43 @@
                                             {
                                                 <td>@cond.CLIE_NM_NOME</td>
                                             }
+                                            @if (cond.CLIE_IN_STATUS == 1)
+	                                        {
+                                                <td><span class="badge badge-warning">Prospecção</span></td>
+                                            }
+                                            else if (cond.CLIE_IN_STATUS == 2)
+                                            {
+                                                <td><span class="badge badge-warning">Oportunidade</span></td>
+                                            }
+                                            else if (cond.CLIE_IN_STATUS == 3)
+                                            {
+                                                <td><span class="badge badge-primary">Proposta</span></td>
+                                            }
+                                            else if (cond.CLIE_IN_STATUS == 4)
+                                            {
+                                                <td><span class="badge badge-success">Engajado</span></td>
+                                            }
+                                            else if (cond.CLIE_IN_STATUS == 5)
+                                            {
+                                                <td><span class="badge badge-danger">Descartado</span></td>
+                                            }
+                                            else if (cond.CLIE_IN_STATUS == 6)
+                                            {
+                                                <td><span class="badge badge-warning-light">Suspenso</span></td>
+                                            }
                                             <td style="width: auto">@cond.CLIE_NR_CPF</td>
-                                            <td>@cond.CLIE_NR_CNPJ</td>
-                                            <td>@cond.CLIE_NM_EMAIL</td>
-                                            <td>@cond.CLIE_NR_CELULAR</td>
-                                            <td>@cond.CLIE_NR_WHATSAPP</td>
-                                            <td>@cond.CLIE_NM_CIDADE</td>
+                                            <td style="width: auto">@cond.CLIE_NR_CNPJ</td>
+                                            <td style="width: auto">@cond.CLIE_NM_EMAIL</td>
+                                            <td style="width: auto">@cond.CLIE_NR_CELULAR</td>
+                                            <td style="width: auto">@cond.CLIE_NR_WHATSAPP</td>
+                                            <td style="width: auto">@cond.CLIE_NM_CIDADE</td>
                                             @if (cond.UF != null)
                                             {
-                                                <td>@cond.UF.UF_SG_SIGLA</td>
+                                                <td style="width: auto">@cond.UF.UF_SG_SIGLA</td>
                                             }
                                             else
                                             {
-                                                <td>-</td>
+                                                <td style="width: auto">-</td>
                                             }
                                             @if (!String.IsNullOrEmpty(cond.CLIE_AQ_FOTO))
                                             {

@@ -57,7 +57,7 @@ namespace DataServices.Repositories
             return query.ToList();
         }
 
-        public List<CLIENTE> ExecuteFilter(Int32? id, Int32? catId, String razao, String nome, String cpf, String cnpj, String email, String cidade, Int32? uf, Int32? ativo, Int32 idAss)
+        public List<CLIENTE> ExecuteFilter(Int32? id, Int32? catId, String razao, String nome, String cpf, String cnpj, String email, String cidade, Int32? uf, Int32? status, Int32? ativo, Int32 idAss)
         {
             List<CLIENTE> lista = new List<CLIENTE>();
             IQueryable<CLIENTE> query = Db.CLIENTE;
@@ -76,6 +76,10 @@ namespace DataServices.Repositories
             else
             {
                 query = query.Where(p => p.CLIE_IN_ATIVO == 1);
+            }
+            if (status != null)
+            {
+                query = query.Where(p => p.CLIE_IN_STATUS == status);
             }
             if (!String.IsNullOrEmpty(razao))
             {

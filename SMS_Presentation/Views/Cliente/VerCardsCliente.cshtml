@@ -68,6 +68,10 @@
                                     CNPJ
                                     @Html.TextBoxFor(m => m.CLIE_NR_CNPJ, new { @class = "form-control", @id="cnpj", autofocus = true })
                                 </div>
+                                <div class="col-lg-2 col-md-2 col-xs-12">
+                                    Status
+                                    @Html.DropDownListFor(m => m.CLIE_IN_STATUS, (SelectList)ViewBag.Status, new { @class = "form-control" })
+                                </div>
                             </div>
                             <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
                                 <div class="col-lg-3 col-md-3 col-xs-12">

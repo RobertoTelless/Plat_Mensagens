@@ -21,6 +21,7 @@ namespace EntitiesServices.Model
             this.CLIENTE_CONTATO = new HashSet<CLIENTE_CONTATO>();
             this.CLIENTE_QUADRO_SOCIETARIO = new HashSet<CLIENTE_QUADRO_SOCIETARIO>();
             this.GRUPO_CLIENTE = new HashSet<GRUPO_CLIENTE>();
+            this.MENSAGENS_DESTINOS = new HashSet<MENSAGENS_DESTINOS>();
         }
     
         public int CLIE_CD_ID { get; set; }
@@ -60,6 +61,7 @@ namespace EntitiesServices.Model
         public string CLIE_NR_WHATSAPP { get; set; }
         public Nullable<int> CLIE_IN_SEXO { get; set; }
         public string CLIE_NM_SITUACAO { get; set; }
+        public Nullable<int> CLIE_IN_STATUS { get; set; }
     
         public virtual ASSINANTE ASSINANTE { get; set; }
         public virtual CATEGORIA_CLIENTE CATEGORIA_CLIENTE { get; set; }
@@ -74,5 +76,7 @@ namespace EntitiesServices.Model
         public virtual USUARIO USUARIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GRUPO_CLIENTE> GRUPO_CLIENTE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MENSAGENS_DESTINOS> MENSAGENS_DESTINOS { get; set; }
     }
 }

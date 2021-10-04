@@ -47,5 +47,7 @@ namespace EntitiesServices.Model
         public virtual DbSet<CLIENTE_QUADRO_SOCIETARIO> CLIENTE_QUADRO_SOCIETARIO { get; set; }
         public virtual DbSet<GRUPO> GRUPO { get; set; }
         public virtual DbSet<GRUPO_CLIENTE> GRUPO_CLIENTE { get; set; }
+        public virtual DbSet<MENSAGENS> MENSAGENS { get; set; }
+        public virtual DbSet<MENSAGENS_DESTINOS> MENSAGENS_DESTINOS { get; set; }
     }
 }

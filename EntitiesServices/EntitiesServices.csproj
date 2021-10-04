@@ -257,6 +257,12 @@
     <Compile Include="Model\LOG.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\MENSAGENS.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\MENSAGENS_DESTINOS.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\NOTIFICACAO.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>

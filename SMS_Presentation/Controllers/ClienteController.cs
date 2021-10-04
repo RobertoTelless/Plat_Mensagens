@@ -404,6 +404,14 @@ namespace SMS_Presentation.Controllers
             ativo.Add(new SelectListItem() { Text = "Ativo", Value = "1" });
             ativo.Add(new SelectListItem() { Text = "Inativo", Value = "0" });
             ViewBag.Ativos = new SelectList(ativo, "Value", "Text");
+            List<SelectListItem> status = new List<SelectListItem>();
+            status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
+            status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
+            status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
+            status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
+            status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
+            status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
+            ViewBag.Status = new SelectList(status, "Value", "Text");
             Session["IncluirCliente"] = 0;
 
             // Indicadores
@@ -484,7 +492,7 @@ namespace SMS_Presentation.Controllers
                 // Executa a operação
                 List<CLIENTE> listaObj = new List<CLIENTE>();
                 Session["FiltroCliente"] = item;
-                Int32 volta = baseApp.ExecuteFilter(item.CLIE_CD_ID, item.CACL_CD_ID, item.CLIE_NM_RAZAO, item.CLIE_NM_NOME, item.CLIE_NR_CPF, item.CLIE_NR_CNPJ, item.CLIE_NM_EMAIL, item.CLIE_NM_CIDADE, item.UF_CD_ID, item.CLIE_IN_ATIVO, idAss, out listaObj);
+                Int32 volta = baseApp.ExecuteFilter(item.CLIE_CD_ID, item.CACL_CD_ID, item.CLIE_NM_RAZAO, item.CLIE_NM_NOME, item.CLIE_NR_CPF, item.CLIE_NR_CNPJ, item.CLIE_NM_EMAIL, item.CLIE_NM_CIDADE, item.UF_CD_ID, item.CLIE_IN_STATUS, item.CLIE_IN_ATIVO, idAss, out listaObj);
 
                 // Verifica retorno
                 if (volta == 1)
@@ -575,6 +583,15 @@ namespace SMS_Presentation.Controllers
             situacao.Add(new SelectListItem() { Text = "Outros", Value = "Outros" });
             ViewBag.Situacoes = new SelectList(sexo, "Value", "Text");
 
+            List<SelectListItem> status = new List<SelectListItem>();
+            status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
+            status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
+            status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
+            status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
+            status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
+            status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
+            ViewBag.Status = new SelectList(status, "Value", "Text");
+
             // Prepara view
             Session["ClienteNovo"] = 0;
             CLIENTE item = new CLIENTE();
@@ -583,6 +600,7 @@ namespace SMS_Presentation.Controllers
             vm.CLIE_DT_CADASTRO = DateTime.Today.Date;
             vm.CLIE_IN_ATIVO = 1;
             vm.USUA_CD_ID = usuario.USUA_CD_ID;
+            vm.CLIE_IN_STATUS = 1;
             vm.TIPE_CD_ID = 0;
             return View(vm);
         }
@@ -617,6 +635,14 @@ namespace SMS_Presentation.Controllers
             situacao.Add(new SelectListItem() { Text = "Inativa", Value = "Inativa" });
             situacao.Add(new SelectListItem() { Text = "Outros", Value = "Outros" });
             ViewBag.Situacoes = new SelectList(sexo, "Value", "Text");
+            List<SelectListItem> status = new List<SelectListItem>();
+            status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
+            status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
+            status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
+            status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
+            status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
+            status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
+            ViewBag.Status = new SelectList(status, "Value", "Text");
             if (ModelState.IsValid)
             {
                 try
@@ -738,6 +764,14 @@ namespace SMS_Presentation.Controllers
             situacao.Add(new SelectListItem() { Text = "Inativa", Value = "Inativa" });
             situacao.Add(new SelectListItem() { Text = "Outros", Value = "Outros" });
             ViewBag.Situacoes = new SelectList(sexo, "Value", "Text");
+            List<SelectListItem> status = new List<SelectListItem>();
+            status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
+            status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
+            status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
+            status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
+            status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
+            status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
+            ViewBag.Status = new SelectList(status, "Value", "Text");
 
             CLIENTE item = baseApp.GetItemById(id);
             Session["Cliente"] = item;
@@ -789,6 +823,14 @@ namespace SMS_Presentation.Controllers
             ViewBag.Situacoes = new SelectList(sexo, "Value", "Text");
             CLIENTE clie = baseApp.GetItemById(vm.CLIE_CD_ID);
             ViewBag.QuadroSoci = ccnpjApp.GetByCliente(clie);
+            List<SelectListItem> status = new List<SelectListItem>();
+            status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
+            status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
+            status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
+            status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
+            status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
+            status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
+            ViewBag.Status = new SelectList(status, "Value", "Text");
 
             // Indicadores
             ViewBag.Incluir = (Int32)Session["IncluirCliente"];
@@ -1021,6 +1063,14 @@ namespace SMS_Presentation.Controllers
             ViewBag.Title = "Clientes";
             ViewBag.Tipos = new SelectList(baseApp.GetAllTipos().OrderBy(p => p.CACL_NM_NOME), "CACL_CD_ID", "CACL_NM_NOME");
             ViewBag.UF = new SelectList(baseApp.GetAllUF().OrderBy(p => p.UF_SG_SIGLA), "UF_CD_ID", "UF_NM_NOME");
+            List<SelectListItem> status = new List<SelectListItem>();
+            status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
+            status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
+            status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
+            status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
+            status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
+            status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
+            ViewBag.Status = new SelectList(status, "Value", "Text");
 
             // Indicadores
 
@@ -1582,6 +1632,11 @@ namespace SMS_Presentation.Controllers
             Font meuFont = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
             Font meuFont1 = FontFactory.GetFont("Arial", 9, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
             Font meuFont2 = FontFactory.GetFont("Arial", 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            Font meuFontO = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.BOLD, BaseColor.ORANGE);
+            Font meuFontP = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.BOLD, BaseColor.BLUE);
+            Font meuFontE = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.BOLD, BaseColor.GREEN);
+            Font meuFontD = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.BOLD, BaseColor.RED);
+            Font meuFontS = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
 
             // Cria documento
             Document pdfDoc = new Document(PageSize.A4.Rotate(), 10, 10, 10, 10);
@@ -1638,7 +1693,7 @@ namespace SMS_Presentation.Controllers
             cell.BackgroundColor = BaseColor.LIGHT_GRAY;
             table.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph("Categoria", meuFont))
+            cell = new PdfPCell(new Paragraph("Status", meuFont))
             {
                 VerticalAlignment = Element.ALIGN_MIDDLE,
                 HorizontalAlignment = Element.ALIGN_LEFT
@@ -1697,11 +1752,54 @@ namespace SMS_Presentation.Controllers
 
             foreach (CLIENTE item in lista)
             {
-                cell = new PdfPCell(new Paragraph(item.CATEGORIA_CLIENTE.CACL_NM_NOME, meuFont))
+                if (item.CLIE_IN_STATUS == 1)
                 {
-                    VerticalAlignment = Element.ALIGN_MIDDLE,
-                    HorizontalAlignment = Element.ALIGN_LEFT
-                };
+                    cell = new PdfPCell(new Paragraph("Prospecção", meuFontO))
+                    {
+                        VerticalAlignment = Element.ALIGN_MIDDLE,
+                        HorizontalAlignment = Element.ALIGN_LEFT
+                    };
+                }
+                else if (item.CLIE_IN_STATUS == 2)
+                {
+                    cell = new PdfPCell(new Paragraph("Oportunidade", meuFontO))
+                    {
+                        VerticalAlignment = Element.ALIGN_MIDDLE,
+                        HorizontalAlignment = Element.ALIGN_LEFT
+                    };
+                }
+                else if (item.CLIE_IN_STATUS == 3)
+                {
+                    cell = new PdfPCell(new Paragraph("Proposta", meuFontP))
+                    {
+                        VerticalAlignment = Element.ALIGN_MIDDLE,
+                        HorizontalAlignment = Element.ALIGN_LEFT
+                    };
+                }
+                else if (item.CLIE_IN_STATUS == 4)
+                {
+                    cell = new PdfPCell(new Paragraph("Engajado", meuFontE))
+                    {
+                        VerticalAlignment = Element.ALIGN_MIDDLE,
+                        HorizontalAlignment = Element.ALIGN_LEFT
+                    };
+                }
+                else if (item.CLIE_IN_STATUS == 5)
+                {
+                    cell = new PdfPCell(new Paragraph("Descartado", meuFontD))
+                    {
+                        VerticalAlignment = Element.ALIGN_MIDDLE,
+                        HorizontalAlignment = Element.ALIGN_LEFT
+                    };
+                }
+                else if (item.CLIE_IN_STATUS == 6)
+                {
+                    cell = new PdfPCell(new Paragraph("Suspenso", meuFontS))
+                    {
+                        VerticalAlignment = Element.ALIGN_MIDDLE,
+                        HorizontalAlignment = Element.ALIGN_LEFT
+                    };
+                }
                 table.AddCell(cell);
                 cell = new PdfPCell(new Paragraph(item.CLIE_NM_NOME, meuFont))
                 {
@@ -1822,7 +1920,7 @@ namespace SMS_Presentation.Controllers
             {
                 if (filtro.CACL_CD_ID > 0)
                 {
-                    parametros += "Categoria: " + filtro.CACL_CD_ID;
+                    parametros += "Status: " + filtro.CLIE_IN_STATUS;
                     ja = 1;
                 }
                 if (filtro.CLIE_CD_ID > 0)
@@ -1938,6 +2036,11 @@ namespace SMS_Presentation.Controllers
             Font meuFont1 = FontFactory.GetFont("Arial", 9, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
             Font meuFont2 = FontFactory.GetFont("Arial", 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
             Font meuFontBold = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            Font meuFontO = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.BOLD, BaseColor.ORANGE);
+            Font meuFontP = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.BOLD, BaseColor.BLUE);
+            Font meuFontE = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.BOLD, BaseColor.GREEN);
+            Font meuFontD = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.BOLD, BaseColor.RED);
+            Font meuFontS = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
 
             // Cria documento
             Document pdfDoc = new Document(PageSize.A4, 10, 10, 10, 10);
@@ -2029,7 +2132,36 @@ namespace SMS_Presentation.Controllers
             table.AddCell(cell);
             cell = new PdfPCell(new Paragraph("Categoria: " + aten.CATEGORIA_CLIENTE.CACL_NM_NOME, meuFont));
             cell.Border = 0;
-            cell.Colspan = 3;
+            cell.Colspan = 1;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+            if (aten.CLIE_IN_STATUS == 1)
+            {
+                cell = new PdfPCell(new Paragraph("Status: Prospecção", meuFontO));
+            }
+            else if (aten.CLIE_IN_STATUS == 2)
+            {
+                cell = new PdfPCell(new Paragraph("Status: Oportunidade", meuFontO));
+            }
+            else if (aten.CLIE_IN_STATUS == 3)
+            {
+                cell = new PdfPCell(new Paragraph("Status: Proposta", meuFontP));
+            }
+            else if (aten.CLIE_IN_STATUS == 4)
+            {
+                cell = new PdfPCell(new Paragraph("Status: Engajado", meuFontE));
+            }
+            else if (aten.CLIE_IN_STATUS == 5)
+            {
+                cell = new PdfPCell(new Paragraph("Status: Descartado", meuFontD));
+            }
+            else if (aten.CLIE_IN_STATUS == 6)
+            {
+                cell = new PdfPCell(new Paragraph("Status: Suspenso", meuFontS));
+            }
+            cell.Border = 0;
+            cell.Colspan = 2;
             cell.VerticalAlignment = Element.ALIGN_MIDDLE;
             cell.HorizontalAlignment = Element.ALIGN_LEFT;
             table.AddCell(cell);

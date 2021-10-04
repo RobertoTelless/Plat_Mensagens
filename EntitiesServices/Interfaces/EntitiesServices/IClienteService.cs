@@ -28,7 +28,7 @@ namespace ModelServices.Interfaces.EntitiesServices
 
         CLIENTE_ANEXO GetAnexoById(Int32 id);
         CLIENTE_CONTATO GetContatoById(Int32 id);
-        List<CLIENTE> ExecuteFilter(Int32? id, Int32? catId, String razao, String nome, String cpf, String cnpj, String email, String cidade, Int32? uf, Int32? ativo, Int32 idAss);
+        List<CLIENTE> ExecuteFilter(Int32? id, Int32? catId, String razao, String nome, String cpf, String cnpj, String email, String cidade, Int32? uf, Int32? status, Int32? ativo, Int32 idAss);
 
         Int32 EditContato(CLIENTE_CONTATO item);
         Int32 CreateContato(CLIENTE_CONTATO item);

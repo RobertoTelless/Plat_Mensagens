@@ -25,6 +25,7 @@ namespace SMS_Presentation.Controllers
         private readonly IUsuarioAppService usuApp;
         private readonly IConfiguracaoAppService confApp;
         private readonly IAssinanteAppService assApp;
+        private readonly IClienteAppService cliApp;
 
         private String msg;
         private Exception exception;
@@ -32,7 +33,7 @@ namespace SMS_Presentation.Controllers
         USUARIO objetoAntes = new USUARIO();
         List<USUARIO> listaMaster = new List<USUARIO>();
 
-        public BaseAdminController(IUsuarioAppService baseApps, ILogAppService logApps, INotificacaoAppService notfApps, IUsuarioAppService usuApps, IConfiguracaoAppService confApps, IAssinanteAppService assApps)
+        public BaseAdminController(IUsuarioAppService baseApps, ILogAppService logApps, INotificacaoAppService notfApps, IUsuarioAppService usuApps, IConfiguracaoAppService confApps, IAssinanteAppService assApps, IClienteAppService cliApps)
         {
             baseApp = baseApps;
             logApp = logApps;
@@ -40,6 +41,7 @@ namespace SMS_Presentation.Controllers
             usuApp = usuApps;
             confApp = confApps;
             assApp = assApps;
+            cliApp = cliApps;
         }
 
         public ActionResult CarregarLandingPage()
@@ -138,6 +140,9 @@ namespace SMS_Presentation.Controllers
             Session["Nome"] = usu.USUA_NM_NOME;
 
             Session["Logs"] = usu.LOG.Count;
+
+            Int32 numCli = cliApp.GetAllItens(idAss).Count;
+            ViewBag.NumClientes = numCli;
 
             String frase = String.Empty;
             String nome = usu.USUA_NM_NOME.Substring(0, usu.USUA_NM_NOME.IndexOf(" "));

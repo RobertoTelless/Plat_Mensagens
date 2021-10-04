@@ -5,7 +5,27 @@
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
 }
 <div class="wrapper wrapper-content animated fadeInRight">
+    <div id="containerModalDesc">
+        <div class="modal fade" id="modalDesc" tabindex="-1" role="dialog" aria-labelledby="modalDesc" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalDesc">Mensagem Enviada</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div id="modalDescBody" class="modal-body">
 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     @using (Html.BeginForm("EnviarSmsCliente", "Cliente", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal" }))
     { 
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -92,10 +112,10 @@
                             @if (ViewBag.Incluir == 0)
                             {
                                 <li class="active"><a data-toggle="tab" href="#tab-1">Dados Gerais</a></li>
-                                <li class=""><a data-toggle="tab" href="#tab-2">Imagens</a></li>
+                                <li class=""><a data-toggle="tab" href="#tab-2">Foto & Anexos</a></li>
                                 <li class=""><a data-toggle="tab" href="#tab-3">Endereços</a></li>
                                 <li class=""><a data-toggle="tab" href="#tab-4">Telefones & Referências</a></li>
-                                if (Model.TIPO_PESSOA.TIPE_CD_ID == 2)
+                                if (Model.TIPE_CD_ID == 2)
                                 {
                                     <li style="display: none;" class=""><a data-toggle="tab" href="#tab-5">Dados Pessoais</a></li>
                                 }
@@ -109,10 +129,10 @@
                             else
                             {
                                 <li class=""><a data-toggle="tab" href="#tab-1">Dados Gerais</a></li>
-                                <li class=""><a data-toggle="tab" href="#tab-2">Imagens</a></li>
+                                <li class=""><a data-toggle="tab" href="#tab-2">Foto & Anexos</a></li>
                                 <li class="active"><a data-toggle="tab" href="#tab-3">Endereços</a></li>
                                 <li class=""><a data-toggle="tab" href="#tab-4">Referências</a></li>
-                                if (Model.TIPO_PESSOA.TIPE_CD_ID == 2)
+                                if (Model.TIPE_CD_ID == 2)
                                 {
                                     <li style="display: none;" class=""><a data-toggle="tab" href="#tab-5">Dados Pessoais</a></li>
                                 }
@@ -164,11 +184,11 @@
                                                         @Html.HiddenFor(m => m.CLIE_NM_SITUACAO)
                                                         @if (!String.IsNullOrEmpty(Model.CLIE_AQ_FOTO))
                                                         {
-                                                            <img src="@Url.Content(Model.CLIE_AQ_FOTO)" style="width: auto; height: auto; max-height: 150px; max-width: 100px;">
+                                                            <img src="@Url.Content(Model.CLIE_AQ_FOTO)" style="width: auto; height: auto; max-height: 150px; max-width: 100px;" data-toggle="modal" data-target="#fotoModal" onclick="CriaModal('@Model.CLIE_NM_NOME', '@Url.Content(Model.CLIE_AQ_FOTO)')">
                                                         }
                                                         else
                                                         {
-                                                            <img src="~/Images/icone_imagem.jpg" style="width: auto; height: auto; max-height: 150px; max-width: 100px;">
+                                                            <img src="~/Images/icone_imagem.jpg" style="width: auto; height: auto; max-height: 150px; max-width: 100px;" data-toggle="modal" data-target="#fotoModal" onclick="CriaModal('@Model.CLIE_NM_NOME', '/Images/icone_imagem.jpg')">
                                                         }
                                                         <br />
                                                         <br />
@@ -188,6 +208,11 @@
                                                             Categoria*
                                                             @Html.DropDownListFor(m => m.CACL_CD_ID, (SelectList)ViewBag.Tipos, "Selecionar", new { @class = "form-control", autofocus = true })
                                                             @Html.ValidationMessageFor(m => m.CACL_CD_ID, "", new { @style = "color:red" })
+                                                        </div>
+                                                        <div class="col-lg-3 col-md-3 col-xs-12">
+                                                            Status*
+                                                            @Html.DropDownListFor(m => m.CLIE_IN_STATUS, (SelectList)ViewBag.Status, "Selecionar", new { @class = "form-control", autofocus = true })
+                                                            @Html.ValidationMessageFor(m => m.CLIE_IN_STATUS, "", new { @style = "color:red" })
                                                         </div>
                                                     </div>
                                                     <br />
@@ -311,6 +336,7 @@
                                                         @Html.HiddenFor(m => m.TIPE_CD_ID)
                                                         @Html.HiddenFor(m => m.CLIE_NM_COMPLEMENTO)
                                                         @Html.HiddenFor(m => m.CLIE_NM_SITUACAO)
+                                                        @Html.HiddenFor(m => m.CLIE_IN_STATUS)
                                                         @if (!String.IsNullOrEmpty(Model.CLIE_AQ_FOTO))
                                                         {
                                                             <img src="@Url.Content(Model.CLIE_AQ_FOTO)" style="width: auto; height: auto; max-height: 150px; max-width: 100px;">
@@ -337,6 +363,11 @@
                                                             Categoria*
                                                             @Html.DropDownListFor(m => m.CACL_CD_ID, (SelectList)ViewBag.Tipos, "Selecionar", new { @class = "form-control", autofocus = true })
                                                             @Html.ValidationMessageFor(m => m.CACL_CD_ID, "", new { @style = "color:red" })
+                                                        </div>
+                                                        <div class="col-lg-3 col-md-3 col-xs-12">
+                                                            Status*
+                                                            @Html.DropDownListFor(m => m.CLIE_IN_STATUS, (SelectList)ViewBag.Status, "Selecionar", new { @class = "form-control", autofocus = true })
+                                                            @Html.ValidationMessageFor(m => m.CLIE_IN_STATUS, "", new { @style = "color:red" })
                                                         </div>
                                                     </div>
                                                     <br />
@@ -550,7 +581,6 @@
                                                                 @Html.HiddenFor(m => m.CLIE_NM_NATURALIDADE)
                                                                 @Html.HiddenFor(m => m.CLIE_NM_NOME)
                                                                 @Html.HiddenFor(m => m.CLIE_NM_PAI)
-                                                                @Html.HiddenFor(m => m.CLIE_NM_PROFISSAO)
                                                                 @Html.HiddenFor(m => m.CLIE_NM_RAZAO)
                                                                 @Html.HiddenFor(m => m.CLIE_NM_REDES_SOCIAIS)
                                                                 @Html.HiddenFor(m => m.CLIE_NM_WEBSITE)
@@ -641,7 +671,6 @@
                                                                 @Html.HiddenFor(m => m.CLIE_NM_NATURALIDADE)
                                                                 @Html.HiddenFor(m => m.CLIE_NM_NOME)
                                                                 @Html.HiddenFor(m => m.CLIE_NM_PAI)
-                                                                @Html.HiddenFor(m => m.CLIE_NM_PROFISSAO)
                                                                 @Html.HiddenFor(m => m.CLIE_NM_RAZAO)
                                                                 @Html.HiddenFor(m => m.CLIE_NM_REDES_SOCIAIS)
                                                                 @Html.HiddenFor(m => m.CLIE_NM_WEBSITE)
@@ -659,6 +688,7 @@
                                                                 @Html.HiddenFor(m => m.USUA_CD_ID)
                                                                 @Html.TextBoxFor(m => m.CLIE_NR_CEP, new { @class = "form-control", @id = "cep", autofocus = true })
                                                                 @Html.HiddenFor(m => m.CLIE_NM_SITUACAO)
+                                                                @Html.HiddenFor(m => m.CLIE_IN_STATUS)
                                                                 @Html.ValidationMessageFor(m => m.CLIE_NR_CEP, "", new { @style = "color:red" })
                                                                 <span class="input-group-btn">
                                                                     <span class="btn btn-warning btn-sm" id="btnBuscaCep" onclick="PesquisaCep($('#cep').val(), $(this), 1)">Buscar CEP</span>
@@ -726,12 +756,10 @@
                                                         @Html.HiddenFor(m => m.CLIE_NM_NATURALIDADE)
                                                         @Html.HiddenFor(m => m.CLIE_NM_NOME)
                                                         @Html.HiddenFor(m => m.CLIE_NM_PAI)
-                                                        @Html.HiddenFor(m => m.CLIE_NM_PROFISSAO)
                                                         @Html.HiddenFor(m => m.CLIE_NM_RAZAO)
                                                         @Html.HiddenFor(m => m.CLIE_NR_CEP)
                                                         @Html.HiddenFor(m => m.CLIE_NR_CNPJ)
                                                         @Html.HiddenFor(m => m.CLIE_NR_CPF)
-                                                        @Html.HiddenFor(m => m.CLIE_NR_FAX)
                                                         @Html.HiddenFor(m => m.CLIE_NR_INSCRICAO_ESTADUAL)
                                                         @Html.HiddenFor(m => m.CLIE_NR_INSCRICAO_MUNICIPAL)
                                                         @Html.HiddenFor(m => m.CLIE_NR_RG)
@@ -742,6 +770,7 @@
                                                         @Html.HiddenFor(m => m.USUA_CD_ID)
                                                         @Html.HiddenFor(m => m.CLIE_NM_COMPLEMENTO)
                                                         @Html.HiddenFor(m => m.CLIE_NM_SITUACAO)
+                                                        @Html.HiddenFor(m => m.CLIE_IN_STATUS)
                                                         E-Mail*
                                                         @Html.TextBoxFor(m => m.CLIE_NM_EMAIL, new { @class = "form-control", autofocus = true })
                                                         @Html.ValidationMessageFor(m => m.CLIE_NM_EMAIL, "", new { @style = "color:red" })
@@ -755,8 +784,8 @@
                                                 <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
                                                     <div class="col-lg-2 col-md-2 col-xs-12">
                                                         Telefone
-                                                        @Html.TextBoxFor(m => m.CLIE_NR_TELEFONES, new { @class = "form-control", autofocus = true, @id = "tel" })
-                                                        @Html.ValidationMessageFor(m => m.CLIE_NR_TELEFONES, "", new { @style = "color:red" })
+                                                        @Html.TextBoxFor(m => m.CLIE_NR_TELEFONE, new { @class = "form-control", autofocus = true, @id = "tel" })
+                                                        @Html.ValidationMessageFor(m => m.CLIE_NR_TELEFONE, "", new { @style = "color:red" })
                                                     </div>
                                                     <div class="col-lg-2 col-md-23 col-xs-12">
                                                         Celular
@@ -871,12 +900,12 @@
                                                         @Html.HiddenFor(m => m.CLIE_NR_TELEFONE)
                                                         @Html.HiddenFor(m => m.CLIE_NR_TELEFONE_ADICIONAL)
                                                         @Html.HiddenFor(m => m.CLIE_TX_OBSERVACOES)
-                                                        @Html.HiddenFor(m => m.CLIE_UF_CD_ENTREGA)
                                                         @Html.HiddenFor(m => m.TIPE_CD_ID)
                                                         @Html.HiddenFor(m => m.UF_CD_ID)
                                                         @Html.HiddenFor(m => m.USUA_CD_ID)
                                                         @Html.HiddenFor(m => m.CLIE_NM_COMPLEMENTO)
                                                         @Html.HiddenFor(m => m.CLIE_NM_SITUACAO)
+                                                        @Html.HiddenFor(m => m.CLIE_IN_STATUS)
                                                         Nome do Pai
                                                         @Html.TextBoxFor(m => m.CLIE_NM_PAI, new { @class = "form-control", autofocus = true })
                                                         @Html.ValidationMessageFor(m => m.CLIE_NM_PAI, "", new { @style = "color:red" })
@@ -946,7 +975,6 @@
                                                         @Html.HiddenFor(m => m.CLIE_NM_NATURALIDADE)
                                                         @Html.HiddenFor(m => m.CLIE_NM_NOME)
                                                         @Html.HiddenFor(m => m.CLIE_NM_PAI)
-                                                        @Html.HiddenFor(m => m.CLIE_NM_PROFISSAO)
                                                         @Html.HiddenFor(m => m.CLIE_NM_RAZAO)
                                                         @Html.HiddenFor(m => m.CLIE_NM_REDES_SOCIAIS)
                                                         @Html.HiddenFor(m => m.CLIE_NM_WEBSITE)
@@ -965,6 +993,7 @@
                                                         @Html.HiddenFor(m => m.USUA_CD_ID)
                                                         @Html.HiddenFor(m => m.CLIE_NM_COMPLEMENTO)
                                                         @Html.HiddenFor(m => m.CLIE_NM_SITUACAO)
+                                                        @Html.HiddenFor(m => m.CLIE_IN_STATUS)
                                                         Observações
                                                         @Html.TextAreaFor(m => m.CLIE_TX_OBSERVACOES, new { @class = "form-control", style = "width: 100%; height: 400px;", autofocus = true })
                                                         @Html.ValidationMessageFor(m => m.CLIE_TX_OBSERVACOES, "", new { @style = "color:red" })
@@ -981,60 +1010,85 @@
                                 @*Indicadores*@
                                 <div id="tab-8" class="tab-pane">
                                     <div class="panel-body">
-                                        <!--<div class="row">
-                                            <div class="col-lg-3">
+                                        <div class="row">
+                                            <div class="col-lg-12">
                                                 <div class="ibox float-e-margins">
                                                     <div class="ibox-title">
                                                         <span class="label label-primary pull-right">Hoje</span>
-                                                        <h5>Pedidos de Vendas</h5>
+                                                        <h5><a href="@Url.Action("MontarTelaMensagensContato", "Mensagem")" class="pull-left btn-link"><u>Mensagens</u></a></h5>
                                                     </div>
                                                     <div class="ibox-content">
-                                                        <h1 class="no-margins">@ViewBag.Vendas</h1>
-                                                        <div class="stat-percent font-bold text-navy">32% <i class="fa fa-level-up"></i></div>
-                                                        <small>Pedidos de Vendas</small>
+                                                        @if (Model.MENSAGENS_DESTINOS.Count > 0)
+                                                        {
+                                                            <table class="table table-hover">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Mensagem</th>
+                                                                        <th>Data/Hora Envio</th>
+                                                                        <th>Tipo</th>
+                                                                        <th>Envio</th>
+                                                                        <th>Status</th>
+                                                                        <th class="td-one-action">Ações</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach (var cond in (Model.MENSAGENS_DESTINOS))
+                                                                    {
+                                                                        <tr>
+                                                                            @if (cond.MENSAGENS.MENS_TX_TEXTO.Length > 30)
+                                                                            {
+                                                                                <td style="cursor: pointer; text-decoration: underline; color: #337ab7;" onclick="mostrarDesc('@cond.MENSAGENS.MENS_TX_TEXTO')">@cond.MENSAGENS.MENS_TX_TEXTO.Substring(0, 30) ...</td>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <td style="cursor: pointer; text-decoration: underline; color: #337ab7;" onclick="mostrarDesc('@cond.MENSAGENS.MENS_TX_TEXTO')">@cond.MENSAGENS.MENS_TX_TEXTO</td>
+                                                                            }
+                                                                            <td>@cond.MENSAGENS.MENS_DT_ENVIO.Value.ToShortDateString() @cond.MENSAGENS.MENS_DT_ENVIO.Value.ToShortTimeString()</td>
+                                                                            @if (cond.MENSAGENS.MENS_IN_TIPO == 1)
+                                                                            {
+                                                                                <td><span class="badge badge-primary">E-Mail</span></td>
+                                                                            }
+                                                                            else if (cond.MENSAGENS.MENS_IN_TIPO == 2)
+                                                                            {
+                                                                                <td><span class="badge badge-success">SMS</span></td>
+                                                                            }
+                                                                            else if (cond.MENSAGENS.MENS_IN_TIPO == 3)
+                                                                            {
+                                                                                <td><span class="badge badge-warning">WhatsApp</span></td>
+                                                                            }
+                                                                            @if (cond.MEDE_IN_STATUS == 1)
+                                                                            {
+                                                                                <td><span class="badge badge-success">Enviado</span></td>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <td><span class="badge badge-danger">Falha</span></td>
+                                                                            }
+                                                                            @if (cond.MEDE_IN_POSICAO == 1)
+                                                                            {
+                                                                                <td><span class="badge badge-primary">Enviado/Aguardando</span></td>
+                                                                            }
+                                                                            else if (cond.MEDE_IN_POSICAO == 2)
+                                                                            {
+                                                                                <td><span class="badge badge-success">Engajado</span></td>
+                                                                            }
+                                                                            else if (cond.MEDE_IN_POSICAO == 3)
+                                                                            {
+                                                                                <td><span class="badge badge-warning">Descartado</span></td>
+                                                                            }
+                                                                            <td class="td-one-action">
+                                                                                @Html.TableLinkDetails(cond.MEDE_CD_ID, "ProcessarMensagem", "fa-search", "Consultar / Processar")
+                                                                            </td>
+                                                                        </tr>
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3">
-                                                <div class="ibox float-e-margins">
-                                                    <div class="ibox-title">
-                                                        <span class="label label-primary pull-right">Hoje</span>
-                                                        <h5>Pedidos de Serviços</h5>
-                                                    </div>
-                                                    <div class="ibox-content">
-                                                        <h1 class="no-margins">@ViewBag.Servicos</h1>
-                                                        <div class="stat-percent font-bold text-navy">35% <i class="fa fa-level-up"></i></div>
-                                                        <small>Pedidos de Serviços</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="ibox float-e-margins">
-                                                    <div class="ibox-title">
-                                                        <span class="label label-primary pull-right">Hoje</span>
-                                                        <h5>Atendimentos</h5>
-                                                    </div>
-                                                    <div class="ibox-content">
-                                                        <h1 class="no-margins">@ViewBag.Atendimentos</h1>
-                                                        <div class="stat-percent font-bold text-navy">29% <i class="fa fa-level-up"></i></div>
-                                                        <small>Atendimentos em Aberto</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="ibox">
-                                                    <div class="ibox-title">
-                                                        <span class="label label-primary pull-right">Hoje</span>
-                                                        <h5>Evolução de Vendas</h5>
-                                                    </div>
-                                                    <div class="ibox-content">
-                                                        <h5>Total Acumulado</h5>-->
-                                                        @*<h2>176</h2>*@
-                                                        <!--<div id="sparkline1"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>-->
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -1064,6 +1118,13 @@
     @Scripts.Render("~/plugins/jasnyBootstrap")
     @Scripts.Render("~/plugins/sparkline")
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.js"></script>
+
+    <script>
+        function mostrarDesc(desc) {
+            $('#modalDescBody').html(desc);
+            $('#modalDesc').modal('show');
+        }
+    </script>
 
     @*<script type="text/javascript">
         $(document).ready(function () {

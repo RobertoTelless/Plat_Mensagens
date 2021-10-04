@@ -80,6 +80,8 @@ namespace PlatMensagem_Solution.ViewModels
         [StringLength(50, ErrorMessage = "O WHATSAPP deve conter no máximo 50 caracteres.")]
         public string CLIE_NR_WHATSAPP { get; set; }
         public Nullable<int> CLIE_IN_SEXO { get; set; }
+        [Required(ErrorMessage = "Campo STATUS obrigatorio")]
+        public Nullable<int> CLIE_IN_STATUS { get; set; }
 
         public virtual ASSINANTE ASSINANTE { get; set; }
         public virtual CATEGORIA_CLIENTE CATEGORIA_CLIENTE { get; set; }
@@ -90,9 +92,12 @@ namespace PlatMensagem_Solution.ViewModels
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CLIENTE_QUADRO_SOCIETARIO> CLIENTE_QUADRO_SOCIETARIO { get; set; }
         public virtual TIPO_PESSOA TIPO_PESSOA { get; set; }
+        public string CLIE_NR_TELEFONE_ADICIONAL { get; set; }
         public virtual UF UF { get; set; }
         public virtual USUARIO USUARIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GRUPO_CLIENTE> GRUPO_CLIENTE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MENSAGENS_DESTINOS> MENSAGENS_DESTINOS { get; set; }
     }
 }

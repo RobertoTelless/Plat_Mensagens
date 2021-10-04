@@ -14,6 +14,12 @@ namespace EntitiesServices.Model
     
     public partial class TEMPLATE
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public TEMPLATE()
+        {
+            this.MENSAGENS = new HashSet<MENSAGENS>();
+        }
+    
         public int TEMP_CD_ID { get; set; }
         public string TEMP_SG_SIGLA { get; set; }
         public string TEMP_NM_NOME { get; set; }
@@ -25,5 +31,8 @@ namespace EntitiesServices.Model
         public string TEMP_TX_CORPO { get; set; }
         public string TEMP_TX_DADOS { get; set; }
         public Nullable<System.DateTime> TEMP_DT_CRIACAO { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MENSAGENS> MENSAGENS { get; set; }
     }
 }
