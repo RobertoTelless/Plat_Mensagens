@@ -23,6 +23,7 @@ namespace EntitiesServices.Model
         public Nullable<int> MEDE_IN_STATUS { get; set; }
         public Nullable<int> MEDE_IN_POSICAO { get; set; }
         public string MEDE_TX_OBSERVACOES { get; set; }
+        public string MEDE_DS_ERRO_ENVIO { get; set; }
     
         public virtual CLIENTE CLIENTE { get; set; }
         public virtual GRUPO GRUPO { get; set; }

@@ -309,6 +309,7 @@
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\ControleAcessoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MensagemController.cs" />
     <Compile Include="Controllers\NotificacaoController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Extensions\HMTLHelperExtensions.cs" />
@@ -320,6 +321,7 @@
     <Compile Include="Helpers\HMTLHelperExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AssinanteViewModel.cs" />
+    <Compile Include="ViewModels\MensagemViewModel.cs" />
     <Compile Include="ViewModels\ClienteViewModel.cs" />
     <Compile Include="ViewModels\ModeloViewModel.cs" />
     <Compile Include="ViewModels\LogViewModel.cs" />
@@ -2932,6 +2934,9 @@
     <Content Include="Views\Cliente\IncluirContato.cshtml" />
     <Content Include="Views\Cliente\VerCliente.cshtml" />
     <Content Include="Views\BaseAdmin\VerEMailExpansao.cshtml" />
+    <Content Include="Views\Mensagem\MontarTelaMensagem.cshtml" />
+    <Content Include="Views\Mensagem\IncluirMensagem.cshtml" />
+    <Content Include="Views\Mensagem\VerMensagem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

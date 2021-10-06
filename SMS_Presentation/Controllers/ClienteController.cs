@@ -1628,7 +1628,7 @@ namespace SMS_Presentation.Controllers
             data = data.Substring(0, 2) + data.Substring(3, 2) + data.Substring(6, 4);
             String nomeRel = "ContatoLista" + "_" + data + ".pdf";
             List<CLIENTE> lista = (List<CLIENTE>)Session["ListaCliente"];
-            CLIENTE filtro = (CLIENTE)Session["Cliente"];
+            CLIENTE filtro = (CLIENTE)Session["FiltroCliente"];
             Font meuFont = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
             Font meuFont1 = FontFactory.GetFont("Arial", 9, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
             Font meuFont2 = FontFactory.GetFont("Arial", 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);

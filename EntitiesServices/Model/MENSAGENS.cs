@@ -32,6 +32,8 @@ namespace EntitiesServices.Model
         public Nullable<System.DateTime> MENS_DT_AGENDAMENTO { get; set; }
         public Nullable<System.DateTime> MENS_DT_ENVIO { get; set; }
         public string MENS_TX_RETORNO { get; set; }
+        public string MENS_NM_CABECALHO { get; set; }
+        public string MENS_NM_RODAPE { get; set; }
     
         public virtual ASSINANTE ASSINANTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

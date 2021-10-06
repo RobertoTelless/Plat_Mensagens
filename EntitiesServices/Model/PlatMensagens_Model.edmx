@@ -224,6 +224,8 @@
           <Property Name="MENS_DT_AGENDAMENTO" Type="datetime" />
           <Property Name="MENS_DT_ENVIO" Type="datetime" />
           <Property Name="MENS_TX_RETORNO" Type="text" />
+          <Property Name="MENS_NM_CABECALHO" Type="varchar" MaxLength="500" />
+          <Property Name="MENS_NM_RODAPE" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="MENSAGENS_DESTINOS">
           <Key>
@@ -238,6 +240,7 @@
           <Property Name="MEDE_IN_STATUS" Type="int" />
           <Property Name="MEDE_IN_POSICAO" Type="int" />
           <Property Name="MEDE_TX_OBSERVACOES" Type="text" />
+          <Property Name="MEDE_DS_ERRO_ENVIO" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="NOTIFICACAO">
           <Key>
@@ -1805,6 +1808,8 @@
           <NavigationProperty Name="MENSAGENS_DESTINOS" Relationship="PlatMensagensModel.FK_MENSAGENS_DESTINOS_MENSAGENS" FromRole="MENSAGENS" ToRole="MENSAGENS_DESTINOS" />
           <NavigationProperty Name="TEMPLATE" Relationship="PlatMensagensModel.FK_MENSAGENS_TEMPLATE" FromRole="MENSAGENS" ToRole="TEMPLATE" />
           <NavigationProperty Name="USUARIO" Relationship="PlatMensagensModel.FK_MENSAGENS_USUARIO" FromRole="MENSAGENS" ToRole="USUARIO" />
+          <Property Name="MENS_NM_CABECALHO" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MENS_NM_RODAPE" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="MENSAGENS_DESTINOS">
           <Key>
@@ -1822,6 +1827,7 @@
           <Property Name="MEDE_IN_STATUS" Type="Int32" />
           <Property Name="MEDE_IN_POSICAO" Type="Int32" />
           <Property Name="MEDE_TX_OBSERVACOES" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="MEDE_DS_ERRO_ENVIO" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_MENSAGENS_ASSINANTE">
           <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="1" />
@@ -2251,6 +2257,8 @@
           <EntitySetMapping Name="MENSAGENS">
             <EntityTypeMapping TypeName="PlatMensagensModel.MENSAGENS">
               <MappingFragment StoreEntitySet="MENSAGENS">
+                <ScalarProperty Name="MENS_NM_RODAPE" ColumnName="MENS_NM_RODAPE" />
+                <ScalarProperty Name="MENS_NM_CABECALHO" ColumnName="MENS_NM_CABECALHO" />
                 <ScalarProperty Name="MENS_TX_RETORNO" ColumnName="MENS_TX_RETORNO" />
                 <ScalarProperty Name="MENS_DT_ENVIO" ColumnName="MENS_DT_ENVIO" />
                 <ScalarProperty Name="MENS_DT_AGENDAMENTO" ColumnName="MENS_DT_AGENDAMENTO" />
@@ -2269,6 +2277,7 @@
           <EntitySetMapping Name="MENSAGENS_DESTINOS">
             <EntityTypeMapping TypeName="PlatMensagensModel.MENSAGENS_DESTINOS">
               <MappingFragment StoreEntitySet="MENSAGENS_DESTINOS">
+                <ScalarProperty Name="MEDE_DS_ERRO_ENVIO" ColumnName="MEDE_DS_ERRO_ENVIO" />
                 <ScalarProperty Name="MEDE_TX_OBSERVACOES" ColumnName="MEDE_TX_OBSERVACOES" />
                 <ScalarProperty Name="MEDE_IN_POSICAO" ColumnName="MEDE_IN_POSICAO" />
                 <ScalarProperty Name="MEDE_IN_STATUS" ColumnName="MEDE_IN_STATUS" />

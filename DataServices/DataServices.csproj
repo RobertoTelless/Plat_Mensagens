@@ -173,6 +173,8 @@
     <Compile Include="Repositories\CategoriaNotificacaoRepository.cs" />
     <Compile Include="Repositories\CategoriaClienteRepository.cs" />
     <Compile Include="Repositories\CategoriaUsuarioRepository.cs" />
+    <Compile Include="Repositories\MensagemRepository.cs" />
+    <Compile Include="Repositories\MensagemDestinoRepository.cs" />
     <Compile Include="Repositories\ClienteRepository.cs" />
     <Compile Include="Repositories\ClienteContatoRepository.cs" />
     <Compile Include="Repositories\ClienteCnpjRepository.cs" />

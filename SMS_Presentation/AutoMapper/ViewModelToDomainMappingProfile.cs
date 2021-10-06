@@ -19,7 +19,7 @@ namespace MvcMapping.Mappers
             CreateMap<NotificacaoViewModel, NOTIFICACAO>();
             CreateMap<ClienteViewModel, CLIENTE>();
             CreateMap<ClienteContatoViewModel, CLIENTE_CONTATO>();
-
+            CreateMap<MensagemViewModel, MENSAGENS>();
         }
     }
 }

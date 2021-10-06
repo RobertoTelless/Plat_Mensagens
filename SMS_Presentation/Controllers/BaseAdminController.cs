@@ -92,7 +92,6 @@ namespace SMS_Presentation.Controllers
             if ((Int32)Session["Login"] == 1)
             {
                 Session["Perfis"] = baseApp.GetAllPerfis();
-                Session["Usuarios"] = usuApp.GetAllUsuarios(idAss);
                 Session["TiposPessoas"] = assApp.GetAllTiposPessoa();
                 Session["UFs"] = assApp.GetAllUF();
             }
@@ -104,6 +103,7 @@ namespace SMS_Presentation.Controllers
             Session["MensTemplate"] = 0;
             Session["MensConfiguracao"] = 0;
             Session["MensCliente"] = 0;
+            Session["MensMensagem"] = 0;
 
             Session["VoltaNotificacao"] = 3;
 
@@ -188,6 +188,10 @@ namespace SMS_Presentation.Controllers
                 ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0011", CultureInfo.CurrentCulture));
             }
             if ((Int32)Session["MensCliente"] == 2)
+            {
+                ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0011", CultureInfo.CurrentCulture));
+            }
+            if ((Int32)Session["MensMensagem"] == 2)
             {
                 ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0011", CultureInfo.CurrentCulture));
             }
