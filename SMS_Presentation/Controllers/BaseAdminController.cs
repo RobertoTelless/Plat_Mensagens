@@ -26,6 +26,7 @@ namespace SMS_Presentation.Controllers
         private readonly IConfiguracaoAppService confApp;
         private readonly IAssinanteAppService assApp;
         private readonly IClienteAppService cliApp;
+        private readonly IMensagemAppService menApp;
 
         private String msg;
         private Exception exception;
@@ -33,7 +34,7 @@ namespace SMS_Presentation.Controllers
         USUARIO objetoAntes = new USUARIO();
         List<USUARIO> listaMaster = new List<USUARIO>();
 
-        public BaseAdminController(IUsuarioAppService baseApps, ILogAppService logApps, INotificacaoAppService notfApps, IUsuarioAppService usuApps, IConfiguracaoAppService confApps, IAssinanteAppService assApps, IClienteAppService cliApps)
+        public BaseAdminController(IUsuarioAppService baseApps, ILogAppService logApps, INotificacaoAppService notfApps, IUsuarioAppService usuApps, IConfiguracaoAppService confApps, IAssinanteAppService assApps, IClienteAppService cliApps, IMensagemAppService menApps)
         {
             baseApp = baseApps;
             logApp = logApps;
@@ -42,6 +43,7 @@ namespace SMS_Presentation.Controllers
             confApp = confApps;
             assApp = assApps;
             cliApp = cliApps;
+            menApp = menApps;
         }
 
         public ActionResult CarregarLandingPage()
@@ -143,6 +145,9 @@ namespace SMS_Presentation.Controllers
 
             Int32 numCli = cliApp.GetAllItens(idAss).Count;
             ViewBag.NumClientes = numCli;
+            List<MENSAGENS> lm = menApp.GetAllItens(idAss);
+            ViewBag.SMS = lm.Where(p => p.MENS_IN_TIPO == 2).ToList().Count;
+            ViewBag.Emails = lm.Where(p => p.MENS_IN_TIPO == 1).ToList().Count;
 
             String frase = String.Empty;
             String nome = usu.USUA_NM_NOME.Substring(0, usu.USUA_NM_NOME.IndexOf(" "));

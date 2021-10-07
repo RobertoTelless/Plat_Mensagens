@@ -19,7 +19,7 @@ namespace ApplicationServices.Interfaces
         List<MENSAGENS> GetAllItensAdm(Int32 idAss);
         MENSAGENS GetItemById(Int32 id);
         MENSAGENS CheckExist(MENSAGENS conta, Int32 idAss);
-        Int32 ExecuteFilter(DateTime criacao, DateTime envio, String campanha, String texto, Int32? tipo, Int32 idAss, out List<MENSAGENS> objeto);
+        Int32 ExecuteFilter(DateTime? criacao, DateTime? envio, String campanha, String texto, Int32? tipo, Int32 idAss, out List<MENSAGENS> objeto);
 
         List<CATEGORIA_CLIENTE> GetAllTipos();
         List<UF> GetAllUF();

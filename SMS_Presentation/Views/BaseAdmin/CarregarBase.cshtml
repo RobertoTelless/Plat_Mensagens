@@ -263,14 +263,28 @@
                                 <div class="col-lg-4">
                                     <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 2px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; background-color: azure" >
                                         <div class="ibox-title">
-                                            <span class="label label-success pull-right">TESTE</span>
+                                            <span class="label label-success pull-right">Hoje</span>
                                             <h5>E-Mails enviados</h5>
                                         </div>
                                         <div class="ibox-content">
-                                            <h2 class="no-margins">1</h2>
+                                            <h2 class="no-margins">@ViewBag.Emails</h2>
                                             <br />
                                             <br />
                                             @Html.ButtonLinkIndex(text: "Expandir", controller: "BaseAdmin", action: "VerEMailExpansao", buttonClass: "white")
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 2px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; background-color: azure" >
+                                        <div class="ibox-title">
+                                            <span class="label label-success pull-right">Hoje</span>
+                                            <h5>SMS enviados</h5>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <h2 class="no-margins">@ViewBag.SMS</h2>
+                                            <br />
+                                            <br />
+                                            @Html.ButtonLinkIndex(text: "Expandir", controller: "BaseAdmin", action: "VerSMSExpansao", buttonClass: "white")
                                         </div>
                                     </div>
                                 </div>

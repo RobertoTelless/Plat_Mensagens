@@ -71,7 +71,7 @@ namespace ApplicationServices.Services
             return lista;
         }
 
-        public Int32 ExecuteFilter(DateTime criacao, DateTime envio, String campanha, String texto, Int32? tipo, Int32 idAss, out List<MENSAGENS> objeto)
+        public Int32 ExecuteFilter(DateTime? criacao, DateTime? envio, String campanha, String texto, Int32? tipo, Int32 idAss, out List<MENSAGENS> objeto)
         {
             try
             {
@@ -99,6 +99,7 @@ namespace ApplicationServices.Services
                 // Completa objeto
                 item.MENS_IN_ATIVO = 1;
                 item.MENS_DT_CRIACAO = DateTime.Now;
+                item.USUA_CD_ID = usuario.USUA_CD_ID;
 
                 // Monta Log
                 LOG log = new LOG
@@ -167,6 +168,8 @@ namespace ApplicationServices.Services
 
                 // Acerta campos
                 item.MENS_IN_ATIVO = 0;
+                item.ASSINANTE = null;
+                item.USUARIO = null;
 
                 // Monta Log
                 LOG log = new LOG
@@ -176,7 +179,7 @@ namespace ApplicationServices.Services
                     USUA_CD_ID = usuario.USUA_CD_ID,
                     LOG_IN_ATIVO = 1,
                     LOG_NM_OPERACAO = "DelMENS",
-                    LOG_TX_REGISTRO = Serialization.SerializeJSON<MENSAGENS>(item)
+                    LOG_TX_REGISTRO = item.MENS_NM_CAMPANHA + "|" + item.MENS_DT_CRIACAO.Value.ToShortDateString() + "|" + item.MENS_IN_TIPO.ToString()
                 };
 
                 // Persiste
@@ -196,6 +199,8 @@ namespace ApplicationServices.Services
 
                 // Acerta campos
                 item.MENS_IN_ATIVO = 1;
+                item.ASSINANTE = null;
+                item.USUARIO = null;                
 
                 // Monta Log
                 LOG log = new LOG
@@ -205,7 +210,7 @@ namespace ApplicationServices.Services
                     USUA_CD_ID = usuario.USUA_CD_ID,
                     LOG_IN_ATIVO = 1,
                     LOG_NM_OPERACAO = "ReatMENS",
-                    LOG_TX_REGISTRO = Serialization.SerializeJSON<MENSAGENS>(item)
+                    LOG_TX_REGISTRO = item.MENS_NM_CAMPANHA + "|" + item.MENS_DT_CRIACAO.Value.ToShortDateString() + "|" + item.MENS_IN_TIPO.ToString()
                 };
 
                 // Persiste

@@ -38,7 +38,7 @@ namespace SMS_Presentation.Controllers
         private readonly IUsuarioAppService usuApp;
         private readonly IClienteAppService cliApp;
         private readonly IConfiguracaoAppService confApp;
-
+        private readonly ITemplateAppService temApp;
         private String msg;
         private Exception exception;
         MENSAGENS objeto = new MENSAGENS();
@@ -46,13 +46,14 @@ namespace SMS_Presentation.Controllers
         List<MENSAGENS> listaMaster = new List<MENSAGENS>();
         String extensao;
 
-        public MensagemController(IMensagemAppService baseApps, ILogAppService logApps, IUsuarioAppService usuApps, IClienteAppService cliApps, IConfiguracaoAppService confApps)
+        public MensagemController(IMensagemAppService baseApps, ILogAppService logApps, IUsuarioAppService usuApps, IClienteAppService cliApps, IConfiguracaoAppService confApps, ITemplateAppService temApps)
         {
             baseApp = baseApps;
             logApp = logApps;
             usuApp = usuApps;
             cliApp = cliApps;
             confApp = confApps;
+            temApp = temApps;
         }
 
 
@@ -142,7 +143,7 @@ namespace SMS_Presentation.Controllers
 
 
             // Carrega listas
-            if ((List<MENSAGENS>)Session["ListaMensagem"] == null || ((List<MENSAGENS>)Session["ListaMensagem"]).Count == 0)
+            if ((List<MENSAGENS>)Session["ListaMensagem"] == null)
             {
                 listaMaster = baseApp.GetAllItens(idAss);
                 Session["ListaMensagem"] = listaMaster;
@@ -221,13 +222,11 @@ namespace SMS_Presentation.Controllers
                 // Executa a operação
                 List<MENSAGENS> listaObj = new List<MENSAGENS>();
                 Session["FiltroMensagem"] = item;
-                Int32 volta = baseApp.ExecuteFilter(item.MENS_DT_CRIACAO.Value, item.MENS_DT_ENVIO.Value, item.MENS_NM_CAMPANHA, item.MENS_TX_TEXTO, item.MENS_IN_TIPO, idAss, out listaObj);
+                Int32 volta = baseApp.ExecuteFilter(item.MENS_DT_CRIACAO, item.MENS_DT_ENVIO, item.MENS_NM_CAMPANHA, item.MENS_TX_TEXTO, item.MENS_IN_TIPO, idAss, out listaObj);
 
                 // Verifica retorno
                 if (volta == 1)
                 {
-                    Session["MensMensagem"] = 1;
-                    return RedirectToAction("MontarTelaMensagem");
                 }
 
                 // Sucesso
@@ -253,6 +252,7 @@ namespace SMS_Presentation.Controllers
         }
 
         [HttpGet]
+        [ValidateInput(false)]
         public ActionResult IncluirMensagem()
         {
             // Verifica se tem usuario logado
@@ -300,9 +300,14 @@ namespace SMS_Presentation.Controllers
             status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
             status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
             status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
-            ViewBag.Status = new SelectList(status, "Value", "Text");        
+            ViewBag.Status = new SelectList(status, "Value", "Text");
 
             // Prepara view
+            String header = temApp.GetByCode("TEMPBAS").TEMP_TX_CABECALHO;
+            String body = temApp.GetByCode("TEMPBAS").TEMP_TX_CORPO;
+            String footer = temApp.GetByCode("TEMPBAS").TEMP_TX_DADOS;
+            footer = footer.Replace("{NomeRemetente}", usuario.ASSINANTE.ASSI_NM_NOME);
+
             Session["MensagemNovo"] = 0;
             MENSAGENS item = new MENSAGENS();
             MensagemViewModel vm = Mapper.Map<MENSAGENS, MensagemViewModel>(item);
@@ -310,13 +315,14 @@ namespace SMS_Presentation.Controllers
             vm.MENS_DT_CRIACAO = DateTime.Now;
             vm.MENS_IN_ATIVO = 1;
             vm.USUA_CD_ID = usuario.USUA_CD_ID;
-            vm.MENS_NM_CABECALHO = "Prezado Sr. {Nome}";
-            vm.MENS_NM_RODAPE = "{NomeRemetente}";
+            vm.MENS_NM_CABECALHO = header;
+            vm.MENS_NM_RODAPE = footer;
             return View(vm);
         }
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public ActionResult IncluirMensagem(MensagemViewModel vm)
         {
             if ((String)Session["Ativa"] == null)
@@ -325,6 +331,7 @@ namespace SMS_Presentation.Controllers
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
 
+            ViewBag.Clientes = new SelectList(cliApp.GetAllItens(idAss).OrderBy(p => p.CLIE_NM_NOME), "CLIE_CD_ID", "CLIE_NM_NOME");
             ViewBag.Cats = new SelectList(baseApp.GetAllTipos().OrderBy(p => p.CACL_NM_NOME), "CACL_CD_ID", "CACL_NM_NOME");
             ViewBag.UF = new SelectList(baseApp.GetAllUF().OrderBy(p => p.UF_SG_SIGLA), "UF_CD_ID", "UF_NM_NOME");
             Session["Mensagem"] = null;
@@ -361,9 +368,10 @@ namespace SMS_Presentation.Controllers
                     }
 
                     // Processa
-                    if (item.MENS_DT_AGENDAMENTO != null)
+                    if (item.MENS_DT_AGENDAMENTO == null)
                     {
                         Session["IdMensagem"] = item.MENS_CD_ID;
+                        vm.MENS_CD_ID = item.MENS_CD_ID;
                         Int32 retGrava = ProcessarEnvioMensagem(vm, usuario);
                         if (retGrava > 0)
                         {
@@ -389,6 +397,7 @@ namespace SMS_Presentation.Controllers
             }
         }
 
+        [ValidateInput(false)]
         public Int32 ProcessarEnvioMensagem(MensagemViewModel vm, USUARIO usuario)
         {
             // Recupera contatos
@@ -419,7 +428,7 @@ namespace SMS_Presentation.Controllers
                 }
 
                 // Cidade
-                if (String.IsNullOrEmpty(vm.CIDADE))
+                if (!String.IsNullOrEmpty(vm.CIDADE))
                 {
                     query = query.Where(p => p.CLIE_NM_CIDADE.Contains(vm.CIDADE));
                 }
@@ -459,23 +468,13 @@ namespace SMS_Presentation.Controllers
             // Processa e-mail
             if (vm.MENS_IN_TIPO == 1)
             {
-                // Recupera template e-mail
-                //String header = _temService.GetByCode(template).TEMP_TX_CABECALHO;
-                //String body = _temService.GetByCode(template).TEMP_TX_CORPO;
-                //String footer = _temService.GetByCode(template).TEMP_TX_DADOS;
-                String header = vm.MENS_NM_CABECALHO;
-                String body = vm.MENS_TX_TEXTO;
-                String footer = vm.MENS_NM_RODAPE;
-                footer = body.Replace("{NomeRemetente}", usuario.ASSINANTE.ASSI_NM_NOME);
-
                 CONFIGURACAO conf = confApp.GetItemById(usuario.ASSI_CD_ID);
-
-
                 if (escopo == 1)
                 {
                     // Prepara corpo do e-mail  
-                    header = header.Replace("{Nome}", cliente.CLIE_NM_NOME);
-                    String emailBody = header + body + footer;
+                    String cab = vm.MENS_NM_CABECALHO.Replace("{Nome}", "<b>" + cliente.CLIE_NM_NOME + "</b>") + "<br /><br />";
+                    String rod = "<br /><br />" + vm.MENS_NM_RODAPE;              
+                    String emailBody = cab + vm.MENS_TX_TEXTO + rod;
 
                     // Monta e-mail
                     NetworkCredential net = new NetworkCredential(conf.CONF_NM_EMAIL_EMISSOO, conf.CONF_NM_SENHA_EMISSOR);
@@ -519,6 +518,7 @@ namespace SMS_Presentation.Controllers
                         dest.MEDE_DS_ERRO_ENVIO = erro;
                         dest.MENS_CD_ID = mens.MENS_CD_ID;
                         mens.MENSAGENS_DESTINOS.Add(dest);
+                        mens.MENS_DT_ENVIO = DateTime.Now;
                         volta = baseApp.ValidateEdit(mens, mens);
                     }
                     else
@@ -534,8 +534,9 @@ namespace SMS_Presentation.Controllers
                     foreach (CLIENTE item in listaCli)
                     {
                         // Prepara corpo do e-mail  
-                        header = header.Replace("{Nome}", item.CLIE_NM_NOME);
-                        String emailBody = header + body + footer;
+                        String cab = vm.MENS_NM_CABECALHO.Replace("{Nome}", "<b>" + item.CLIE_NM_NOME + "</b>") + "<br /><br />";
+                        String rod = "<br /><br />" + vm.MENS_NM_RODAPE;
+                        String emailBody = cab + vm.MENS_TX_TEXTO + rod;
 
                         // Monta e-mail
                         NetworkCredential net = new NetworkCredential(conf.CONF_NM_EMAIL_EMISSOO, conf.CONF_NM_SENHA_EMISSOR);
@@ -579,6 +580,7 @@ namespace SMS_Presentation.Controllers
                             dest.MEDE_DS_ERRO_ENVIO = erro;
                             dest.MENS_CD_ID = mens.MENS_CD_ID;
                             mens.MENSAGENS_DESTINOS.Add(dest);
+                            mens.MENS_DT_ENVIO = DateTime.Now;
                             volta = baseApp.ValidateEdit(mens, mens);
                         }
                         else
@@ -655,6 +657,7 @@ namespace SMS_Presentation.Controllers
             MENSAGENS item = baseApp.GetItemById(id);
             item.MENS_IN_ATIVO = 0;
             Int32 volta = baseApp.ValidateDelete(item, usuario);
+            Session["ListaMensagem"] = null;
             return RedirectToAction("VoltarBaseMensagem");
         }
 
@@ -687,6 +690,7 @@ namespace SMS_Presentation.Controllers
             MENSAGENS item = baseApp.GetItemById(id);
             item.MENS_IN_ATIVO = 1;
             Int32 volta = baseApp.ValidateReativar(item, usuario);
+            Session["ListaMensagem"] = null;
             return RedirectToAction("VoltarBaseMensagem");
         }
 

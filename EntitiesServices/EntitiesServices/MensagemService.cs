@@ -76,7 +76,7 @@ namespace ModelServices.EntitiesServices
             return _tempRepository.GetAllItens();
         }
 
-        public List<MENSAGENS> ExecuteFilter(DateTime criacao, DateTime envio, String campanha, String texto, Int32? tipo, Int32 idAss)
+        public List<MENSAGENS> ExecuteFilter(DateTime? criacao, DateTime? envio, String campanha, String texto, Int32? tipo, Int32 idAss)
         {
             return _baseRepository.ExecuteFilter(criacao, envio, campanha, texto, tipo, idAss);
         }

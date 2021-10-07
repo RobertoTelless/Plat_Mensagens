@@ -46,7 +46,7 @@ namespace DataServices.Repositories
             return query.ToList();
         }
 
-        public List<MENSAGENS> ExecuteFilter(DateTime criacao, DateTime envio, String campanha, String texto, Int32? tipo, Int32 idAss)
+        public List<MENSAGENS> ExecuteFilter(DateTime? criacao, DateTime? envio, String campanha, String texto, Int32? tipo, Int32 idAss)
         {
             List<MENSAGENS> lista = new List<MENSAGENS>();
             IQueryable<MENSAGENS> query = Db.MENSAGENS;
