@@ -208,6 +208,18 @@
           <Property Name="LOG_TX_REGISTRO_ANTES" Type="text" />
           <Property Name="LOG_IN_ATIVO" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="MENSAGEM_ANEXO">
+          <Key>
+            <PropertyRef Name="MEAN_CD_ID" />
+          </Key>
+          <Property Name="MEAN_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MENS_CD_ID" Type="int" Nullable="false" />
+          <Property Name="MEAN_NM_TITULO" Type="varchar" MaxLength="50" />
+          <Property Name="MEAN_DT_ANEXO" Type="date" />
+          <Property Name="MEAN_IN_TIPO" Type="int" />
+          <Property Name="MEAN_IN_ATIVO" Type="int" />
+          <Property Name="MEAN_AQ_ARQUIVO" Type="varchar" MaxLength="250" />
+        </EntityType>
         <EntityType Name="MENSAGENS">
           <Key>
             <PropertyRef Name="MENS_CD_ID" />
@@ -226,6 +238,7 @@
           <Property Name="MENS_TX_RETORNO" Type="text" />
           <Property Name="MENS_NM_CABECALHO" Type="varchar" MaxLength="500" />
           <Property Name="MENS_NM_RODAPE" Type="varchar" MaxLength="500" />
+          <Property Name="MENS_NM_LINK" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="MENSAGENS_DESTINOS">
           <Key>
@@ -580,6 +593,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MENSAGEM_ANEXO_MENSAGENS">
+          <End Role="MENSAGENS" Type="Self.MENSAGENS" Multiplicity="1" />
+          <End Role="MENSAGEM_ANEXO" Type="Self.MENSAGEM_ANEXO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MENSAGENS">
+              <PropertyRef Name="MENS_CD_ID" />
+            </Principal>
+            <Dependent Role="MENSAGEM_ANEXO">
+              <PropertyRef Name="MENS_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_MENSAGENS_ASSINANTE">
           <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="1" />
           <End Role="MENSAGENS" Type="Self.MENSAGENS" Multiplicity="*" />
@@ -775,6 +800,7 @@
           <EntitySet Name="GRUPO" EntityType="Self.GRUPO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GRUPO_CLIENTE" EntityType="Self.GRUPO_CLIENTE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LOG" EntityType="Self.LOG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MENSAGEM_ANEXO" EntityType="Self.MENSAGEM_ANEXO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MENSAGENS" EntityType="Self.MENSAGENS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MENSAGENS_DESTINOS" EntityType="Self.MENSAGENS_DESTINOS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NOTIFICACAO" EntityType="Self.NOTIFICACAO" Schema="dbo" store:Type="Tables" />
@@ -856,6 +882,10 @@
           <AssociationSet Name="FK_LOG_USUARIO" Association="Self.FK_LOG_USUARIO">
             <End Role="USUARIO" EntitySet="USUARIO" />
             <End Role="LOG" EntitySet="LOG" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MENSAGEM_ANEXO_MENSAGENS" Association="Self.FK_MENSAGEM_ANEXO_MENSAGENS">
+            <End Role="MENSAGENS" EntitySet="MENSAGENS" />
+            <End Role="MENSAGEM_ANEXO" EntitySet="MENSAGEM_ANEXO" />
           </AssociationSet>
           <AssociationSet Name="FK_MENSAGENS_ASSINANTE" Association="Self.FK_MENSAGENS_ASSINANTE">
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
@@ -1515,6 +1545,11 @@
             <End Role="USUARIO" EntitySet="USUARIO" />
             <End Role="MENSAGENS" EntitySet="MENSAGENS" />
           </AssociationSet>
+          <EntitySet Name="MENSAGEM_ANEXO" EntityType="PlatMensagensModel.MENSAGEM_ANEXO" />
+          <AssociationSet Name="FK_MENSAGEM_ANEXO_MENSAGENS" Association="PlatMensagensModel.FK_MENSAGEM_ANEXO_MENSAGENS">
+            <End Role="MENSAGENS" EntitySet="MENSAGENS" />
+            <End Role="MENSAGEM_ANEXO" EntitySet="MENSAGEM_ANEXO" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="CATEGORIA_CLIENTE">
           <Key>
@@ -1810,6 +1845,8 @@
           <NavigationProperty Name="USUARIO" Relationship="PlatMensagensModel.FK_MENSAGENS_USUARIO" FromRole="MENSAGENS" ToRole="USUARIO" />
           <Property Name="MENS_NM_CABECALHO" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="MENS_NM_RODAPE" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="MENSAGEM_ANEXO" Relationship="PlatMensagensModel.FK_MENSAGEM_ANEXO_MENSAGENS" FromRole="MENSAGENS" ToRole="MENSAGEM_ANEXO" />
+          <Property Name="MENS_NM_LINK" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="MENSAGENS_DESTINOS">
           <Key>
@@ -1898,6 +1935,31 @@
             </Principal>
             <Dependent Role="MENSAGENS">
               <PropertyRef Name="USUA_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MENSAGEM_ANEXO">
+          <Key>
+            <PropertyRef Name="MEAN_CD_ID" />
+          </Key>
+          <Property Name="MEAN_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MENS_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="MEAN_NM_TITULO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MEAN_DT_ANEXO" Type="DateTime" Precision="0" />
+          <Property Name="MEAN_IN_TIPO" Type="Int32" />
+          <Property Name="MEAN_IN_ATIVO" Type="Int32" />
+          <Property Name="MEAN_AQ_ARQUIVO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="MENSAGENS" Relationship="PlatMensagensModel.FK_MENSAGEM_ANEXO_MENSAGENS" FromRole="MENSAGEM_ANEXO" ToRole="MENSAGENS" />
+        </EntityType>
+        <Association Name="FK_MENSAGEM_ANEXO_MENSAGENS">
+          <End Type="PlatMensagensModel.MENSAGENS" Role="MENSAGENS" Multiplicity="1" />
+          <End Type="PlatMensagensModel.MENSAGEM_ANEXO" Role="MENSAGEM_ANEXO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MENSAGENS">
+              <PropertyRef Name="MENS_CD_ID" />
+            </Principal>
+            <Dependent Role="MENSAGEM_ANEXO">
+              <PropertyRef Name="MENS_CD_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2257,6 +2319,7 @@
           <EntitySetMapping Name="MENSAGENS">
             <EntityTypeMapping TypeName="PlatMensagensModel.MENSAGENS">
               <MappingFragment StoreEntitySet="MENSAGENS">
+                <ScalarProperty Name="MENS_NM_LINK" ColumnName="MENS_NM_LINK" />
                 <ScalarProperty Name="MENS_NM_RODAPE" ColumnName="MENS_NM_RODAPE" />
                 <ScalarProperty Name="MENS_NM_CABECALHO" ColumnName="MENS_NM_CABECALHO" />
                 <ScalarProperty Name="MENS_TX_RETORNO" ColumnName="MENS_TX_RETORNO" />
@@ -2287,6 +2350,19 @@
                 <ScalarProperty Name="CLIE_CD_ID" ColumnName="CLIE_CD_ID" />
                 <ScalarProperty Name="MENS_CD_ID" ColumnName="MENS_CD_ID" />
                 <ScalarProperty Name="MEDE_CD_ID" ColumnName="MEDE_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MENSAGEM_ANEXO">
+            <EntityTypeMapping TypeName="PlatMensagensModel.MENSAGEM_ANEXO">
+              <MappingFragment StoreEntitySet="MENSAGEM_ANEXO">
+                <ScalarProperty Name="MEAN_AQ_ARQUIVO" ColumnName="MEAN_AQ_ARQUIVO" />
+                <ScalarProperty Name="MEAN_IN_ATIVO" ColumnName="MEAN_IN_ATIVO" />
+                <ScalarProperty Name="MEAN_IN_TIPO" ColumnName="MEAN_IN_TIPO" />
+                <ScalarProperty Name="MEAN_DT_ANEXO" ColumnName="MEAN_DT_ANEXO" />
+                <ScalarProperty Name="MEAN_NM_TITULO" ColumnName="MEAN_NM_TITULO" />
+                <ScalarProperty Name="MENS_CD_ID" ColumnName="MENS_CD_ID" />
+                <ScalarProperty Name="MEAN_CD_ID" ColumnName="MEAN_CD_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

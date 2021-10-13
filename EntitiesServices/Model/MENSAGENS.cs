@@ -18,6 +18,7 @@ namespace EntitiesServices.Model
         public MENSAGENS()
         {
             this.MENSAGENS_DESTINOS = new HashSet<MENSAGENS_DESTINOS>();
+            this.MENSAGEM_ANEXO = new HashSet<MENSAGEM_ANEXO>();
         }
     
         public int MENS_CD_ID { get; set; }
@@ -34,11 +35,14 @@ namespace EntitiesServices.Model
         public string MENS_TX_RETORNO { get; set; }
         public string MENS_NM_CABECALHO { get; set; }
         public string MENS_NM_RODAPE { get; set; }
+        public string MENS_NM_LINK { get; set; }
     
         public virtual ASSINANTE ASSINANTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MENSAGENS_DESTINOS> MENSAGENS_DESTINOS { get; set; }
         public virtual TEMPLATE TEMPLATE { get; set; }
         public virtual USUARIO USUARIO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MENSAGEM_ANEXO> MENSAGEM_ANEXO { get; set; }
     }
 }

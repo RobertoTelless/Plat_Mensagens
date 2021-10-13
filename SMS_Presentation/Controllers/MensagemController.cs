@@ -367,11 +367,32 @@ namespace SMS_Presentation.Controllers
                     {
                     }
 
+                    // Cria pastas
+                    String caminho = "/Imagens/" + idAss.ToString() + "/Mensagem/" + item.MENS_CD_ID.ToString() + "/Anexos/";
+                    Directory.CreateDirectory(Server.MapPath(caminho));
+
+                    Session["IdMensagem"] = item.MENS_CD_ID;
+                    if (Session["FileQueueMensagem"] != null)
+                    {
+                        List<FileQueue> fq = (List<FileQueue>)Session["FileQueueMensagem"];
+
+                        foreach (var file in fq)
+                        {
+                            if (file.Profile == null)
+                            {
+                                UploadFileQueueMensagem(file);
+                            }
+                        }
+                        Session["FileQueueMensagem"] = null;
+                    }
+
                     // Processa
                     if (item.MENS_DT_AGENDAMENTO == null)
                     {
-                        Session["IdMensagem"] = item.MENS_CD_ID;
-                        vm.MENS_CD_ID = item.MENS_CD_ID;
+                        MENSAGENS mens = baseApp.GetItemById(item.MENS_CD_ID);
+                        Session["IdMensagem"] = mens.MENS_CD_ID;
+                        vm.MENS_CD_ID = mens.MENS_CD_ID;
+                        vm.MENSAGEM_ANEXO = mens.MENSAGEM_ANEXO;
                         Int32 retGrava = ProcessarEnvioMensagem(vm, usuario);
                         if (retGrava > 0)
                         {
@@ -395,6 +416,95 @@ namespace SMS_Presentation.Controllers
             {
                 return View(vm);
             }
+        }
+
+        [HttpPost]
+        public void UploadFileToSession(IEnumerable<HttpPostedFileBase> files, String profile)
+        {
+            List<FileQueue> queue = new List<FileQueue>();
+            foreach (var file in files)
+            {
+                FileQueue f = new FileQueue();
+                f.Name = Path.GetFileName(file.FileName);
+                f.ContentType = Path.GetExtension(file.FileName);
+
+                MemoryStream ms = new MemoryStream();
+                file.InputStream.CopyTo(ms);
+                f.Contents = ms.ToArray();
+
+                if (profile != null)
+                {
+                    if (file.FileName.Equals(profile))
+                    {
+                        f.Profile = 1;
+                    }
+                }
+                queue.Add(f);
+            }
+            Session["FileQueueMensagem"] = queue;
+        }
+
+        [HttpPost]
+        public ActionResult UploadFileQueueMensagem(FileQueue file)
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idNot = (Int32)Session["IdMensagem"];
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            if (file == null)
+            {
+                ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0019", CultureInfo.CurrentCulture));
+                Session["MensMensagem"] = 10;
+                return RedirectToAction("VoltarBaseMensagem");
+            }
+
+            MENSAGENS item = baseApp.GetItemById(idNot);
+            USUARIO usu = (USUARIO)Session["UserCredentials"];
+            var fileName = file.Name;
+            if (fileName.Length > 250)
+            {
+                ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0024", CultureInfo.CurrentCulture));
+                Session["MensMensagem"] = 11;
+                return RedirectToAction("VoltarBaseMensagem");
+            }
+            String caminho = "/Imagens/" + idAss.ToString() + "/Mensagem/" + item.MENS_CD_ID.ToString() + "/Anexos/";
+            String path = Path.Combine(Server.MapPath(caminho), fileName);
+            System.IO.Directory.CreateDirectory(Server.MapPath(caminho));
+            System.IO.File.WriteAllBytes(path, file.Contents);
+
+            //Recupera tipo de arquivo
+            extensao = Path.GetExtension(fileName);
+            String a = extensao;
+
+            // Gravar registro
+            MENSAGEM_ANEXO foto = new MENSAGEM_ANEXO();
+            foto.MEAN_AQ_ARQUIVO = "~" + caminho + fileName;
+            foto.MEAN_DT_ANEXO = DateTime.Today;
+            foto.MEAN_IN_ATIVO = 1;
+            Int32 tipo = 3;
+            if (extensao.ToUpper() == ".JPG" || extensao.ToUpper() == ".GIF" || extensao.ToUpper() == ".PNG" || extensao.ToUpper() == ".JPEG")
+            {
+                tipo = 1;
+            }
+            if (extensao.ToUpper() == ".MP4" || extensao.ToUpper() == ".AVI" || extensao.ToUpper() == ".MPEG")
+            {
+                tipo = 2;
+            }
+            if (extensao.ToUpper() == ".PDF")
+            {
+                tipo = 3;
+            }
+            foto.MEAN_IN_TIPO = tipo;
+            foto.MEAN_NM_TITULO = fileName;
+            foto.MENS_CD_ID = item.MENS_CD_ID;
+
+            item.MENSAGEM_ANEXO.Add(foto);
+            objetoAntes = item;
+            Int32 volta = baseApp.ValidateEdit(item, item);
+            return RedirectToAction("VoltarBaseMensagem");
         }
 
         [ValidateInput(false)]
@@ -471,10 +581,41 @@ namespace SMS_Presentation.Controllers
                 CONFIGURACAO conf = confApp.GetItemById(usuario.ASSI_CD_ID);
                 if (escopo == 1)
                 {
-                    // Prepara corpo do e-mail  
+                    // Prepara cabeçalho
                     String cab = vm.MENS_NM_CABECALHO.Replace("{Nome}", "<b>" + cliente.CLIE_NM_NOME + "</b>") + "<br /><br />";
-                    String rod = "<br /><br />" + vm.MENS_NM_RODAPE;              
-                    String emailBody = cab + vm.MENS_TX_TEXTO + rod;
+
+                    // Prepara rodape
+                    ASSINANTE assi = (ASSINANTE)Session["Assinante"];
+                    String rod = "<br /><br />" + "< img src = @Url.Content(" + assi.ASSI_AQ_FOTO + " style = 'width: auto; height: auto; max-height: 110px; max-width: 90px;" + vm.MENS_NM_RODAPE; 
+
+                    // Prepara corpo do e-mail e trata link
+                    StringBuilder str = new StringBuilder();
+                    str.AppendLine(vm.MENS_TX_TEXTO);
+                    if (!String.IsNullOrEmpty(vm.MENS_NM_LINK))
+                    {
+                        if (!vm.MENS_NM_LINK.Contains("Http://www."))
+                        {
+                            vm.MENS_NM_LINK = "http://www." + vm.MENS_NM_LINK;
+                        }
+                        else if (!vm.MENS_NM_LINK.Contains("Http:"))
+                        {
+                            vm.MENS_NM_LINK = "http://" + vm.MENS_NM_LINK;
+                        }
+                        str.AppendLine("<a href='" + vm.MENS_NM_LINK + "'>Clique aqui pata maiores informações</a>");
+                    }
+                    String body = str.ToString();                  
+                    String emailBody = cab + body + rod;
+
+                    // Checa e monta anexos
+                    List<Attachment> listaAnexo = new List<Attachment>();
+                    if (vm.MENSAGEM_ANEXO.Count > 0)
+                    {
+                        foreach (MENSAGEM_ANEXO item in vm.MENSAGEM_ANEXO)
+                        {
+                            Attachment anexo = new Attachment(item.MEAN_AQ_ARQUIVO);
+                            listaAnexo.Add(anexo);
+                        }
+                    }
 
                     // Monta e-mail
                     NetworkCredential net = new NetworkCredential(conf.CONF_NM_EMAIL_EMISSOO, conf.CONF_NM_SENHA_EMISSOR);
@@ -491,6 +632,7 @@ namespace SMS_Presentation.Controllers
                     mensagem.SENHA_EMISSOR = conf.CONF_NM_SENHA_EMISSOR;
                     mensagem.SMTP = conf.CONF_NM_HOST_SMTP;
                     mensagem.NETWORK_CREDENTIAL = net;
+                    mensagem.ATTACHMENT = listaAnexo;
 
                     // Envia mensagem
                     try
@@ -539,20 +681,33 @@ namespace SMS_Presentation.Controllers
                         String emailBody = cab + vm.MENS_TX_TEXTO + rod;
 
                         // Monta e-mail
-                        NetworkCredential net = new NetworkCredential(conf.CONF_NM_EMAIL_EMISSOO, conf.CONF_NM_SENHA_EMISSOR);
+                        //NetworkCredential net = new NetworkCredential(conf.CONF_NM_EMAIL_EMISSOO, conf.CONF_NM_SENHA_EMISSOR);
                         Email mensagem = new Email();
+                        //mensagem.ASSUNTO = vm.MENS_NM_CAMPANHA != null ? vm.MENS_NM_CAMPANHA : "Assunto Diverso";
+                        //mensagem.CORPO = emailBody;
+                        //mensagem.DEFAULT_CREDENTIALS = false;
+                        //mensagem.EMAIL_DESTINO = item.CLIE_NM_EMAIL;
+                        //mensagem.EMAIL_EMISSOR = conf.CONF_NM_EMAIL_EMISSOO;
+                        //mensagem.ENABLE_SSL = true;
+                        //mensagem.NOME_EMISSOR = item.ASSINANTE.ASSI_NM_NOME;
+                        //mensagem.PORTA = conf.CONF_NM_PORTA_SMTP;
+                        //mensagem.PRIORIDADE = System.Net.Mail.MailPriority.High;
+                        //mensagem.SENHA_EMISSOR = conf.CONF_NM_SENHA_EMISSOR;
+                        //mensagem.SMTP = conf.CONF_NM_HOST_SMTP;
+                        //mensagem.NETWORK_CREDENTIAL = net;
+
                         mensagem.ASSUNTO = vm.MENS_NM_CAMPANHA != null ? vm.MENS_NM_CAMPANHA : "Assunto Diverso";
                         mensagem.CORPO = emailBody;
                         mensagem.DEFAULT_CREDENTIALS = false;
-                        mensagem.EMAIL_DESTINO = item.CLIE_NM_EMAIL;
+                        mensagem.EMAIL_DESTINO = cliente.CLIE_NM_EMAIL;
                         mensagem.EMAIL_EMISSOR = conf.CONF_NM_EMAIL_EMISSOO;
                         mensagem.ENABLE_SSL = true;
-                        mensagem.NOME_EMISSOR = item.ASSINANTE.ASSI_NM_NOME;
+                        mensagem.NOME_EMISSOR = cliente.ASSINANTE.ASSI_NM_NOME;
                         mensagem.PORTA = conf.CONF_NM_PORTA_SMTP;
                         mensagem.PRIORIDADE = System.Net.Mail.MailPriority.High;
                         mensagem.SENHA_EMISSOR = conf.CONF_NM_SENHA_EMISSOR;
                         mensagem.SMTP = conf.CONF_NM_HOST_SMTP;
-                        mensagem.NETWORK_CREDENTIAL = net;
+
 
                         // Envia mensagem
                         try

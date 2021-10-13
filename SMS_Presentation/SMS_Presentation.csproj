@@ -662,6 +662,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Imagens\1\Assinante\1\Logo\favicon_SystemBR.jpg" />
     <Content Include="Imagens\1\Cliente\5\Anexos\email_2.jpg" />
     <Content Include="Imagens\1\Cliente\5\Fotos\a4.jpg" />
     <Content Include="Imagens\1\Usuario\1\Fotos\FotoOficial.jpg" />
@@ -2946,6 +2947,7 @@
     <Folder Include="Imagens\1\Cliente\4\Anexos\" />
     <Folder Include="Imagens\1\Cliente\4\Fotos\" />
     <Folder Include="Imagens\1\Cliente\6\Fotos\" />
+    <Folder Include="Imagens\1\Mensagem\" />
     <Folder Include="Imagens\1\Notificacao\1\Anexos\" />
     <Folder Include="Imagens\1\Notificacao\2\Anexos\" />
     <Folder Include="Imagens\1\Usuario\1\Anexos\" />

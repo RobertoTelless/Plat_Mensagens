@@ -20,6 +20,7 @@ namespace ModelServices.Interfaces.EntitiesServices
         MENSAGENS GetItemById(Int32 id);
         List<MENSAGENS> GetAllItens(Int32 idAss);
         List<MENSAGENS> GetAllItensAdm(Int32 idAss);
+        MENSAGEM_ANEXO GetAnexoById(Int32 id);
         List<MENSAGENS> ExecuteFilter(DateTime? criacao, DateTime? envio, String campanha, String texto, Int32? tipo, Int32 idAss);
 
         List<TEMPLATE> GetAllTemplates();

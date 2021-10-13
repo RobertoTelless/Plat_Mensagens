@@ -62,6 +62,8 @@
         <AssociationConnector Association="PlatMensagensModel.FK_MENSAGENS_DESTINOS_MENSAGENS" />
         <AssociationConnector Association="PlatMensagensModel.FK_MENSAGENS_TEMPLATE" />
         <AssociationConnector Association="PlatMensagensModel.FK_MENSAGENS_USUARIO" />
+        <EntityTypeShape EntityType="PlatMensagensModel.MENSAGEM_ANEXO" Width="1.5" PointX="15.75" PointY="6.25" />
+        <AssociationConnector Association="PlatMensagensModel.FK_MENSAGEM_ANEXO_MENSAGENS" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

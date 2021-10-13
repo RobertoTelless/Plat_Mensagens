@@ -41,6 +41,11 @@ namespace ApplicationServices.Services
             return _baseService.GetUFbySigla(sigla);
         }
 
+        public MENSAGEM_ANEXO GetAnexoById(Int32 id)
+        {
+            return _baseService.GetAnexoById(id);
+        }
+
         public List<MENSAGENS> GetAllItensAdm(Int32 idAss)
         {
             List<MENSAGENS> lista = _baseService.GetAllItensAdm(idAss);
@@ -100,6 +105,14 @@ namespace ApplicationServices.Services
                 item.MENS_IN_ATIVO = 1;
                 item.MENS_DT_CRIACAO = DateTime.Now;
                 item.USUA_CD_ID = usuario.USUA_CD_ID;
+                if (!item.MENS_NM_LINK.Contains("Http://www."))
+                {
+                    item.MENS_NM_LINK = "http://www." + item.MENS_NM_LINK;
+                }
+                else if (!item.MENS_NM_LINK.Contains("Http:"))
+                {
+                    item.MENS_NM_LINK = "http://" + item.MENS_NM_LINK;
+                }
 
                 // Monta Log
                 LOG log = new LOG

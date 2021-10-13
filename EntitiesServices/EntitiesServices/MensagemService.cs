@@ -23,15 +23,17 @@ namespace ModelServices.EntitiesServices
         private readonly ITemplateRepository _tempRepository;
         private readonly ICategoriaClienteRepository _tipoRepository;
         private readonly IUFRepository _ufRepository;
+        private readonly IMensagemAnexoRepository _anexoRepository;
         protected PlatMensagensEntities Db = new PlatMensagensEntities();
 
-        public MensagemService(IMensagemRepository baseRepository, ILogRepository logRepository, ITemplateRepository tempRepository, ICategoriaClienteRepository tipoRepository, IUFRepository ufRepository) : base(baseRepository)
+        public MensagemService(IMensagemRepository baseRepository, ILogRepository logRepository, ITemplateRepository tempRepository, ICategoriaClienteRepository tipoRepository, IUFRepository ufRepository, IMensagemAnexoRepository anexoRepository) : base(baseRepository)
         {
             _baseRepository = baseRepository;
             _logRepository = logRepository;
             _tempRepository = tempRepository;
             _tipoRepository = tipoRepository;
             _ufRepository = ufRepository;
+            _anexoRepository = anexoRepository;
         }
 
         public MENSAGENS CheckExist(MENSAGENS conta, Int32 idAss)
@@ -54,6 +56,11 @@ namespace ModelServices.EntitiesServices
         {
             MENSAGENS item = _baseRepository.GetItemById(id);
             return item;
+        }
+
+        public MENSAGEM_ANEXO GetAnexoById(Int32 id)
+        {
+            return _anexoRepository.GetItemById(id);
         }
 
         public List<MENSAGENS> GetAllItens(Int32 idAss)

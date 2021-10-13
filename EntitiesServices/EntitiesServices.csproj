@@ -202,6 +202,7 @@
     <Compile Include="Interfaces\Repositories\ICategoriaClienteRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICategoriaNotificacaoRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICategoriaUsuarioRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IMensagemAnexoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IMensagemDestinoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IMensagemRepository.cs" />
     <Compile Include="Interfaces\Repositories\IClienteRepository.cs" />
@@ -259,6 +260,9 @@
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\LOG.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\MENSAGEM_ANEXO.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MENSAGENS.cs">
