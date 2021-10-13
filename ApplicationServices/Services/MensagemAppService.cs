@@ -105,11 +105,11 @@ namespace ApplicationServices.Services
                 item.MENS_IN_ATIVO = 1;
                 item.MENS_DT_CRIACAO = DateTime.Now;
                 item.USUA_CD_ID = usuario.USUA_CD_ID;
-                if (!item.MENS_NM_LINK.Contains("Http://www."))
+                if (!item.MENS_NM_LINK.Contains("www."))
                 {
-                    item.MENS_NM_LINK = "http://www." + item.MENS_NM_LINK;
+                    item.MENS_NM_LINK = "www." + item.MENS_NM_LINK;
                 }
-                else if (!item.MENS_NM_LINK.Contains("Http:"))
+                if (!item.MENS_NM_LINK.Contains("http://"))
                 {
                     item.MENS_NM_LINK = "http://" + item.MENS_NM_LINK;
                 }

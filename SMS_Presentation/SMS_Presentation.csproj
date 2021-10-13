@@ -665,6 +665,9 @@
     <Content Include="Imagens\1\Assinante\1\Logo\favicon_SystemBR.jpg" />
     <Content Include="Imagens\1\Cliente\5\Anexos\email_2.jpg" />
     <Content Include="Imagens\1\Cliente\5\Fotos\a4.jpg" />
+    <Content Include="Imagens\1\Cliente\7\Fotos\mulher-louca-2df.jpg" />
+    <Content Include="Imagens\1\Cliente\8\Anexos\a8.jpg" />
+    <Content Include="Imagens\1\Cliente\8\Fotos\a2.jpg" />
     <Content Include="Imagens\1\Usuario\1\Fotos\FotoOficial.jpg" />
     <Content Include="Imagens\Base\FotoBase.jpg" />
     <Content Include="Imagens\Base\icone_imagem.jpg" />
@@ -2050,6 +2053,11 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Imagens\1\Cliente\6\Anexos\carteira.pdf" />
+    <Content Include="Imagens\1\Cliente\8\Anexos\Contato5_04102021.pdf" />
+    <Content Include="Imagens\1\Mensagem\27\Anexos\Contato5_04102021 %281%29.pdf" />
+    <Content Include="Imagens\1\Mensagem\27\Anexos\ContatoLista_04102021.pdf" />
+    <Content Include="Imagens\1\Mensagem\28\Anexos\Contato5_04102021 %281%29.pdf" />
+    <Content Include="Imagens\1\Mensagem\28\Anexos\ContatoLista_04102021.pdf" />
     <None Include="Properties\PublishProfiles\ERPCondominio - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\PlataformaMensagensWeb - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
@@ -2947,7 +2955,11 @@
     <Folder Include="Imagens\1\Cliente\4\Anexos\" />
     <Folder Include="Imagens\1\Cliente\4\Fotos\" />
     <Folder Include="Imagens\1\Cliente\6\Fotos\" />
-    <Folder Include="Imagens\1\Mensagem\" />
+    <Folder Include="Imagens\1\Cliente\7\Anexos\" />
+    <Folder Include="Imagens\1\Mensagem\23\Anexos\" />
+    <Folder Include="Imagens\1\Mensagem\24\Anexos\" />
+    <Folder Include="Imagens\1\Mensagem\25\Anexos\" />
+    <Folder Include="Imagens\1\Mensagem\26\Anexos\" />
     <Folder Include="Imagens\1\Notificacao\1\Anexos\" />
     <Folder Include="Imagens\1\Notificacao\2\Anexos\" />
     <Folder Include="Imagens\1\Usuario\1\Anexos\" />

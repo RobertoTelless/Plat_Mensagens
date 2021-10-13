@@ -586,22 +586,22 @@ namespace SMS_Presentation.Controllers
 
                     // Prepara rodape
                     ASSINANTE assi = (ASSINANTE)Session["Assinante"];
-                    String rod = "<br /><br />" + "< img src = @Url.Content(" + assi.ASSI_AQ_FOTO + " style = 'width: auto; height: auto; max-height: 110px; max-width: 90px;" + vm.MENS_NM_RODAPE; 
+                    String rod = "<br /><br />" + vm.MENS_NM_RODAPE; 
 
                     // Prepara corpo do e-mail e trata link
                     StringBuilder str = new StringBuilder();
                     str.AppendLine(vm.MENS_TX_TEXTO);
                     if (!String.IsNullOrEmpty(vm.MENS_NM_LINK))
                     {
-                        if (!vm.MENS_NM_LINK.Contains("Http://www."))
+                        if (!vm.MENS_NM_LINK.Contains("www."))
                         {
-                            vm.MENS_NM_LINK = "http://www." + vm.MENS_NM_LINK;
+                            vm.MENS_NM_LINK = "www." + vm.MENS_NM_LINK;
                         }
-                        else if (!vm.MENS_NM_LINK.Contains("Http:"))
+                        if (!vm.MENS_NM_LINK.Contains("http://"))
                         {
                             vm.MENS_NM_LINK = "http://" + vm.MENS_NM_LINK;
                         }
-                        str.AppendLine("<a href='" + vm.MENS_NM_LINK + "'>Clique aqui pata maiores informações</a>");
+                        str.AppendLine("<a href='" + vm.MENS_NM_LINK + "'>Clique aqui para maiores informações</a>");
                     }
                     String body = str.ToString();                  
                     String emailBody = cab + body + rod;

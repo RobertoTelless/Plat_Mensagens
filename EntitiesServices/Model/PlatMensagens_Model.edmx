@@ -236,8 +236,8 @@
           <Property Name="MENS_DT_AGENDAMENTO" Type="datetime" />
           <Property Name="MENS_DT_ENVIO" Type="datetime" />
           <Property Name="MENS_TX_RETORNO" Type="text" />
-          <Property Name="MENS_NM_CABECALHO" Type="varchar" MaxLength="500" />
-          <Property Name="MENS_NM_RODAPE" Type="varchar" MaxLength="500" />
+          <Property Name="MENS_NM_CABECALHO" Type="text" />
+          <Property Name="MENS_NM_RODAPE" Type="text" />
           <Property Name="MENS_NM_LINK" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="MENSAGENS_DESTINOS">
@@ -1843,8 +1843,8 @@
           <NavigationProperty Name="MENSAGENS_DESTINOS" Relationship="PlatMensagensModel.FK_MENSAGENS_DESTINOS_MENSAGENS" FromRole="MENSAGENS" ToRole="MENSAGENS_DESTINOS" />
           <NavigationProperty Name="TEMPLATE" Relationship="PlatMensagensModel.FK_MENSAGENS_TEMPLATE" FromRole="MENSAGENS" ToRole="TEMPLATE" />
           <NavigationProperty Name="USUARIO" Relationship="PlatMensagensModel.FK_MENSAGENS_USUARIO" FromRole="MENSAGENS" ToRole="USUARIO" />
-          <Property Name="MENS_NM_CABECALHO" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="MENS_NM_RODAPE" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MENS_NM_CABECALHO" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="MENS_NM_RODAPE" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MENSAGEM_ANEXO" Relationship="PlatMensagensModel.FK_MENSAGEM_ANEXO_MENSAGENS" FromRole="MENSAGENS" ToRole="MENSAGEM_ANEXO" />
           <Property Name="MENS_NM_LINK" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>

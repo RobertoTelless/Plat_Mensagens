@@ -112,6 +112,7 @@ namespace Presentation.Start
             kernel.Bind<ICargoRepository>().To<CargoRepository>();
             kernel.Bind<IMensagemRepository>().To<MensagemRepository>();
             kernel.Bind<IMensagemDestinoRepository>().To<MensagemDestinoRepository>();
+            kernel.Bind<IMensagemAnexoRepository>().To<MensagemAnexoRepository>();
 
         }
     }
