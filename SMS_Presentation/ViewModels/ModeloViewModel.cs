@@ -9,6 +9,7 @@ namespace PlatMensagem_Solution.ViewModels
 {
     public class ModeloViewModel
     {
+        public DateTime DataEmissao { get; set; }
         public String Data { get; set; }
         public Int32 Valor { get; set; }
         public Int32 Valor1 { get; set; }

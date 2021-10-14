@@ -113,6 +113,7 @@
                             </div>
                         </div>
                     </div>
+                    @Html.ButtonLinkIndex(text: "Enviar Novas Mensagens", action: "IncluirMensagem", controller: "Mensagem", buttonClass: "btn btn-xs btn-success")
                 </div>
 
                 <div class="col-lg-4 col-md-4 col-sm-12">
@@ -264,6 +265,20 @@
                                     <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 2px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; background-color: azure" >
                                         <div class="ibox-title">
                                             <span class="label label-success pull-right">Hoje</span>
+                                            <h5>Total Enviado</h5>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <h2 class="no-margins">@ViewBag.Total</h2>
+                                            <br />
+                                            <br />
+                                            @Html.ButtonLinkIndex(text: "Expandir", controller: "BaseAdmin", action: "VerTotalExpansao", buttonClass: "white")
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 2px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; background-color: azure" >
+                                        <div class="ibox-title">
+                                            <span class="label label-success pull-right">Hoje</span>
                                             <h5>E-Mails enviados</h5>
                                         </div>
                                         <div class="ibox-content">
@@ -288,6 +303,22 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
+                                <div class="col-lg-4">
+                                    <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 2px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; background-color: azure" >
+                                        <div class="ibox-title">
+                                            <span class="label label-success pull-right">Hoje</span>
+                                            <h5>Falhas de Envio</h5>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <h2 class="no-margins">@ViewBag.Falhas</h2>
+                                            <br />
+                                            <br />
+                                            @Html.ButtonLinkIndex(text: "Expandir", controller: "BaseAdmin", action: "VerFalhasExpansao", buttonClass: "white")
+                                        </div>
+                                    </div>
+                                </div>                            
                                 <div class="col-lg-4">
                                     <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 2px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; background-color: azure" >
                                         <div class="ibox-title">

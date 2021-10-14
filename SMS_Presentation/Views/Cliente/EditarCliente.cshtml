@@ -1043,10 +1043,17 @@
                                                                             {
                                                                                 <td style="cursor: pointer; text-decoration: underline; color: #337ab7;" onclick="mostrarDesc('@cond.MENSAGENS.MENS_TX_TEXTO')">@cond.MENSAGENS.MENS_TX_TEXTO</td>
                                                                             }
-                                                                            <td>@cond.MENSAGENS.MENS_DT_ENVIO.Value.ToShortDateString() @cond.MENSAGENS.MENS_DT_ENVIO.Value.ToShortTimeString()</td>
+                                                                            @if (cond.MENSAGENS.MENS_DT_ENVIO != null)
+	                                                                        {
+                                                                                <td>@cond.MENSAGENS.MENS_DT_ENVIO.Value.ToShortDateString() @cond.MENSAGENS.MENS_DT_ENVIO.Value.ToShortTimeString()</td>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <td>-</td>
+                                                                            }
                                                                             @if (cond.MENSAGENS.MENS_IN_TIPO == 1)
                                                                             {
-                                                                                <td><span class="badge badge-primary">E-Mail</span></td>
+                                                                                <td><span clasmes="badge badge-primary">E-Mail</span></td>
                                                                             }
                                                                             else if (cond.MENSAGENS.MENS_IN_TIPO == 2)
                                                                             {
@@ -1077,7 +1084,7 @@
                                                                                 <td><span class="badge badge-warning">Descartado</span></td>
                                                                             }
                                                                             <td class="td-one-action">
-                                                                                @Html.TableLinkDetails(cond.MEDE_CD_ID, "ProcessarMensagem", "fa-search", "Consultar / Processar")
+                                                                                @Html.TableLinkDetails(cond.MENSAGENS.MENS_CD_ID, "VerMensagem", "fa-search", "Ver Mensagem")
                                                                             </td>
                                                                         </tr>
                                                                     }

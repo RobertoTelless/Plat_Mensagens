@@ -27,6 +27,26 @@
             </div>
         </div>
     </div>
+    <div id="containerModalDescF">
+        <div class="modal fade" id="modalDescF" tabindex="-1" role="dialog" aria-labelledby="modalDescF" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalDesc">Retorno do Erro</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div id="modalDescBodyF" class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modalContainer">
         <div id="modal" class="modal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
@@ -216,7 +236,7 @@
                                             <td style="width: auto">@cond.MENSAGENS_DESTINOS.Count</td>
                                             @if (cond.MENS_TX_RETORNO != null)
                                             {
-                                                <td style="cursor: pointer; text-decoration: underline; color: #337ab7;" onclick="mostrarDescFalha('@cond.MENS_TX_RETORNO')">Ver Falhas</td>
+                                                <td style="cursor: pointer; text-decoration: underline; color: #337ab7;" onclick="mostrarDescFalhas('@cond.MENS_TX_RETORNO')">Ver Falhas</td>
                                             }
                                             else
                                             {
@@ -226,7 +246,6 @@
                                                 @if (ViewBag.Perfil != "VIS")
                                                 {
                                                     @Html.TableLinkDetails(cond.MENS_CD_ID, "VerMensagem", "fa-search", "Consultar")
-                                                    @*@Html.TableLinkDetails(cond.MENS_CD_ID, "ReenviarMensagem", "fa-edit", "Reenviar")*@
                                                     if (cond.MENS_IN_ATIVO == 1)
                                                     {
                                                         <span style="color: #337ab7; cursor:pointer;" alt="Desativar" class="tbl-link fa-lg fa fa-trash-o" onclick="ShowModalExcluir('/Mensagem/ExcluirMensagem/@cond.MENS_CD_ID')" title="Excluir"></span>
@@ -319,8 +338,8 @@
     </script>
     <script>
         function mostrarDescFalhas(desc) {
-            $('#modalDescBody').html(desc);
-            $('#modalDesc').modal('show');
+            $('#modalDescBodyF').html(desc);
+            $('#modalDescF').modal('show');
         }
     </script>
 

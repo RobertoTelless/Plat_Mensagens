@@ -908,6 +908,13 @@ namespace SMS_Presentation.Controllers
         }
 
         [HttpGet]
+        public ActionResult VerMensagem(Int32 id)
+        {
+            Session["VoltaMensagem"] = 2;
+            return RedirectToAction("VerMensagem", "Mensagem", new { id = id });
+        }
+
+        [HttpGet]
         public ActionResult ExcluirCliente(Int32 id)
         {
 

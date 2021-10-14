@@ -251,6 +251,25 @@ namespace SMS_Presentation.Controllers
             return RedirectToAction("MontarTelaMensagem");
         }
 
+        public ActionResult VoltarMensagemAnexo()
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+            Int32 volta = (Int32)Session["VoltaMensagem"];
+            if (volta == 1)
+            {
+                return RedirectToAction("MontarTelaMensagem");
+            }
+            else if (volta == 2)
+            {
+                return RedirectToAction("VoltarAnexoCliente", "Cliente");
+            }
+            return RedirectToAction("MontarTelaMensagem");
+        }
+
         [HttpGet]
         [ValidateInput(false)]
         public ActionResult IncluirMensagem()
@@ -306,7 +325,7 @@ namespace SMS_Presentation.Controllers
             String header = temApp.GetByCode("TEMPBAS").TEMP_TX_CABECALHO;
             String body = temApp.GetByCode("TEMPBAS").TEMP_TX_CORPO;
             String footer = temApp.GetByCode("TEMPBAS").TEMP_TX_DADOS;
-            footer = footer.Replace("{NomeRemetente}", usuario.ASSINANTE.ASSI_NM_NOME);
+            footer = footer.Replace("{NomeRemetente}", "<b>" + usuario.ASSINANTE.ASSI_NM_NOME + "</b>");
 
             Session["MensagemNovo"] = 0;
             MENSAGENS item = new MENSAGENS();
@@ -422,6 +441,7 @@ namespace SMS_Presentation.Controllers
         public void UploadFileToSession(IEnumerable<HttpPostedFileBase> files, String profile)
         {
             List<FileQueue> queue = new List<FileQueue>();
+            List<Attachment> att = new List<Attachment>();
             foreach (var file in files)
             {
                 FileQueue f = new FileQueue();
@@ -439,9 +459,11 @@ namespace SMS_Presentation.Controllers
                         f.Profile = 1;
                     }
                 }
+                att.Add(new Attachment(file.InputStream, f.Name));
                 queue.Add(f);
             }
             Session["FileQueueMensagem"] = queue;
+            Session["Attachments"] = att;
         }
 
         [HttpPost]
@@ -612,7 +634,7 @@ namespace SMS_Presentation.Controllers
                     {
                         foreach (MENSAGEM_ANEXO item in vm.MENSAGEM_ANEXO)
                         {
-                            Attachment anexo = new Attachment(item.MEAN_AQ_ARQUIVO);
+                            Attachment anexo = new Attachment(Server.MapPath(item.MEAN_AQ_ARQUIVO));
                             listaAnexo.Add(anexo);
                         }
                     }
@@ -632,6 +654,7 @@ namespace SMS_Presentation.Controllers
                     mensagem.SENHA_EMISSOR = conf.CONF_NM_SENHA_EMISSOR;
                     mensagem.SMTP = conf.CONF_NM_HOST_SMTP;
                     mensagem.NETWORK_CREDENTIAL = net;
+                    //mensagem.ATTACHMENT = (List<Attachment>)Session["Attachments"];
                     mensagem.ATTACHMENT = listaAnexo;
 
                     // Envia mensagem
@@ -645,7 +668,7 @@ namespace SMS_Presentation.Controllers
                         if (ex.GetType() == typeof(SmtpFailedRecipientException))
                         {
                             var se = (SmtpFailedRecipientException)ex;
-                            erro += "/r/n" + se.FailedRecipient;
+                            erro += se.FailedRecipient;
                         }
                     }
 

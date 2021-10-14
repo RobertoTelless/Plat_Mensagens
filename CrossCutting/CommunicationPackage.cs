@@ -18,6 +18,7 @@ namespace CrossCutting
         {
             try
             {
+                
                 MailMessage mensagem = new MailMessage();
                 SmtpClient smtp = new SmtpClient();
                 mensagem.From = new MailAddress(email.EMAIL_EMISSOR, email.NOME_EMISSOR);

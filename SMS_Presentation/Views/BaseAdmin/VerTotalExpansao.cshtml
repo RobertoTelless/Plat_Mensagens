@@ -13,7 +13,7 @@
                 <a href="@Url.Action("CarregarBase", "DaseAdmin")">Dashboards</a>
             </li>
             <li class="active">
-                <strong>Estatísticas de Envio de E-Mails</strong>
+                <strong>Estatísticas de Envio de Mensagens</strong>
             </li>
         </ol>
         <br />
@@ -52,7 +52,7 @@
                         <div class="col-lg-4 col-md-4 col-xs-12">
                             <div class="col-lg-12 col-md-12 col-xs-12 ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 2px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; height: 530px">
                                 <div class="ibox-title">
-                                    <h4>Estatística de Envio de E-Mails/dia</h4>
+                                    <h4>Estatística de Envio de Mensagens/dia</h4>
                                     <h4 style="color: brown">(Exibindo apenas o mês corrente)</h4>
                                     <div class="ibox-tools">
                                         <a class="collapse-link">
@@ -97,7 +97,7 @@
                                             </table>
                                         }
                                         <div class="form-group">
-                                            @Html.ButtonLinkIndex(text: "Ver Todos os Meses", action: "VerEmailExpansaoTodos", controller: "BaseAdmin")
+                                            @Html.ButtonLinkIndex(text: "Ver Todos os Meses", action: "VerTotalExpansaoTodos", controller: "BaseAdmin")
                                         </div>
                                     </div>
                                 </div>
@@ -106,7 +106,7 @@
                         <div class="col-lg-8 col-md-8 col-xs-12">
                             <div class="col-lg-12 col-md-12 col-xs-12 ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 2px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; height: 530px">
                                 <div class="ibox-title">
-                                    <h4>Gráfico do Envio de E-Mails/Dia (Mês Corrente)</h4>
+                                    <h4>Gráfico do Envio de Mensagens/Dia (Mês Corrente)</h4>
                                     <div class="ibox-tools">
                                         <a class="collapse-link">
                                             <i class="fa fa-chevron-up"></i>
@@ -303,7 +303,7 @@
         $(document).ready(function () {
 
             $.ajax({
-                url: '../BaseAdmin/GetDadosGraficoEmail'
+                url: '../BaseAdmin/GetDadosGraficoTotal'
                 , type: 'POST'
                 , success: function (result) {
             var lineData = {
@@ -338,7 +338,7 @@
         $(document).ready(function () {
 
             $.ajax({
-                url: '../BaseAdmin/GetDadosGraficoEmail'
+                url: '../BaseAdmin/GetDadosGraficoTotal'
                 , type: 'POST'
                 , success: function (result) {
                 var barData = {
@@ -363,10 +363,6 @@
             });
         });
     </script>
-
-
-
-
 }
 
 @if (ViewBag.Message != null)

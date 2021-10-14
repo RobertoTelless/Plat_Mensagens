@@ -2946,6 +2946,13 @@
     <Content Include="Views\Mensagem\MontarTelaMensagem.cshtml" />
     <Content Include="Views\Mensagem\IncluirMensagem.cshtml" />
     <Content Include="Views\Mensagem\VerMensagem.cshtml" />
+    <Content Include="Views\BaseAdmin\VerSMSExpansao.cshtml" />
+    <Content Include="Views\BaseAdmin\VerTotalExpansao.cshtml" />
+    <Content Include="Views\BaseAdmin\VerFalhasExpansao.cshtml" />
+    <Content Include="Views\BaseAdmin\VerEMailExpansaoTodos.cshtml" />
+    <Content Include="Views\BaseAdmin\VerSMSExpansaoTodos.cshtml" />
+    <Content Include="Views\BaseAdmin\VerTotalExpansaoTodos.cshtml" />
+    <Content Include="Views\BaseAdmin\VerFalhasExpansaoTodos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
