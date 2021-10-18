@@ -113,7 +113,11 @@
                             </div>
                         </div>
                     </div>
-                    @Html.ButtonLinkIndex(text: "Enviar Novas Mensagens", action: "IncluirMensagem", controller: "Mensagem", buttonClass: "btn btn-xs btn-success")
+                    @Html.ButtonLinkIndex(text: "Envio Rápido de Mensagens", action: "IncluirMensagem", controller: "Mensagem", buttonClass: "btn btn-xs btn-success")
+                    @if (ViewBag.Perfil != "VIS")
+                    {
+                        @Html.ButtonLinkIndex(text: "Cadastro Rápido de Contatos", action: "IncluirContatoRapido", controller: "Cliente", buttonClass: "btn btn-xs btn-success")
+                    }
                 </div>
 
                 <div class="col-lg-4 col-md-4 col-sm-12">

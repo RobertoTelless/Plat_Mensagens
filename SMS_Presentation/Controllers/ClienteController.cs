@@ -2607,5 +2607,148 @@ namespace SMS_Presentation.Controllers
             Response.End();
             return RedirectToAction("VoltarAnexoCliente");
         }
+
+        [HttpGet]
+        public ActionResult IncluirContatoRapido()
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCliente"] = 2;
+                    return RedirectToAction("CarregarBase", "BaseAdmin");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Prepara listas
+            ViewBag.TiposPessoa = new SelectList(baseApp.GetAllTiposPessoa().OrderBy(p => p.TIPE_NM_NOME), "TIPE_CD_ID", "TIPE_NM_NOME");
+            Session["Cliente"] = null;
+            List<SelectListItem> sexo = new List<SelectListItem>();
+            sexo.Add(new SelectListItem() { Text = "Masculino", Value = "1" });
+            sexo.Add(new SelectListItem() { Text = "Feminino", Value = "2" });
+            sexo.Add(new SelectListItem() { Text = "Outros", Value = "3" });
+            ViewBag.sexo = new SelectList(sexo, "Value", "Text");
+            List<SelectListItem> status = new List<SelectListItem>();
+            status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
+            status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
+            status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
+            status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
+            status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
+            status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
+            ViewBag.Status = new SelectList(status, "Value", "Text");
+
+            // Prepara view
+            Session["ClienteNovo"] = 0;
+            CLIENTE item = new CLIENTE();
+            ClienteViewModel vm = Mapper.Map<CLIENTE, ClienteViewModel>(item);
+            vm.ASSI_CD_ID = idAss;
+            vm.CACL_CD_ID = 1;
+            vm.CLIE_AQ_FOTO = "~/Images/icone_imagem.jpg";
+            vm.CLIE_DT_CADASTRO = DateTime.Today.Date;
+            vm.CLIE_IN_ATIVO = 1;
+            vm.USUA_CD_ID = usuario.USUA_CD_ID;
+            vm.CLIE_IN_STATUS = 1;
+            vm.TIPE_CD_ID = 0;
+            return View(vm);
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public ActionResult IncluirContatoRapido(ClienteViewModel vm)
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            ViewBag.TiposPessoa = new SelectList(baseApp.GetAllTiposPessoa().OrderBy(p => p.TIPE_NM_NOME), "TIPE_CD_ID", "TIPE_NM_NOME");
+            Session["Cliente"] = null;
+            List<SelectListItem> sexo = new List<SelectListItem>();
+            sexo.Add(new SelectListItem() { Text = "Masculino", Value = "1" });
+            sexo.Add(new SelectListItem() { Text = "Feminino", Value = "2" });
+            sexo.Add(new SelectListItem() { Text = "Outros", Value = "3" });
+            ViewBag.sexo = new SelectList(sexo, "Value", "Text");
+            List<SelectListItem> status = new List<SelectListItem>();
+            status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
+            status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
+            status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
+            status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
+            status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
+            status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
+            ViewBag.Status = new SelectList(status, "Value", "Text");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Executa a operação
+                    CLIENTE item = Mapper.Map<ClienteViewModel, CLIENTE>(vm);
+                    USUARIO usuario = (USUARIO)Session["UserCredentials"];
+                    Int32 volta = baseApp.ValidateCreate(item, usuario);
+
+                    // Verifica retorno
+                    if (volta == 1)
+                    {
+                        Session["MensCliente"] = 3;
+                        return RedirectToAction("CarregarBase", "BaseAdmin");
+                    }
+
+                    // Cria pastas
+                    String caminho = "/Imagens/" + idAss.ToString() + "/Cliente/" + item.CLIE_CD_ID.ToString() + "/Fotos/";
+                    Directory.CreateDirectory(Server.MapPath(caminho));
+                    caminho = "/Imagens/" + idAss.ToString() + "/Cliente/" + item.CLIE_CD_ID.ToString() + "/Anexos/";
+                    Directory.CreateDirectory(Server.MapPath(caminho));
+
+                    // Sucesso
+                    listaMaster = new List<CLIENTE>();
+                    Session["ListaCliente"] = null;
+                    Session["IncluirCliente"] = 1;
+                    Session["ClienteNovo"] = item.CLIE_CD_ID;
+
+                    if (item.TIPE_CD_ID == 2)
+                    {
+                        var lstQs = PesquisaCNPJ(item);
+
+                        foreach (var qs in lstQs)
+                        {
+                            Int32 voltaQs = ccnpjApp.ValidateCreate(qs, usuario);
+                        }
+                    }
+
+                    if ((Int32)Session["VoltaCliente"] == 3)
+                    {
+                        Session["VoltaCliente"] = 0;
+                        return RedirectToAction("IncluirContatoRapido", "Cliente");
+                    }
+                    return RedirectToAction("CarregarBase", "BaseAdmin");
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = ex.Message;
+                    return View(vm);
+                }
+            }
+            else
+            {
+                vm.TIPE_CD_ID = 0;
+                return View(vm);
+            }
+        }
+
+
     }
 }

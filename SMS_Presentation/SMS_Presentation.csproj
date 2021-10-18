@@ -2953,6 +2953,7 @@
     <Content Include="Views\BaseAdmin\VerSMSExpansaoTodos.cshtml" />
     <Content Include="Views\BaseAdmin\VerTotalExpansaoTodos.cshtml" />
     <Content Include="Views\BaseAdmin\VerFalhasExpansaoTodos.cshtml" />
+    <Content Include="Views\Cliente\IncluirContatoRapido.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
