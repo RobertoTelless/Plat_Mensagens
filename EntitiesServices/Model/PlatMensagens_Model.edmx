@@ -194,6 +194,7 @@
           <Property Name="GRCL_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GRUP_CD_ID" Type="int" Nullable="false" />
           <Property Name="CLIE_CD_ID" Type="int" Nullable="false" />
+          <Property Name="GRCL_IN_ATIVO" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="LOG">
           <Key>
@@ -239,6 +240,7 @@
           <Property Name="MENS_NM_CABECALHO" Type="text" />
           <Property Name="MENS_NM_RODAPE" Type="text" />
           <Property Name="MENS_NM_LINK" Type="varchar" MaxLength="500" />
+          <Property Name="MENS_TX_SMS" Type="varchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="MENSAGENS_DESTINOS">
           <Key>
@@ -1678,6 +1680,7 @@
           <Property Name="CLIE_CD_ID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="CLIENTE" Relationship="PlatMensagensModel.FK_GRUPO_CLIENTE_CLIENTE" FromRole="GRUPO_CLIENTE" ToRole="CLIENTE" />
           <NavigationProperty Name="GRUPO" Relationship="PlatMensagensModel.FK_GRUPO_CLIENTE_GRUPO" FromRole="GRUPO_CLIENTE" ToRole="GRUPO" />
+          <Property Name="GRCL_IN_ATIVO" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_CLIENTE_ASSINANTE">
           <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="1" />
@@ -1847,6 +1850,7 @@
           <Property Name="MENS_NM_RODAPE" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MENSAGEM_ANEXO" Relationship="PlatMensagensModel.FK_MENSAGEM_ANEXO_MENSAGENS" FromRole="MENSAGENS" ToRole="MENSAGEM_ANEXO" />
           <Property Name="MENS_NM_LINK" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MENS_TX_SMS" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="MENSAGENS_DESTINOS">
           <Key>
@@ -2310,6 +2314,7 @@
           <EntitySetMapping Name="GRUPO_CLIENTE">
             <EntityTypeMapping TypeName="PlatMensagensModel.GRUPO_CLIENTE">
               <MappingFragment StoreEntitySet="GRUPO_CLIENTE">
+                <ScalarProperty Name="GRCL_IN_ATIVO" ColumnName="GRCL_IN_ATIVO" />
                 <ScalarProperty Name="CLIE_CD_ID" ColumnName="CLIE_CD_ID" />
                 <ScalarProperty Name="GRUP_CD_ID" ColumnName="GRUP_CD_ID" />
                 <ScalarProperty Name="GRCL_CD_ID" ColumnName="GRCL_CD_ID" />
@@ -2319,6 +2324,7 @@
           <EntitySetMapping Name="MENSAGENS">
             <EntityTypeMapping TypeName="PlatMensagensModel.MENSAGENS">
               <MappingFragment StoreEntitySet="MENSAGENS">
+                <ScalarProperty Name="MENS_TX_SMS" ColumnName="MENS_TX_SMS" />
                 <ScalarProperty Name="MENS_NM_LINK" ColumnName="MENS_NM_LINK" />
                 <ScalarProperty Name="MENS_NM_RODAPE" ColumnName="MENS_NM_RODAPE" />
                 <ScalarProperty Name="MENS_NM_CABECALHO" ColumnName="MENS_NM_CABECALHO" />

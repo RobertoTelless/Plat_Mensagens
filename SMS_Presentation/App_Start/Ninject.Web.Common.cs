@@ -78,6 +78,7 @@ namespace Presentation.Start
             kernel.Bind<IClienteAppService>().To<ClienteAppService>();
             kernel.Bind<IClienteCnpjAppService>().To<ClienteCnpjAppService>();
             kernel.Bind<IMensagemAppService>().To<MensagemAppService>();
+            kernel.Bind<IGrupoAppService>().To<GrupoAppService>();
 
             kernel.Bind(typeof(IServiceBase<>)).To(typeof(ServiceBase<>));
             kernel.Bind<IUsuarioService>().To<UsuarioService>();
@@ -89,6 +90,7 @@ namespace Presentation.Start
             kernel.Bind<IClienteService>().To<ClienteService>();
             kernel.Bind<IClienteCnpjService>().To<ClienteCnpjService>();
             kernel.Bind<IMensagemService>().To<MensagemService>();
+            kernel.Bind<IGrupoService>().To<GrupoService>();
 
             kernel.Bind(typeof(IRepositoryBase<>)).To(typeof(RepositoryBase<>));
             kernel.Bind<IConfiguracaoRepository>().To<ConfiguracaoRepository>();
@@ -113,6 +115,8 @@ namespace Presentation.Start
             kernel.Bind<IMensagemRepository>().To<MensagemRepository>();
             kernel.Bind<IMensagemDestinoRepository>().To<MensagemDestinoRepository>();
             kernel.Bind<IMensagemAnexoRepository>().To<MensagemAnexoRepository>();
+            kernel.Bind<IGrupoRepository>().To<GrupoRepository>();
+            kernel.Bind<IGrupoContatoRepository>().To<GrupoContatoRepository>();
 
         }
     }

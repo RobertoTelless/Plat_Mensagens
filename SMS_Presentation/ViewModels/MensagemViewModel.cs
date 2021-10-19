@@ -21,8 +21,7 @@ namespace PlatMensagem_Solution.ViewModels
         public Nullable<System.DateTime> MENS_DT_CRIACAO { get; set; }
         [StringLength(50, ErrorMessage = "O NOME DA CAMPANHA deve conter no máximo 50 caracteres.")]
         public string MENS_NM_CAMPANHA { get; set; }
-        [Required(ErrorMessage = "Campo TEXTO DA MENSAGEM obrigatorio")]
-        [StringLength(5000, MinimumLength = 2, ErrorMessage = "O TEXTO DA MENSAGEM deve conter no minimo 2 e no máximo 5000 caracteres.")]
+        [StringLength(5000,ErrorMessage = "O TEXTO DA MENSAGEM deve conter no máximo 5000 caracteres.")]
         public string MENS_TX_TEXTO { get; set; }
         [Required(ErrorMessage = "Campo TIPO DE MENSAGEM obrigatorio")]
         public Nullable<int> MENS_IN_TIPO { get; set; }
@@ -33,7 +32,10 @@ namespace PlatMensagem_Solution.ViewModels
         public string MENS_TX_RETORNO { get; set; }
         public string MENS_NM_CABECALHO { get; set; }
         public string MENS_NM_RODAPE { get; set; }
+        [StringLength(500, ErrorMessage = "O LINK deve conter no máximo 500 caracteres.")]
         public string MENS_NM_LINK { get; set; }
+        [StringLength(250, ErrorMessage = "O TEXTO DO SMS deve conter no máximo 250 caracteres.")]
+        public string MENS_TX_SMS { get; set; }
 
         public Int32? SEXO { get; set; }
         public string NOME { get; set; }
@@ -44,6 +46,7 @@ namespace PlatMensagem_Solution.ViewModels
         public Int32? CATEGORIA { get; set; }
         public Int32? STATUS { get; set; }
         public String LINK { get; set; }
+        public Int32? GRUPO { get; set; }
 
         public virtual ASSINANTE ASSINANTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

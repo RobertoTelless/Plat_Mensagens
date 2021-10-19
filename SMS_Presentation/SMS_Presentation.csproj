@@ -308,6 +308,7 @@
     <Compile Include="Controllers\BaseAdminController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\ControleAcessoController.cs" />
+    <Compile Include="Controllers\GrupoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MensagemController.cs" />
     <Compile Include="Controllers\NotificacaoController.cs" />
@@ -321,6 +322,8 @@
     <Compile Include="Helpers\HMTLHelperExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AssinanteViewModel.cs" />
+    <Compile Include="ViewModels\GrupoContatoViewModel.cs" />
+    <Compile Include="ViewModels\GrupoViewModel.cs" />
     <Compile Include="ViewModels\MensagemViewModel.cs" />
     <Compile Include="ViewModels\ClienteViewModel.cs" />
     <Compile Include="ViewModels\ModeloViewModel.cs" />
@@ -2954,6 +2957,10 @@
     <Content Include="Views\BaseAdmin\VerTotalExpansaoTodos.cshtml" />
     <Content Include="Views\BaseAdmin\VerFalhasExpansaoTodos.cshtml" />
     <Content Include="Views\Cliente\IncluirContatoRapido.cshtml" />
+    <Content Include="Views\Grupo\MontarTelaGrupo.cshtml" />
+    <Content Include="Views\Grupo\IncluirGrupo.cshtml" />
+    <Content Include="Views\Grupo\EditarGrupo.cshtml" />
+    <Content Include="Views\Grupo\IncluirContatoGrupo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -17,6 +17,7 @@ namespace EntitiesServices.Model
         public int GRCL_CD_ID { get; set; }
         public int GRUP_CD_ID { get; set; }
         public int CLIE_CD_ID { get; set; }
+        public int GRCL_IN_ATIVO { get; set; }
     
         public virtual CLIENTE CLIENTE { get; set; }
         public virtual GRUPO GRUPO { get; set; }

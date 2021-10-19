@@ -1,18 +1,41 @@
 ﻿@using Presentation.Extensions
-@model PlatMensagem_Solution.ViewModels.ClienteViewModel
+@model PlatMensagem_Solution.ViewModels.GrupoViewModel
 @{
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
 }
 <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="modalContainer">
+        <div id="modal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        @*titulo gerado dinamicamente*@
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @*Gerado dinamicamente*@
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="page-title">
-        <h3 class="title">Contatos</h3>
+        <h3 class="title">Grupos</h3>
         <br />
         <ol class="breadcrumb">
             <li>
                 <a href="@Url.Action("CarregarBase", "BaseAdmin")">Dashboard</a>
             </li>
+            <li>
+                <a href="@Url.Action("MontarTelaGrupo", "Grupo")">Grupos</a>
+            </li>
             <li class="active">
-                <strong>Contatos - Inclusão Rápida</strong>
+                <strong>Grupos - Consulta/Edição</strong>
             </li>
         </ol>
         <br />
@@ -21,7 +44,7 @@
         <div class="col-lg-12 col-md-12 col-xs-12">
             <div class="col-lg-12 col-md-12 col-xs-12 ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Contatos - Inclusão Rápida</h5>
+                    <h5>Grupos - Consulta/Edição</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -52,7 +75,7 @@
                         </div>
                     }
                     <div class="tabs-container">
-                        @using (Html.BeginForm("IncluirContatoRapido", "Cliente", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", @id = "pwd-container1" }))
+                        @using (Html.BeginForm("EditarGrupo", "Grupo", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", @id = "pwd-container1" }))
                         {
 
                             <ul class="nav nav-tabs">
@@ -65,88 +88,132 @@
                                     <div class="panel-body">
                                         <div class="row">
                                             <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
-                                                <div class="col-lg-2 col-md-2 col-xs-12">
-                                                    @Html.HiddenFor(m => m.ASSI_CD_ID)
-                                                    @Html.HiddenFor(m => m.CLIE_DT_CADASTRO)
-                                                    @Html.HiddenFor(m => m.CLIE_IN_ATIVO)
-                                                    @Html.HiddenFor(m => m.CACL_CD_ID)
-                                                    @Html.HiddenFor(m => m.CLIE_AQ_FOTO)
-                                                    @Html.HiddenFor(m => m.USUA_CD_ID)
-                                                    Tipo de Pessoa*
-                                                    @Html.DropDownListFor(m => m.TIPE_CD_ID, (SelectList)ViewBag.TiposPessoa, "Selecionar", new { @class = "form-control", autofocus = true, @id = "pessoa", onchange = "ValidaDiv($(this).val())" })
-                                                    @Html.ValidationMessageFor(m => m.TIPE_CD_ID, "", new { @style = "color:red" })
-                                                </div>
-                                                <div class="col-lg-2 col-md-2 col-xs-12">
-                                                    Status*
-                                                    @Html.DropDownListFor(m => m.CLIE_IN_STATUS, (SelectList)ViewBag.Status, "Selecionar", new { @class = "form-control", autofocus = true })
-                                                    @Html.ValidationMessageFor(m => m.CLIE_IN_STATUS, "", new { @style = "color:red" })
-                                                </div>
                                                 <div class="col-lg-4 col-md-4 col-xs-12">
+                                                    @Html.HiddenFor(m => m.ASSI_CD_ID)
+                                                    @Html.HiddenFor(m => m.GRUP_DT_CADASTRO)
+                                                    @Html.HiddenFor(m => m.GRUP_IN_ATIVO)
+                                                    @Html.HiddenFor(m => m.USUA_CD_ID)
+                                                    @Html.HiddenFor(m => m.GRUP_CD_ID)
                                                     Nome*
-                                                    @Html.TextBoxFor(m => m.CLIE_NM_NOME, new { @class = "form-control", autofocus = true, @id = "nome" })
-                                                    @Html.ValidationMessageFor(m => m.CLIE_NM_NOME, "", new { @style = "color:red" })
-                                                </div>
-                                            </div>
-                                            <div class="form-group" style=" margin-left: -15px; margin-right: -15px;" id="PF">
-                                                <div class="col-lg-3 col-md-3 col-xs-12">
-                                                    CPF
-                                                    @Html.TextBoxFor(m => m.CLIE_NR_CPF, new { @class = "form-control", @id = "cpf", autofocus = true })
-                                                    @Html.ValidationMessageFor(m => m.CLIE_NR_CPF, "", new { @style = "color:red" })
+                                                    @Html.TextBoxFor(m => m.GRUP_NM_NOME, new { @class = "form-control", autofocus = true, @id = "nome" })
+                                                    @Html.ValidationMessageFor(m => m.GRUP_NM_NOME, "", new { @style = "color:red" })
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-xs-12">
-                                                    Data Nascimento
-                                                    @Html.TextBoxFor(m => m.CLIE_DT_NASCIMENTO, "{0:dd/MM/yyyy}", new { @class = "form-control date-picker", autofocus = true, @id = "dn" })
-                                                    @Html.ValidationMessageFor(m => m.CLIE_DT_NASCIMENTO, "", new { @style = "color:red" })
+                                                    Data de Inclusão
+                                                    @Html.TextBoxFor(m => m.GRUP_DT_CADASTRO, "{0:dd/MM/yyyy}", new { @class = "form-control", autofocus = true, @id = "dn", @readonly="readonly" })
                                                 </div>
-                                                <div class="col-lg-2 col-md-2 col-xs-12">
-                                                    Gênero
-                                                    @Html.DropDownListFor(m => m.CLIE_IN_SEXO, (SelectList)ViewBag.Sexo, "Selecionar", new { @class = "form-control", autofocus = true })
-                                                    @Html.ValidationMessageFor(m => m.CLIE_IN_SEXO, "", new { @style = "color:red" })
-                                                </div>
+
                                             </div>
-                                            <div class="form-group" style=" margin-left: -15px; margin-right: -15px;" id="PJ">
-                                                <div class="col-lg-3 col-md-3 col-xs-12">
-                                                    CNPJ
-                                                    @*<div class="input-group">*@
-                                                        @Html.TextBoxFor(m => m.CLIE_NR_CNPJ, new { @class = "form-control", @id = "cnpj" })
-                                                        @Html.ValidationMessageFor(m => m.CLIE_NR_CNPJ, "", new { @style = "color:red" })
-                                                        @*<span class="input-group-btn">
-                                                            <span class="btn btn-success" onclick="PesquisaCNPJ($('#cnpj').val())">Buscar CNPJ</span>
-                                                        </span>*@
-                                                    @*</div>*@
-                                                </div>
-                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <hr />
                                             <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
-                                                <div class="col-lg-3 col-md-3 col-xs-12">
-                                                    E-Mail*
-                                                    @Html.TextBoxFor(m => m.CLIE_NM_EMAIL, new { @class = "form-control", autofocus = true, id = "email" })
-                                                    @Html.ValidationMessageFor(m => m.CLIE_NM_EMAIL, "", new { @style = "color:red" })
-                                                </div>
-                                                <div class="col-lg-2 col-md-2 col-xs-12">
-                                                    Celular*
-                                                    @Html.TextBoxFor(m => m.CLIE_NR_CELULAR, new { @class = "form-control", autofocus = true, @id = "cel" })
-                                                    @Html.ValidationMessageFor(m => m.CLIE_NR_CELULAR, "", new { @style = "color:red" })
-                                                </div>
-                                                <div class="col-lg-2 col-md-2 col-xs-12">
-                                                    WhatsApp
-                                                    @Html.TextBoxFor(m => m.CLIE_NR_WHATSAPP, new { @class = "form-control", autofocus = true, @id = "wh" })
-                                                    @Html.ValidationMessageFor(m => m.CLIE_NR_WHATSAPP, "", new { @style = "color:red" })
-                                                </div>
-                                                <div class="col-lg-2 col-md-2 col-xs-12">
-                                                    Telefone
-                                                    @Html.TextBoxFor(m => m.CLIE_NR_TELEFONE, new { @class = "form-control", autofocus = true, @id = "tel" })
-                                                    @Html.ValidationMessageFor(m => m.CLIE_NR_TELEFONE, "", new { @style = "color:red" })
+                                                <div class="col-lg-12 col-md-12 col-xs-12">
+                                                    <h4>Contatos do Grupo</h4>
+                                                    <br />
+                                                    @if (Model.GRUPO_CLIENTE.Count > 0)
+                                                    {
+                                                        <table class="table table-striped table-bordered table-hover dataTables-example">
+                                                            <thead style="background-color:lightsteelblue">
+                                                                <tr>
+                                                                    <th>Nome/Razão Social</th>
+                                                                    <th style="width: auto">Status</th>
+                                                                    <th style="width: auto">CPF</th>
+                                                                    <th style="width: auto">CNPJ</th>
+                                                                    <th style="width: auto">E-Mail</th>
+                                                                    <th style="width: auto">Celular</th>
+                                                                    <th style="width: auto">WhatsApp</th>
+                                                                    <th style="width: auto">Cidade</th>
+                                                                    <th style="width: auto">UF</th>
+                                                                    <th></th>
+                                                                    <th class="td-one-action">Ações</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var cond in (Model.GRUPO_CLIENTE))
+                                                                {
+                                                                    <tr>
+                                                                        @if (cond.CLIENTE.CLIE_NM_RAZAO != null)
+                                                                        {
+                                                                            <td>@cond.CLIENTE.CLIE_NM_RAZAO</td>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <td>@cond.CLIENTE.CLIE_NM_NOME</td>
+                                                                        }
+                                                                        @if (cond.CLIENTE.CLIE_IN_STATUS == 1)
+	                                                                    {
+                                                                            <td><span class="badge badge-warning">Prospecção</span></td>
+                                                                        }
+                                                                        else if (cond.CLIENTE.CLIE_IN_STATUS == 2)
+                                                                        {
+                                                                            <td><span class="badge badge-warning">Oportunidade</span></td>
+                                                                        }
+                                                                        else if (cond.CLIENTE.CLIE_IN_STATUS == 3)
+                                                                        {
+                                                                            <td><span class="badge badge-primary">Proposta</span></td>
+                                                                        }
+                                                                        else if (cond.CLIENTE.CLIE_IN_STATUS == 4)
+                                                                        {
+                                                                            <td><span class="badge badge-success">Engajado</span></td>
+                                                                        }
+                                                                        else if (cond.CLIENTE.CLIE_IN_STATUS == 5)
+                                                                        {
+                                                                            <td><span class="badge badge-danger">Descartado</span></td>
+                                                                        }
+                                                                        else if (cond.CLIENTE.CLIE_IN_STATUS == 6)
+                                                                        {
+                                                                            <td><span class="badge badge-warning-light">Suspenso</span></td>
+                                                                        }
+                                                                        <td style="width: auto">@cond.CLIENTE.CLIE_NR_CPF</td>
+                                                                        <td style="width: auto">@cond.CLIENTE.CLIE_NR_CNPJ</td>
+                                                                        <td style="width: auto">@cond.CLIENTE.CLIE_NM_EMAIL</td>
+                                                                        <td style="width: auto">@cond.CLIENTE.CLIE_NR_CELULAR</td>
+                                                                        <td style="width: auto">@cond.CLIENTE.CLIE_NR_WHATSAPP</td>
+                                                                        <td style="width: auto">@cond.CLIENTE.CLIE_NM_CIDADE</td>
+                                                                        @if (cond.CLIENTE.UF != null)
+                                                                        {
+                                                                            <td style="width: auto">@cond.CLIENTE.UF.UF_SG_SIGLA</td>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <td style="width: auto">-</td>
+                                                                        }
+                                                                        @if (!String.IsNullOrEmpty(cond.CLIENTE.CLIE_AQ_FOTO))
+                                                                        {
+                                                                            <td><img src="@Url.Content(cond.CLIENTE.CLIE_AQ_FOTO)" style="width: auto; height: auto; max-height: 55px; max-width: 45px;" data-toggle="modal" data-target="#fotoModal" onclick="CriaModal('@cond.CLIENTE.CLIE_NM_NOME', '@Url.Content(cond.CLIENTE.CLIE_AQ_FOTO)')"></td>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <td><img src="~/Images/a8.jpg" style="width: auto; height: auto; max-height: 55px; max-width: 45px;" data-toggle="modal" data-target="#fotoModal" onclick="CriaModal('@cond.CLIENTE.CLIE_NM_NOME', '/Images/a8.jpg')"></td>
+                                                                        }
+                                                                        <td class="td-one-action">
+                                                                            @if (cond.GRCL_IN_ATIVO == 1)
+                                                                            {
+                                                                                <span style="color: #337ab7; cursor:pointer;" alt="Desativar" class="tbl-link fa-lg fa fa-trash-o" onclick="ShowModalExcluir('/Grupo/ExcluirContatoGrupo/@cond.GRCL_CD_ID')" title="Excluir"></span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span style="color: #337ab7; cursor:pointer;" alt="Reativar" class="tbl-link fa-lg fa fa-refresh" onclick="ShowModalReativar('/Grupo/ReativarContatoGrupo/@cond.GRCL_CD_ID')" title="Reativar"></span>
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    }
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.ButtonLinkIndex(text: "Incluir Novo Contato no Grupo", action: "IncluirContatoGrupo", controller: "Grupo")
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <br />
-                                    @Html.ButtonActionSubmit(text: "BtnSubmit", htmlAttributes: new { id = "submit", style = "display: none;" })
-                                    <button style="margin-left: 15px;" class="btnSubmit btn btn-sm btn-success" id="basictoast" type="button">Salvar e Encerrar</button>
-                                    <button class="btnReturn btn btn-sm btn-success" id="basictoast" type="button">Salvar e Incluir Novo Contato</button>
-                                    @Html.ButtonLinkIndex(text: "Voltar", action: "CarregarBase", controller: "BaseAdmin")
+                                    @Html.ButtonActionSubmit(text: "Confirma Edição", htmlAttributes: new { id = "basictoast" })
+                                    @Html.ButtonLinkIndex(text: "Voltar", action: "VoltarBaseGrupo", controller: "Grupo")
                                 </div>
                             </div>
                         }
@@ -178,7 +245,30 @@
             $('.btnReturn').hide();
         }
     </script>
+        <script>
+        $(function () {
+            limpaModal();
+        });
 
+        function limpaModal() {
+            $('#btnModal').remove();
+            $('#modalTitle').remove();
+        }
+
+        function ShowModalExcluir(url) {
+            $('#modal').find('.modal-footer').prepend('<a id="btnModal" alt="Desativar" class="btn btn-primary" href="' + url + '" target="_self" title="Desativar">Confirmar</a>');
+            $('#modal').find('.modal-body').html('Confirma exclusão do Contato?');
+            $('#modal').find('.modal-header').prepend('<h5 id="modalTitle" class="modal-title">Confimar Exclusão</h5>');
+            $('#modal').modal('show');
+        }
+
+        function ShowModalReativar(url) {
+            $('#modal').find('.modal-footer').prepend('<a id="btnModal" alt="Reativar" class="btn btn-primary" href="' + url + '" target="_self" title="Reativar">Confirmar</a>');
+            $('#modal').find('.modal-body').html('Confirma reativação do Contato?');
+            $('#modal').find('.modal-header').prepend('<h5 id="modalTitle" class="modal-title">Confimar Reativação</h5>');
+            $('#modal').modal('show');
+        }
+    </script>
     @*<script type="text/javascript">
         $(document).ready(function () {
 

@@ -36,6 +36,7 @@ namespace EntitiesServices.Model
         public string MENS_NM_CABECALHO { get; set; }
         public string MENS_NM_RODAPE { get; set; }
         public string MENS_NM_LINK { get; set; }
+        public string MENS_TX_SMS { get; set; }
     
         public virtual ASSINANTE ASSINANTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

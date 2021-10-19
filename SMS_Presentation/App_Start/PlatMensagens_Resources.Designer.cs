@@ -205,6 +205,33 @@ namespace SMS_Presentation.App_Start {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Grupo já cadastrado.
+        /// </summary>
+        internal static string M0025 {
+            get {
+                return ResourceManager.GetString("M0025", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O texto da mensagem deve ser preenchido.
+        /// </summary>
+        internal static string M0026 {
+            get {
+                return ResourceManager.GetString("M0026", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Contato já incluído neste grupo.
+        /// </summary>
+        internal static string M0027 {
+            get {
+                return ResourceManager.GetString("M0027", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Usuário já cadastrado.
         /// </summary>
         internal static string M0044 {

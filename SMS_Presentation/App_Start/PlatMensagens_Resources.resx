@@ -165,6 +165,15 @@
   <data name="M0024" xml:space="preserve">
     <value>Nome do arquivo muito longo</value>
   </data>
+  <data name="M0025" xml:space="preserve">
+    <value>Grupo já cadastrado</value>
+  </data>
+  <data name="M0026" xml:space="preserve">
+    <value>O texto da mensagem deve ser preenchido</value>
+  </data>
+  <data name="M0027" xml:space="preserve">
+    <value>Contato já incluído neste grupo</value>
+  </data>
   <data name="M0044" xml:space="preserve">
     <value>Usuário já cadastrado</value>
   </data>
