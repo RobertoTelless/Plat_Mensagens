@@ -69,6 +69,7 @@ namespace EntitiesServices.Model
         public virtual ICollection<CLIENTE_ANEXO> CLIENTE_ANEXO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CLIENTE_CONTATO> CLIENTE_CONTATO { get; set; }
+        public virtual POSICAO POSICAO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CLIENTE_QUADRO_SOCIETARIO> CLIENTE_QUADRO_SOCIETARIO { get; set; }
         public virtual TIPO_PESSOA TIPO_PESSOA { get; set; }
@@ -78,6 +79,5 @@ namespace EntitiesServices.Model
         public virtual ICollection<GRUPO_CLIENTE> GRUPO_CLIENTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MENSAGENS_DESTINOS> MENSAGENS_DESTINOS { get; set; }
-        public virtual POSICAO POSICAO { get; set; }
     }
 }

@@ -18,15 +18,15 @@ namespace EntitiesServices.Model
         public ASSINANTE()
         {
             this.ASSINANTE_ANEXO = new HashSet<ASSINANTE_ANEXO>();
-            this.CONFIGURACAO = new HashSet<CONFIGURACAO>();
-            this.LOG = new HashSet<LOG>();
-            this.NOTIFICACAO = new HashSet<NOTIFICACAO>();
-            this.USUARIO = new HashSet<USUARIO>();
-            this.CLIENTE = new HashSet<CLIENTE>();
-            this.GRUPO = new HashSet<GRUPO>();
-            this.MENSAGENS = new HashSet<MENSAGENS>();
             this.CATEGORIA_CLIENTE = new HashSet<CATEGORIA_CLIENTE>();
+            this.CLIENTE = new HashSet<CLIENTE>();
+            this.CONFIGURACAO = new HashSet<CONFIGURACAO>();
+            this.GRUPO = new HashSet<GRUPO>();
+            this.LOG = new HashSet<LOG>();
+            this.MENSAGENS = new HashSet<MENSAGENS>();
+            this.NOTIFICACAO = new HashSet<NOTIFICACAO>();
             this.POSICAO = new HashSet<POSICAO>();
+            this.USUARIO = new HashSet<USUARIO>();
         }
     
         public int ASSI_CD_ID { get; set; }
@@ -54,22 +54,22 @@ namespace EntitiesServices.Model
         public virtual TIPO_PESSOA TIPO_PESSOA { get; set; }
         public virtual UF UF { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CONFIGURACAO> CONFIGURACAO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LOG> LOG { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NOTIFICACAO> NOTIFICACAO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<USUARIO> USUARIO { get; set; }
+        public virtual ICollection<CATEGORIA_CLIENTE> CATEGORIA_CLIENTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CLIENTE> CLIENTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CONFIGURACAO> CONFIGURACAO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GRUPO> GRUPO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LOG> LOG { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MENSAGENS> MENSAGENS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CATEGORIA_CLIENTE> CATEGORIA_CLIENTE { get; set; }
+        public virtual ICollection<NOTIFICACAO> NOTIFICACAO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<POSICAO> POSICAO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<USUARIO> USUARIO { get; set; }
     }
 }

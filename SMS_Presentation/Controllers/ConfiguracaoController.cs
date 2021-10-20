@@ -318,6 +318,7 @@ namespace SMS_Presentation.Controllers
             }
 
             // Abre view
+            Session["MensConfiguracao"] = null;
             Session["VoltaCat"] = 1;
             objetoCat = new CATEGORIA_CLIENTE();
             return View(objetoCat);
@@ -344,7 +345,7 @@ namespace SMS_Presentation.Controllers
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
             listaMasterCat = catApp.GetAllItensAdm();
-            Session["ListaCat"] = null;
+            Session["ListaCat"] = listaMasterCat;
             return RedirectToAction("MontarTelaCatCliente");
         }
 
@@ -649,6 +650,7 @@ namespace SMS_Presentation.Controllers
             }
 
             // Abre view
+            Session["MensConfiguracao"] = null;
             Session["VoltaPos"] = 1;
             objetoPos = new POSICAO();
             return View(objetoPos);
@@ -675,7 +677,7 @@ namespace SMS_Presentation.Controllers
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
             listaMasterPos = posApp.GetAllItensAdm();
-            Session["ListaPosicao"] = null;
+            Session["ListaPosicao"] = listaMasterPos;
             return RedirectToAction("MontarTelaPosicao");
         }
 
@@ -818,7 +820,7 @@ namespace SMS_Presentation.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult EditarPosicao(CategoriaClienteViewModel vm)
+        public ActionResult EditarPosicao(PosicaoViewModel vm)
         {
             Int32 idAss = (Int32)Session["IdAssinante"];
             if (ModelState.IsValid)
@@ -828,7 +830,7 @@ namespace SMS_Presentation.Controllers
                     // Executa a operação
                     USUARIO usuario = (USUARIO)Session["UserCredentials"];
                     POSICAO item = Mapper.Map<PosicaoViewModel, POSICAO>(vm);
-                    Int32 volta = posApp.ValidateEdit(item, objetoCatAntes, usuario);
+                    Int32 volta = posApp.ValidateEdit(item, objetoPosAntes, usuario);
 
                     // Verifica retorno
 

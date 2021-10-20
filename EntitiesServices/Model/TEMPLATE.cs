@@ -22,6 +22,7 @@ namespace EntitiesServices.Model
     
         public int TEMP_CD_ID { get; set; }
         public string TEMP_SG_SIGLA { get; set; }
+        public Nullable<int> TEMP_IN_TIPO { get; set; }
         public string TEMP_NM_NOME { get; set; }
         public string TEMP_TX_CONTEUDO { get; set; }
         public string TEMP_AQ_ARQUIVO { get; set; }
@@ -31,7 +32,6 @@ namespace EntitiesServices.Model
         public string TEMP_TX_CORPO { get; set; }
         public string TEMP_TX_DADOS { get; set; }
         public Nullable<System.DateTime> TEMP_DT_CRIACAO { get; set; }
-        public Nullable<int> TEMP_IN_TIPO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MENSAGENS> MENSAGENS { get; set; }

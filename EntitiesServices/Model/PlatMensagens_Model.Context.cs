@@ -28,28 +28,28 @@ namespace EntitiesServices.Model
         public virtual DbSet<ASSINANTE> ASSINANTE { get; set; }
         public virtual DbSet<ASSINANTE_ANEXO> ASSINANTE_ANEXO { get; set; }
         public virtual DbSet<CARGO> CARGO { get; set; }
+        public virtual DbSet<CATEGORIA_CLIENTE> CATEGORIA_CLIENTE { get; set; }
         public virtual DbSet<CATEGORIA_NOTIFICACAO> CATEGORIA_NOTIFICACAO { get; set; }
         public virtual DbSet<CATEGORIA_USUARIO> CATEGORIA_USUARIO { get; set; }
+        public virtual DbSet<CLIENTE> CLIENTE { get; set; }
+        public virtual DbSet<CLIENTE_ANEXO> CLIENTE_ANEXO { get; set; }
+        public virtual DbSet<CLIENTE_CONTATO> CLIENTE_CONTATO { get; set; }
+        public virtual DbSet<CLIENTE_QUADRO_SOCIETARIO> CLIENTE_QUADRO_SOCIETARIO { get; set; }
         public virtual DbSet<CONFIGURACAO> CONFIGURACAO { get; set; }
+        public virtual DbSet<GRUPO> GRUPO { get; set; }
+        public virtual DbSet<GRUPO_CLIENTE> GRUPO_CLIENTE { get; set; }
         public virtual DbSet<LOG> LOG { get; set; }
+        public virtual DbSet<MENSAGEM_ANEXO> MENSAGEM_ANEXO { get; set; }
+        public virtual DbSet<MENSAGENS> MENSAGENS { get; set; }
+        public virtual DbSet<MENSAGENS_DESTINOS> MENSAGENS_DESTINOS { get; set; }
         public virtual DbSet<NOTIFICACAO> NOTIFICACAO { get; set; }
         public virtual DbSet<NOTIFICACAO_ANEXO> NOTIFICACAO_ANEXO { get; set; }
         public virtual DbSet<PERFIL> PERFIL { get; set; }
+        public virtual DbSet<POSICAO> POSICAO { get; set; }
         public virtual DbSet<TEMPLATE> TEMPLATE { get; set; }
         public virtual DbSet<TIPO_PESSOA> TIPO_PESSOA { get; set; }
         public virtual DbSet<UF> UF { get; set; }
         public virtual DbSet<USUARIO> USUARIO { get; set; }
         public virtual DbSet<USUARIO_ANEXO> USUARIO_ANEXO { get; set; }
-        public virtual DbSet<CATEGORIA_CLIENTE> CATEGORIA_CLIENTE { get; set; }
-        public virtual DbSet<CLIENTE> CLIENTE { get; set; }
-        public virtual DbSet<CLIENTE_ANEXO> CLIENTE_ANEXO { get; set; }
-        public virtual DbSet<CLIENTE_CONTATO> CLIENTE_CONTATO { get; set; }
-        public virtual DbSet<CLIENTE_QUADRO_SOCIETARIO> CLIENTE_QUADRO_SOCIETARIO { get; set; }
-        public virtual DbSet<GRUPO> GRUPO { get; set; }
-        public virtual DbSet<GRUPO_CLIENTE> GRUPO_CLIENTE { get; set; }
-        public virtual DbSet<MENSAGENS> MENSAGENS { get; set; }
-        public virtual DbSet<MENSAGENS_DESTINOS> MENSAGENS_DESTINOS { get; set; }
-        public virtual DbSet<MENSAGEM_ANEXO> MENSAGEM_ANEXO { get; set; }
-        public virtual DbSet<POSICAO> POSICAO { get; set; }
     }
 }

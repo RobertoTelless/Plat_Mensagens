@@ -17,8 +17,8 @@ namespace EntitiesServices.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MENSAGENS()
         {
-            this.MENSAGENS_DESTINOS = new HashSet<MENSAGENS_DESTINOS>();
             this.MENSAGEM_ANEXO = new HashSet<MENSAGEM_ANEXO>();
+            this.MENSAGENS_DESTINOS = new HashSet<MENSAGENS_DESTINOS>();
         }
     
         public int MENS_CD_ID { get; set; }
@@ -40,10 +40,10 @@ namespace EntitiesServices.Model
     
         public virtual ASSINANTE ASSINANTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MENSAGEM_ANEXO> MENSAGEM_ANEXO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MENSAGENS_DESTINOS> MENSAGENS_DESTINOS { get; set; }
         public virtual TEMPLATE TEMPLATE { get; set; }
         public virtual USUARIO USUARIO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MENSAGEM_ANEXO> MENSAGEM_ANEXO { get; set; }
     }
 }

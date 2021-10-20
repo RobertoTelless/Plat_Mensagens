@@ -112,7 +112,6 @@ namespace SMS_Presentation.Controllers
 
             // Configuracao
             CONFIGURACAO conf = confApp.GetItemById(idAss);
-            Session["MaxUsuarios"] = conf.CONF_IN_NUMERO_USUARIOS;
 
             USUARIO usu = new USUARIO();
             UsuarioViewModel vm = new UsuarioViewModel();
