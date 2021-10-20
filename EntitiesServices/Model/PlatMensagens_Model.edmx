@@ -170,7 +170,7 @@
           <Property Name="CONF_NR_REFRESH_DASH" Type="int" />
           <Property Name="CONF_NM_ARQUIVO_ALARME" Type="varchar" MaxLength="50" />
           <Property Name="CONF_NR_REFRESH_NOTIFICACAO" Type="int" />
-          <Property Name="CONF_SG_LOGIN_SMS" Type="varchar" MaxLength="50" />
+          <Property Name="CONF_SG_LOGIN_SMS" Type="varchar" MaxLength="150" />
           <Property Name="CONF_SG_SENHA_SMS" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="GRUPO">
@@ -1103,7 +1103,7 @@
           <Property Name="CONF_NR_REFRESH_NOTIFICACAO" Type="Int32" />
           <Property Name="CONF_NR_NUMERO_CONSELHEIROS" Type="Int32" />
           <Property Name="CONF_NR_CORPO_DIRETIVO_PERIODO" Type="Int32" />
-          <Property Name="CONF_SG_LOGIN_SMS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CONF_SG_LOGIN_SMS" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="CONF_SG_SENHA_SMS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CONF_IN_LIMITE_HORA_VEICULO" Type="Int32" />
           <NavigationProperty Name="ASSINANTE" Relationship="Self.FK_CONFIGURACAO_ASSINANTE" FromRole="CONFIGURACAO" ToRole="ASSINANTE" />

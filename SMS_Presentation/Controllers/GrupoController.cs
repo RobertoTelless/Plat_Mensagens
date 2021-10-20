@@ -397,7 +397,7 @@ namespace SMS_Presentation.Controllers
             GRUPO item = baseApp.GetItemById(id);
             objetoAntes = (GRUPO)Session["Grupo"];
             item.GRUP_IN_ATIVO = 1;
-            Int32 volta = baseApp.ValidateDelete(item, usuario);
+            Int32 volta = baseApp.ValidateReativar(item, usuario);
             Session["ListaGrupo"] = null;
             return RedirectToAction("MontarTelaGrupo");
         }

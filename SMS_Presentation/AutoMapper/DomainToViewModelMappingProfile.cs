@@ -15,7 +15,7 @@ namespace MvcMapping.Mappers
             CreateMap<USUARIO, UsuarioViewModel>();
             CreateMap<USUARIO, UsuarioLoginViewModel>();
             CreateMap<LOG, LogViewModel>();
-            //CreateMap<CONFIGURACAO, ConfiguracaoViewModel>();
+            CreateMap<CONFIGURACAO, ConfiguracaoViewModel>();
             CreateMap<NOTIFICACAO, NotificacaoViewModel>();
             CreateMap<CLIENTE, ClienteViewModel>();
             CreateMap<CLIENTE_CONTATO, ClienteContatoViewModel>();
