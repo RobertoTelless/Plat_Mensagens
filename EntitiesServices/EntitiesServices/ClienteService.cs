@@ -25,9 +25,10 @@ namespace ModelServices.EntitiesServices
         private readonly IClienteContatoRepository _contRepository;
         private readonly ITipoPessoaRepository _pesRepository;
         private readonly IUFRepository _ufRepository;
+        private readonly IPosicaoRepository _posRepository;
         protected PlatMensagensEntities Db = new PlatMensagensEntities();
 
-        public ClienteService(IClienteRepository baseRepository, ILogRepository logRepository, ICategoriaClienteRepository tipoRepository, IClienteAnexoRepository anexoRepository, ITipoPessoaRepository pesRepository,IClienteContatoRepository contRepository, IUFRepository ufRepository) : base(baseRepository)
+        public ClienteService(IClienteRepository baseRepository, ILogRepository logRepository, ICategoriaClienteRepository tipoRepository, IClienteAnexoRepository anexoRepository, ITipoPessoaRepository pesRepository,IClienteContatoRepository contRepository, IUFRepository ufRepository, IPosicaoRepository posRepository) : base(baseRepository)
         {
             _baseRepository = baseRepository;
             _logRepository = logRepository;
@@ -36,6 +37,7 @@ namespace ModelServices.EntitiesServices
             _contRepository = contRepository;
             _pesRepository = pesRepository;
             _ufRepository = ufRepository;
+            _posRepository = posRepository;
         }
 
         public CLIENTE CheckExist(CLIENTE conta, Int32 idAss)
@@ -79,6 +81,11 @@ namespace ModelServices.EntitiesServices
         public List<CATEGORIA_CLIENTE> GetAllTipos()
         {
             return _tipoRepository.GetAllItens();
+        }
+
+        public List<POSICAO> GetAllPosicao()
+        {
+            return _posRepository.GetAllItens();
         }
 
         public List<TIPO_PESSOA> GetAllTiposPessoa()

@@ -21,7 +21,9 @@ namespace ModelServices.Interfaces.EntitiesServices
         CLIENTE GetByEmail(String email, Int32 idAss);
         List<CLIENTE> GetAllItens(Int32 idAss);
         List<CLIENTE> GetAllItensAdm(Int32 idAss);
+
         List<CATEGORIA_CLIENTE> GetAllTipos();
+        List<POSICAO> GetAllPosicao();
         List<TIPO_PESSOA> GetAllTiposPessoa();
         List<UF> GetAllUF();
         UF GetUFbySigla(String sigla);

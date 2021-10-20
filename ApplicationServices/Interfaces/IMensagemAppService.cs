@@ -23,6 +23,7 @@ namespace ApplicationServices.Interfaces
         Int32 ExecuteFilter(DateTime? criacao, DateTime? envio, String campanha, String texto, Int32? tipo, Int32 idAss, out List<MENSAGENS> objeto);
 
         List<CATEGORIA_CLIENTE> GetAllTipos();
+        List<POSICAO> GetAllPosicao();
         List<UF> GetAllUF();
         UF GetUFbySigla(String sigla);
         List<TEMPLATE> GetAllTemplates();

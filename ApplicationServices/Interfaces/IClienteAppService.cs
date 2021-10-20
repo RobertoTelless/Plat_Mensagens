@@ -21,6 +21,7 @@ namespace ApplicationServices.Interfaces
         CLIENTE GetByEmail(String email, Int32 idAss);
         CLIENTE CheckExist(CLIENTE conta, Int32 idAss);
         List<CATEGORIA_CLIENTE> GetAllTipos();
+        List<POSICAO> GetAllPosicao();
         List<TIPO_PESSOA> GetAllTiposPessoa();
         CLIENTE_ANEXO GetAnexoById(Int32 id);
         CLIENTE_CONTATO GetContatoById(Int32 id);

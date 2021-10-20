@@ -22,6 +22,8 @@ namespace MvcMapping.Mappers
             CreateMap<MensagemViewModel, MENSAGENS>();
             CreateMap<GrupoViewModel, GRUPO>();
             CreateMap<GrupoContatoViewModel, GRUPO_CLIENTE>();
+            CreateMap<CategoriaClienteViewModel, CATEGORIA_CLIENTE>();
+            CreateMap<PosicaoViewModel, POSICAO>();
         }
     }
 }

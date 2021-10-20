@@ -404,14 +404,15 @@ namespace SMS_Presentation.Controllers
             ativo.Add(new SelectListItem() { Text = "Ativo", Value = "1" });
             ativo.Add(new SelectListItem() { Text = "Inativo", Value = "0" });
             ViewBag.Ativos = new SelectList(ativo, "Value", "Text");
-            List<SelectListItem> status = new List<SelectListItem>();
-            status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
-            status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
-            status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
-            status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
-            status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
-            status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
-            ViewBag.Status = new SelectList(status, "Value", "Text");
+            //List<SelectListItem> status = new List<SelectListItem>();
+            //status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
+            //status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
+            //status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
+            //status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
+            //status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
+            //status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
+            //ViewBag.Status = new SelectList(status, "Value", "Text");
+            ViewBag.Status = new SelectList(baseApp.GetAllPosicao().OrderBy(p => p.POSI_NM_NOME), "POSI_CD_ID", "POSI_NM_NOME");
             Session["IncluirCliente"] = 0;
 
             // Indicadores
@@ -583,14 +584,15 @@ namespace SMS_Presentation.Controllers
             situacao.Add(new SelectListItem() { Text = "Outros", Value = "Outros" });
             ViewBag.Situacoes = new SelectList(sexo, "Value", "Text");
 
-            List<SelectListItem> status = new List<SelectListItem>();
-            status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
-            status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
-            status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
-            status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
-            status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
-            status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
-            ViewBag.Status = new SelectList(status, "Value", "Text");
+            //List<SelectListItem> status = new List<SelectListItem>();
+            //status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
+            //status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
+            //status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
+            //status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
+            //status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
+            //status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
+            //ViewBag.Status = new SelectList(status, "Value", "Text");
+            ViewBag.Status = new SelectList(baseApp.GetAllPosicao().OrderBy(p => p.POSI_NM_NOME), "POSI_CD_ID", "POSI_NM_NOME");
 
             // Prepara view
             Session["ClienteNovo"] = 0;
@@ -635,14 +637,15 @@ namespace SMS_Presentation.Controllers
             situacao.Add(new SelectListItem() { Text = "Inativa", Value = "Inativa" });
             situacao.Add(new SelectListItem() { Text = "Outros", Value = "Outros" });
             ViewBag.Situacoes = new SelectList(sexo, "Value", "Text");
-            List<SelectListItem> status = new List<SelectListItem>();
-            status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
-            status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
-            status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
-            status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
-            status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
-            status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
-            ViewBag.Status = new SelectList(status, "Value", "Text");
+            //List<SelectListItem> status = new List<SelectListItem>();
+            //status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
+            //status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
+            //status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
+            //status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
+            //status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
+            //status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
+            //ViewBag.Status = new SelectList(status, "Value", "Text");
+            ViewBag.Status = new SelectList(baseApp.GetAllPosicao().OrderBy(p => p.POSI_NM_NOME), "POSI_CD_ID", "POSI_NM_NOME");
             if (ModelState.IsValid)
             {
                 try
@@ -764,14 +767,15 @@ namespace SMS_Presentation.Controllers
             situacao.Add(new SelectListItem() { Text = "Inativa", Value = "Inativa" });
             situacao.Add(new SelectListItem() { Text = "Outros", Value = "Outros" });
             ViewBag.Situacoes = new SelectList(sexo, "Value", "Text");
-            List<SelectListItem> status = new List<SelectListItem>();
-            status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
-            status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
-            status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
-            status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
-            status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
-            status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
-            ViewBag.Status = new SelectList(status, "Value", "Text");
+            //List<SelectListItem> status = new List<SelectListItem>();
+            //status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
+            //status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
+            //status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
+            //status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
+            //status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
+            //status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
+            //ViewBag.Status = new SelectList(status, "Value", "Text");
+            ViewBag.Status = new SelectList(baseApp.GetAllPosicao().OrderBy(p => p.POSI_NM_NOME), "POSI_CD_ID", "POSI_NM_NOME");
 
             CLIENTE item = baseApp.GetItemById(id);
             Session["Cliente"] = item;
@@ -823,14 +827,15 @@ namespace SMS_Presentation.Controllers
             ViewBag.Situacoes = new SelectList(sexo, "Value", "Text");
             CLIENTE clie = baseApp.GetItemById(vm.CLIE_CD_ID);
             ViewBag.QuadroSoci = ccnpjApp.GetByCliente(clie);
-            List<SelectListItem> status = new List<SelectListItem>();
-            status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
-            status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
-            status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
-            status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
-            status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
-            status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
-            ViewBag.Status = new SelectList(status, "Value", "Text");
+            //List<SelectListItem> status = new List<SelectListItem>();
+            //status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
+            //status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
+            //status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
+            //status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
+            //status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
+            //status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
+            //ViewBag.Status = new SelectList(status, "Value", "Text");
+            ViewBag.Status = new SelectList(baseApp.GetAllPosicao().OrderBy(p => p.POSI_NM_NOME), "POSI_CD_ID", "POSI_NM_NOME");
 
             // Indicadores
             ViewBag.Incluir = (Int32)Session["IncluirCliente"];
@@ -950,7 +955,6 @@ namespace SMS_Presentation.Controllers
         [HttpPost]
         public ActionResult ExcluirCliente(ClienteViewModel vm)
         {
-
             try
             {
                 if ((String)Session["Ativa"] == null)
@@ -1012,7 +1016,6 @@ namespace SMS_Presentation.Controllers
         [HttpPost]
         public ActionResult ReativarCliente(ClienteViewModel vm)
         {
-
             try
             {
                 // Executa a operação
@@ -1070,14 +1073,15 @@ namespace SMS_Presentation.Controllers
             ViewBag.Title = "Clientes";
             ViewBag.Tipos = new SelectList(baseApp.GetAllTipos().OrderBy(p => p.CACL_NM_NOME), "CACL_CD_ID", "CACL_NM_NOME");
             ViewBag.UF = new SelectList(baseApp.GetAllUF().OrderBy(p => p.UF_SG_SIGLA), "UF_CD_ID", "UF_NM_NOME");
-            List<SelectListItem> status = new List<SelectListItem>();
-            status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
-            status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
-            status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
-            status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
-            status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
-            status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
-            ViewBag.Status = new SelectList(status, "Value", "Text");
+            //List<SelectListItem> status = new List<SelectListItem>();
+            //status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
+            //status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
+            //status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
+            //status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
+            //status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
+            //status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
+            //ViewBag.Status = new SelectList(status, "Value", "Text");
+            ViewBag.Status = new SelectList(baseApp.GetAllPosicao().OrderBy(p => p.POSI_NM_NOME), "POSI_CD_ID", "POSI_NM_NOME");
 
             // Indicadores
 

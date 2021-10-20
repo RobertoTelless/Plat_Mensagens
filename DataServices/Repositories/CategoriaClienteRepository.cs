@@ -13,6 +13,13 @@ namespace DataServices.Repositories
 {
     public class CategoriaClienteRepository : RepositoryBase<CATEGORIA_CLIENTE>, ICategoriaClienteRepository
     {
+        public CATEGORIA_CLIENTE CheckExist(CATEGORIA_CLIENTE conta)
+        {
+            IQueryable<CATEGORIA_CLIENTE> query = Db.CATEGORIA_CLIENTE;
+            query = query.Where(p => p.CACL_NM_NOME == conta.CACL_NM_NOME);
+            return query.FirstOrDefault();
+        }
+
         public CATEGORIA_CLIENTE GetItemById(Int32 id)
         {
             IQueryable<CATEGORIA_CLIENTE> query = Db.CATEGORIA_CLIENTE;

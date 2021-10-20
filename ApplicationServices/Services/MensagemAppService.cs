@@ -70,6 +70,12 @@ namespace ApplicationServices.Services
             return lista;
         }
 
+        public List<POSICAO> GetAllPosicao()
+        {
+            List<POSICAO> lista = _baseService.GetAllPosicao();
+            return lista;
+        }
+
         public List<TEMPLATE> GetAllTemplates()
         {
             List<TEMPLATE> lista = _baseService.GetAllTemplates();

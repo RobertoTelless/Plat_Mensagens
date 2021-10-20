@@ -315,20 +315,21 @@ namespace SMS_Presentation.Controllers
             tipos.Add(new SelectListItem() { Text = "SMS", Value = "2" });
             tipos.Add(new SelectListItem() { Text = "WhatsApp", Value = "3" });
             ViewBag.Tipos = new SelectList(tipos, "Value", "Text");
-            List<SelectListItem> status = new List<SelectListItem>();
-            status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
-            status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
-            status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
-            status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
-            status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
-            status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
-            ViewBag.Status = new SelectList(status, "Value", "Text");
+            //List<SelectListItem> status = new List<SelectListItem>();
+            //status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
+            //status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
+            //status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
+            //status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
+            //status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
+            //status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
+            //ViewBag.Status = new SelectList(status, "Value", "Text");
+            ViewBag.Status = new SelectList(baseApp.GetAllPosicao().OrderBy(p => p.POSI_NM_NOME), "POSI_CD_ID", "POSI_NM_NOME");
 
             // Prepara view
             String header = temApp.GetByCode("TEMPBAS").TEMP_TX_CABECALHO;
             String body = temApp.GetByCode("TEMPBAS").TEMP_TX_CORPO;
             String footer = temApp.GetByCode("TEMPBAS").TEMP_TX_DADOS;
-            footer = footer.Replace("{NomeRemetente}", "<b>" + usuario.ASSINANTE.ASSI_NM_NOME + "</b>");
+            footer = footer.Replace("{NomeRemetente}", usuario.ASSINANTE.ASSI_NM_NOME);
 
             if (Session["MensMensagem"] != null)
             {
@@ -376,14 +377,15 @@ namespace SMS_Presentation.Controllers
             tipos.Add(new SelectListItem() { Text = "SMS", Value = "2" });
             tipos.Add(new SelectListItem() { Text = "WhatsApp", Value = "3" });
             ViewBag.Tipos = new SelectList(tipos, "Value", "Text");
-            List<SelectListItem> status = new List<SelectListItem>();
-            status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
-            status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
-            status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
-            status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
-            status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
-            status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
-            ViewBag.Status = new SelectList(status, "Value", "Text");
+            //List<SelectListItem> status = new List<SelectListItem>();
+            //status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
+            //status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
+            //status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
+            //status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
+            //status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
+            //status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
+            //ViewBag.Status = new SelectList(status, "Value", "Text");
+            ViewBag.Status = new SelectList(baseApp.GetAllPosicao().OrderBy(p => p.POSI_NM_NOME), "POSI_CD_ID", "POSI_NM_NOME");
             if (ModelState.IsValid)
             {
                 try
@@ -645,11 +647,11 @@ namespace SMS_Presentation.Controllers
                 if (escopo == 1)
                 {
                     // Prepara cabeçalho
-                    String cab = vm.MENS_NM_CABECALHO.Replace("{Nome}", "<b>" + cliente.CLIE_NM_NOME + "</b>") + "<br /><br />";
+                    String cab = vm.MENS_NM_CABECALHO.Replace("{Nome}", cliente.CLIE_NM_NOME);
 
                     // Prepara rodape
                     ASSINANTE assi = (ASSINANTE)Session["Assinante"];
-                    String rod = "<br /><br />" + vm.MENS_NM_RODAPE; 
+                    String rod = vm.MENS_NM_RODAPE; 
 
                     // Prepara corpo do e-mail e trata link
                     StringBuilder str = new StringBuilder();
@@ -740,11 +742,11 @@ namespace SMS_Presentation.Controllers
                     foreach (CLIENTE item in listaCli)
                     {
                         // Prepara cabeçalho
-                        String cab = vm.MENS_NM_CABECALHO.Replace("{Nome}", "<b>" + item.CLIE_NM_NOME + "</b>") + "<br /><br />";
+                        String cab = vm.MENS_NM_CABECALHO.Replace("{Nome}", item.CLIE_NM_NOME);
 
                         // Prepara rodape
                         ASSINANTE assi = (ASSINANTE)Session["Assinante"];
-                        String rod = "<br /><br />" + vm.MENS_NM_RODAPE;
+                        String rod = vm.MENS_NM_RODAPE;
 
                         // Prepara corpo do e-mail e trata link
                         StringBuilder str = new StringBuilder();

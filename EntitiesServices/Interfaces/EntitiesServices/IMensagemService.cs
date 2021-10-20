@@ -27,5 +27,6 @@ namespace ModelServices.Interfaces.EntitiesServices
         List<UF> GetAllUF();
         UF GetUFbySigla(String sigla);
         List<CATEGORIA_CLIENTE> GetAllTipos();
+        List<POSICAO> GetAllPosicao();
     }
 }

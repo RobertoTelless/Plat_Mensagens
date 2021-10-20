@@ -50,5 +50,6 @@ namespace EntitiesServices.Model
         public virtual DbSet<MENSAGENS> MENSAGENS { get; set; }
         public virtual DbSet<MENSAGENS_DESTINOS> MENSAGENS_DESTINOS { get; set; }
         public virtual DbSet<MENSAGEM_ANEXO> MENSAGEM_ANEXO { get; set; }
+        public virtual DbSet<POSICAO> POSICAO { get; set; }
     }
 }

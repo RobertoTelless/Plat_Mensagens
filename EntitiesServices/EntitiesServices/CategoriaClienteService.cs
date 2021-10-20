@@ -16,86 +16,41 @@ using System.Data;
 
 namespace ModelServices.EntitiesServices
 {
-    public class MensagemService : ServiceBase<MENSAGENS>, IMensagemService
+    public class CategoriaClienteService : ServiceBase<CATEGORIA_CLIENTE>, ICategoriaClienteService
     {
-        private readonly IMensagemRepository _baseRepository;
+        private readonly ICategoriaClienteRepository _baseRepository;
         private readonly ILogRepository _logRepository;
-        private readonly ITemplateRepository _tempRepository;
-        private readonly ICategoriaClienteRepository _tipoRepository;
-        private readonly IUFRepository _ufRepository;
-        private readonly IMensagemAnexoRepository _anexoRepository;
-        private readonly IPosicaoRepository _posRepository;
         protected PlatMensagensEntities Db = new PlatMensagensEntities();
 
-        public MensagemService(IMensagemRepository baseRepository, ILogRepository logRepository, ITemplateRepository tempRepository, ICategoriaClienteRepository tipoRepository, IUFRepository ufRepository, IMensagemAnexoRepository anexoRepository, IPosicaoRepository posRepository) : base(baseRepository)
+        public CategoriaClienteService(ICategoriaClienteRepository baseRepository, ILogRepository logRepository) : base(baseRepository)
         {
             _baseRepository = baseRepository;
             _logRepository = logRepository;
-            _tempRepository = tempRepository;
-            _tipoRepository = tipoRepository;
-            _ufRepository = ufRepository;
-            _anexoRepository = anexoRepository;
-            _posRepository = posRepository;
         }
 
-        public MENSAGENS CheckExist(MENSAGENS conta, Int32 idAss)
+        public CATEGORIA_CLIENTE CheckExist(CATEGORIA_CLIENTE conta)
         {
-            MENSAGENS item = _baseRepository.CheckExist(conta, idAss);
+            CATEGORIA_CLIENTE item = _baseRepository.CheckExist(conta);
             return item;
         }
 
-        public List<UF> GetAllUF()
+        public CATEGORIA_CLIENTE GetItemById(Int32 id)
         {
-            return _ufRepository.GetAllItens();
-        }
-
-        public UF GetUFbySigla(String sigla)
-        {
-            return _ufRepository.GetItemBySigla(sigla);
-        }
-
-        public MENSAGENS GetItemById(Int32 id)
-        {
-            MENSAGENS item = _baseRepository.GetItemById(id);
+            CATEGORIA_CLIENTE item = _baseRepository.GetItemById(id);
             return item;
         }
 
-        public MENSAGEM_ANEXO GetAnexoById(Int32 id)
+        public List<CATEGORIA_CLIENTE> GetAllItens()
         {
-            return _anexoRepository.GetItemById(id);
+            return _baseRepository.GetAllItens();
         }
 
-        public List<MENSAGENS> GetAllItens(Int32 idAss)
+        public List<CATEGORIA_CLIENTE> GetAllItensAdm()
         {
-            return _baseRepository.GetAllItens(idAss);
+            return _baseRepository.GetAllItensAdm();
         }
 
-        public List<MENSAGENS> GetAllItensAdm(Int32 idAss)
-        {
-            return _baseRepository.GetAllItensAdm(idAss);
-        }
-
-        public List<CATEGORIA_CLIENTE> GetAllTipos()
-        {
-            return _tipoRepository.GetAllItens();
-        }
-
-        public List<POSICAO> GetAllPosicao()
-        {
-            return _posRepository.GetAllItens();
-        }
-
-        public List<TEMPLATE> GetAllTemplates()
-        {
-            return _tempRepository.GetAllItens();
-        }
-
-        public List<MENSAGENS> ExecuteFilter(DateTime? criacao, DateTime? envio, String campanha, String texto, Int32? tipo, Int32 idAss)
-        {
-            return _baseRepository.ExecuteFilter(criacao, envio, campanha, texto, tipo, idAss);
-        }
-
-        public Int32 Create(MENSAGENS item, LOG log)
+        public Int32 Create(CATEGORIA_CLIENTE item, LOG log)
         {
             using (DbContextTransaction transaction = Db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
             {
@@ -114,7 +69,7 @@ namespace ModelServices.EntitiesServices
             }
         }
 
-        public Int32 Create(MENSAGENS item)
+        public Int32 Create(CATEGORIA_CLIENTE item)
         {
             using (DbContextTransaction transaction = Db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
             {
@@ -133,13 +88,13 @@ namespace ModelServices.EntitiesServices
         }
 
 
-        public Int32 Edit(MENSAGENS item, LOG log)
+        public Int32 Edit(CATEGORIA_CLIENTE item, LOG log)
         {
             using (DbContextTransaction transaction = Db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
             {
                 try
                 {
-                    MENSAGENS obj = _baseRepository.GetById(item.MENS_CD_ID);
+                    CATEGORIA_CLIENTE obj = _baseRepository.GetById(item.CACL_CD_ID);
                     _baseRepository.Detach(obj);
                     _logRepository.Add(log);
                     _baseRepository.Update(item);
@@ -154,13 +109,13 @@ namespace ModelServices.EntitiesServices
             }
         }
 
-        public Int32 Edit(MENSAGENS item)
+        public Int32 Edit(CATEGORIA_CLIENTE item)
         {
             using (DbContextTransaction transaction = Db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
             {
                 try
                 {
-                    MENSAGENS obj = _baseRepository.GetById(item.MENS_CD_ID);
+                    CATEGORIA_CLIENTE obj = _baseRepository.GetById(item.CACL_CD_ID);
                     _baseRepository.Detach(obj);
                     _baseRepository.Update(item);
                     transaction.Commit();
@@ -174,7 +129,7 @@ namespace ModelServices.EntitiesServices
             }
         }
 
-        public Int32 Delete(MENSAGENS item, LOG log)
+        public Int32 Delete(CATEGORIA_CLIENTE item, LOG log)
         {
             using (DbContextTransaction transaction = Db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
             {
