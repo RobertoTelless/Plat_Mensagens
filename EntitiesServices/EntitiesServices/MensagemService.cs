@@ -85,9 +85,9 @@ namespace ModelServices.EntitiesServices
             return _posRepository.GetAllItens();
         }
 
-        public List<TEMPLATE> GetAllTemplates()
+        public List<TEMPLATE> GetAllTemplates(Int32 idAss)
         {
-            return _tempRepository.GetAllItens();
+            return _tempRepository.GetAllItens(idAss);
         }
 
         public List<MENSAGENS> ExecuteFilter(DateTime? criacao, DateTime? envio, String campanha, String texto, Int32? tipo, Int32 idAss)

@@ -315,21 +315,13 @@ namespace SMS_Presentation.Controllers
             tipos.Add(new SelectListItem() { Text = "SMS", Value = "2" });
             tipos.Add(new SelectListItem() { Text = "WhatsApp", Value = "3" });
             ViewBag.Tipos = new SelectList(tipos, "Value", "Text");
-            //List<SelectListItem> status = new List<SelectListItem>();
-            //status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
-            //status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
-            //status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
-            //status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
-            //status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
-            //status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
-            //ViewBag.Status = new SelectList(status, "Value", "Text");
             ViewBag.Status = new SelectList(baseApp.GetAllPosicao().OrderBy(p => p.POSI_NM_NOME), "POSI_CD_ID", "POSI_NM_NOME");
+            ViewBag.Temp = new SelectList(temApp.GetAllItens(idAss).OrderBy(p => p.TEMP_NM_NOME), "TEMP_CD_ID", "TEMP_SG_SIGLA");
 
             // Prepara view
             String header = temApp.GetByCode("TEMPBAS").TEMP_TX_CABECALHO;
             String body = temApp.GetByCode("TEMPBAS").TEMP_TX_CORPO;
             String footer = temApp.GetByCode("TEMPBAS").TEMP_TX_DADOS;
-            footer = footer.Replace("{NomeRemetente}", usuario.ASSINANTE.ASSI_NM_NOME);
 
             if (Session["MensMensagem"] != null)
             {
@@ -348,6 +340,7 @@ namespace SMS_Presentation.Controllers
             vm.USUA_CD_ID = usuario.USUA_CD_ID;
             vm.MENS_NM_CABECALHO = header;
             vm.MENS_NM_RODAPE = footer;
+            vm.MENS_IN_TIPO = 2;
             return View(vm);
         }
 
@@ -366,6 +359,7 @@ namespace SMS_Presentation.Controllers
             ViewBag.Grupos = new SelectList(gruApp.GetAllItens(idAss).OrderBy(p => p.GRUP_NM_NOME), "GRUP_CD_ID", "GRUP_NM_NOME");
             ViewBag.Cats = new SelectList(baseApp.GetAllTipos().OrderBy(p => p.CACL_NM_NOME), "CACL_CD_ID", "CACL_NM_NOME");
             ViewBag.UF = new SelectList(baseApp.GetAllUF().OrderBy(p => p.UF_SG_SIGLA), "UF_CD_ID", "UF_NM_NOME");
+            ViewBag.Temp = new SelectList(temApp.GetAllItens(idAss).OrderBy(p => p.TEMP_NM_NOME), "TEMP_CD_ID", "TEMP_SG_SIGLA");
             Session["Mensagem"] = null;
             List<SelectListItem> sexo = new List<SelectListItem>();
             sexo.Add(new SelectListItem() { Text = "Masculino", Value = "1" });
@@ -377,14 +371,6 @@ namespace SMS_Presentation.Controllers
             tipos.Add(new SelectListItem() { Text = "SMS", Value = "2" });
             tipos.Add(new SelectListItem() { Text = "WhatsApp", Value = "3" });
             ViewBag.Tipos = new SelectList(tipos, "Value", "Text");
-            //List<SelectListItem> status = new List<SelectListItem>();
-            //status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
-            //status.Add(new SelectListItem() { Text = "Oportunidade", Value = "2" });
-            //status.Add(new SelectListItem() { Text = "Proposta", Value = "3" });
-            //status.Add(new SelectListItem() { Text = "Engajado", Value = "4" });
-            //status.Add(new SelectListItem() { Text = "Descartado", Value = "5" });
-            //status.Add(new SelectListItem() { Text = "Suspenso", Value = "6" });
-            //ViewBag.Status = new SelectList(status, "Value", "Text");
             ViewBag.Status = new SelectList(baseApp.GetAllPosicao().OrderBy(p => p.POSI_NM_NOME), "POSI_CD_ID", "POSI_NM_NOME");
             if (ModelState.IsValid)
             {
@@ -651,7 +637,7 @@ namespace SMS_Presentation.Controllers
 
                     // Prepara rodape
                     ASSINANTE assi = (ASSINANTE)Session["Assinante"];
-                    String rod = vm.MENS_NM_RODAPE; 
+                    String rod = vm.MENS_NM_RODAPE.Replace("{NomeRemetente}", assi.ASSI_NM_NOME);
 
                     // Prepara corpo do e-mail e trata link
                     StringBuilder str = new StringBuilder();
@@ -1311,6 +1297,23 @@ namespace SMS_Presentation.Controllers
             return RedirectToAction("MontarTelaMensagem");
         }
 
+        [HttpPost]
+        public JsonResult PesquisaTemplate(String temp)
+        {
+            // Recupera Template
+            TEMPLATE tmp = temApp.GetItemById(Convert.ToInt32(temp));
+
+            // Atualiza
+            var hash = new Hashtable();
+            hash.Add("TEMP_IN_TIPO", tmp.TEMP_IN_TIPO);
+            hash.Add("TEMP_TX_CABECALHO", tmp.TEMP_TX_CABECALHO);
+            hash.Add("TEMP_TX_CORPO", tmp.TEMP_TX_CORPO);
+            hash.Add("TEMP_TX_DADOS", tmp.TEMP_TX_DADOS);
+
+            // Retorna
+            Session["VoltaCEP"] = 2;
+            return Json(hash);
+        }
 
     }
 }

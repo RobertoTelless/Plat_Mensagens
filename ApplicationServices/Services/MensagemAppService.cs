@@ -76,9 +76,9 @@ namespace ApplicationServices.Services
             return lista;
         }
 
-        public List<TEMPLATE> GetAllTemplates()
+        public List<TEMPLATE> GetAllTemplates(Int32 idAss)
         {
-            List<TEMPLATE> lista = _baseService.GetAllTemplates();
+            List<TEMPLATE> lista = _baseService.GetAllTemplates(idAss);
             return lista;
         }
 

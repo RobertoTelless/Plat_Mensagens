@@ -23,7 +23,7 @@ namespace ModelServices.Interfaces.EntitiesServices
         MENSAGEM_ANEXO GetAnexoById(Int32 id);
         List<MENSAGENS> ExecuteFilter(DateTime? criacao, DateTime? envio, String campanha, String texto, Int32? tipo, Int32 idAss);
 
-        List<TEMPLATE> GetAllTemplates();
+        List<TEMPLATE> GetAllTemplates(Int32 idAss);
         List<UF> GetAllUF();
         UF GetUFbySigla(String sigla);
         List<CATEGORIA_CLIENTE> GetAllTipos();

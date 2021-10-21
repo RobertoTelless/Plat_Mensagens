@@ -26,6 +26,6 @@ namespace ApplicationServices.Interfaces
         List<POSICAO> GetAllPosicao();
         List<UF> GetAllUF();
         UF GetUFbySigla(String sigla);
-        List<TEMPLATE> GetAllTemplates();
+        List<TEMPLATE> GetAllTemplates(Int32 idAss);
     }
 }
