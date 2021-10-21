@@ -27,6 +27,7 @@ namespace EntitiesServices.Model
             this.NOTIFICACAO = new HashSet<NOTIFICACAO>();
             this.POSICAO = new HashSet<POSICAO>();
             this.USUARIO = new HashSet<USUARIO>();
+            this.TEMPLATE = new HashSet<TEMPLATE>();
         }
     
         public int ASSI_CD_ID { get; set; }
@@ -71,5 +72,7 @@ namespace EntitiesServices.Model
         public virtual ICollection<POSICAO> POSICAO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USUARIO> USUARIO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TEMPLATE> TEMPLATE { get; set; }
     }
 }

@@ -186,6 +186,12 @@
   <data name="M0031" xml:space="preserve">
     <value>Não é possível excluir esse status de contato. Existem informações vinculadas a ele</value>
   </data>
+  <data name="M0032" xml:space="preserve">
+    <value>Padrão de Mensagem já cadastrado</value>
+  </data>
+  <data name="M0033" xml:space="preserve">
+    <value>Não é possível excluir esse status de contato. Existem informações vinculadas a ele</value>
+  </data>
   <data name="M0044" xml:space="preserve">
     <value>Usuário já cadastrado</value>
   </data>

@@ -24,6 +24,8 @@ namespace MvcMapping.Mappers
             CreateMap<GRUPO_CLIENTE, GrupoContatoViewModel>();
             CreateMap<CATEGORIA_CLIENTE, CategoriaClienteViewModel>();
             CreateMap<POSICAO, PosicaoViewModel>();
+            CreateMap<TEMPLATE, TemplateViewModel>();
+
         }
     }
 }

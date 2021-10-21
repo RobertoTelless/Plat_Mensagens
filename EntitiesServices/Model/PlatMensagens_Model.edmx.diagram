@@ -68,6 +68,7 @@
         <AssociationConnector Association="PlatMensagensModel.FK_NOTIFICACAO_USUARIO" ManuallyRouted="false" />
         <AssociationConnector Association="PlatMensagensModel.FK_USUARIO_PERFIL" ManuallyRouted="false" />
         <AssociationConnector Association="PlatMensagensModel.FK_USUARIO_ANEXO_USUARIO" ManuallyRouted="false" />
+        <AssociationConnector Association="PlatMensagensModel.FK_TEMPLATE_ASSINANTE" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

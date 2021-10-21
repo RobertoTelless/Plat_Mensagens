@@ -313,6 +313,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MensagemController.cs" />
     <Compile Include="Controllers\NotificacaoController.cs" />
+    <Compile Include="Controllers\TemplateController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Extensions\HMTLHelperExtensions.cs" />
     <Compile Include="Extensions\MVCButtonExtensions.cs" />
@@ -334,6 +335,7 @@
     <Compile Include="ViewModels\LogViewModel.cs" />
     <Compile Include="ViewModels\ClienteContatoViewModel.cs" />
     <Compile Include="ViewModels\NotificacaoViewModel.cs" />
+    <Compile Include="ViewModels\TemplateViewModel.cs" />
     <Compile Include="ViewModels\UsuarioLoginViewModel.cs" />
     <Compile Include="ViewModels\UsuarioViewModel.cs" />
   </ItemGroup>
@@ -2973,6 +2975,10 @@
     <Content Include="Views\Configuracao\MontarTelaPosicao.cshtml" />
     <Content Include="Views\Configuracao\IncluirPosicao.cshtml" />
     <Content Include="Views\Configuracao\EditarPosicao.cshtml" />
+    <Content Include="Views\Template\MontarTelaTemplate.cshtml" />
+    <Content Include="Views\Template\IncluirTemplate.cshtml" />
+    <Content Include="Views\Template\EditarTemplate.cshtml" />
+    <Content Include="Views\Template\VerTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

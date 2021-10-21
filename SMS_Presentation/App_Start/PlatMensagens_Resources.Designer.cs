@@ -268,6 +268,24 @@ namespace SMS_Presentation.App_Start {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Padrão de Mensagem já cadastrado.
+        /// </summary>
+        internal static string M0032 {
+            get {
+                return ResourceManager.GetString("M0032", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não é possível excluir esse status de contato. Existem informações vinculadas a ele.
+        /// </summary>
+        internal static string M0033 {
+            get {
+                return ResourceManager.GetString("M0033", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Usuário já cadastrado.
         /// </summary>
         internal static string M0044 {

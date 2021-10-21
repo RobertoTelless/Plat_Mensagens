@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="PlatMensagensModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="PlatMensagensModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ASSINANTE">
           <Key>
             <PropertyRef Name="ASSI_CD_ID" />
@@ -307,6 +307,7 @@
             <PropertyRef Name="TEMP_CD_ID" />
           </Key>
           <Property Name="TEMP_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ASSI_CD_ID" Type="int" />
           <Property Name="TEMP_SG_SIGLA" Type="varchar" MaxLength="10" />
           <Property Name="TEMP_IN_TIPO" Type="int" />
           <Property Name="TEMP_NM_NOME" Type="varchar" MaxLength="50" />
@@ -770,6 +771,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TEMPLATE_ASSINANTE">
+          <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="0..1" />
+          <End Role="TEMPLATE" Type="Self.TEMPLATE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="TEMPLATE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_USUARIO_ANEXO_USUARIO">
           <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
           <End Role="USUARIO_ANEXO" Type="Self.USUARIO_ANEXO" Multiplicity="*" />
@@ -985,6 +998,10 @@
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
             <End Role="POSICAO" EntitySet="POSICAO" />
           </AssociationSet>
+          <AssociationSet Name="FK_TEMPLATE_ASSINANTE" Association="Self.FK_TEMPLATE_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="TEMPLATE" EntitySet="TEMPLATE" />
+          </AssociationSet>
           <AssociationSet Name="FK_USUARIO_ANEXO_USUARIO" Association="Self.FK_USUARIO_ANEXO_USUARIO">
             <End Role="USUARIO" EntitySet="USUARIO" />
             <End Role="USUARIO_ANEXO" EntitySet="USUARIO_ANEXO" />
@@ -1006,8 +1023,7 @@
             <End Role="USUARIO" EntitySet="USUARIO" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PlatMensagensModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1046,6 +1062,7 @@
           <NavigationProperty Name="NOTIFICACAO" Relationship="Self.FK_NOTIFICACAO_ASSINANTE" FromRole="ASSINANTE" ToRole="NOTIFICACAO" />
           <NavigationProperty Name="POSICAO" Relationship="Self.FK_POSICAO_ASSINANTE" FromRole="ASSINANTE" ToRole="POSICAO" />
           <NavigationProperty Name="USUARIO" Relationship="Self.FK_USUARIO_ASSINANTE" FromRole="ASSINANTE" ToRole="USUARIO" />
+          <NavigationProperty Name="TEMPLATE" Relationship="PlatMensagensModel.FK_TEMPLATE_ASSINANTE" FromRole="ASSINANTE" ToRole="TEMPLATE" />
         </EntityType>
         <EntityType Name="ASSINANTE_ANEXO">
           <Key>
@@ -1383,6 +1400,8 @@
           <Property Name="TEMP_TX_DADOS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="TEMP_DT_CRIACAO" Type="DateTime" Precision="0" />
           <NavigationProperty Name="MENSAGENS" Relationship="Self.FK_MENSAGENS_TEMPLATE" FromRole="TEMPLATE" ToRole="MENSAGENS" />
+          <Property Name="ASSI_CD_ID" Type="Int32" />
+          <NavigationProperty Name="ASSINANTE" Relationship="PlatMensagensModel.FK_TEMPLATE_ASSINANTE" FromRole="TEMPLATE" ToRole="ASSINANTE" />
         </EntityType>
         <EntityType Name="TIPO_PESSOA">
           <Key>
@@ -2085,7 +2104,23 @@
             <End Role="USUARIO" EntitySet="USUARIO" />
             <End Role="USUARIO_ANEXO" EntitySet="USUARIO_ANEXO" />
           </AssociationSet>
+          <AssociationSet Name="FK_TEMPLATE_ASSINANTE" Association="PlatMensagensModel.FK_TEMPLATE_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="TEMPLATE" EntitySet="TEMPLATE" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_TEMPLATE_ASSINANTE">
+          <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="0..1" />
+          <End Type="PlatMensagensModel.TEMPLATE" Role="TEMPLATE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="TEMPLATE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2413,6 +2448,7 @@
           <EntitySetMapping Name="TEMPLATE">
             <EntityTypeMapping TypeName="PlatMensagensModel.TEMPLATE">
               <MappingFragment StoreEntitySet="TEMPLATE">
+                <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
                 <ScalarProperty Name="TEMP_CD_ID" ColumnName="TEMP_CD_ID" />
                 <ScalarProperty Name="TEMP_SG_SIGLA" ColumnName="TEMP_SG_SIGLA" />
                 <ScalarProperty Name="TEMP_IN_TIPO" ColumnName="TEMP_IN_TIPO" />
