@@ -149,12 +149,12 @@
                                                     Link a ser incluído na mensagem
                                                     @Html.TextBoxFor(m => m.MENS_NM_LINK, new { @class = "form-control", autofocus = true })
                                                 </div>
-                                                <div class="col-lg-2 col-md-2 col-xs-12">
+                                                <div class="col-lg-2 col-md-2 col-xs-12" id="MO">
                                                     Modelos
                                                     <div class="input-group">
                                                         @Html.DropDownListFor(m => m.TEMP_CD_ID, (SelectList)ViewBag.Temp, "Selecionar", new { @class = "form-control", autofocus = true, @id = "temp"})
                                                         <span class="input-group-btn">
-                                                            <span class="btn btn-primary btn-sm" id="btnBusca" onclick="PesquisaTemplate($('#temp').val())">+</span>
+                                                            <span class="btn btn-warning btn-sm" id="btnBusca" onclick="PesquisaTemplate($('#temp').val(), $(this), 1)">?</span>
                                                         </span>
                                                     </div>
                                                 </div>
@@ -395,16 +395,19 @@
                 $("#EM1").show();
                 $("#EM2").show();
                 $("#SMS1").hide();
+                $("#MO").show();
             } else if (valTipo == '2') { 
                 $("#EM").hide();
                 $("#EM1").hide();
                 $("#EM2").hide();
                 $("#SMS1").show();
+                $("#MO").hide();
             } else { //Se não for 1, 2 ou 4 esconde as duas
                 $("#EM").show();
                 $("#EM1").show();
                 $("#EM2").show();
                 $("#SMS1").hide();
+                $("#MO").hide();
             }
         }
 
@@ -427,7 +430,7 @@
         }
     </script>
     <script>
-        function PesquisaTemplate(temp) {
+        function PesquisaTemplate(temp, btn, tipo) {
             data = {
                 temp: temp
             }
@@ -436,14 +439,15 @@
                 , type: 'POST'
                 , data: data
                 , success: function (r) {
-                    if (val(r.TEMP_IN_TIPO) == 1) {
+                    if (tipo == 1) {
                         $('#cab').val(r.TEMP_TX_CABECALHO);
                         $('#cor').val(r.TEMP_TX_CORPO);
                         $('#rod').val(r.TEMP_TX_DADOS);
-                    } 
-                    if (val(r.TEMP_IN_TIPO) == 2) {
-                        $('#sms').val(r.TEMP_TX_CORPO);
-                    } 
+                    } else if (tipo == 2) {
+                        $('#cab').val(r.TEMP_TX_CABECALHO);
+                        $('#cor').val(r.TEMP_TX_CORPO);
+                        $('#rod').val(r.TEMP_TX_DADOS);
+                    }
                 }
             });
         }

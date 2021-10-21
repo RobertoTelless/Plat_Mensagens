@@ -92,7 +92,7 @@
                                         <hr />
                                         @if (Model.TEMP_IN_TIPO == 1)
                                         {
-                                            <div class="row" id="EM1">
+                                            <div class="row">
                                                 <h4 style="color:navy">Conteúdo do Modelo E-Mail</h4>
                                                 <h5>No Cabeçalho deverá existir o bloco {Nome} onde será incluído o nome do contato</h5>
                                                 <h5>No Rodapé deverá existir o bloco {NomeRemetente} onde será incluído o nome do emissor</h5>
@@ -120,7 +120,7 @@
                                         }
                                         @if (Model.TEMP_IN_TIPO == 2)
                                         {
-                                            <div class="row" id="SMS1">
+                                            <div class="row">
                                                 <h4 style="color:navy">Conteúdo do Modelo de SMS</h4>
                                                 <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
                                                     <div class="col-lg-12 col-md-12 col-xs-12">
@@ -132,7 +132,7 @@
                                         }
                                         @if (Model.TEMP_IN_TIPO == 3)
                                         {
-                                            <div class="row" id="WHT1">
+                                            <div class="row">
                                                 <h4 style="color:navy">Conteúdo do Modelo de WhatsApp</h4>
                                                 <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
                                                     <div class="col-lg-12 col-md-12 col-xs-12">
@@ -309,47 +309,6 @@
                     text: false
                 });
         });
-    </script>
-    <script type="text/javascript">
-        function ValidaDiv(valTipo) {
-            if (valTipo == '1') {
-                $("#EM").show();
-                $("#EM1").show();
-                $("#EM2").show();
-                $("#SMS1").hide();
-                $("#WHT1").hide();
-            } else if (valTipo == '2') { 
-                $("#EM").hide();
-                $("#EM1").hide();
-                $("#EM2").hide();
-                $("#SMS1").show();
-                $("#WHT1").hide();
-            } else { //Se não for 1, 2 ou 4 esconde as duas
-                $("#EM").hide();
-                $("#EM1").hide();
-                $("#EM2").hide();
-                $("#SMS1").hide();
-                $("#WHT1").show();
-            }
-        }
-
-        $(document).ready(function () {
-            ValidaDiv($('#tipo').val());
-        });
-
-        function LimpaPJ() {
-            $('#cnpj').val('');
-
-            //$('select#rt option:selected').removeAttr('selected');
-            $('#is').val('');
-            $('#CLIE_VL_SALDO').val('');
-            $('#CLIE_NR_INSCRICAO_ESTADUAL').val('');
-            $('#CLIE_NR_INSCRICAO_MUNICIPAL').val('');
-        }
-
-        function LimpaPF() {
-            $('#cpf').val('');
-        }
     </script>
     <script type="text/javascript">
         $(document).ready(function () {

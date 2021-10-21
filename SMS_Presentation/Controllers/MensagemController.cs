@@ -316,7 +316,7 @@ namespace SMS_Presentation.Controllers
             tipos.Add(new SelectListItem() { Text = "WhatsApp", Value = "3" });
             ViewBag.Tipos = new SelectList(tipos, "Value", "Text");
             ViewBag.Status = new SelectList(baseApp.GetAllPosicao().OrderBy(p => p.POSI_NM_NOME), "POSI_CD_ID", "POSI_NM_NOME");
-            ViewBag.Temp = new SelectList(temApp.GetAllItens(idAss).OrderBy(p => p.TEMP_NM_NOME), "TEMP_CD_ID", "TEMP_SG_SIGLA");
+            ViewBag.Temp = new SelectList(temApp.GetAllItens(idAss).Where(p => p.TEMP_IN_TIPO != 0).ToList().OrderBy(p => p.TEMP_SG_SIGLA), "TEMP_CD_ID", "TEMP_SG_SIGLA");
 
             // Prepara view
             String header = temApp.GetByCode("TEMPBAS").TEMP_TX_CABECALHO;
@@ -340,7 +340,6 @@ namespace SMS_Presentation.Controllers
             vm.USUA_CD_ID = usuario.USUA_CD_ID;
             vm.MENS_NM_CABECALHO = header;
             vm.MENS_NM_RODAPE = footer;
-            vm.MENS_IN_TIPO = 2;
             return View(vm);
         }
 
@@ -359,7 +358,7 @@ namespace SMS_Presentation.Controllers
             ViewBag.Grupos = new SelectList(gruApp.GetAllItens(idAss).OrderBy(p => p.GRUP_NM_NOME), "GRUP_CD_ID", "GRUP_NM_NOME");
             ViewBag.Cats = new SelectList(baseApp.GetAllTipos().OrderBy(p => p.CACL_NM_NOME), "CACL_CD_ID", "CACL_NM_NOME");
             ViewBag.UF = new SelectList(baseApp.GetAllUF().OrderBy(p => p.UF_SG_SIGLA), "UF_CD_ID", "UF_NM_NOME");
-            ViewBag.Temp = new SelectList(temApp.GetAllItens(idAss).OrderBy(p => p.TEMP_NM_NOME), "TEMP_CD_ID", "TEMP_SG_SIGLA");
+            ViewBag.Temp = new SelectList(temApp.GetAllItens(idAss).Where(p => p.TEMP_IN_TIPO != 0).ToList().OrderBy(p => p.TEMP_SG_SIGLA), "TEMP_CD_ID", "TEMP_SG_SIGLA");
             Session["Mensagem"] = null;
             List<SelectListItem> sexo = new List<SelectListItem>();
             sexo.Add(new SelectListItem() { Text = "Masculino", Value = "1" });
@@ -372,6 +371,7 @@ namespace SMS_Presentation.Controllers
             tipos.Add(new SelectListItem() { Text = "WhatsApp", Value = "3" });
             ViewBag.Tipos = new SelectList(tipos, "Value", "Text");
             ViewBag.Status = new SelectList(baseApp.GetAllPosicao().OrderBy(p => p.POSI_NM_NOME), "POSI_CD_ID", "POSI_NM_NOME");
+            
             if (ModelState.IsValid)
             {
                 try

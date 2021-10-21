@@ -98,7 +98,7 @@ namespace SMS_Presentation.Controllers
             // Carrega listas
             if ((List<TEMPLATE>)Session["ListaTemplate"] == null || ((List<TEMPLATE>)Session["ListaTemplate"]).Count == 0)
             {
-                listaMaster = baseApp.GetAllItens(idAss);
+                listaMaster = baseApp.GetAllItens(idAss).Where(p => p.TEMP_IN_TIPO != 0).ToList();
                 Session["ListaTemplate"] = listaMaster;
             }
             ViewBag.Listas = (List<TEMPLATE>)Session["ListaTemplate"];
@@ -151,7 +151,7 @@ namespace SMS_Presentation.Controllers
                 return RedirectToAction("Login", "ControleAcesso");
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
-            listaMaster = baseApp.GetAllItensAdm(idAss);
+            listaMaster = baseApp.GetAllItensAdm(idAss).Where(p => p.TEMP_IN_TIPO != 0).ToList();
             Session["ListaTemplate"] = null;
             return RedirectToAction("MontarTelaTemplate");
         }
@@ -245,7 +245,7 @@ namespace SMS_Presentation.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public ActionResult IncluirTemplate(TemplateViewModel vm)
         {
             if ((String)Session["Ativa"] == null)
@@ -339,7 +339,7 @@ namespace SMS_Presentation.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public ActionResult EditarTemplate(TemplateViewModel vm)
         {
             Int32 idAss = (Int32)Session["IdAssinante"];
