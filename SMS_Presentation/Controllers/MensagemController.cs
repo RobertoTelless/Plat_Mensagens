@@ -28,6 +28,9 @@ using EntitiesServices.WorkClasses;
 using System.Threading.Tasks;
 using CrossCutting;
 using System.Net.Mail;
+//using SendGrid;
+//using SendGrid.Helpers.Mail;
+//using System.Threading.Tasks;
 
 namespace SMS_Presentation.Controllers
 {
@@ -459,7 +462,7 @@ namespace SMS_Presentation.Controllers
         public void UploadFileToSession(IEnumerable<HttpPostedFileBase> files, String profile)
         {
             List<FileQueue> queue = new List<FileQueue>();
-            List<Attachment> att = new List<Attachment>();
+            List<System.Net.Mail.Attachment> att = new List<System.Net.Mail.Attachment>();
             foreach (var file in files)
             {
                 FileQueue f = new FileQueue();
@@ -477,7 +480,7 @@ namespace SMS_Presentation.Controllers
                         f.Profile = 1;
                     }
                 }
-                att.Add(new Attachment(file.InputStream, f.Name));
+                att.Add(new System.Net.Mail.Attachment(file.InputStream, f.Name));
                 queue.Add(f);
             }
             Session["FileQueueMensagem"] = queue;
@@ -538,7 +541,7 @@ namespace SMS_Presentation.Controllers
                 tipo = 3;
             }
             foto.MEAN_IN_TIPO = tipo;
-            foto.MEAN_NM_TITULO = fileName;
+            foto.MEAN_NM_TITULO = fileName.Length < 49 ? fileName : fileName.Substring(0,48);
             foto.MENS_CD_ID = item.MENS_CD_ID;
 
             item.MENSAGEM_ANEXO.Add(foto);
@@ -663,10 +666,21 @@ namespace SMS_Presentation.Controllers
                     {
                         foreach (MENSAGEM_ANEXO item in vm.MENSAGEM_ANEXO)
                         {
-                            Attachment anexo = new Attachment(Server.MapPath(item.MEAN_AQ_ARQUIVO));
+                            String fn = Server.MapPath(item.MEAN_AQ_ARQUIVO);
+                            Attachment anexo = new Attachment(fn);
                             listaAnexo.Add(anexo);
                         }
                     }
+                    //List<SendGrid.Helpers.Mail.Attachment> listaAnexo1 = new List<SendGrid.Helpers.Mail.Attachment>();
+                    //if (vm.MENSAGEM_ANEXO.Count > 0)
+                    //{
+                    //    foreach (MENSAGEM_ANEXO item in vm.MENSAGEM_ANEXO)
+                    //    {
+                    //        SendGrid.Helpers.Mail.Attachment anexo = new SendGrid.Helpers.Mail.Attachment();
+                    //        anexo.Filename = Server.MapPath(item.MEAN_AQ_ARQUIVO);
+                    //        listaAnexo1.Add(anexo);
+                    //    }
+                    //}
 
                     // Monta e-mail
                     NetworkCredential net = new NetworkCredential(conf.CONF_NM_EMAIL_EMISSOO, conf.CONF_NM_SENHA_EMISSOR);
@@ -694,6 +708,10 @@ namespace SMS_Presentation.Controllers
                     catch (Exception ex)
                     {
                         erro = ex.Message;
+                        if (ex.InnerException != null)
+                        {
+                            erro += ex.InnerException.Message;
+                        }
                         if (ex.GetType() == typeof(SmtpFailedRecipientException))
                         {
                             var se = (SmtpFailedRecipientException)ex;
@@ -720,6 +738,11 @@ namespace SMS_Presentation.Controllers
                         mens.MENS_TX_RETORNO = erro;
                         volta = baseApp.ValidateEdit(mens, mens);
                     }
+
+                    // Envia pelo sendgrid
+                    //String assunto = vm.MENS_NM_CAMPANHA != null ? vm.MENS_NM_CAMPANHA : "Assunto Diverso";
+                    //EnviarSendGrid(conf.CONF_NM_EMAIL_EMISSOO, assunto, cliente.CLIE_NM_EMAIL, cliente.CLIE_NM_NOME, emailBody, listaAnexo1).Wait();
+
                     erro = null;
                     return volta;
                 }
@@ -753,12 +776,12 @@ namespace SMS_Presentation.Controllers
                         String emailBody = cab + body + rod;
 
                         // Checa e monta anexos
-                        List<Attachment> listaAnexo = new List<Attachment>();
+                        List<System.Net.Mail.Attachment> listaAnexo = new List<System.Net.Mail.Attachment>();
                         if (vm.MENSAGEM_ANEXO.Count > 0)
                         {
                             foreach (MENSAGEM_ANEXO ane in vm.MENSAGEM_ANEXO)
                             {
-                                Attachment anexo = new Attachment(Server.MapPath(ane.MEAN_AQ_ARQUIVO));
+                                System.Net.Mail.Attachment anexo = new System.Net.Mail.Attachment(Server.MapPath(ane.MEAN_AQ_ARQUIVO));
                                 listaAnexo.Add(anexo);
                             }
                         }
@@ -943,6 +966,20 @@ namespace SMS_Presentation.Controllers
             }
             return 0;
         }
+
+        //public static async Task EnviarSendGrid(String mailFrom, String assunto, String mailTo, String nome, String texto, List<SendGrid.Helpers.Mail.Attachment> anexo)
+        //{
+        //    var apiKey = "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";
+        //    var client = new SendGridClient(apiKey);
+        //    var from = new EmailAddress(mailFrom, "RTI");
+        //    var subject = assunto;
+        //    var to = new EmailAddress(mailTo, nome);
+        //    var plainTextContent = "-";
+        //    var htmlContent = texto;
+        //    var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+        //    msg.AddAttachments(anexo);
+        //    var response = await client.SendEmailAsync(msg);
+        //}
 
         [HttpGet]
         public ActionResult VerMensagem(Int32 id)
