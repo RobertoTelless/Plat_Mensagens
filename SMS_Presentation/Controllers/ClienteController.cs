@@ -390,7 +390,7 @@ namespace SMS_Presentation.Controllers
 
 
             // Carrega listas
-            if ((List<CLIENTE>)Session["ListaCliente"] == null || ((List<CLIENTE>)Session["ListaCliente"]).Count == 0)
+            if ((List<CLIENTE>)Session["ListaCliente"] == null)
             {
                 listaMaster = baseApp.GetAllItens(idAss);
                 Session["ListaCliente"] = listaMaster;
@@ -499,11 +499,11 @@ namespace SMS_Presentation.Controllers
                 if (volta == 1)
                 {
                     Session["MensCliente"] = 1;
-                    if ((Int32)Session["VoltaCliente"] == 2)
-                    {
-                        return RedirectToAction("VerCardsCliente");
-                    }
-                    return RedirectToAction("MontarTelaCliente");
+                    //if ((Int32)Session["VoltaCliente"] == 2)
+                    //{
+                    //    return RedirectToAction("VerCardsCliente");
+                    //}
+                    //return RedirectToAction("MontarTelaCliente");
                 }
 
                 // Sucesso

@@ -50,7 +50,7 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-xs-12">
-                            <div class="col-lg-12 col-md-12 col-xs-12 ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 2px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; height: 530px">
+                            <div class="col-lg-12 col-md-12 col-xs-12 ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 2px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px;">
                                 <div class="ibox-title">
                                     <h4>Estatística de Envio de SMS/dia</h4>
                                     <h4 style="color: brown">(Exibindo apenas o mês corrente)</h4>
@@ -104,7 +104,7 @@
                             </div>
                         </div>
                         <div class="col-lg-8 col-md-8 col-xs-12">
-                            <div class="col-lg-12 col-md-12 col-xs-12 ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 2px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; height: 530px">
+                            <div class="col-lg-12 col-md-12 col-xs-12 ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 2px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px">
                                 <div class="ibox-title">
                                     <h4>Gráfico do Envio de SMS/Dia (Mês Corrente)</h4>
                                     <div class="ibox-tools">
@@ -296,41 +296,6 @@
         $(function () {
             $("#cpf").mask("999.999.999-99");
             $("#cnpj").mask("99.999.999/9999-99");
-        });
-    </script>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-
-            $.ajax({
-                url: '../BaseAdmin/GetDadosGraficoSMS'
-                , type: 'POST'
-                , success: function (result) {
-            var lineData = {
-                labels: result.dias,
-                datasets: [
-
-                    {
-                        label: "Total por Dia",
-                        backgroundColor: 'rgba(26,179,148,0.5)',
-                        borderColor: "rgba(26,179,148,0.7)",
-                        pointBackgroundColor: "rgba(26,179,148,1)",
-                        pointBorderColor: "#fff",
-                        data: result.valores
-                    }
-                ]
-            };
-
-            var lineOptions = {
-                responsive: true
-            };
-
-
-            var ctx = document.getElementById("lineChart").getContext("2d");
-            new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
-
-              }
-            });
         });
     </script>
 

@@ -46,7 +46,7 @@
                     <div class="ibox-content text-center">
                         <h1>@Model.USUA_NM_NOME.Substring(0, Model.USUA_NM_NOME.IndexOf(" "))</h1>
                         <div class="m-b-sm">
-                            <img alt="image" class="img-circle" src="@Url.Content(Model.USUA_AQ_FOTO)" style="width: auto; height: auto; max-height: 90px; max-width: 90px;">
+                            <img alt="image" class="img-circle" src="@Url.Content(Model.USUA_AQ_FOTO)" style="width: 90px; height: 90px; max-height: 90px; max-width: 90px;">
                         </div>
                         <p class="font-bold">@((String)Session["NomeGreeting"])</p>
 
@@ -130,26 +130,26 @@
                             <div class="row">
                                 <div class="col-xs-4">
                                     <small class="stats-label">Total</small>
-                                    <h4>1.344</h4>
+                                    <h4>@ViewBag.Total</h4>
                                 </div>
 
                                 <div class="col-xs-4">
                                     <small class="stats-label">E-Mails</small>
-                                    <h4>432</h4>
+                                    <h4>@ViewBag.Emails</h4>
                                 </div>
                                 <div class="col-xs-4">
                                     <small class="stats-label">SMS</small>
-                                    <h4>222</h4>
+                                    <h4>@ViewBag.SMS</h4>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-4">
                                     <small class="stats-label">WhatsApp</small>
-                                    <h4>465</h4>
+                                    <h4>-</h4>
                                 </div>
                                 <div class="col-xs-4">
                                     <small class="stats-label">Falhas</small>
-                                    <h4>12</h4>
+                                    <h4>@ViewBag.Falhas</h4>
                                 </div>
                                 <div class="col-xs-4">
                                     @Html.ButtonLinkIndex(text: "Mensagens", action: "MontarTelaMensagens", controller: "Mensagens")
@@ -275,7 +275,8 @@
                                             <h2 class="no-margins">@ViewBag.Total</h2>
                                             <br />
                                             <br />
-                                            @Html.ButtonLinkIndex(text: "Expandir", controller: "BaseAdmin", action: "VerTotalExpansao", buttonClass: "white")
+                                            @Html.ButtonLinkIndex(text: "Mês", controller: "BaseAdmin", action: "VerTotalExpansao", buttonClass: "white")
+                                            @Html.ButtonLinkIndex(text: "Todos", controller: "BaseAdmin", action: "VerTotalExpansaoTodos", buttonClass: "white")
                                         </div>
                                     </div>
                                 </div>
@@ -289,7 +290,8 @@
                                             <h2 class="no-margins">@ViewBag.Emails</h2>
                                             <br />
                                             <br />
-                                            @Html.ButtonLinkIndex(text: "Expandir", controller: "BaseAdmin", action: "VerEMailExpansao", buttonClass: "white")
+                                            @Html.ButtonLinkIndex(text: "Mês", controller: "BaseAdmin", action: "VerEMailExpansao", buttonClass: "white")
+                                            @Html.ButtonLinkIndex(text: "Todos", controller: "BaseAdmin", action: "VerEmailExpansaoTodos", buttonClass: "white")
                                         </div>
                                     </div>
                                 </div>
@@ -303,7 +305,8 @@
                                             <h2 class="no-margins">@ViewBag.SMS</h2>
                                             <br />
                                             <br />
-                                            @Html.ButtonLinkIndex(text: "Expandir", controller: "BaseAdmin", action: "VerSMSExpansao", buttonClass: "white")
+                                            @Html.ButtonLinkIndex(text: "Mês", controller: "BaseAdmin", action: "VerSMSExpansao", buttonClass: "white")
+                                            @Html.ButtonLinkIndex(text: "Todos", controller: "BaseAdmin", action: "VerSMSExpansaoTodos", buttonClass: "white")
                                         </div>
                                     </div>
                                 </div>
@@ -319,7 +322,8 @@
                                             <h2 class="no-margins">@ViewBag.Falhas</h2>
                                             <br />
                                             <br />
-                                            @Html.ButtonLinkIndex(text: "Expandir", controller: "BaseAdmin", action: "VerFalhasExpansao", buttonClass: "white")
+                                            @Html.ButtonLinkIndex(text: "Mês", controller: "BaseAdmin", action: "VerFalhasExpansao", buttonClass: "white")
+                                            @Html.ButtonLinkIndex(text: "Todos", controller: "BaseAdmin", action: "VerFalhasExpansaoTodos", buttonClass: "white")
                                         </div>
                                     </div>
                                 </div>                            
@@ -333,7 +337,7 @@
                                             <h2 class="no-margins">@ViewBag.NumClientes</h2>
                                             <br />
                                             <br />
-                                            @Html.ButtonLinkIndex(text: "Expandir", controller: "Cliente", action: "MontarTelaCliente", buttonClass: "white")
+                                            @Html.ButtonLinkIndex(text: "Ver Contatos", controller: "Cliente", action: "MontarTelaCliente", buttonClass: "white")
                                         </div>
                                     </div>
                                 </div>                                                      

@@ -95,7 +95,7 @@ namespace DataServices.Repositories
             }
             if (!String.IsNullOrEmpty(cnpj))
             {
-                cnpj = ValidarNumerosDocumentos.RemoveNaoNumericos(cnpj);
+                //cnpj = ValidarNumerosDocumentos.RemoveNaoNumericos(cnpj);
                 query = query.Where(p => p.CLIE_NR_CNPJ == cnpj);
             }
             if (!String.IsNullOrEmpty(email))

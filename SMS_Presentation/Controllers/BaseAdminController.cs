@@ -258,6 +258,30 @@ namespace SMS_Presentation.Controllers
             return Json(result);
         }
 
+        public JsonResult GetDadosGraficoEmailTodos()
+        {
+            List<MENSAGENS> listaCP1 = (List<MENSAGENS>)Session["ListaEMailTodas"];
+            List<DateTime> datas = (List<DateTime>)Session["ListaDatasTodas"];
+            List<MENSAGENS> listaDia = new List<MENSAGENS>();
+            List<String> dias = new List<String>();
+            List<Int32> valor = new List<Int32>();
+            dias.Add(" ");
+            valor.Add(0);
+
+            foreach (DateTime item in datas)
+            {
+                listaDia = listaCP1.Where(p => p.MENS_DT_ENVIO.Value.Date == item).ToList();
+                Int32 contaDia = listaDia.Count();
+                dias.Add(item.ToShortDateString());
+                valor.Add(contaDia);
+            }
+
+            Hashtable result = new Hashtable();
+            result.Add("dias", dias);
+            result.Add("valores", valor);
+            return Json(result);
+        }
+
         public ActionResult VerEMailExpansaoTodos()
         {
             // Prepara grid
@@ -327,6 +351,30 @@ namespace SMS_Presentation.Controllers
             return Json(result);
         }
 
+        public JsonResult GetDadosGraficoSMSTodos()
+        {
+            List<MENSAGENS> listaCP1 = (List<MENSAGENS>)Session["ListaSMSTodas"];
+            List<DateTime> datas = (List<DateTime>)Session["ListaDatasSMSTodas"];
+            List<MENSAGENS> listaDia = new List<MENSAGENS>();
+            List<String> dias = new List<String>();
+            List<Int32> valor = new List<Int32>();
+            dias.Add(" ");
+            valor.Add(0);
+
+            foreach (DateTime item in datas)
+            {
+                listaDia = listaCP1.Where(p => p.MENS_DT_ENVIO.Value.Date == item).ToList();
+                Int32 contaDia = listaDia.Count();
+                dias.Add(item.ToShortDateString());
+                valor.Add(contaDia);
+            }
+
+            Hashtable result = new Hashtable();
+            result.Add("dias", dias);
+            result.Add("valores", valor);
+            return Json(result);
+        }
+
         public ActionResult VerSMSExpansaoTodos()
         {
             // Prepara grid
@@ -373,6 +421,30 @@ namespace SMS_Presentation.Controllers
         }
 
         public JsonResult GetDadosGraficoTotal()
+        {
+            List<MENSAGENS> listaCP1 = (List<MENSAGENS>)Session["ListaTotalTodas"];
+            List<DateTime> datas = (List<DateTime>)Session["ListaDatasTotalTodas"];
+            List<MENSAGENS> listaDia = new List<MENSAGENS>();
+            List<String> dias = new List<String>();
+            List<Int32> valor = new List<Int32>();
+            dias.Add(" ");
+            valor.Add(0);
+
+            foreach (DateTime item in datas)
+            {
+                listaDia = listaCP1.Where(p => p.MENS_DT_ENVIO.Value.Date == item).ToList();
+                Int32 contaDia = listaDia.Count();
+                dias.Add(item.ToShortDateString());
+                valor.Add(contaDia);
+            }
+
+            Hashtable result = new Hashtable();
+            result.Add("dias", dias);
+            result.Add("valores", valor);
+            return Json(result);
+        }
+
+        public JsonResult GetDadosGraficoTotalTodos()
         {
             List<MENSAGENS> listaCP1 = (List<MENSAGENS>)Session["ListaTotal"];
             List<DateTime> datas = (List<DateTime>)Session["ListaDatasTotal"];
@@ -445,6 +517,30 @@ namespace SMS_Presentation.Controllers
         {
             List<MENSAGENS> listaCP1 = (List<MENSAGENS>)Session["ListaFalha"];
             List<DateTime> datas = (List<DateTime>)Session["ListaDatasFalha"];
+            List<MENSAGENS> listaDia = new List<MENSAGENS>();
+            List<String> dias = new List<String>();
+            List<Int32> valor = new List<Int32>();
+            dias.Add(" ");
+            valor.Add(0);
+
+            foreach (DateTime item in datas)
+            {
+                listaDia = listaCP1.Where(p => p.MENS_DT_CRIACAO.Value.Date == item).ToList();
+                Int32 contaDia = listaDia.Count();
+                dias.Add(item.ToShortDateString());
+                valor.Add(contaDia);
+            }
+
+            Hashtable result = new Hashtable();
+            result.Add("dias", dias);
+            result.Add("valores", valor);
+            return Json(result);
+        }
+
+        public JsonResult GetDadosGraficoFalhasTodos()
+        {
+            List<MENSAGENS> listaCP1 = (List<MENSAGENS>)Session["ListaFalhaTodas"];
+            List<DateTime> datas = (List<DateTime>)Session["ListaDatasFalhaTodas"];
             List<MENSAGENS> listaDia = new List<MENSAGENS>();
             List<String> dias = new List<String>();
             List<Int32> valor = new List<Int32>();

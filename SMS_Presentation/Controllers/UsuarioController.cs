@@ -104,7 +104,7 @@ namespace SMS_Presentation.Controllers
 
             // Recupera numero de usuarios do assinante
             Session["NumUsuarios"] = listaUsu.Count;
-            Int32 usuariosPossiveis = ((Int32)Session["MaxUsuarios"]) - listaUsu.Count;
+            Int32 usuariosPossiveis = 1000;
             ViewBag.UsuariosPossiveis = usuariosPossiveis;
 
 

@@ -697,7 +697,6 @@ namespace SMS_Presentation.Controllers
                     mensagem.SENHA_EMISSOR = conf.CONF_NM_SENHA_EMISSOR;
                     mensagem.SMTP = conf.CONF_NM_HOST_SMTP;
                     mensagem.NETWORK_CREDENTIAL = net;
-                    //mensagem.ATTACHMENT = (List<Attachment>)Session["Attachments"];
                     mensagem.ATTACHMENT = listaAnexo;
 
                     // Envia mensagem
