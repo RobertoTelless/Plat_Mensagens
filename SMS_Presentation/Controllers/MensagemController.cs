@@ -28,9 +28,10 @@ using EntitiesServices.WorkClasses;
 using System.Threading.Tasks;
 using CrossCutting;
 using System.Net.Mail;
-//using SendGrid;
-//using SendGrid.Helpers.Mail;
-//using System.Threading.Tasks;
+using System.Net.Http;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using System.Threading.Tasks;
 
 namespace SMS_Presentation.Controllers
 {
@@ -661,26 +662,27 @@ namespace SMS_Presentation.Controllers
                     String emailBody = cab + body + rod;
 
                     // Checa e monta anexos
-                    List<Attachment> listaAnexo = new List<Attachment>();
+                    List<System.Net.Mail.Attachment> listaAnexo = new List<System.Net.Mail.Attachment>();
                     if (vm.MENSAGEM_ANEXO.Count > 0)
                     {
                         foreach (MENSAGEM_ANEXO item in vm.MENSAGEM_ANEXO)
                         {
                             String fn = Server.MapPath(item.MEAN_AQ_ARQUIVO);
-                            Attachment anexo = new Attachment(fn);
+                            System.Net.Mail.Attachment anexo = new System.Net.Mail.Attachment(fn);
                             listaAnexo.Add(anexo);
                         }
                     }
-                    //List<SendGrid.Helpers.Mail.Attachment> listaAnexo1 = new List<SendGrid.Helpers.Mail.Attachment>();
-                    //if (vm.MENSAGEM_ANEXO.Count > 0)
-                    //{
-                    //    foreach (MENSAGEM_ANEXO item in vm.MENSAGEM_ANEXO)
-                    //    {
-                    //        SendGrid.Helpers.Mail.Attachment anexo = new SendGrid.Helpers.Mail.Attachment();
-                    //        anexo.Filename = Server.MapPath(item.MEAN_AQ_ARQUIVO);
-                    //        listaAnexo1.Add(anexo);
-                    //    }
-                    //}
+
+                    List<SendGrid.Helpers.Mail.Attachment> listaAnexo1 = new List<SendGrid.Helpers.Mail.Attachment>();
+                    if (vm.MENSAGEM_ANEXO.Count > 0)
+                    {
+                        foreach (MENSAGEM_ANEXO item in vm.MENSAGEM_ANEXO)
+                        {
+                            SendGrid.Helpers.Mail.Attachment anexo = new SendGrid.Helpers.Mail.Attachment();
+                            anexo.Filename = Server.MapPath(item.MEAN_AQ_ARQUIVO);
+                            listaAnexo1.Add(anexo);
+                        }
+                    }
 
                     // Monta e-mail
                     NetworkCredential net = new NetworkCredential(conf.CONF_NM_EMAIL_EMISSOO, conf.CONF_NM_SENHA_EMISSOR);
@@ -739,7 +741,7 @@ namespace SMS_Presentation.Controllers
                     }
 
                     // Envia pelo sendgrid
-                    //String assunto = vm.MENS_NM_CAMPANHA != null ? vm.MENS_NM_CAMPANHA : "Assunto Diverso";
+                    String assunto = vm.MENS_NM_CAMPANHA != null ? vm.MENS_NM_CAMPANHA : "Assunto Diverso";
                     //EnviarSendGrid(conf.CONF_NM_EMAIL_EMISSOO, assunto, cliente.CLIE_NM_EMAIL, cliente.CLIE_NM_NOME, emailBody, listaAnexo1).Wait();
 
                     erro = null;
@@ -869,11 +871,11 @@ namespace SMS_Presentation.Controllers
                         httpWebRequest.Headers["Authorization"] = auth;
                         httpWebRequest.ContentType = "application/json";
                         httpWebRequest.Method = "POST";
+                        String customId = Cryptography.GenerateRandomPassword(8);
 
                         using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                         {
-                            string json = String.Concat("{\"destinations\": [{\"to\": \"", listaDest, "\", \"text\": \"", texto, "\", \"customId\": \"sysbr\", \"from\": \"SystemBR\"}]}");
-
+                            string json = String.Concat("{\"destinations\": [{\"to\": \"", listaDest, "\", \"text\": \"", texto, "\", \"" + customId + "\": \"yyyy\", \"from\": \"SystemBR\"}]}");
                             streamWriter.Write(json);
                         }
 
@@ -923,7 +925,7 @@ namespace SMS_Presentation.Controllers
 
                         using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                         {
-                            string json = String.Concat("{\"destinations\": [{\"to\": \"", listaDest, "\", \"text\": \"", texto, "\", \"customId\": \"sysbr\", \"from\": \"PlatMensagens\"}]}");
+                            string json = String.Concat("{\"destinations\": [{\"to\": \"", listaDest, "\", \"text\": \"", texto, "\", \"customId\": \"zzzz\", \"from\": \"PlatMensagens\"}]}");
 
                             streamWriter.Write(json);
                         }
@@ -966,19 +968,19 @@ namespace SMS_Presentation.Controllers
             return 0;
         }
 
-        //public static async Task EnviarSendGrid(String mailFrom, String assunto, String mailTo, String nome, String texto, List<SendGrid.Helpers.Mail.Attachment> anexo)
-        //{
-        //    var apiKey = "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";
-        //    var client = new SendGridClient(apiKey);
-        //    var from = new EmailAddress(mailFrom, "RTI");
-        //    var subject = assunto;
-        //    var to = new EmailAddress(mailTo, nome);
-        //    var plainTextContent = "-";
-        //    var htmlContent = texto;
-        //    var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-        //    msg.AddAttachments(anexo);
-        //    var response = await client.SendEmailAsync(msg);
-        //}
+        public static async Task EnviarSendGrid(String mailFrom, String assunto, String mailTo, String nome, String texto, List<SendGrid.Helpers.Mail.Attachment> anexo)
+        {
+            var apiKey = "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";
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress(mailFrom, "RTI");
+            var subject = assunto;
+            var to = new EmailAddress(mailTo, nome);
+            var plainTextContent = "-";
+            var htmlContent = texto;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            msg.AddAttachments(anexo);
+            var response = await client.SendEmailAsync(msg);
+        }
 
         [HttpGet]
         public ActionResult VerMensagem(Int32 id)

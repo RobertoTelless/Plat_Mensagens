@@ -248,7 +248,7 @@
                                                 @if (ViewBag.Perfil == "ADM" || ViewBag.Perfil == "GER" )
                                                 {
                                                     @Html.TableLinkDetails(cond.CLIE_CD_ID, "EditarCliente", "fa-edit", "Editar/Consultar")
-                                                    <span style="cursor: pointer; color: #337ab7;" class="fa fa-send" onclick="MudaIdCliente('@cond.CLIE_CD_ID')" data-toggle="modal" data-target="#exampleModal" title="Enviar SMS"> </span>
+                                                    @*<span style="cursor: pointer; color: #337ab7;" class="fa fa-send" onclick="MudaIdCliente('@cond.CLIE_CD_ID')" data-toggle="modal" data-target="#exampleModal" title="Enviar SMS"> </span>*@
                                                     if (cond.CLIE_IN_ATIVO == 1)
                                                     {
                                                         @Html.TableLinkDetails(cond.CLIE_CD_ID, "ExcluirCliente", "fa-trash-o", "Desativar")
