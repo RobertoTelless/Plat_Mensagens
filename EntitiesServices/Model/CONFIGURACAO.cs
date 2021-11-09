@@ -26,6 +26,9 @@ namespace EntitiesServices.Model
         public Nullable<int> CONF_NR_REFRESH_NOTIFICACAO { get; set; }
         public string CONF_SG_LOGIN_SMS { get; set; }
         public string CONF_SG_SENHA_SMS { get; set; }
+        public string CONF_NM_SENDGRID_LOGIN { get; set; }
+        public string CONF_NM_SENDGRID_PWD { get; set; }
+        public string CONF_NM_SENDGRID_APIKEY { get; set; }
     
         public virtual ASSINANTE ASSINANTE { get; set; }
     }

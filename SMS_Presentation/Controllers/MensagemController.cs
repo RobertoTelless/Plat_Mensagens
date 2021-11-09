@@ -642,6 +642,7 @@ namespace SMS_Presentation.Controllers
                     // Prepara rodape
                     ASSINANTE assi = (ASSINANTE)Session["Assinante"];
                     String rod = vm.MENS_NM_RODAPE.Replace("{NomeRemetente}", assi.ASSI_NM_NOME);
+                    String api = conf.CONF_NM_SENDGRID_APIKEY;
 
                     // Prepara corpo do e-mail e trata link
                     StringBuilder str = new StringBuilder();
@@ -742,7 +743,7 @@ namespace SMS_Presentation.Controllers
 
                     // Envia pelo sendgrid
                     String assunto = vm.MENS_NM_CAMPANHA != null ? vm.MENS_NM_CAMPANHA : "Assunto Diverso";
-                    //EnviarSendGrid(conf.CONF_NM_EMAIL_EMISSOO, assunto, cliente.CLIE_NM_EMAIL, cliente.CLIE_NM_NOME, emailBody, listaAnexo1).Wait();
+                    EnviarSendGrid(conf.CONF_NM_EMAIL_EMISSOO, assunto, cliente.CLIE_NM_EMAIL, cliente.CLIE_NM_NOME, emailBody, listaAnexo1, api).Wait();
 
                     erro = null;
                     return volta;
@@ -968,10 +969,9 @@ namespace SMS_Presentation.Controllers
             return 0;
         }
 
-        public static async Task EnviarSendGrid(String mailFrom, String assunto, String mailTo, String nome, String texto, List<SendGrid.Helpers.Mail.Attachment> anexo)
+        public static async Task EnviarSendGrid(String mailFrom, String assunto, String mailTo, String nome, String texto, List<SendGrid.Helpers.Mail.Attachment> anexo, String api)
         {
-            var apiKey = "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";
-            var client = new SendGridClient(apiKey);
+            var client = new SendGridClient(api);
             var from = new EmailAddress(mailFrom, "RTI");
             var subject = assunto;
             var to = new EmailAddress(mailTo, nome);
