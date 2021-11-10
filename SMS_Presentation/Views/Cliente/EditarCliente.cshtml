@@ -124,7 +124,7 @@
                                     <li class=""><a data-toggle="tab" href="#tab-5">Dados Pessoais</a></li>
                                 }
                                 <li class=""><a data-toggle="tab" href="#tab-7">Observações</a></li>
-                                <li class=""><a data-toggle="tab" href="#tab-8">Indicadores</a></li>
+                                <li class=""><a data-toggle="tab" href="#tab-8">Mensagens</a></li>
                             }
                             else
                             {
@@ -141,7 +141,7 @@
                                     <li class=""><a data-toggle="tab" href="#tab-5">Dados Pessoais</a></li>
                                 }
                                 <li class=""><a data-toggle="tab" href="#tab-7">Observações</a></li>
-                                <li class=""><a data-toggle="tab" href="#tab-8">Indicadores</a></li>
+                                <li class=""><a data-toggle="tab" href="#tab-8">Mensagens</a></li>
                             }
                         </ul>
                         <div class="tab-content">
@@ -1035,14 +1035,29 @@
                                                                     @foreach (var cond in (Model.MENSAGENS_DESTINOS))
                                                                     {
                                                                         <tr>
-                                                                            @if (cond.MENSAGENS.MENS_TX_TEXTO.Length > 30)
-                                                                            {
-                                                                                <td style="cursor: pointer; text-decoration: underline; color: #337ab7;" onclick="mostrarDesc('@cond.MENSAGENS.MENS_TX_TEXTO')">@cond.MENSAGENS.MENS_TX_TEXTO.Substring(0, 30) ...</td>
+                                                                            @if (cond.MENSAGENS.MENS_IN_TIPO == 1)
+	                                                                        {
+                                                                                if (cond.MENSAGENS.MENS_TX_TEXTO.Length > 30)
+                                                                                {
+                                                                                    <td style="cursor: pointer; text-decoration: underline; color: #337ab7;" onclick="mostrarDesc('@cond.MENSAGENS.MENS_TX_TEXTO')">@cond.MENSAGENS.MENS_TX_TEXTO.Substring(0, 30) ...</td>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <td style="cursor: pointer; text-decoration: underline; color: #337ab7;" onclick="mostrarDesc('@cond.MENSAGENS.MENS_TX_TEXTO')">@cond.MENSAGENS.MENS_TX_TEXTO</td>
+                                                                                }
                                                                             }
-                                                                            else
+                                                                            else if (cond.MENSAGENS.MENS_IN_TIPO == 2)
                                                                             {
-                                                                                <td style="cursor: pointer; text-decoration: underline; color: #337ab7;" onclick="mostrarDesc('@cond.MENSAGENS.MENS_TX_TEXTO')">@cond.MENSAGENS.MENS_TX_TEXTO</td>
+                                                                                if (cond.MENSAGENS.MENS_TX_SMS.Length > 30)
+                                                                                {
+                                                                                    <td style="cursor: pointer; text-decoration: underline; color: #337ab7;" onclick="mostrarDesc('@cond.MENSAGENS.MENS_TX_SMS')">@cond.MENSAGENS.MENS_TX_TEXTO.Substring(0, 30) ...</td>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <td style="cursor: pointer; text-decoration: underline; color: #337ab7;" onclick="mostrarDesc('@cond.MENSAGENS.MENS_TX_SMS')">@cond.MENSAGENS.MENS_TX_TEXTO</td>
+                                                                                }
                                                                             }
+
                                                                             @if (cond.MENSAGENS.MENS_DT_ENVIO != null)
 	                                                                        {
                                                                                 <td>@cond.MENSAGENS.MENS_DT_ENVIO.Value.ToShortDateString() @cond.MENSAGENS.MENS_DT_ENVIO.Value.ToShortTimeString()</td>
@@ -1053,7 +1068,7 @@
                                                                             }
                                                                             @if (cond.MENSAGENS.MENS_IN_TIPO == 1)
                                                                             {
-                                                                                <td><span clasmes="badge badge-primary">E-Mail</span></td>
+                                                                                <td><span class ="badge badge-primary">E-Mail</span></td>
                                                                             }
                                                                             else if (cond.MENSAGENS.MENS_IN_TIPO == 2)
                                                                             {

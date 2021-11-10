@@ -15,7 +15,7 @@
                 <a href="@Url.Action("MontarTelaMensagem", "Mensagem")">Mensagens</a>
             </li>
             <li class="active">
-                <strong>Mensagens - Geração/Envio</strong>
+                <strong>Mensagens - SMS</strong>
             </li>
         </ol>
         <br />
@@ -24,7 +24,7 @@
         <div class="col-lg-12 col-md-12 col-xs-12">
             <div class="col-lg-12 col-md-12 col-xs-12 ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Mensagens - Geração/Envio</h5>
+                    <h5>Mensagens - SMS</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -60,13 +60,13 @@
                         </div>
                     </div>*@
                     <div class="tabs-container">
-                        @using (Html.BeginForm("IncluirMensagem", "Mensagem", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", @id = "pwd-container1" }))
+                        @using (Html.BeginForm("IncluirMensagemSMS", "Mensagem", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", @id = "pwd-container1" }))
                         {
                             <div class="form-group">
                                 <br />
                                 <div class="col-lg-12 col-md-12 col-xs-12">
                                     @Html.ButtonActionSubmit(text: "BtnSubmit", htmlAttributes: new { id = "submit", style = "display: none;" })
-                                    <button class="btnSubmit btn btn-sm btn-success" id="basictoast" type="button">Confirma Envio da Mensagem</button>
+                                    <button class="btnSubmit btn btn-sm btn-success" id="basictoast" type="button">Confirma Envio do SMS</button>
                                     @Html.ButtonLinkIndex(text: "Voltar", action: "VoltarBaseMensagem", controller: "Mensagem")
                                 </div>
                             </div>
@@ -84,6 +84,7 @@
                                             @Html.HiddenFor(m => m.MENS_IN_ATIVO)
                                             @Html.HiddenFor(m => m.MENS_DT_CRIACAO)
                                             @Html.HiddenFor(m => m.USUA_CD_ID)
+                                            @Html.HiddenFor(m => m.MENS_IN_TIPO)
                                             <h4 style="color:navy">Seleção dos Destinos da Mensagem</h4>
                                             <h5>Selecione um nome de contato na lista ou espeficique as condições para filtrar os contatos e enviar a mensagem</h5>
                                             <h5 style="color: green">Ao escolher um nome de contato, ela terá prevalência sobre os filtros</h5>
@@ -137,24 +138,24 @@
                                                     Campanha
                                                     @Html.TextBoxFor(m => m.MENS_NM_CAMPANHA, new { @class = "form-control", autofocus = true })
                                                 </div>
-                                                <div class="col-lg-2 col-md-2 col-xs-12">
+                                                @*<div class="col-lg-2 col-md-2 col-xs-12">
                                                     Tipo de Mensagem
                                                     @Html.DropDownListFor(m => m.MENS_IN_TIPO, (SelectList)ViewBag.Tipos, "Selecionar", new { @class = "form-control", autofocus = true, @id = "tipo", onchange = "ValidaDiv($(this).val())" })
-                                                </div>
+                                                </div>*@
                                                 <div class="col-lg-2 col-md-2 col-xs-12">
                                                     Agendar para
                                                     @Html.TextBoxFor(m => m.MENS_DT_AGENDAMENTO, new { @class = "form-control datetime-picker", autofocus = true, @id = "saida", @style = "font-weight:bold" })
                                                 </div>
-                                                <div class="col-lg-3 col-md-3 col-xs-12" id="EM">
+                                                <div class="col-lg-3 col-md-3 col-xs-12">
                                                     Link a ser incluído na mensagem
                                                     @Html.TextBoxFor(m => m.MENS_NM_LINK, new { @class = "form-control", autofocus = true })
                                                 </div>
-                                                <div class="col-lg-2 col-md-2 col-xs-12" id="MO">
+                                                <div class="col-lg-2 col-md-2 col-xs-12">
                                                     Modelos
                                                     <div class="input-group">
                                                         @Html.DropDownListFor(m => m.TEMP_CD_ID, (SelectList)ViewBag.Temp, "Selecionar", new { @class = "form-control", autofocus = true, @id = "temp"})
                                                         <span class="input-group-btn">
-                                                            <span class="btn btn-warning btn-sm" id="btnBusca" onclick="PesquisaTemplate($('#temp').val(), $(this), 1)">?</span>
+                                                            <span class="btn btn-warning btn-sm" id="btnBusca" onclick="PesquisaTemplate($('#temp').val(), $(this), 2)">?</span>
                                                         </span>
                                                     </div>
                                                 </div>
@@ -165,31 +166,7 @@
                                             </div>
                                         </div>
                                         <hr />
-                                        <div class="row" id="EM1">
-                                            <h4 style="color:navy">Conteúdo da Mensagem</h4>
-                                            <h5>No Cabeçalho deverá existir o bloco {Nome} onde será incluído o nome do contato</h5>
-                                            <h5 style="color: green">Na inexistência desse bloco, as informações acima não serão incluídas na mensagem</h5>
-                                            <br />
-                                            <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
-                                                <div class="col-lg-12 col-md-12 col-xs-12">
-                                                    Cabeçalho
-                                                    @Html.TextAreaFor(m => m.MENS_NM_CABECALHO, new { @class = "form-control summernote", style = "width: 100%; height: 200px;", autofocus = true,  @id = "cab"})
-                                                </div>
-                                            </div>
-                                            <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
-                                                <div class="col-lg-12 col-md-12 col-xs-12">
-                                                    Corpo da Mensagem
-                                                    @Html.TextAreaFor(m => m.MENS_TX_TEXTO, new { @class = "form-control summernote", style = "width: 100%; height: 600px;", autofocus = true,  @id = "cor" })
-                                                </div>
-                                            </div>
-                                            <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
-                                                <div class="col-lg-12 col-md-12 col-xs-12">
-                                                    Rodapé
-                                                    @Html.TextAreaFor(m => m.MENS_NM_RODAPE, new { @class = "form-control summernote", style = "width: 100%; height: 200px;", autofocus = true,  @id = "rod" })
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row" id="SMS1">
+                                        <div class="row">
                                             <h4 style="color:navy">Conteúdo do SMS</h4>
                                             <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
                                                 <div class="col-lg-12 col-md-12 col-xs-12">
@@ -199,34 +176,13 @@
                                             </div>
                                         </div>
                                         <hr />
-                                        <div class="row" id="EM2">
-                                            <div class="col-lg-12 col-md-12 col-xs-12">
-                                                <h4>Anexos</h4><input class="btn btn-sm btn-warning" id="inputFile" type="file" multiple />
-                                                <br />
-                                                <div class="form-group">
-                                                    <div>
-                                                        <hr />
-                                                        <table style="width: 100%;" class="table table-striped table-bordered table-hover" id="myFiles">
-                                                            <thead style="background-color:lightsteelblue">
-                                                                <tr>
-                                                                    <td>Nome</td>
-                                                                    <td>Tipo</td>
-                                                                    <td>Ações</td>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody></tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <br />
                                     <div class="col-lg-12 col-md-12 col-xs-12">
                                         @Html.ButtonActionSubmit(text: "BtnSubmit", htmlAttributes: new { id = "submit", style = "display: none;" })
-                                        <button style="margin-left: 15px;" class="btnSubmit btn btn-sm btn-success" id="basictoast" type="button">Confirma Envio da Mensagem</button>
+                                        <button style="margin-left: 15px;" class="btnSubmit btn btn-sm btn-success" id="basictoast" type="button">Confirma Envio do SMS</button>
                                         @Html.ButtonLinkIndex(text: "Voltar", action: "VoltarBaseMensagem", controller: "Mensagem")
                                     </div>
                                 </div>

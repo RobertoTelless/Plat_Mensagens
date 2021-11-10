@@ -46,6 +46,7 @@ namespace SMS_Presentation.Controllers
         private readonly IGrupoAppService gruApp;
         private String msg;
         private Exception exception;
+
         MENSAGENS objeto = new MENSAGENS();
         MENSAGENS objetoAntes = new MENSAGENS();
         List<MENSAGENS> listaMaster = new List<MENSAGENS>();
@@ -876,7 +877,7 @@ namespace SMS_Presentation.Controllers
 
                         using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                         {
-                            string json = String.Concat("{\"destinations\": [{\"to\": \"", listaDest, "\", \"text\": \"", texto, "\", \"" + customId + "\": \"yyyy\", \"from\": \"SystemBR\"}]}");
+                            string json = String.Concat("{\"destinations\": [{\"to\": \"", listaDest, "\", \"text\": \"", texto, "\", \"customId\": \"" + customId + "\", \"from\": \"SystemBR\"}]}");
                             streamWriter.Write(json);
                         }
 
@@ -1352,6 +1353,882 @@ namespace SMS_Presentation.Controllers
             Session["VoltaCEP"] = 2;
             return Json(hash);
         }
+
+        [HttpGet]
+        [ValidateInput(false)]
+        public ActionResult IncluirMensagemEMail()
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensMensagem"] = 2;
+                    return RedirectToAction("CarregarBase", "BaseAdmin");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Prepara listas
+            ViewBag.Clientes = new SelectList(cliApp.GetAllItens(idAss).OrderBy(p => p.CLIE_NM_NOME), "CLIE_CD_ID", "CLIE_NM_NOME");
+            ViewBag.Grupos = new SelectList(gruApp.GetAllItens(idAss).OrderBy(p => p.GRUP_NM_NOME), "GRUP_CD_ID", "GRUP_NM_NOME");
+            ViewBag.Cats = new SelectList(baseApp.GetAllTipos().OrderBy(p => p.CACL_NM_NOME), "CACL_CD_ID", "CACL_NM_NOME");
+            ViewBag.UF = new SelectList(baseApp.GetAllUF().OrderBy(p => p.UF_SG_SIGLA), "UF_CD_ID", "UF_NM_NOME");
+            Session["Mensagem"] = null;
+            List<SelectListItem> sexo = new List<SelectListItem>();
+            sexo.Add(new SelectListItem() { Text = "Masculino", Value = "1" });
+            sexo.Add(new SelectListItem() { Text = "Feminino", Value = "2" });
+            sexo.Add(new SelectListItem() { Text = "Outros", Value = "3" });
+            ViewBag.Sexo = new SelectList(sexo, "Value", "Text");
+            ViewBag.Status = new SelectList(baseApp.GetAllPosicao().OrderBy(p => p.POSI_NM_NOME), "POSI_CD_ID", "POSI_NM_NOME");
+            ViewBag.Temp = new SelectList(temApp.GetAllItens(idAss).Where(p => p.TEMP_IN_TIPO == 1).ToList().OrderBy(p => p.TEMP_SG_SIGLA), "TEMP_CD_ID", "TEMP_SG_SIGLA");
+
+            List<SelectListItem> tipos = new List<SelectListItem>();
+            tipos.Add(new SelectListItem() { Text = "E-Mail", Value = "1" });
+            tipos.Add(new SelectListItem() { Text = "SMS", Value = "2" });
+            tipos.Add(new SelectListItem() { Text = "WhatsApp", Value = "3" });
+            ViewBag.Tipos = new SelectList(tipos, "Value", "Text");
+
+            // Prepara view
+            String header = temApp.GetByCode("TEMPBAS").TEMP_TX_CABECALHO;
+            String body = temApp.GetByCode("TEMPBAS").TEMP_TX_CORPO;
+            String footer = temApp.GetByCode("TEMPBAS").TEMP_TX_DADOS;
+
+            if (Session["MensMensagem"] != null)
+            {
+                if ((Int32)Session["MensMensagem"] == 3)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0026", CultureInfo.CurrentCulture));
+                }
+            }
+
+            Session["MensagemNovo"] = 0;
+            MENSAGENS item = new MENSAGENS();
+            MensagemViewModel vm = Mapper.Map<MENSAGENS, MensagemViewModel>(item);
+            vm.ASSI_CD_ID = idAss;
+            vm.MENS_DT_CRIACAO = DateTime.Now;
+            vm.MENS_IN_ATIVO = 1;
+            vm.USUA_CD_ID = usuario.USUA_CD_ID;
+            vm.MENS_NM_CABECALHO = header;
+            vm.MENS_NM_RODAPE = footer;
+            vm.MENS_IN_TIPO = 1;
+            return View(vm);
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        [ValidateInput(false)]
+        public ActionResult IncluirMensagemEMail(MensagemViewModel vm)
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            ViewBag.Clientes = new SelectList(cliApp.GetAllItens(idAss).OrderBy(p => p.CLIE_NM_NOME), "CLIE_CD_ID", "CLIE_NM_NOME");
+            ViewBag.Grupos = new SelectList(gruApp.GetAllItens(idAss).OrderBy(p => p.GRUP_NM_NOME), "GRUP_CD_ID", "GRUP_NM_NOME");
+            ViewBag.Cats = new SelectList(baseApp.GetAllTipos().OrderBy(p => p.CACL_NM_NOME), "CACL_CD_ID", "CACL_NM_NOME");
+            ViewBag.UF = new SelectList(baseApp.GetAllUF().OrderBy(p => p.UF_SG_SIGLA), "UF_CD_ID", "UF_NM_NOME");
+            ViewBag.Temp = new SelectList(temApp.GetAllItens(idAss).Where(p => p.TEMP_IN_TIPO != 0).ToList().OrderBy(p => p.TEMP_SG_SIGLA), "TEMP_CD_ID", "TEMP_SG_SIGLA");
+            Session["Mensagem"] = null;
+            List<SelectListItem> sexo = new List<SelectListItem>();
+            sexo.Add(new SelectListItem() { Text = "Masculino", Value = "1" });
+            sexo.Add(new SelectListItem() { Text = "Feminino", Value = "2" });
+            sexo.Add(new SelectListItem() { Text = "Outros", Value = "3" });
+            ViewBag.Sexo = new SelectList(sexo, "Value", "Text");
+            List<SelectListItem> tipos = new List<SelectListItem>();
+            tipos.Add(new SelectListItem() { Text = "E-Mail", Value = "1" });
+            tipos.Add(new SelectListItem() { Text = "SMS", Value = "2" });
+            tipos.Add(new SelectListItem() { Text = "WhatsApp", Value = "3" });
+            ViewBag.Tipos = new SelectList(tipos, "Value", "Text");
+            ViewBag.Status = new SelectList(baseApp.GetAllPosicao().OrderBy(p => p.POSI_NM_NOME), "POSI_CD_ID", "POSI_NM_NOME");
+            
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Checa mensagens
+                    if (String.IsNullOrEmpty(vm.MENS_TX_TEXTO))
+                    {
+                        Session["MensMensagem"] = 3;
+                        return RedirectToAction("IncluirMensagemEMail");
+                    }
+
+                    // Executa a operação
+                    MENSAGENS item = Mapper.Map<MensagemViewModel, MENSAGENS>(vm);
+                    USUARIO usuario = (USUARIO)Session["UserCredentials"];
+                    Int32 volta = baseApp.ValidateCreate(item, usuario);
+
+                    // Verifica retorno
+                    if (volta == 1)
+                    {
+                    }
+
+                    // Cria pastas
+                    String caminho = "/Imagens/" + idAss.ToString() + "/Mensagem/" + item.MENS_CD_ID.ToString() + "/Anexos/";
+                    Directory.CreateDirectory(Server.MapPath(caminho));
+
+                    Session["IdMensagem"] = item.MENS_CD_ID;
+                    if (Session["FileQueueMensagem"] != null)
+                    {
+                        List<FileQueue> fq = (List<FileQueue>)Session["FileQueueMensagem"];
+
+                        foreach (var file in fq)
+                        {
+                            if (file.Profile == null)
+                            {
+                                UploadFileQueueMensagem(file);
+                            }
+                        }
+                        Session["FileQueueMensagem"] = null;
+                    }
+
+                    // Processa
+                    if (item.MENS_DT_AGENDAMENTO == null)
+                    {
+                        MENSAGENS mens = baseApp.GetItemById(item.MENS_CD_ID);
+                        Session["IdMensagem"] = mens.MENS_CD_ID;
+                        vm.MENS_CD_ID = mens.MENS_CD_ID;
+                        vm.MENSAGEM_ANEXO = mens.MENSAGEM_ANEXO;
+                        Int32 retGrava = ProcessarEnvioMensagemEMail(vm, usuario);
+                        if (retGrava > 0)
+                        {
+
+                        }
+                    }
+
+                    // Sucesso
+                    listaMaster = new List<MENSAGENS>();
+                    Session["ListaMensagem"] = null;
+                    Session["MensagemNovo"] = item.MENS_CD_ID;
+                    return RedirectToAction("MontarTelaMensagem");
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = ex.Message;
+                    return View(vm);
+                }
+            }
+            else
+            {
+                return View(vm);
+            }
+        }
+
+        [ValidateInput(false)]
+        public Int32 ProcessarEnvioMensagemEMail(MensagemViewModel vm, USUARIO usuario)
+        {
+            // Recupera contatos
+            Int32 idAss = (Int32)Session["IdAssinante"];
+            CLIENTE cliente = null;
+            GRUPO grupo = null;
+            List<CLIENTE> listaCli = new List<CLIENTE>();
+            Int32 escopo = 0;
+            String erro = null;
+            Int32 volta = 0;
+            PlatMensagensEntities Db = new PlatMensagensEntities();
+            MENSAGENS mens = baseApp.GetItemById(vm.MENS_CD_ID);
+
+            // Nome
+            if (vm.ID > 0)
+            {                
+                cliente = cliApp.GetItemById(vm.ID.Value);
+                escopo = 1;
+            }
+            else if (vm.GRUPO > 0)
+            {
+                listaCli = new List<CLIENTE>();
+                grupo = gruApp.GetItemById(vm.GRUPO.Value);
+                foreach (GRUPO_CLIENTE item in grupo.GRUPO_CLIENTE)
+                {
+                    listaCli.Add(item.CLIENTE);
+                }
+                escopo = 2;
+            }
+            else
+            {
+                IQueryable<CLIENTE> query = Db.CLIENTE;
+                escopo = 2;
+
+                // Sexo
+                if (vm.SEXO > 0)
+                {
+                    query = query.Where(p => p.CLIE_IN_SEXO == vm.SEXO);
+                }
+
+                // Cidade
+                if (!String.IsNullOrEmpty(vm.CIDADE))
+                {
+                    query = query.Where(p => p.CLIE_NM_CIDADE.Contains(vm.CIDADE));
+                }
+
+                // UF
+                if (vm.UF > 0)
+                {
+                    query = query.Where(p => p.UF_CD_ID == vm.UF);
+                }
+
+                // Categoria
+                if (vm.CATEGORIA > 0)
+                {
+                    query = query.Where(p => p.CACL_CD_ID == vm.CATEGORIA);
+                }
+
+                // Status
+                if (vm.STATUS > 0)
+                {
+                    query = query.Where(p => p.CLIE_IN_STATUS == vm.STATUS);
+                }
+
+                // Data Nascimento
+                if (vm.DATA_NASC != null)
+                {
+                    query = query.Where(p => p.CLIE_DT_NASCIMENTO == vm.DATA_NASC);
+                }
+
+                // Processa filtro
+                if (query != null)
+                {
+                    query = query.Where(p => p.ASSI_CD_ID == idAss);
+                    listaCli = query.ToList<CLIENTE>();
+                }
+            }
+
+            // Processa e-mail
+            CONFIGURACAO conf = confApp.GetItemById(usuario.ASSI_CD_ID);
+            if (escopo == 1)
+            {
+                // Prepara cabeçalho
+                String cab = vm.MENS_NM_CABECALHO.Replace("{Nome}", cliente.CLIE_NM_NOME);
+
+                // Prepara rodape
+                ASSINANTE assi = (ASSINANTE)Session["Assinante"];
+                String rod = vm.MENS_NM_RODAPE.Replace("{NomeRemetente}", assi.ASSI_NM_NOME);
+                String api = conf.CONF_NM_SENDGRID_APIKEY;
+
+                // Prepara corpo do e-mail e trata link
+                StringBuilder str = new StringBuilder();
+                str.AppendLine(vm.MENS_TX_TEXTO);
+                if (!String.IsNullOrEmpty(vm.MENS_NM_LINK))
+                {
+                    if (!vm.MENS_NM_LINK.Contains("www."))
+                    {
+                        vm.MENS_NM_LINK = "www." + vm.MENS_NM_LINK;
+                    }
+                    if (!vm.MENS_NM_LINK.Contains("http://"))
+                    {
+                        vm.MENS_NM_LINK = "http://" + vm.MENS_NM_LINK;
+                    }
+                    str.AppendLine("<a href='" + vm.MENS_NM_LINK + "'>Clique aqui para maiores informações</a>");
+                }
+                String body = str.ToString();                  
+                String emailBody = cab + body + rod;
+
+                // Checa e monta anexos
+                List<System.Net.Mail.Attachment> listaAnexo = new List<System.Net.Mail.Attachment>();
+                if (vm.MENSAGEM_ANEXO.Count > 0)
+                {
+                    foreach (MENSAGEM_ANEXO item in vm.MENSAGEM_ANEXO)
+                    {
+                        String fn = Server.MapPath(item.MEAN_AQ_ARQUIVO);
+                        System.Net.Mail.Attachment anexo = new System.Net.Mail.Attachment(fn);
+                        listaAnexo.Add(anexo);
+                    }
+                }
+
+                List<SendGrid.Helpers.Mail.Attachment> listaAnexo1 = new List<SendGrid.Helpers.Mail.Attachment>();
+                if (vm.MENSAGEM_ANEXO.Count > 0)
+                {
+                    foreach (MENSAGEM_ANEXO item in vm.MENSAGEM_ANEXO)
+                    {
+                        SendGrid.Helpers.Mail.Attachment anexo = new SendGrid.Helpers.Mail.Attachment();
+                        anexo.Filename = Server.MapPath(item.MEAN_AQ_ARQUIVO);
+                        listaAnexo1.Add(anexo);
+                    }
+                }
+
+                // Monta e-mail
+                NetworkCredential net = new NetworkCredential(conf.CONF_NM_EMAIL_EMISSOO, conf.CONF_NM_SENHA_EMISSOR);
+                Email mensagem = new Email();
+                mensagem.ASSUNTO = vm.MENS_NM_CAMPANHA != null ? vm.MENS_NM_CAMPANHA : "Assunto Diverso";
+                mensagem.CORPO = emailBody;
+                mensagem.DEFAULT_CREDENTIALS = false;
+                mensagem.EMAIL_DESTINO = cliente.CLIE_NM_EMAIL;
+                mensagem.EMAIL_EMISSOR = conf.CONF_NM_EMAIL_EMISSOO;
+                mensagem.ENABLE_SSL = true;
+                mensagem.NOME_EMISSOR = cliente.ASSINANTE.ASSI_NM_NOME;
+                mensagem.PORTA = conf.CONF_NM_PORTA_SMTP;
+                mensagem.PRIORIDADE = System.Net.Mail.MailPriority.High;
+                mensagem.SENHA_EMISSOR = conf.CONF_NM_SENHA_EMISSOR;
+                mensagem.SMTP = conf.CONF_NM_HOST_SMTP;
+                mensagem.NETWORK_CREDENTIAL = net;
+                mensagem.ATTACHMENT = listaAnexo;
+
+                // Envia mensagem
+                try
+                {
+                    Int32 voltaMail = CommunicationPackage.SendEmail(mensagem);
+                }
+                catch (Exception ex)
+                {
+                    erro = ex.Message;
+                    if (ex.InnerException != null)
+                    {
+                        erro += ex.InnerException.Message;
+                    }
+                    if (ex.GetType() == typeof(SmtpFailedRecipientException))
+                    {
+                        var se = (SmtpFailedRecipientException)ex;
+                        erro += se.FailedRecipient;
+                    }
+                }
+
+                // Grava mensagem/destino e erros
+                if (erro == null)
+                {
+                    MENSAGENS_DESTINOS dest = new MENSAGENS_DESTINOS();
+                    dest.MEDE_IN_ATIVO = 1;
+                    dest.MEDE_IN_POSICAO = 1;
+                    dest.MEDE_IN_STATUS = 1;
+                    dest.CLIE_CD_ID = cliente.CLIE_CD_ID;
+                    dest.MEDE_DS_ERRO_ENVIO = erro;
+                    dest.MENS_CD_ID = mens.MENS_CD_ID;
+                    mens.MENSAGENS_DESTINOS.Add(dest);
+                    mens.MENS_DT_ENVIO = DateTime.Now;
+                    volta = baseApp.ValidateEdit(mens, mens);
+                }
+                else
+                {
+                    mens.MENS_TX_RETORNO = erro;
+                    volta = baseApp.ValidateEdit(mens, mens);
+                }
+
+                // Envia pelo sendgrid
+                String assunto = vm.MENS_NM_CAMPANHA != null ? vm.MENS_NM_CAMPANHA : "Assunto Diverso";
+                //EnviarSendGrid(conf.CONF_NM_EMAIL_EMISSOO, assunto, cliente.CLIE_NM_EMAIL, cliente.CLIE_NM_NOME, emailBody, listaAnexo1, api).Wait();
+
+                erro = null;
+                return volta;
+            }
+            else
+            {
+                foreach (CLIENTE item in listaCli)
+                {
+                    // Prepara cabeçalho
+                    String cab = vm.MENS_NM_CABECALHO.Replace("{Nome}", item.CLIE_NM_NOME);
+
+                    // Prepara rodape
+                    ASSINANTE assi = (ASSINANTE)Session["Assinante"];
+                    String rod = vm.MENS_NM_RODAPE;
+
+                    // Prepara corpo do e-mail e trata link
+                    StringBuilder str = new StringBuilder();
+                    str.AppendLine(vm.MENS_TX_TEXTO);
+                    if (!String.IsNullOrEmpty(vm.MENS_NM_LINK))
+                    {
+                        if (!vm.MENS_NM_LINK.Contains("www."))
+                        {
+                            vm.MENS_NM_LINK = "www." + vm.MENS_NM_LINK;
+                        }
+                        if (!vm.MENS_NM_LINK.Contains("http://"))
+                        {
+                            vm.MENS_NM_LINK = "http://" + vm.MENS_NM_LINK;
+                        }
+                        str.AppendLine("<a href='" + vm.MENS_NM_LINK + "'>Clique aqui para maiores informações</a>");
+                    }
+                    String body = str.ToString();
+                    String emailBody = cab + body + rod;
+
+                    // Checa e monta anexos
+                    List<System.Net.Mail.Attachment> listaAnexo = new List<System.Net.Mail.Attachment>();
+                    if (vm.MENSAGEM_ANEXO.Count > 0)
+                    {
+                        foreach (MENSAGEM_ANEXO ane in vm.MENSAGEM_ANEXO)
+                        {
+                            System.Net.Mail.Attachment anexo = new System.Net.Mail.Attachment(Server.MapPath(ane.MEAN_AQ_ARQUIVO));
+                            listaAnexo.Add(anexo);
+                        }
+                    }
+
+                    // Monta e-mail
+                    NetworkCredential net = new NetworkCredential(conf.CONF_NM_EMAIL_EMISSOO, conf.CONF_NM_SENHA_EMISSOR);
+                    Email mensagem = new Email();
+                    mensagem.ASSUNTO = vm.MENS_NM_CAMPANHA != null ? vm.MENS_NM_CAMPANHA : "Assunto Diverso";
+                    mensagem.CORPO = emailBody;
+                    mensagem.DEFAULT_CREDENTIALS = false;
+                    mensagem.EMAIL_DESTINO = item.CLIE_NM_EMAIL;
+                    mensagem.EMAIL_EMISSOR = conf.CONF_NM_EMAIL_EMISSOO;
+                    mensagem.ENABLE_SSL = true;
+                    mensagem.NOME_EMISSOR = item.ASSINANTE.ASSI_NM_NOME;
+                    mensagem.PORTA = conf.CONF_NM_PORTA_SMTP;
+                    mensagem.PRIORIDADE = System.Net.Mail.MailPriority.High;
+                    mensagem.SENHA_EMISSOR = conf.CONF_NM_SENHA_EMISSOR;
+                    mensagem.SMTP = conf.CONF_NM_HOST_SMTP;
+                    mensagem.NETWORK_CREDENTIAL = net;
+                    mensagem.ATTACHMENT = listaAnexo;
+
+                    // Envia mensagem
+                    try
+                    {
+                        Int32 voltaMail = CommunicationPackage.SendEmail(mensagem);
+                    }
+                    catch (Exception ex)
+                    {
+                        erro = ex.Message;
+                        if (ex.GetType() == typeof(SmtpFailedRecipientException))
+                        {
+                            var se = (SmtpFailedRecipientException)ex;
+                            erro += se.FailedRecipient;
+                        }
+                    }
+
+                    // Grava mensagem/destino e erros
+                    if (erro == null)
+                    {
+                        MENSAGENS_DESTINOS dest = new MENSAGENS_DESTINOS();
+                        dest.MEDE_IN_ATIVO = 1;
+                        dest.MEDE_IN_POSICAO = 1;
+                        dest.MEDE_IN_STATUS = 1;
+                        dest.CLIE_CD_ID = item.CLIE_CD_ID;
+                        dest.MEDE_DS_ERRO_ENVIO = erro;
+                        dest.MENS_CD_ID = mens.MENS_CD_ID;
+                        mens.MENSAGENS_DESTINOS.Add(dest);
+                        mens.MENS_DT_ENVIO = DateTime.Now;
+                        volta = baseApp.ValidateEdit(mens, mens);
+                    }
+                    else
+                    {
+                        mens.MENS_TX_RETORNO = erro;
+                        volta = baseApp.ValidateEdit(mens, mens);
+                    }
+                    erro = null;
+                }
+                return volta;
+            }
+            return 0;
+        }
+
+        [HttpGet]
+        [ValidateInput(false)]
+        public ActionResult IncluirMensagemSMS()
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensMensagem"] = 2;
+                    return RedirectToAction("CarregarBase", "BaseAdmin");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Prepara listas
+            ViewBag.Clientes = new SelectList(cliApp.GetAllItens(idAss).OrderBy(p => p.CLIE_NM_NOME), "CLIE_CD_ID", "CLIE_NM_NOME");
+            ViewBag.Grupos = new SelectList(gruApp.GetAllItens(idAss).OrderBy(p => p.GRUP_NM_NOME), "GRUP_CD_ID", "GRUP_NM_NOME");
+            ViewBag.Cats = new SelectList(baseApp.GetAllTipos().OrderBy(p => p.CACL_NM_NOME), "CACL_CD_ID", "CACL_NM_NOME");
+            ViewBag.UF = new SelectList(baseApp.GetAllUF().OrderBy(p => p.UF_SG_SIGLA), "UF_CD_ID", "UF_NM_NOME");
+            Session["Mensagem"] = null;
+            List<SelectListItem> sexo = new List<SelectListItem>();
+            sexo.Add(new SelectListItem() { Text = "Masculino", Value = "1" });
+            sexo.Add(new SelectListItem() { Text = "Feminino", Value = "2" });
+            sexo.Add(new SelectListItem() { Text = "Outros", Value = "3" });
+            ViewBag.Sexo = new SelectList(sexo, "Value", "Text");
+            List<SelectListItem> tipos = new List<SelectListItem>();
+            tipos.Add(new SelectListItem() { Text = "E-Mail", Value = "1" });
+            tipos.Add(new SelectListItem() { Text = "SMS", Value = "2" });
+            tipos.Add(new SelectListItem() { Text = "WhatsApp", Value = "3" });
+            ViewBag.Tipos = new SelectList(tipos, "Value", "Text");
+            ViewBag.Status = new SelectList(baseApp.GetAllPosicao().OrderBy(p => p.POSI_NM_NOME), "POSI_CD_ID", "POSI_NM_NOME");
+            ViewBag.Temp = new SelectList(temApp.GetAllItens(idAss).Where(p => p.TEMP_IN_TIPO == 2).ToList().OrderBy(p => p.TEMP_SG_SIGLA), "TEMP_CD_ID", "TEMP_SG_SIGLA");
+
+            // Prepara view
+            String body = temApp.GetByCode("SMSBAS").TEMP_TX_CORPO;
+
+            if (Session["MensMensagem"] != null)
+            {
+                if ((Int32)Session["MensMensagem"] == 3)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0026", CultureInfo.CurrentCulture));
+                }
+            }
+
+            Session["MensagemNovo"] = 0;
+            MENSAGENS item = new MENSAGENS();
+            MensagemViewModel vm = Mapper.Map<MENSAGENS, MensagemViewModel>(item);
+            vm.ASSI_CD_ID = idAss;
+            vm.MENS_DT_CRIACAO = DateTime.Now;
+            vm.MENS_IN_ATIVO = 1;
+            vm.USUA_CD_ID = usuario.USUA_CD_ID;
+            vm.MENS_IN_TIPO = 2;
+            return View(vm);
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        [ValidateInput(false)]
+        public ActionResult IncluirMensagemSMS(MensagemViewModel vm)
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            ViewBag.Clientes = new SelectList(cliApp.GetAllItens(idAss).OrderBy(p => p.CLIE_NM_NOME), "CLIE_CD_ID", "CLIE_NM_NOME");
+            ViewBag.Grupos = new SelectList(gruApp.GetAllItens(idAss).OrderBy(p => p.GRUP_NM_NOME), "GRUP_CD_ID", "GRUP_NM_NOME");
+            ViewBag.Cats = new SelectList(baseApp.GetAllTipos().OrderBy(p => p.CACL_NM_NOME), "CACL_CD_ID", "CACL_NM_NOME");
+            ViewBag.UF = new SelectList(baseApp.GetAllUF().OrderBy(p => p.UF_SG_SIGLA), "UF_CD_ID", "UF_NM_NOME");
+            ViewBag.Temp = new SelectList(temApp.GetAllItens(idAss).Where(p => p.TEMP_IN_TIPO != 0).ToList().OrderBy(p => p.TEMP_SG_SIGLA), "TEMP_CD_ID", "TEMP_SG_SIGLA");
+            Session["Mensagem"] = null;
+            List<SelectListItem> sexo = new List<SelectListItem>();
+            sexo.Add(new SelectListItem() { Text = "Masculino", Value = "1" });
+            sexo.Add(new SelectListItem() { Text = "Feminino", Value = "2" });
+            sexo.Add(new SelectListItem() { Text = "Outros", Value = "3" });
+            ViewBag.Sexo = new SelectList(sexo, "Value", "Text");
+            List<SelectListItem> tipos = new List<SelectListItem>();
+            tipos.Add(new SelectListItem() { Text = "E-Mail", Value = "1" });
+            tipos.Add(new SelectListItem() { Text = "SMS", Value = "2" });
+            tipos.Add(new SelectListItem() { Text = "WhatsApp", Value = "3" });
+            ViewBag.Tipos = new SelectList(tipos, "Value", "Text");
+            ViewBag.Status = new SelectList(baseApp.GetAllPosicao().OrderBy(p => p.POSI_NM_NOME), "POSI_CD_ID", "POSI_NM_NOME");
+            
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Checa mensagens
+                    if (String.IsNullOrEmpty(vm.MENS_TX_SMS))
+                    {
+                        Session["MensMensagem"] = 3;
+                        return RedirectToAction("IncluirMensagemSMS");
+                    }
+
+                    // Executa a operação
+                    MENSAGENS item = Mapper.Map<MensagemViewModel, MENSAGENS>(vm);
+                    USUARIO usuario = (USUARIO)Session["UserCredentials"];
+                    Int32 volta = baseApp.ValidateCreate(item, usuario);
+
+                    // Verifica retorno
+                    if (volta == 1)
+                    {
+                    }
+
+                    // Cria pastas
+                    String caminho = "/Imagens/" + idAss.ToString() + "/Mensagem/" + item.MENS_CD_ID.ToString() + "/Anexos/";
+                    Directory.CreateDirectory(Server.MapPath(caminho));
+
+                    Session["IdMensagem"] = item.MENS_CD_ID;
+                    if (Session["FileQueueMensagem"] != null)
+                    {
+                        List<FileQueue> fq = (List<FileQueue>)Session["FileQueueMensagem"];
+
+                        foreach (var file in fq)
+                        {
+                            if (file.Profile == null)
+                            {
+                                UploadFileQueueMensagem(file);
+                            }
+                        }
+                        Session["FileQueueMensagem"] = null;
+                    }
+
+                    // Processa
+                    if (item.MENS_DT_AGENDAMENTO == null)
+                    {
+                        MENSAGENS mens = baseApp.GetItemById(item.MENS_CD_ID);
+                        Session["IdMensagem"] = mens.MENS_CD_ID;
+                        vm.MENS_CD_ID = mens.MENS_CD_ID;
+                        vm.MENSAGEM_ANEXO = mens.MENSAGEM_ANEXO;
+                        Int32 retGrava = ProcessarEnvioMensagemSMS(vm, usuario);
+                        if (retGrava > 0)
+                        {
+
+                        }
+                    }
+
+                    // Sucesso
+                    listaMaster = new List<MENSAGENS>();
+                    Session["ListaMensagem"] = null;
+                    Session["MensagemNovo"] = item.MENS_CD_ID;
+                    return RedirectToAction("MontarTelaMensagem");
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = ex.Message;
+                    return View(vm);
+                }
+            }
+            else
+            {
+                return View(vm);
+            }
+        }
+
+        [ValidateInput(false)]
+        public Int32 ProcessarEnvioMensagemSMS(MensagemViewModel vm, USUARIO usuario)
+        {
+            // Recupera contatos
+            Int32 idAss = (Int32)Session["IdAssinante"];
+            CLIENTE cliente = null;
+            GRUPO grupo = null;
+            List<CLIENTE> listaCli = new List<CLIENTE>();
+            Int32 escopo = 0;
+            String erro = null;
+            Int32 volta = 0;
+            PlatMensagensEntities Db = new PlatMensagensEntities();
+            MENSAGENS mens = baseApp.GetItemById(vm.MENS_CD_ID);
+
+            // Nome
+            if (vm.ID > 0)
+            {                
+                cliente = cliApp.GetItemById(vm.ID.Value);
+                escopo = 1;
+            }
+            else if (vm.GRUPO > 0)
+            {
+                listaCli = new List<CLIENTE>();
+                grupo = gruApp.GetItemById(vm.GRUPO.Value);
+                foreach (GRUPO_CLIENTE item in grupo.GRUPO_CLIENTE)
+                {
+                    listaCli.Add(item.CLIENTE);
+                }
+                escopo = 2;
+            }
+            else
+            {
+                IQueryable<CLIENTE> query = Db.CLIENTE;
+                escopo = 2;
+
+                // Sexo
+                if (vm.SEXO > 0)
+                {
+                    query = query.Where(p => p.CLIE_IN_SEXO == vm.SEXO);
+                }
+
+                // Cidade
+                if (!String.IsNullOrEmpty(vm.CIDADE))
+                {
+                    query = query.Where(p => p.CLIE_NM_CIDADE.Contains(vm.CIDADE));
+                }
+
+                // UF
+                if (vm.UF > 0)
+                {
+                    query = query.Where(p => p.UF_CD_ID == vm.UF);
+                }
+
+                // Categoria
+                if (vm.CATEGORIA > 0)
+                {
+                    query = query.Where(p => p.CACL_CD_ID == vm.CATEGORIA);
+                }
+
+                // Status
+                if (vm.STATUS > 0)
+                {
+                    query = query.Where(p => p.CLIE_IN_STATUS == vm.STATUS);
+                }
+
+                // Data Nascimento
+                if (vm.DATA_NASC != null)
+                {
+                    query = query.Where(p => p.CLIE_DT_NASCIMENTO == vm.DATA_NASC);
+                }
+
+                // Processa filtro
+                if (query != null)
+                {
+                    query = query.Where(p => p.ASSI_CD_ID == idAss);
+                    listaCli = query.ToList<CLIENTE>();
+                }
+            }
+
+            // Processa SMS
+            CONFIGURACAO conf = confApp.GetItemById(usuario.ASSI_CD_ID);
+
+            // Monta token
+            String text = conf.CONF_SG_LOGIN_SMS + ":" + conf.CONF_SG_SENHA_SMS;
+            byte[] textBytes = Encoding.UTF8.GetBytes(text);
+            String token = Convert.ToBase64String(textBytes);
+            String auth = "Basic " + token;
+
+            // Prepara texto
+            String texto = vm.MENS_TX_SMS;
+
+            // Prepara corpo do SMS e trata link
+            StringBuilder str = new StringBuilder();
+            str.AppendLine(vm.MENS_TX_SMS);
+            if (!String.IsNullOrEmpty(vm.MENS_NM_LINK))
+            {
+                if (!vm.MENS_NM_LINK.Contains("www."))
+                {
+                    vm.MENS_NM_LINK = "www." + vm.MENS_NM_LINK;
+                }
+                if (!vm.MENS_NM_LINK.Contains("http://"))
+                {
+                    vm.MENS_NM_LINK = "http://" + vm.MENS_NM_LINK;
+                }
+                str.AppendLine("<a href='" + vm.MENS_NM_LINK + "'>Clique aqui para maiores informações</a>");
+                //texto += "   <a href='" + vm.MENS_NM_LINK + "'>Clique aqui para maiores informações</a>";
+                texto += "  " + vm.MENS_NM_LINK;
+            }
+            String body = str.ToString();
+            String smsBody = body;
+
+                
+            // inicia processo
+            String resposta = String.Empty;
+
+            // Monta destinatarios
+            if (escopo == 1)
+            {
+                try
+                {
+                    String listaDest = "55" + Regex.Replace(cliente.CLIE_NR_CELULAR, "[^a-zA-Z0-9_.]+", "", RegexOptions.Compiled).ToString();
+                    var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://api-v2.smsfire.com.br/sms/send/bulk");
+                    httpWebRequest.Headers["Authorization"] = auth;
+                    httpWebRequest.ContentType = "application/json";
+                    httpWebRequest.Method = "POST";
+                    String customId = Cryptography.GenerateRandomPassword(8);
+
+                    using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                    {
+                        string json = String.Concat("{\"destinations\": [{\"to\": \"", listaDest, "\", \"text\": \"", texto, "\", \"customId\": \"" + customId + "\", \"from\": \"SystemBR\"}]}");
+                        streamWriter.Write(json);
+                    }
+
+                    var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                    {
+                        var result = streamReader.ReadToEnd();
+                        resposta = result;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    erro = ex.Message;
+                }
+
+                // Grava mensagem/destino e erros
+                if (erro == null)
+                {
+                    MENSAGENS_DESTINOS dest = new MENSAGENS_DESTINOS();
+                    dest.MEDE_IN_ATIVO = 1;
+                    dest.MEDE_IN_POSICAO = 1;
+                    dest.MEDE_IN_STATUS = 1;
+                    dest.CLIE_CD_ID = cliente.CLIE_CD_ID;
+                    dest.MEDE_DS_ERRO_ENVIO = resposta;
+                    dest.MENS_CD_ID = mens.MENS_CD_ID;
+                    mens.MENSAGENS_DESTINOS.Add(dest);
+                    mens.MENS_DT_ENVIO = DateTime.Now;
+                    volta = baseApp.ValidateEdit(mens, mens);
+                }
+                else
+                {
+                    mens.MENS_TX_RETORNO = erro;
+                    volta = baseApp.ValidateEdit(mens, mens);
+                }
+                erro = null;
+                return volta;
+            }
+            else
+            {
+                try
+                {
+                    // Monta Array de envio
+                    String vetor = String.Empty;
+                    foreach (CLIENTE cli in listaCli)
+                    {
+                        String listaDest = "55" + Regex.Replace(cli.CLIE_NR_CELULAR, "[^a-zA-Z0-9_.]+", "", RegexOptions.Compiled).ToString();
+                        String customId = Cryptography.GenerateRandomPassword(8);
+                        if (vetor == String.Empty)
+                        {
+                            vetor += "{\"to\": \"," + listaDest + ", \", \"text\": \"," + texto + "\", \"from\": \"SystemBR\"}";
+                        }
+                        else
+                        {
+                            vetor += ",{\"to\": \"," + listaDest + ", \", \"text\": \"," + texto + "\", \"from\": \"SystemBR\"}";
+                        }
+                    }
+                    
+                    // Configura                    
+                    var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://api-v2.smsfire.com.br/sms/send/bulk");
+                    httpWebRequest.Headers["Authorization"] = auth;
+                    httpWebRequest.ContentType = "application/json";
+                    httpWebRequest.Method = "POST";
+
+                    using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                    {
+                        string json = String.Concat("{\"destinations\": [", vetor ,"]}");
+                        streamWriter.Write(json);
+                    }
+
+                    var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                    {
+                        var result = streamReader.ReadToEnd();
+                        resposta = result;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    erro = ex.Message;
+                }
+
+                // Grava mensagem/destino e erros
+                if (erro == null)
+                {
+                    foreach (CLIENTE cli in listaCli)
+                    {
+                        MENSAGENS_DESTINOS dest = new MENSAGENS_DESTINOS();
+                        dest.MEDE_IN_ATIVO = 1;
+                        dest.MEDE_IN_POSICAO = 1;
+                        dest.MEDE_IN_STATUS = 1;
+                        dest.CLIE_CD_ID = cli.CLIE_CD_ID;
+                        dest.MEDE_DS_ERRO_ENVIO = resposta;
+                        dest.MENS_CD_ID = mens.MENS_CD_ID;
+                        mens.MENSAGENS_DESTINOS.Add(dest);
+                    }
+                    mens.MENS_DT_ENVIO = DateTime.Now;
+                    volta = baseApp.ValidateEdit(mens, mens);
+                }
+                else
+                {
+                    mens.MENS_TX_RETORNO = erro;
+                    volta = baseApp.ValidateEdit(mens, mens);
+                }
+                erro = null;
+                return volta;
+            }
+            return 0;
+        }
+
 
     }
 }
