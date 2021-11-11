@@ -274,6 +274,10 @@ namespace SMS_Presentation.Controllers
             {
                 return RedirectToAction("VoltarAnexoCliente", "Cliente");
             }
+            else if (volta == 3)
+            {
+                return RedirectToAction("CarregarBase", "BaseAdmin");
+            }
             return RedirectToAction("MontarTelaMensagem");
         }
 
@@ -1010,9 +1014,42 @@ namespace SMS_Presentation.Controllers
             Int32 idAss = (Int32)Session["IdAssinante"];
 
             Session["IdMensagem"] = id;
+            Session["VoltaMensagem"] = 1;
             MENSAGENS item = baseApp.GetItemById(id);
             MensagemViewModel vm = Mapper.Map<MENSAGENS, MensagemViewModel>(item);
             return View(vm);
+        }
+
+        [HttpGet]
+        public ActionResult VerSMSAgendados()
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensMensagem"] = 2;
+                    return RedirectToAction("CarregarBase", "BaseAdmin");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            MENSAGENS mens = new MENSAGENS();
+            ViewBag.Listas = (List<MENSAGENS>)Session["SMSAgenda"];
+            Session["VoltaMensagem"] = 3;
+            return View(mens);
         }
 
         [HttpGet]
@@ -1344,13 +1381,24 @@ namespace SMS_Presentation.Controllers
 
             // Atualiza
             var hash = new Hashtable();
-            hash.Add("TEMP_IN_TIPO", tmp.TEMP_IN_TIPO);
             hash.Add("TEMP_TX_CABECALHO", tmp.TEMP_TX_CABECALHO);
             hash.Add("TEMP_TX_CORPO", tmp.TEMP_TX_CORPO);
             hash.Add("TEMP_TX_DADOS", tmp.TEMP_TX_DADOS);
 
             // Retorna
-            Session["VoltaCEP"] = 2;
+            return Json(hash);
+        }
+
+        public JsonResult PesquisaTemplateSMS(String temp)
+        {
+            // Recupera Template
+            TEMPLATE tmp = temApp.GetItemById(Convert.ToInt32(temp));
+
+            // Atualiza
+            var hash = new Hashtable();
+            hash.Add("TEMP_TX_CORPO", tmp.TEMP_TX_CORPO);
+
+            // Retorna
             return Json(hash);
         }
 
@@ -1959,17 +2007,14 @@ namespace SMS_Presentation.Controllers
                     }
 
                     // Processa
-                    if (item.MENS_DT_AGENDAMENTO == null)
+                    MENSAGENS mens = baseApp.GetItemById(item.MENS_CD_ID);
+                    Session["IdMensagem"] = mens.MENS_CD_ID;
+                    vm.MENS_CD_ID = mens.MENS_CD_ID;
+                    vm.MENSAGEM_ANEXO = mens.MENSAGEM_ANEXO;
+                    Int32 retGrava = ProcessarEnvioMensagemSMS(vm, usuario);
+                    if (retGrava > 0)
                     {
-                        MENSAGENS mens = baseApp.GetItemById(item.MENS_CD_ID);
-                        Session["IdMensagem"] = mens.MENS_CD_ID;
-                        vm.MENS_CD_ID = mens.MENS_CD_ID;
-                        vm.MENSAGEM_ANEXO = mens.MENSAGEM_ANEXO;
-                        Int32 retGrava = ProcessarEnvioMensagemSMS(vm, usuario);
-                        if (retGrava > 0)
-                        {
 
-                        }
                     }
 
                     // Sucesso
@@ -2116,10 +2161,20 @@ namespace SMS_Presentation.Controllers
                     httpWebRequest.ContentType = "application/json";
                     httpWebRequest.Method = "POST";
                     String customId = Cryptography.GenerateRandomPassword(8);
-
+                    String data = String.Empty;
+                    String json = String.Empty;
+                    
                     using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                     {
-                        string json = String.Concat("{\"destinations\": [{\"to\": \"", listaDest, "\", \"text\": \"", texto, "\", \"customId\": \"" + customId + "\", \"from\": \"SystemBR\"}]}");
+                        if (vm.MENS_DT_AGENDAMENTO != null)
+                        {
+                            data = vm.MENS_DT_AGENDAMENTO.Value.Year.ToString() + "-" + vm.MENS_DT_AGENDAMENTO.Value.Month.ToString() + "-" + vm.MENS_DT_AGENDAMENTO.Value.Day.ToString() + "T" + vm.MENS_DT_AGENDAMENTO.Value.ToShortTimeString() + ":00";
+                            json = String.Concat("{\"scheduleTime\": \"", data ,"\",\"destinations\": [{\"to\": \"", listaDest, "\", \"text\": \"", texto, "\", \"customId\": \"" + customId + "\", \"from\": \"SystemBR\"}]}");
+                        }
+                        else
+                        {
+                            json = String.Concat("{\"destinations\": [{\"to\": \"", listaDest, "\", \"text\": \"", texto, "\", \"customId\": \"" + customId + "\", \"from\": \"SystemBR\"}]}");
+                        }
                         streamWriter.Write(json);
                     }
 

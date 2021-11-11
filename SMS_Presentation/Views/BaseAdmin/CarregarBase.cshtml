@@ -342,7 +342,21 @@
                                             @Html.ButtonLinkIndex(text: "Ver Contatos", controller: "Cliente", action: "MontarTelaCliente", buttonClass: "white")
                                         </div>
                                     </div>
-                                </div>                                                      
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 2px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; background-color: azure" >
+                                        <div class="ibox-title">
+                                            <span class="label label-success pull-right">Hoje</span>
+                                            <h5>SMS Agendados</h5>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <h2 class="no-margins">@ViewBag.SMSAgenda</h2>
+                                            <br />
+                                            <br />
+                                            @Html.ButtonLinkIndex(text: "Ver", controller: "Mensagem", action: "VerSMSAgendados", buttonClass: "white")
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

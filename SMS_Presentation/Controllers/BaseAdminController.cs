@@ -147,11 +147,15 @@ namespace SMS_Presentation.Controllers
             ViewBag.NumClientes = numCli;
 
             List<MENSAGENS> lt = menApp.GetAllItens(idAss);
-            List<MENSAGENS> lm = menApp.GetAllItens(idAss).Where(p => p.MENS_DT_ENVIO != null).ToList();
+            List<MENSAGENS> lm = lt.Where(p => p.MENS_DT_ENVIO != null).ToList();
             ViewBag.SMS = lm.Where(p => p.MENS_IN_TIPO == 2).ToList().Count;
             ViewBag.Emails = lm.Where(p => p.MENS_IN_TIPO == 1).ToList().Count;
             ViewBag.Total = lm.Count;
             ViewBag.Falhas = lt.Where(p => p.MENS_TX_RETORNO != null).ToList().Count;
+
+            List<MENSAGENS> agSMS = lm.Where(p => p.MENS_DT_AGENDAMENTO > DateTime.Now).ToList();
+            Session["SMSAgenda"] = agSMS;
+            ViewBag.SMSAgenda = agSMS.Count;
 
             String frase = String.Empty;
             String nome = usu.USUA_NM_NOME.Substring(0, usu.USUA_NM_NOME.IndexOf(" "));

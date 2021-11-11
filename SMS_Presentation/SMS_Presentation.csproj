@@ -2985,6 +2985,7 @@
     <Content Include="Views\Template\VerTemplate.cshtml" />
     <Content Include="Views\Mensagem\IncluirMensagemEMail.cshtml" />
     <Content Include="Views\Mensagem\IncluirMensagemSMS.cshtml" />
+    <Content Include="Views\Mensagem\VerSMSAgendados.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
