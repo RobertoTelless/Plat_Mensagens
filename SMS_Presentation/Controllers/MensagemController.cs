@@ -44,6 +44,8 @@ namespace SMS_Presentation.Controllers
         private readonly IConfiguracaoAppService confApp;
         private readonly ITemplateAppService temApp;
         private readonly IGrupoAppService gruApp;
+        private readonly IEMailAgendaAppService emApp;
+
         private String msg;
         private Exception exception;
 
@@ -52,7 +54,7 @@ namespace SMS_Presentation.Controllers
         List<MENSAGENS> listaMaster = new List<MENSAGENS>();
         String extensao;
 
-        public MensagemController(IMensagemAppService baseApps, ILogAppService logApps, IUsuarioAppService usuApps, IClienteAppService cliApps, IConfiguracaoAppService confApps, ITemplateAppService temApps, IGrupoAppService gruApps)
+        public MensagemController(IMensagemAppService baseApps, ILogAppService logApps, IUsuarioAppService usuApps, IClienteAppService cliApps, IConfiguracaoAppService confApps, ITemplateAppService temApps, IGrupoAppService gruApps, IEMailAgendaAppService emApps)
         {
             baseApp = baseApps;
             logApp = logApps;
@@ -61,6 +63,7 @@ namespace SMS_Presentation.Controllers
             confApp = confApps;
             temApp = temApps;
             gruApp = gruApps;
+            emApp = emApps;
         }
 
 
@@ -1557,6 +1560,18 @@ namespace SMS_Presentation.Controllers
 
                         }
                     }
+                    else
+                    {
+                        MENSAGENS mens = baseApp.GetItemById(item.MENS_CD_ID);
+                        Session["IdMensagem"] = mens.MENS_CD_ID;
+                        vm.MENS_CD_ID = mens.MENS_CD_ID;
+                        vm.MENSAGEM_ANEXO = mens.MENSAGEM_ANEXO;
+                        Int32 retGrava = ProcessarAgendamentoMensagemEMail(vm, usuario);
+                        if (retGrava > 0)
+                        {
+
+                        }
+                    }
 
                     // Sucesso
                     listaMaster = new List<MENSAGENS>();
@@ -1863,6 +1878,118 @@ namespace SMS_Presentation.Controllers
                         volta = baseApp.ValidateEdit(mens, mens);
                     }
                     erro = null;
+                }
+                return volta;
+            }
+            return 0;
+        }
+
+        [ValidateInput(false)]
+        public Int32 ProcessarAgendamentoMensagemEMail(MensagemViewModel vm, USUARIO usuario)
+        {
+            // Recupera contatos
+            Int32 idAss = (Int32)Session["IdAssinante"];
+            CLIENTE cliente = null;
+            GRUPO grupo = null;
+            List<CLIENTE> listaCli = new List<CLIENTE>();
+            Int32 escopo = 0;
+            String erro = null;
+            Int32 volta = 0;
+            PlatMensagensEntities Db = new PlatMensagensEntities();
+            MENSAGENS mens = baseApp.GetItemById(vm.MENS_CD_ID);
+
+            // Nome
+            if (vm.ID > 0)
+            {                
+                cliente = cliApp.GetItemById(vm.ID.Value);
+                escopo = 1;
+            }
+            else if (vm.GRUPO > 0)
+            {
+                listaCli = new List<CLIENTE>();
+                grupo = gruApp.GetItemById(vm.GRUPO.Value);
+                foreach (GRUPO_CLIENTE item in grupo.GRUPO_CLIENTE)
+                {
+                    listaCli.Add(item.CLIENTE);
+                }
+                escopo = 2;
+            }
+            else
+            {
+                IQueryable<CLIENTE> query = Db.CLIENTE;
+                escopo = 2;
+
+                // Sexo
+                if (vm.SEXO > 0)
+                {
+                    query = query.Where(p => p.CLIE_IN_SEXO == vm.SEXO);
+                }
+
+                // Cidade
+                if (!String.IsNullOrEmpty(vm.CIDADE))
+                {
+                    query = query.Where(p => p.CLIE_NM_CIDADE.Contains(vm.CIDADE));
+                }
+
+                // UF
+                if (vm.UF > 0)
+                {
+                    query = query.Where(p => p.UF_CD_ID == vm.UF);
+                }
+
+                // Categoria
+                if (vm.CATEGORIA > 0)
+                {
+                    query = query.Where(p => p.CACL_CD_ID == vm.CATEGORIA);
+                }
+
+                // Status
+                if (vm.STATUS > 0)
+                {
+                    query = query.Where(p => p.CLIE_IN_STATUS == vm.STATUS);
+                }
+
+                // Data Nascimento
+                if (vm.DATA_NASC != null)
+                {
+                    query = query.Where(p => p.CLIE_DT_NASCIMENTO == vm.DATA_NASC);
+                }
+
+                // Processa filtro
+                if (query != null)
+                {
+                    query = query.Where(p => p.ASSI_CD_ID == idAss);
+                    listaCli = query.ToList<CLIENTE>();
+                }
+            }
+
+            // Processa e-mail
+            CONFIGURACAO conf = confApp.GetItemById(usuario.ASSI_CD_ID);
+            if (escopo == 1)
+            {
+                // Grava Agendamento
+                EMAIL_AGENDAMENTO ag = new EMAIL_AGENDAMENTO();
+                ag.ASSI_CD_ID = idAss;
+                ag.CLIE_CD_ID = cliente.CLIE_CD_ID;
+                ag.MENS_CD_ID = vm.MENS_CD_ID;
+                ag.EMAG_DT_AGENDAMENTO = vm.MENS_DT_AGENDAMENTO;
+                ag.EMAG_IN_ENVIADO = 0;
+                Int32 volta1 = emApp.ValidateCreate(ag);
+                return volta;
+            }
+            else
+            {
+                foreach (CLIENTE item in listaCli)
+                {
+
+                    // Grava Agendamento
+                    EMAIL_AGENDAMENTO ag = new EMAIL_AGENDAMENTO();
+                    ag.ASSI_CD_ID = idAss;
+                    ag.CLIE_CD_ID = item.CLIE_CD_ID;
+                    ag.MENS_CD_ID = vm.MENS_CD_ID;
+                    ag.EMAG_DT_AGENDAMENTO = vm.MENS_DT_AGENDAMENTO;
+                    ag.EMAG_IN_ENVIADO = 0;
+                    Int32 volta1 = emApp.ValidateCreate(ag);
                 }
                 return volta;
             }

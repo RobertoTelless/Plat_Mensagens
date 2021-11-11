@@ -176,6 +176,17 @@
           <Property Name="CONF_NM_SENDGRID_PWD" Type="varchar" MaxLength="50" />
           <Property Name="CONF_NM_SENDGRID_APIKEY" Type="varchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="EMAIL_AGENDAMENTO">
+          <Key>
+            <PropertyRef Name="EMAG_CD_ID" />
+          </Key>
+          <Property Name="EMAG_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ASSI_CD_ID" Type="int" Nullable="false" />
+          <Property Name="CLIE_CD_ID" Type="int" Nullable="false" />
+          <Property Name="MENS_CD_ID" Type="int" />
+          <Property Name="EMAG_DT_AGENDAMENTO" Type="datetime" />
+          <Property Name="EMAG_IN_ENVIADO" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="GRUPO">
           <Key>
             <PropertyRef Name="GRUP_CD_ID" />
@@ -558,6 +569,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_EMAIL_AGENDAMENTO_ASSINANTE">
+          <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="1" />
+          <End Role="EMAIL_AGENDAMENTO" Type="Self.EMAIL_AGENDAMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="EMAIL_AGENDAMENTO">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EMAIL_AGENDAMENTO_CLIENTE">
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="1" />
+          <End Role="EMAIL_AGENDAMENTO" Type="Self.EMAIL_AGENDAMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Principal>
+            <Dependent Role="EMAIL_AGENDAMENTO">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EMAIL_AGENDAMENTO_MENSAGENS">
+          <End Role="MENSAGENS" Type="Self.MENSAGENS" Multiplicity="0..1" />
+          <End Role="EMAIL_AGENDAMENTO" Type="Self.EMAIL_AGENDAMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MENSAGENS">
+              <PropertyRef Name="MENS_CD_ID" />
+            </Principal>
+            <Dependent Role="EMAIL_AGENDAMENTO">
+              <PropertyRef Name="MENS_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_GRUPO_ASSINANTE">
           <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="1" />
           <End Role="GRUPO" Type="Self.GRUPO" Multiplicity="*" />
@@ -858,6 +905,7 @@
           <EntitySet Name="CLIENTE_CONTATO" EntityType="Self.CLIENTE_CONTATO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CLIENTE_QUADRO_SOCIETARIO" EntityType="Self.CLIENTE_QUADRO_SOCIETARIO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CONFIGURACAO" EntityType="Self.CONFIGURACAO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EMAIL_AGENDAMENTO" EntityType="Self.EMAIL_AGENDAMENTO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GRUPO" EntityType="Self.GRUPO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GRUPO_CLIENTE" EntityType="Self.GRUPO_CLIENTE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LOG" EntityType="Self.LOG" Schema="dbo" store:Type="Tables" />
@@ -928,6 +976,18 @@
           <AssociationSet Name="FK_CONFIGURACAO_ASSINANTE" Association="Self.FK_CONFIGURACAO_ASSINANTE">
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
             <End Role="CONFIGURACAO" EntitySet="CONFIGURACAO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EMAIL_AGENDAMENTO_ASSINANTE" Association="Self.FK_EMAIL_AGENDAMENTO_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="EMAIL_AGENDAMENTO" EntitySet="EMAIL_AGENDAMENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EMAIL_AGENDAMENTO_CLIENTE" Association="Self.FK_EMAIL_AGENDAMENTO_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+            <End Role="EMAIL_AGENDAMENTO" EntitySet="EMAIL_AGENDAMENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EMAIL_AGENDAMENTO_MENSAGENS" Association="Self.FK_EMAIL_AGENDAMENTO_MENSAGENS">
+            <End Role="MENSAGENS" EntitySet="MENSAGENS" />
+            <End Role="EMAIL_AGENDAMENTO" EntitySet="EMAIL_AGENDAMENTO" />
           </AssociationSet>
           <AssociationSet Name="FK_GRUPO_ASSINANTE" Association="Self.FK_GRUPO_ASSINANTE">
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
@@ -1066,6 +1126,7 @@
           <NavigationProperty Name="POSICAO" Relationship="Self.FK_POSICAO_ASSINANTE" FromRole="ASSINANTE" ToRole="POSICAO" />
           <NavigationProperty Name="USUARIO" Relationship="Self.FK_USUARIO_ASSINANTE" FromRole="ASSINANTE" ToRole="USUARIO" />
           <NavigationProperty Name="TEMPLATE" Relationship="PlatMensagensModel.FK_TEMPLATE_ASSINANTE" FromRole="ASSINANTE" ToRole="TEMPLATE" />
+          <NavigationProperty Name="EMAIL_AGENDAMENTO" Relationship="PlatMensagensModel.FK_EMAIL_AGENDAMENTO_ASSINANTE" FromRole="ASSINANTE" ToRole="EMAIL_AGENDAMENTO" />
         </EntityType>
         <EntityType Name="ASSINANTE_ANEXO">
           <Key>
@@ -1172,6 +1233,7 @@
           <NavigationProperty Name="USUARIO" Relationship="Self.FK_CLIENTE_USUARIO" FromRole="CLIENTE" ToRole="USUARIO" />
           <NavigationProperty Name="GRUPO_CLIENTE" Relationship="Self.FK_GRUPO_CLIENTE_CLIENTE" FromRole="CLIENTE" ToRole="GRUPO_CLIENTE" />
           <NavigationProperty Name="MENSAGENS_DESTINOS" Relationship="Self.FK_MENSAGENS_DESTINOS_CLIENTE" FromRole="CLIENTE" ToRole="MENSAGENS_DESTINOS" />
+          <NavigationProperty Name="EMAIL_AGENDAMENTO" Relationship="PlatMensagensModel.FK_EMAIL_AGENDAMENTO_CLIENTE" FromRole="CLIENTE" ToRole="EMAIL_AGENDAMENTO" />
         </EntityType>
         <EntityType Name="CLIENTE_ANEXO">
           <Key>
@@ -1314,6 +1376,7 @@
           <NavigationProperty Name="MENSAGENS_DESTINOS" Relationship="Self.FK_MENSAGENS_DESTINOS_MENSAGENS" FromRole="MENSAGENS" ToRole="MENSAGENS_DESTINOS" />
           <NavigationProperty Name="TEMPLATE" Relationship="Self.FK_MENSAGENS_TEMPLATE" FromRole="MENSAGENS" ToRole="TEMPLATE" />
           <NavigationProperty Name="USUARIO" Relationship="Self.FK_MENSAGENS_USUARIO" FromRole="MENSAGENS" ToRole="USUARIO" />
+          <NavigationProperty Name="EMAIL_AGENDAMENTO" Relationship="PlatMensagensModel.FK_EMAIL_AGENDAMENTO_MENSAGENS" FromRole="MENSAGENS" ToRole="EMAIL_AGENDAMENTO" />
         </EntityType>
         <EntityType Name="MENSAGENS_DESTINOS">
           <Key>
@@ -2114,6 +2177,19 @@
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
             <End Role="TEMPLATE" EntitySet="TEMPLATE" />
           </AssociationSet>
+          <EntitySet Name="EMAIL_AGENDAMENTO" EntityType="PlatMensagensModel.EMAIL_AGENDAMENTO" />
+          <AssociationSet Name="FK_EMAIL_AGENDAMENTO_ASSINANTE" Association="PlatMensagensModel.FK_EMAIL_AGENDAMENTO_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="EMAIL_AGENDAMENTO" EntitySet="EMAIL_AGENDAMENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EMAIL_AGENDAMENTO_CLIENTE" Association="PlatMensagensModel.FK_EMAIL_AGENDAMENTO_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+            <End Role="EMAIL_AGENDAMENTO" EntitySet="EMAIL_AGENDAMENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EMAIL_AGENDAMENTO_MENSAGENS" Association="PlatMensagensModel.FK_EMAIL_AGENDAMENTO_MENSAGENS">
+            <End Role="MENSAGENS" EntitySet="MENSAGENS" />
+            <End Role="EMAIL_AGENDAMENTO" EntitySet="EMAIL_AGENDAMENTO" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_TEMPLATE_ASSINANTE">
           <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="0..1" />
@@ -2124,6 +2200,56 @@
             </Principal>
             <Dependent Role="TEMPLATE">
               <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EMAIL_AGENDAMENTO">
+          <Key>
+            <PropertyRef Name="EMAG_CD_ID" />
+          </Key>
+          <Property Name="EMAG_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ASSI_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="CLIE_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="MENS_CD_ID" Type="Int32" />
+          <Property Name="EMAG_DT_AGENDAMENTO" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ASSINANTE" Relationship="PlatMensagensModel.FK_EMAIL_AGENDAMENTO_ASSINANTE" FromRole="EMAIL_AGENDAMENTO" ToRole="ASSINANTE" />
+          <NavigationProperty Name="CLIENTE" Relationship="PlatMensagensModel.FK_EMAIL_AGENDAMENTO_CLIENTE" FromRole="EMAIL_AGENDAMENTO" ToRole="CLIENTE" />
+          <NavigationProperty Name="MENSAGENS" Relationship="PlatMensagensModel.FK_EMAIL_AGENDAMENTO_MENSAGENS" FromRole="EMAIL_AGENDAMENTO" ToRole="MENSAGENS" />
+          <Property Name="EMAG_IN_ENVIADO" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_EMAIL_AGENDAMENTO_ASSINANTE">
+          <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="1" />
+          <End Type="PlatMensagensModel.EMAIL_AGENDAMENTO" Role="EMAIL_AGENDAMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="EMAIL_AGENDAMENTO">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EMAIL_AGENDAMENTO_CLIENTE">
+          <End Type="PlatMensagensModel.CLIENTE" Role="CLIENTE" Multiplicity="1" />
+          <End Type="PlatMensagensModel.EMAIL_AGENDAMENTO" Role="EMAIL_AGENDAMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Principal>
+            <Dependent Role="EMAIL_AGENDAMENTO">
+              <PropertyRef Name="CLIE_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EMAIL_AGENDAMENTO_MENSAGENS">
+          <End Type="PlatMensagensModel.MENSAGENS" Role="MENSAGENS" Multiplicity="0..1" />
+          <End Type="PlatMensagensModel.EMAIL_AGENDAMENTO" Role="EMAIL_AGENDAMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MENSAGENS">
+              <PropertyRef Name="MENS_CD_ID" />
+            </Principal>
+            <Dependent Role="EMAIL_AGENDAMENTO">
+              <PropertyRef Name="MENS_CD_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2541,6 +2667,18 @@
                 <ScalarProperty Name="USAN_IN_TIPO" ColumnName="USAN_IN_TIPO" />
                 <ScalarProperty Name="USAN_IN_ATIVO" ColumnName="USAN_IN_ATIVO" />
                 <ScalarProperty Name="USAN_AQ_ARQUIVO" ColumnName="USAN_AQ_ARQUIVO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EMAIL_AGENDAMENTO">
+            <EntityTypeMapping TypeName="PlatMensagensModel.EMAIL_AGENDAMENTO">
+              <MappingFragment StoreEntitySet="EMAIL_AGENDAMENTO">
+                <ScalarProperty Name="EMAG_IN_ENVIADO" ColumnName="EMAG_IN_ENVIADO" />
+                <ScalarProperty Name="EMAG_DT_AGENDAMENTO" ColumnName="EMAG_DT_AGENDAMENTO" />
+                <ScalarProperty Name="MENS_CD_ID" ColumnName="MENS_CD_ID" />
+                <ScalarProperty Name="CLIE_CD_ID" ColumnName="CLIE_CD_ID" />
+                <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
+                <ScalarProperty Name="EMAG_CD_ID" ColumnName="EMAG_CD_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

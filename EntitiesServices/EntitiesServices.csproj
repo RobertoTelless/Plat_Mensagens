@@ -177,6 +177,7 @@
     <Compile Include="Attributes\CustomValidationCPFAttribute.cs" />
     <Compile Include="Attributes\DataAnteriorAttribute.cs" />
     <Compile Include="EntitiesServices\AssinanteService.cs" />
+    <Compile Include="EntitiesServices\EmailAgendaService.cs" />
     <Compile Include="EntitiesServices\PosicaoService.cs" />
     <Compile Include="EntitiesServices\CategoriaClienteService.cs" />
     <Compile Include="EntitiesServices\GrupoService.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="EntitiesServices\TemplateService.cs" />
     <Compile Include="EntitiesServices\UsuarioService.cs" />
     <Compile Include="Interfaces\EntitiesServices\IAssinanteService.cs" />
+    <Compile Include="Interfaces\EntitiesServices\IEmailAgendaService.cs" />
     <Compile Include="Interfaces\EntitiesServices\IPosicaoService.cs" />
     <Compile Include="Interfaces\EntitiesServices\ICategoriaClienteService.cs" />
     <Compile Include="Interfaces\EntitiesServices\IGrupoService.cs" />
@@ -205,6 +207,7 @@
     <Compile Include="Interfaces\Repositories\IAssinanteAnexoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IAssinanteRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICargoRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IEmailAgendaRepository.cs" />
     <Compile Include="Interfaces\Repositories\IPosicaoRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICategoriaClienteRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICategoriaNotificacaoRepository.cs" />
@@ -260,6 +263,9 @@
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CONFIGURACAO.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\EMAIL_AGENDAMENTO.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\GRUPO.cs">

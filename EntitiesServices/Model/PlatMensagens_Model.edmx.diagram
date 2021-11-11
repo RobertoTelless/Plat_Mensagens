@@ -69,6 +69,10 @@
         <AssociationConnector Association="PlatMensagensModel.FK_USUARIO_PERFIL" ManuallyRouted="false" />
         <AssociationConnector Association="PlatMensagensModel.FK_USUARIO_ANEXO_USUARIO" ManuallyRouted="false" />
         <AssociationConnector Association="PlatMensagensModel.FK_TEMPLATE_ASSINANTE" />
+        <EntityTypeShape EntityType="PlatMensagensModel.EMAIL_AGENDAMENTO" Width="1.5" PointX="18.5" PointY="36.5" />
+        <AssociationConnector Association="PlatMensagensModel.FK_EMAIL_AGENDAMENTO_ASSINANTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_EMAIL_AGENDAMENTO_CLIENTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_EMAIL_AGENDAMENTO_MENSAGENS" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
