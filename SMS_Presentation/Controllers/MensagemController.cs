@@ -1056,6 +1056,38 @@ namespace SMS_Presentation.Controllers
         }
 
         [HttpGet]
+        public ActionResult VerEMailAgendados()
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensMensagem"] = 2;
+                    return RedirectToAction("CarregarBase", "BaseAdmin");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            MENSAGENS mens = new MENSAGENS();
+            ViewBag.Listas = (List<EMAIL_AGENDAMENTO>)Session["EMailAgenda"];
+            Session["VoltaMensagem"] = 3;
+            return View(mens);
+        }
+
+        [HttpGet]
         public ActionResult ExcluirMensagem(Int32 id)
         {
             // Verifica se tem usuario logado

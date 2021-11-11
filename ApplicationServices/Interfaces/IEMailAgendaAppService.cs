@@ -11,5 +11,6 @@ namespace ApplicationServices.Interfaces
     {
         Int32 ValidateCreate(EMAIL_AGENDAMENTO item);
         Int32 ValidateEdit(EMAIL_AGENDAMENTO item);
+        List<EMAIL_AGENDAMENTO> GetAllItens(Int32 idAss);
     }
 }

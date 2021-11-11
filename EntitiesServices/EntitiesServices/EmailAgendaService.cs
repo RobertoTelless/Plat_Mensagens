@@ -26,6 +26,11 @@ namespace ModelServices.EntitiesServices
             _baseRepository = baseRepository;
         }
 
+        public List<EMAIL_AGENDAMENTO> GetAllItens(Int32 idAss)
+        {
+            return _baseRepository.GetAllItens(idAss);
+        }
+
         public Int32 Create(EMAIL_AGENDAMENTO item)
         {
             using (DbContextTransaction transaction = Db.Database.BeginTransaction(IsolationLevel.ReadCommitted))

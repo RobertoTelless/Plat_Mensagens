@@ -9,5 +9,6 @@ namespace ModelServices.Interfaces.Repositories
 {
     public interface IEmailAgendaRepository : IRepositoryBase<EMAIL_AGENDAMENTO>
     {
+        List<EMAIL_AGENDAMENTO> GetAllItens(Int32 idAss);
     }
 }

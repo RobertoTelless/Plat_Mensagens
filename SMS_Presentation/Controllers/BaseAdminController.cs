@@ -27,6 +27,7 @@ namespace SMS_Presentation.Controllers
         private readonly IAssinanteAppService assApp;
         private readonly IClienteAppService cliApp;
         private readonly IMensagemAppService menApp;
+        private readonly IEMailAgendaAppService emApp;
 
         private String msg;
         private Exception exception;
@@ -34,7 +35,7 @@ namespace SMS_Presentation.Controllers
         USUARIO objetoAntes = new USUARIO();
         List<USUARIO> listaMaster = new List<USUARIO>();
 
-        public BaseAdminController(IUsuarioAppService baseApps, ILogAppService logApps, INotificacaoAppService notfApps, IUsuarioAppService usuApps, IConfiguracaoAppService confApps, IAssinanteAppService assApps, IClienteAppService cliApps, IMensagemAppService menApps)
+        public BaseAdminController(IUsuarioAppService baseApps, ILogAppService logApps, INotificacaoAppService notfApps, IUsuarioAppService usuApps, IConfiguracaoAppService confApps, IAssinanteAppService assApps, IClienteAppService cliApps, IMensagemAppService menApps, IEMailAgendaAppService emApps)
         {
             baseApp = baseApps;
             logApp = logApps;
@@ -44,6 +45,7 @@ namespace SMS_Presentation.Controllers
             assApp = assApps;
             cliApp = cliApps;
             menApp = menApps;
+            emApp = emApps;
         }
 
         public ActionResult CarregarLandingPage()
@@ -143,8 +145,8 @@ namespace SMS_Presentation.Controllers
 
             Session["Logs"] = usu.LOG.Count;
 
-            Int32 numCli = cliApp.GetAllItens(idAss).Where(p => p.CLIE_IN_ATIVO == 1 & p.ASSI_CD_ID == idAss).ToList().Count;
-            ViewBag.NumClientes = numCli;
+            //Int32 numCli = cliApp.GetAllItens(idAss).Where(p => p.CLIE_IN_ATIVO == 1 & p.ASSI_CD_ID == idAss).ToList().Count;
+            //ViewBag.NumClientes = numCli;
 
             List<MENSAGENS> lt = menApp.GetAllItens(idAss);
             List<MENSAGENS> lm = lt.Where(p => p.MENS_DT_ENVIO != null).ToList();
@@ -156,6 +158,10 @@ namespace SMS_Presentation.Controllers
             List<MENSAGENS> agSMS = lm.Where(p => p.MENS_DT_AGENDAMENTO > DateTime.Now).ToList();
             Session["SMSAgenda"] = agSMS;
             ViewBag.SMSAgenda = agSMS.Count;
+
+            List<EMAIL_AGENDAMENTO> emAg = emApp.GetAllItens(idAss).Where(p => p.EMAG_IN_ENVIADO == 0 & p.EMAG_DT_AGENDAMENTO > DateTime.Now).ToList();
+            Session["EMailAgenda"] = emAg;
+            ViewBag.SMSEmail = emAg.Count;
 
             String frase = String.Empty;
             String nome = usu.USUA_NM_NOME.Substring(0, usu.USUA_NM_NOME.IndexOf(" "));

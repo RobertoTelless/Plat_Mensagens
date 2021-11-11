@@ -12,5 +12,6 @@ namespace ModelServices.Interfaces.EntitiesServices
     {
         Int32 Create(EMAIL_AGENDAMENTO item);
         Int32 Edit(EMAIL_AGENDAMENTO item);
+        List<EMAIL_AGENDAMENTO> GetAllItens(Int32 idAss);
     }
 }
