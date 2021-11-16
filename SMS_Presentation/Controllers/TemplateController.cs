@@ -98,7 +98,7 @@ namespace SMS_Presentation.Controllers
             // Carrega listas
             if ((List<TEMPLATE>)Session["ListaTemplate"] == null || ((List<TEMPLATE>)Session["ListaTemplate"]).Count == 0)
             {
-                listaMaster = baseApp.GetAllItens(idAss).Where(p => p.TEMP_IN_TIPO != 0).ToList();
+                listaMaster = baseApp.GetAllItens(idAss).Where(p => p.TEMP_IN_TIPO == 2 || p.TEMP_IN_TIPO == 3).ToList();
                 Session["ListaTemplate"] = listaMaster;
             }
             ViewBag.Listas = (List<TEMPLATE>)Session["ListaTemplate"];
@@ -229,7 +229,6 @@ namespace SMS_Presentation.Controllers
 
             // Prepara listas
             List<SelectListItem> tipos = new List<SelectListItem>();
-            tipos.Add(new SelectListItem() { Text = "E-Mail", Value = "1" });
             tipos.Add(new SelectListItem() { Text = "SMS", Value = "2" });
             tipos.Add(new SelectListItem() { Text = "WhatsApp", Value = "3" });
             ViewBag.Tipos = new SelectList(tipos, "Value", "Text");
@@ -253,7 +252,6 @@ namespace SMS_Presentation.Controllers
                 return RedirectToAction("Login", "ControleAcesso");
             }
             List<SelectListItem> tipos = new List<SelectListItem>();
-            tipos.Add(new SelectListItem() { Text = "E-Mail", Value = "1" });
             tipos.Add(new SelectListItem() { Text = "SMS", Value = "2" });
             tipos.Add(new SelectListItem() { Text = "WhatsApp", Value = "3" });
             ViewBag.Tipos = new SelectList(tipos, "Value", "Text");

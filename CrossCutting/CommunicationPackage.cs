@@ -27,7 +27,6 @@ namespace CrossCutting
                 mensagem.IsBodyHtml = true;
                 mensagem.Body = email.CORPO;
                 mensagem.Priority = email.PRIORIDADE;
-                mensagem.IsBodyHtml = true;
                 if (email.ATTACHMENT != null)
                 {
                     foreach (var attachment in email.ATTACHMENT)

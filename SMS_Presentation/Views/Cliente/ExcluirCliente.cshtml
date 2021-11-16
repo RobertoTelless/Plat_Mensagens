@@ -113,7 +113,8 @@
                         </div>
                         <div class="form-group">
                             @Html.ButtonActionSubmit(text: "Confirma desativação de Contato", htmlAttributes: new { id = "basictoast" })
-                            @Html.ButtonLinkIndex(text: "Cancelar", action: "VoltarBaseCliente", controller: "Cliente")
+                            @Html.ButtonLinkIndex(text: "Voltar", action: "VoltarBaseCliente", controller: "Cliente")
+                            @Html.ButtonLinkIndex(text: "Dashboard", controller: "Cliente", action: "Voltar")
                         </div>
                     </div>
                 }

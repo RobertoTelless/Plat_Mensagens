@@ -54,11 +54,6 @@
                             @Html.ValidationSummary(false, "", new { @class = "text-danger" })
                         </div>
                     }
-                    @*<div class="form-group">
-                        <div class="col-lg-12 col-md-12 col-xs-12">
-                            @Html.ButtonLinkIndex(text: "Voltar", action: "VoltarBaseMensagem", controller: "Mensagem")
-                        </div>
-                    </div>*@
                     <div class="tabs-container">
                         @using (Html.BeginForm("IncluirMensagemEMail", "Mensagem", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", @id = "pwd-container1" }))
                         {
@@ -68,6 +63,7 @@
                                     @Html.ButtonActionSubmit(text: "BtnSubmit", htmlAttributes: new { id = "submit", style = "display: none;" })
                                     <button class="btnSubmit btn btn-sm btn-success" id="basictoast" type="button">Confirma Envio do E-Mail</button>
                                     @Html.ButtonLinkIndex(text: "Voltar", action: "VoltarBaseMensagem", controller: "Mensagem")
+                                    @Html.ButtonLinkIndex(text: "Dashboard", action: "Voltar", controller: "Mensagem")
                                 </div>
                             </div>
                             
@@ -132,16 +128,13 @@
                                         <div class="row">
                                             <h4 style="color:navy">Parâmetros do E-Mail</h4>
                                             <h5>Se a Data de Agendamento não for preenchida o envio será imediato</h5>
+                                            <h5>Se for escolhido um modelo (Comum ou HTML) o campo Corpo da Mensagem ficará desabilitado</h5>
                                             <br />
                                             <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
                                                 <div class="col-lg-3 col-md-3 col-xs-12">
                                                     Campanha
                                                     @Html.TextBoxFor(m => m.MENS_NM_CAMPANHA, new { @class = "form-control", autofocus = true })
                                                 </div>
-                                                @*<div class="col-lg-2 col-md-2 col-xs-12">
-                                                    Tipo de Mensagem
-                                                    @Html.DropDownListFor(m => m.MENS_IN_TIPO, (SelectList)ViewBag.Tipos, "Selecionar", new { @class = "form-control", autofocus = true, @id = "tipo", onchange = "ValidaDiv($(this).val())" })
-                                                </div>*@
                                                 <div class="col-lg-2 col-md-2 col-xs-12">
                                                     Agendar para
                                                     @Html.TextBoxFor(m => m.MENS_DT_AGENDAMENTO, new { @class = "form-control", autofocus = true, @id = "saida", @style = "font-weight:bold" })
@@ -150,19 +143,10 @@
                                                     Link a ser incluído na mensagem
                                                     @Html.TextBoxFor(m => m.MENS_NM_LINK, new { @class = "form-control", autofocus = true })
                                                 </div>
-                                                <div class="col-lg-2 col-md-2 col-xs-12">
-                                                    Modelos
-                                                    <div class="input-group">
-                                                        @Html.DropDownListFor(m => m.TEMP_CD_ID, (SelectList)ViewBag.Temp, "Selecionar", new { @class = "form-control", autofocus = true, @id = "temp"})
-                                                        <span class="input-group-btn">
-                                                            <span class="btn btn-warning btn-sm" id="btnBusca" onclick="PesquisaTemplate($('#temp').val(), $(this), 1)">?</span>
-                                                        </span>
-                                                    </div>
+                                                <div class="col-lg-4 col-md-4 col-xs-12">
+                                                    Modelos 
+                                                    @Html.DropDownListFor(m => m.TEMP_CD_ID, (SelectList)ViewBag.Temp, "Selecionar", new { @class = "form-control", autofocus = true, @id = "temp", onchange = "ValidaDiv($(this).val())"})
                                                 </div>
-                                                @*<div class="col-lg-2 col-md-2 col-xs-12">
-                                                    Modelos
-                                                    @Html.DropDownListFor(m => m.TEMP_CD_ID, (SelectList)ViewBag.Temp, "Selecionar", new { @class = "form-control", autofocus = true, @id = "temp", onchange = "ValidaDivTemp($(this).val())" })
-                                                </div>*@
                                             </div>
                                         </div>
                                         <hr />
@@ -177,7 +161,7 @@
                                                     @Html.TextAreaFor(m => m.MENS_NM_CABECALHO, new { @class = "form-control summernote", style = "width: 100%; height: 200px;", autofocus = true,  @id = "cab"})
                                                 </div>
                                             </div>
-                                            <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
+                                            <div class="form-group" style=" margin-left: -15px; margin-right: -15px;" id="CORPO">
                                                 <div class="col-lg-12 col-md-12 col-xs-12">
                                                     Corpo da Mensagem
                                                     @Html.TextAreaFor(m => m.MENS_TX_TEXTO, new { @class = "form-control summernote", style = "width: 100%; height: 600px;", autofocus = true,  @id = "cor" })
@@ -220,6 +204,7 @@
                                         @Html.ButtonActionSubmit(text: "BtnSubmit", htmlAttributes: new { id = "submit", style = "display: none;" })
                                         <button class="btnSubmit btn btn-sm btn-success" id="basictoast" type="button">Confirma Envio do E-Mail</button>
                                         @Html.ButtonLinkIndex(text: "Voltar", action: "VoltarBaseMensagem", controller: "Mensagem")
+                                        @Html.ButtonLinkIndex(text: "Dashboard", action: "Voltar", controller: "Mensagem")
                                     </div>
                                 </div>
                             </div>
@@ -384,24 +369,10 @@
     </script>
     <script type="text/javascript">
         function ValidaDiv(valTipo) {
-            if (valTipo == '1') {
-                $("#EM").show();
-                $("#EM1").show();
-                $("#EM2").show();
-                $("#SMS1").hide();
-                $("#MO").show();
-            } else if (valTipo == '2') { 
-                $("#EM").hide();
-                $("#EM1").hide();
-                $("#EM2").hide();
-                $("#SMS1").show();
-                $("#MO").hide();
+            if (valTipo = 0) {
+                $("#CO").show();
             } else { //Se não for 1, 2 ou 4 esconde as duas
-                $("#EM").show();
-                $("#EM1").show();
-                $("#EM2").show();
-                $("#SMS1").hide();
-                $("#MO").hide();
+                $("#CO").hide();
             }
         }
 

@@ -49,6 +49,7 @@
                     <div class="form-group">
                         @Html.ButtonLinkIndex(text: "Gerar Relatório", action: "GerarRelatorioDetalhe", controller: "Notificacao")
                         @Html.ButtonLinkIndex(text: "Voltar", action: "VoltarBaseNotificacao", controller: "Notificacao")
+                        @Html.ButtonLinkIndex(text: "Dashboard", action: "Voltar", controller: "Notificacao")
                     </div>
                     @Html.AntiForgeryToken()
                     @if (!ViewData.ModelState.IsValid)

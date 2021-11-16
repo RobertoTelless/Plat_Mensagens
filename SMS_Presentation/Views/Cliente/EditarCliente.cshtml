@@ -106,6 +106,7 @@
                         <span class="btn btn-sm btn-warning" onclick="MudaIdClie('@Model.CLIE_CD_ID')" data-toggle="modal" data-target="#exampleModal">Enviar SMS</span>
                         @Html.ButtonLinkIndex(text: "Gerar Relatório", action: "GerarRelatorioDetalhe", controller: "Cliente")
                         @Html.ButtonLinkIndex(text: "Voltar", action: "VoltarBaseCliente", controller: "Cliente")
+                        @Html.ButtonLinkIndex(text: "Dashboard", controller: "Cliente", action: "Voltar")
                     </div>
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
@@ -1119,6 +1120,7 @@
                 <div class="form-group">
                     <br />
                     @Html.ButtonLinkIndex(text: "Voltar", action: "VoltarBaseCliente", controller: "Cliente")
+                    @Html.ButtonLinkIndex(text: "Dashboard", controller: "Cliente", action: "Voltar")
                 </div>
             </div>
         </div>

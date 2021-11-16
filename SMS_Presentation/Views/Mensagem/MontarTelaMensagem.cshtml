@@ -115,7 +115,7 @@
                                 Data Criação
                                 @Html.TextBoxFor(m => m.MENS_DT_CRIACAO, "{0:dd/MM/yyyy}", new { @class = "form-control date-picker", autofocus = true, @id="data1" })
                             </div>
-                            <div class="col-lg-4 col-md-4 col-xs-12">
+                            <div class="col-lg-2 col-md-2 col-xs-12">
                                 Data Envio
                                 @Html.TextBoxFor(m => m.MENS_DT_ENVIO, "{0:dd/MM/yyyy}", new { @class = "form-control date-picker", autofocus = true, @id="data2" })
                             </div>
@@ -140,7 +140,7 @@
                                 @Html.ButtonLinkIndex(text: "Novo E-Mail", controller: "Mensagem", action: "IncluirMensagemEMail")
                                 @Html.ButtonLinkIndex(text: "Novo SMS", controller: "Mensagem", action: "IncluirMensagemSMS")
                                 @Html.ButtonLinkIndex(text: "Gerar Relatório", controller: "Mensagem", action: "GerarRelatorioLista")
-                                @Html.ButtonLinkIndex(text: "Voltar", controller: "Mensagem", action: "Voltar")
+                                @Html.ButtonLinkIndex(text: "Dashboard", controller: "Mensagem", action: "Voltar")
                             </div>
                         </div>
                     </div>
@@ -299,19 +299,36 @@
 </div>
 
 @section Styles {
-    <link href="~/Content/themes/base/all.css" rel="stylesheet" />  
+    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/all.css" rel="stylesheet" />
+    <link href="~/Content/jquery.datetimepicker.css" rel="stylesheet" />
     @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
     @Styles.Render("~/plugins/jasnyBootstrapStyles")
-<link href="~/Content/plugins/select2/select2.min.css" rel="stylesheet" />
+    @Styles.Render("~/plugins/toastrStyles")
+    @*@Styles.Render("~/Content/plugins/summernote/summernote.css")*@
+    <link href="~/Content/jquery-ui-timepicker-addon.min.css" rel="stylesheet" />
+    <link href="~/Content/plugins/select2/select2.min.css" rel="stylesheet" />
+    @Styles.Render("~/plugins/summernoteStyles")
 }
 
 @section Scripts {
 
+    <script src="~/Scripts/jquery.datetimepicker.full.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/moment.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.datetimepicker"></script>
+    <script src="~/Scripts/jquery-ui-timepicker-addon.min.js"></script>
+    @Scripts.Render("~/plugins/toastr")
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
     @Scripts.Render("~/plugins/dataTables")
     @Scripts.Render("~/bundles/inputmask")
     @Scripts.Render("~/plugins/jasnyBootstrap")
-<script src="~/Scripts/plugins/select2/select2.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.js"></script>
+    @Scripts.Render("~/plugins/sparkline")
+    @*@Scripts.Render("~/Scripts/plugins/summernote/summernote.min.js")*@
+    <script src="~/Scripts/plugins/select2/select2.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.js"></script>    
+    <script src="~/Scripts/uploadAnexo.js"></script>
+    @Scripts.Render("~/plugins/summernote")
     
         <script>
         $(function () {
@@ -349,6 +366,29 @@
             $('#modalDescBodyF').html(desc);
             $('#modalDescF').modal('show');
         }
+    </script>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            $('.date-picker').datepicker(
+                {
+                    dateFormat: 'dd/mm/yy',
+                    dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                    dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
+                    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+                    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    nextText: 'Proximo',
+                    prevText: 'Anterior',
+                    showOn: "focus"
+                }
+            )
+                .css("display", "normal")
+                .next("button").button({
+                    icons: { primary: "ui-icon-calendar" },
+                    label: "Selecione uma data",
+                    text: false
+                });
+        });
     </script>
 
     <script type="text/javascript">

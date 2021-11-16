@@ -93,7 +93,7 @@ namespace SMS_Presentation.Controllers
                 Session["ListaUsuario"] = listaMaster;
                 Session["FiltroUsuario"] = null;
             }
-            List<USUARIO> listaUsu = (List<USUARIO>)Session["ListaUsuario"];
+            List<USUARIO> listaUsu = listaMaster;
             ViewBag.Listas = listaUsu;
             ViewBag.Usuarios = listaUsu.Count;
             ViewBag.Perfil = usuario.PERFIL.PERF_SG_SIGLA;

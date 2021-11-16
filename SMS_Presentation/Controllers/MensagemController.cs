@@ -186,8 +186,8 @@ namespace SMS_Presentation.Controllers
             {
                 objeto = (MENSAGENS)Session["FiltroMensagem"];
             }
-            objeto.MENS_DT_CRIACAO = DateTime.Today.Date;
-            objeto.MENS_DT_ENVIO = DateTime.Today.Date;
+            //objeto.MENS_DT_CRIACAO = DateTime.Today.Date;
+            //objeto.MENS_DT_ENVIO = DateTime.Today.Date;
             return View(objeto);
         }
 
@@ -1476,13 +1476,24 @@ namespace SMS_Presentation.Controllers
             sexo.Add(new SelectListItem() { Text = "Outros", Value = "3" });
             ViewBag.Sexo = new SelectList(sexo, "Value", "Text");
             ViewBag.Status = new SelectList(baseApp.GetAllPosicao().OrderBy(p => p.POSI_NM_NOME), "POSI_CD_ID", "POSI_NM_NOME");
-            ViewBag.Temp = new SelectList(temApp.GetAllItens(idAss).Where(p => p.TEMP_IN_TIPO == 1).ToList().OrderBy(p => p.TEMP_SG_SIGLA), "TEMP_CD_ID", "TEMP_SG_SIGLA");
+            ViewBag.Temp = new SelectList(temApp.GetAllItens(idAss).Where(p => p.TEMP_IN_TIPO == 1 || p.TEMP_IN_TIPO == 4).ToList().OrderBy(p => p.TEMP_SG_SIGLA), "TEMP_CD_ID", "TEMP_NM_NOME");
 
             List<SelectListItem> tipos = new List<SelectListItem>();
             tipos.Add(new SelectListItem() { Text = "E-Mail", Value = "1" });
             tipos.Add(new SelectListItem() { Text = "SMS", Value = "2" });
             tipos.Add(new SelectListItem() { Text = "WhatsApp", Value = "3" });
             ViewBag.Tipos = new SelectList(tipos, "Value", "Text");
+            
+            String caminho = "/TemplatesHTML/";
+            String path = Path.Combine(Server.MapPath(caminho));
+            String[] files = Directory.GetFiles(path, "*.html");
+            List<SelectListItem> mod = new List<SelectListItem>();
+            foreach (String file in files)
+            {
+                mod.Add(new SelectListItem() { Text = System.IO.Path.GetFileNameWithoutExtension(file), Value = file });
+            }
+            ViewBag.Modelos = new SelectList(mod, "Value", "Text");
+
 
             // Prepara view
             String header = temApp.GetByCode("TEMPBAS").TEMP_TX_CABECALHO;
@@ -1507,6 +1518,7 @@ namespace SMS_Presentation.Controllers
             vm.MENS_NM_CABECALHO = header;
             vm.MENS_NM_RODAPE = footer;
             vm.MENS_IN_TIPO = 1;
+            vm.MODELO = null;
             return View(vm);
         }
 
@@ -1525,7 +1537,7 @@ namespace SMS_Presentation.Controllers
             ViewBag.Grupos = new SelectList(gruApp.GetAllItens(idAss).OrderBy(p => p.GRUP_NM_NOME), "GRUP_CD_ID", "GRUP_NM_NOME");
             ViewBag.Cats = new SelectList(baseApp.GetAllTipos().OrderBy(p => p.CACL_NM_NOME), "CACL_CD_ID", "CACL_NM_NOME");
             ViewBag.UF = new SelectList(baseApp.GetAllUF().OrderBy(p => p.UF_SG_SIGLA), "UF_CD_ID", "UF_NM_NOME");
-            ViewBag.Temp = new SelectList(temApp.GetAllItens(idAss).Where(p => p.TEMP_IN_TIPO != 0).ToList().OrderBy(p => p.TEMP_SG_SIGLA), "TEMP_CD_ID", "TEMP_SG_SIGLA");
+            ViewBag.Temp = new SelectList(temApp.GetAllItens(idAss).Where(p => p.TEMP_IN_TIPO == 1 || p.TEMP_IN_TIPO == 4).ToList().OrderBy(p => p.TEMP_SG_SIGLA), "TEMP_CD_ID", "TEMP_SG_SIGLA");
             Session["Mensagem"] = null;
             List<SelectListItem> sexo = new List<SelectListItem>();
             sexo.Add(new SelectListItem() { Text = "Masculino", Value = "1" });
@@ -1544,7 +1556,7 @@ namespace SMS_Presentation.Controllers
                 try
                 {
                     // Checa mensagens
-                    if (String.IsNullOrEmpty(vm.MENS_TX_TEXTO))
+                    if (String.IsNullOrEmpty(vm.MENS_TX_TEXTO) & vm.TEMP_CD_ID == 0)
                     {
                         Session["MensMensagem"] = 3;
                         return RedirectToAction("IncluirMensagemEMail");
@@ -1715,8 +1727,27 @@ namespace SMS_Presentation.Controllers
                 String api = conf.CONF_NM_SENDGRID_APIKEY;
 
                 // Prepara corpo do e-mail e trata link
+                String corpo = vm.MENS_TX_TEXTO;
+                if (vm.TEMP_CD_ID != null)
+                {
+                    TEMPLATE temp = temApp.GetItemById(vm.TEMP_CD_ID.Value);
+                    if (temp.TEMP_IN_TIPO == 4)
+                    {
+                        String caminho = "/TemplatesHTML/" + temp.TEMP_AQ_ARQUIVO;
+                        String path = Path.Combine(Server.MapPath(caminho));
+                        using (StreamReader reader = new System.IO.StreamReader(path))
+                        {
+                            corpo = reader.ReadToEnd();
+                        }
+                    }
+                    else
+                    {
+                        corpo = vm.MENS_TX_TEXTO;
+                    }
+                }
+
                 StringBuilder str = new StringBuilder();
-                str.AppendLine(vm.MENS_TX_TEXTO);
+                str.AppendLine(corpo);
                 if (!String.IsNullOrEmpty(vm.MENS_NM_LINK))
                 {
                     if (!vm.MENS_NM_LINK.Contains("www."))
@@ -1769,6 +1800,7 @@ namespace SMS_Presentation.Controllers
                 mensagem.PRIORIDADE = System.Net.Mail.MailPriority.High;
                 mensagem.SENHA_EMISSOR = conf.CONF_NM_SENHA_EMISSOR;
                 mensagem.SMTP = conf.CONF_NM_HOST_SMTP;
+                mensagem.IS_HTML = true;
                 mensagem.NETWORK_CREDENTIAL = net;
                 mensagem.ATTACHMENT = listaAnexo;
 
@@ -1803,6 +1835,7 @@ namespace SMS_Presentation.Controllers
                     dest.MENS_CD_ID = mens.MENS_CD_ID;
                     mens.MENSAGENS_DESTINOS.Add(dest);
                     mens.MENS_DT_ENVIO = DateTime.Now;
+                    mens.MENS_TX_TEXTO = corpo;
                     volta = baseApp.ValidateEdit(mens, mens);
                 }
                 else
@@ -1811,52 +1844,73 @@ namespace SMS_Presentation.Controllers
                     volta = baseApp.ValidateEdit(mens, mens);
                 }
 
-                // Envia pelo sendgrid
-                String assunto = vm.MENS_NM_CAMPANHA != null ? vm.MENS_NM_CAMPANHA : "Assunto Diverso";
-                //EnviarSendGrid(conf.CONF_NM_EMAIL_EMISSOO, assunto, cliente.CLIE_NM_EMAIL, cliente.CLIE_NM_NOME, emailBody, listaAnexo1, api).Wait();
+                // Envia assincrono
 
                 erro = null;
                 return volta;
             }
             else
             {
+                //Int32 volta1  = await SendEmail(listaCli, vm, conf, mens);
+
+                // Prepara genericos
+                // Prepara rodape
+                ASSINANTE assi = (ASSINANTE)Session["Assinante"];
+                String rod = vm.MENS_NM_RODAPE;
+
+                // Prepara corpo do e-mail e trata link
+                String corpo = vm.MENS_TX_TEXTO;
+                TEMPLATE temp = temApp.GetItemById(vm.TEMP_CD_ID.Value);
+                if (vm.TEMP_CD_ID != null)
+                {
+                    if (temp.TEMP_IN_TIPO == 4)
+                    {
+                        String caminho = "/TemplatesHTML/" + temp.TEMP_AQ_ARQUIVO;
+                        String path = Path.Combine(Server.MapPath(caminho));
+                        using (StreamReader reader = new System.IO.StreamReader(path))
+                        {
+                            corpo = reader.ReadToEnd();
+                        }
+                    }
+                    else
+                    {
+                        corpo = vm.MENS_TX_TEXTO;
+                    }
+                }
+
+                StringBuilder str = new StringBuilder();
+                str.AppendLine(corpo);
+                if (!String.IsNullOrEmpty(vm.MENS_NM_LINK))
+                {
+                    if (!vm.MENS_NM_LINK.Contains("www."))
+                    {
+                        vm.MENS_NM_LINK = "www." + vm.MENS_NM_LINK;
+                    }
+                    if (!vm.MENS_NM_LINK.Contains("http://"))
+                    {
+                        vm.MENS_NM_LINK = "http://" + vm.MENS_NM_LINK;
+                    }
+                    str.AppendLine("<a href='" + vm.MENS_NM_LINK + "'>Clique aqui para maiores informações</a>");
+                }
+                String body = str.ToString();
+
+                // Checa e monta anexos
+                List<System.Net.Mail.Attachment> listaAnexo = new List<System.Net.Mail.Attachment>();
+                if (vm.MENSAGEM_ANEXO.Count > 0)
+                {
+                    foreach (MENSAGEM_ANEXO ane in vm.MENSAGEM_ANEXO)
+                    {
+                        System.Net.Mail.Attachment anexo = new System.Net.Mail.Attachment(Server.MapPath(ane.MEAN_AQ_ARQUIVO));
+                        listaAnexo.Add(anexo);
+                    }
+                }
+
+                // Loop de envio
                 foreach (CLIENTE item in listaCli)
                 {
                     // Prepara cabeçalho
                     String cab = vm.MENS_NM_CABECALHO.Replace("{Nome}", item.CLIE_NM_NOME);
-
-                    // Prepara rodape
-                    ASSINANTE assi = (ASSINANTE)Session["Assinante"];
-                    String rod = vm.MENS_NM_RODAPE;
-
-                    // Prepara corpo do e-mail e trata link
-                    StringBuilder str = new StringBuilder();
-                    str.AppendLine(vm.MENS_TX_TEXTO);
-                    if (!String.IsNullOrEmpty(vm.MENS_NM_LINK))
-                    {
-                        if (!vm.MENS_NM_LINK.Contains("www."))
-                        {
-                            vm.MENS_NM_LINK = "www." + vm.MENS_NM_LINK;
-                        }
-                        if (!vm.MENS_NM_LINK.Contains("http://"))
-                        {
-                            vm.MENS_NM_LINK = "http://" + vm.MENS_NM_LINK;
-                        }
-                        str.AppendLine("<a href='" + vm.MENS_NM_LINK + "'>Clique aqui para maiores informações</a>");
-                    }
-                    String body = str.ToString();
                     String emailBody = cab + body + rod;
-
-                    // Checa e monta anexos
-                    List<System.Net.Mail.Attachment> listaAnexo = new List<System.Net.Mail.Attachment>();
-                    if (vm.MENSAGEM_ANEXO.Count > 0)
-                    {
-                        foreach (MENSAGEM_ANEXO ane in vm.MENSAGEM_ANEXO)
-                        {
-                            System.Net.Mail.Attachment anexo = new System.Net.Mail.Attachment(Server.MapPath(ane.MEAN_AQ_ARQUIVO));
-                            listaAnexo.Add(anexo);
-                        }
-                    }
 
                     // Monta e-mail
                     NetworkCredential net = new NetworkCredential(conf.CONF_NM_EMAIL_EMISSOO, conf.CONF_NM_SENHA_EMISSOR);
@@ -1902,6 +1956,10 @@ namespace SMS_Presentation.Controllers
                         dest.MENS_CD_ID = mens.MENS_CD_ID;
                         mens.MENSAGENS_DESTINOS.Add(dest);
                         mens.MENS_DT_ENVIO = DateTime.Now;
+                        if (vm.TEMP_CD_ID > 0 & temp.TEMP_IN_TIPO == 4)
+                        {
+                            mens.MENS_TX_TEXTO = corpo;
+                        }
                         volta = baseApp.ValidateEdit(mens, mens);
                     }
                     else
@@ -1916,6 +1974,110 @@ namespace SMS_Presentation.Controllers
             return 0;
         }
 
+        private async Task<int> SendEmail(List<CLIENTE> listaCli, MensagemViewModel vm, CONFIGURACAO conf, MENSAGENS mens)
+        {
+            String erro = null;
+            Int32 volta = 0;
+            foreach (CLIENTE item in listaCli)
+            {
+                // Prepara cabeçalho
+                String cab = vm.MENS_NM_CABECALHO.Replace("{Nome}", item.CLIE_NM_NOME);
+
+                // Prepara rodape
+                ASSINANTE assi = (ASSINANTE)Session["Assinante"];
+                String rod = vm.MENS_NM_RODAPE;
+
+                // Prepara corpo do e-mail e trata link
+                StringBuilder str = new StringBuilder();
+                str.AppendLine(vm.MENS_TX_TEXTO);
+                if (!String.IsNullOrEmpty(vm.MENS_NM_LINK))
+                {
+                    if (!vm.MENS_NM_LINK.Contains("www."))
+                    {
+                        vm.MENS_NM_LINK = "www." + vm.MENS_NM_LINK;
+                    }
+                    if (!vm.MENS_NM_LINK.Contains("http://"))
+                    {
+                        vm.MENS_NM_LINK = "http://" + vm.MENS_NM_LINK;
+                    }
+                    str.AppendLine("<a href='" + vm.MENS_NM_LINK + "'>Clique aqui para maiores informações</a>");
+                }
+                String body = str.ToString();
+                String emailBody = cab + body + rod;
+
+                // Checa e monta anexos
+                List<System.Net.Mail.Attachment> listaAnexo = new List<System.Net.Mail.Attachment>();
+                if (vm.MENSAGEM_ANEXO.Count > 0)
+                {
+                    foreach (MENSAGEM_ANEXO ane in vm.MENSAGEM_ANEXO)
+                    {
+                        System.Net.Mail.Attachment anexo = new System.Net.Mail.Attachment(Server.MapPath(ane.MEAN_AQ_ARQUIVO));
+                        listaAnexo.Add(anexo);
+                    }
+                }
+
+                // Monta e-mail
+                NetworkCredential net = new NetworkCredential(conf.CONF_NM_EMAIL_EMISSOO, conf.CONF_NM_SENHA_EMISSOR);
+                MailMessage mensagem = new MailMessage();
+                SmtpClient smtp = new SmtpClient();
+                mensagem.From = new MailAddress(conf.CONF_NM_EMAIL_EMISSOO, item.ASSINANTE.ASSI_NM_NOME);
+                mensagem.To.Add(item.CLIE_NM_EMAIL);
+                mensagem.Subject = vm.MENS_NM_CAMPANHA != null ? vm.MENS_NM_CAMPANHA : "Assunto Diverso";
+                mensagem.IsBodyHtml = true;
+                mensagem.Body = emailBody;
+                mensagem.Priority = System.Net.Mail.MailPriority.High;
+                if (listaAnexo != null)
+                {
+                    foreach (var attachment in listaAnexo)
+                    {
+                        mensagem.Attachments.Add(attachment);
+                    }
+                }
+                smtp.EnableSsl = true;
+                smtp.Port = Convert.ToInt32(conf.CONF_NM_PORTA_SMTP);
+                smtp.Host = conf.CONF_NM_HOST_SMTP;
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new System.Net.NetworkCredential(conf.CONF_NM_EMAIL_EMISSOO, conf.CONF_NM_SENHA_EMISSOR);
+
+                // Envia mensagem
+                try
+                {
+                    await smtp.SendMailAsync(mensagem).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    erro = ex.Message;
+                    if (ex.GetType() == typeof(SmtpFailedRecipientException))
+                    {
+                        var se = (SmtpFailedRecipientException)ex;
+                        erro += se.FailedRecipient;
+                    }
+                }
+
+                // Grava mensagem/destino e erros
+                if (erro == null)
+                {
+                    MENSAGENS_DESTINOS dest = new MENSAGENS_DESTINOS();
+                    dest.MEDE_IN_ATIVO = 1;
+                    dest.MEDE_IN_POSICAO = 1;
+                    dest.MEDE_IN_STATUS = 1;
+                    dest.CLIE_CD_ID = item.CLIE_CD_ID;
+                    dest.MEDE_DS_ERRO_ENVIO = erro;
+                    dest.MENS_CD_ID = mens.MENS_CD_ID;
+                    mens.MENSAGENS_DESTINOS.Add(dest);
+                    mens.MENS_DT_ENVIO = DateTime.Now;
+                    volta = baseApp.ValidateEdit(mens, mens);
+                }
+                else
+                {
+                    mens.MENS_TX_RETORNO = erro;
+                    volta = baseApp.ValidateEdit(mens, mens);
+                }
+                erro = null;
+            }
+            return 0;
+        }
+        
         [ValidateInput(false)]
         public Int32 ProcessarAgendamentoMensagemEMail(MensagemViewModel vm, USUARIO usuario)
         {
@@ -2443,6 +2605,65 @@ namespace SMS_Presentation.Controllers
             return 0;
         }
 
+        [HttpGet]
+        public ActionResult VerAnexoMensagem(Int32 id)
+        {
+
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensMensagens"] = 2;
+                    return RedirectToAction("MontarTelaMensagem", "Mensagem");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Prepara view
+            MENSAGEM_ANEXO item = baseApp.GetAnexoById(id);
+            return View(item);
+        }
+
+        public ActionResult VoltarAnexoMensagem()
+        {
+
+            return RedirectToAction("VerMensagem", new { id = (Int32)Session["IdMensagem"] });
+        }
+
+        public FileResult DownloadMensagem(Int32 id)
+        {
+            MENSAGEM_ANEXO item = baseApp.GetAnexoById(id);
+            String arquivo = item.MEAN_AQ_ARQUIVO;
+            Int32 pos = arquivo.LastIndexOf("/") + 1;
+            String nomeDownload = arquivo.Substring(pos);
+            String contentType = string.Empty;
+            if (arquivo.Contains(".pdf"))
+            {
+                contentType = "application/pdf";
+            }
+            else if (arquivo.Contains(".jpg"))
+            {
+                contentType = "image/jpg";
+            }
+            else if (arquivo.Contains(".png"))
+            {
+                contentType = "image/png";
+            }
+            return File(arquivo, contentType, nomeDownload);
+        }
 
     }
 }

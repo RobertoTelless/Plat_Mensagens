@@ -21,7 +21,7 @@ namespace PlatMensagem_Solution.ViewModels
         public Nullable<System.DateTime> MENS_DT_CRIACAO { get; set; }
         [StringLength(50, ErrorMessage = "O NOME DA CAMPANHA deve conter no máximo 50 caracteres.")]
         public string MENS_NM_CAMPANHA { get; set; }
-        [StringLength(5000,ErrorMessage = "O TEXTO DA MENSAGEM deve conter no máximo 5000 caracteres.")]
+        [StringLength(500000,ErrorMessage = "O TEXTO DA MENSAGEM deve conter no máximo 500000 caracteres.")]
         public string MENS_TX_TEXTO { get; set; }
         [Required(ErrorMessage = "Campo TIPO DE MENSAGEM obrigatorio")]
         public Nullable<int> MENS_IN_TIPO { get; set; }
@@ -47,6 +47,7 @@ namespace PlatMensagem_Solution.ViewModels
         public Int32? STATUS { get; set; }
         public String LINK { get; set; }
         public Int32? GRUPO { get; set; }
+        public String MODELO { get; set; }
 
         public virtual ASSINANTE ASSINANTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
