@@ -20,6 +20,7 @@ namespace EntitiesServices.Model
             this.MENSAGEM_ANEXO = new HashSet<MENSAGEM_ANEXO>();
             this.MENSAGENS_DESTINOS = new HashSet<MENSAGENS_DESTINOS>();
             this.EMAIL_AGENDAMENTO = new HashSet<EMAIL_AGENDAMENTO>();
+            this.CRM = new HashSet<CRM>();
         }
     
         public int MENS_CD_ID { get; set; }
@@ -48,5 +49,7 @@ namespace EntitiesServices.Model
         public virtual USUARIO USUARIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EMAIL_AGENDAMENTO> EMAIL_AGENDAMENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CRM> CRM { get; set; }
     }
 }

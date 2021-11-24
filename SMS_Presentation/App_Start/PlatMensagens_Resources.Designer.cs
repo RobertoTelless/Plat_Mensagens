@@ -286,6 +286,15 @@ namespace SMS_Presentation.App_Start {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Entrada de CRM criada a partir de mensagem.
+        /// </summary>
+        internal static string M0034 {
+            get {
+                return ResourceManager.GetString("M0034", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Usuário já cadastrado.
         /// </summary>
         internal static string M0044 {

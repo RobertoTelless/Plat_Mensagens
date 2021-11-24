@@ -27,5 +27,8 @@ namespace ApplicationServices.Interfaces
         List<UF> GetAllUF();
         UF GetUFbySigla(String sigla);
         List<TEMPLATE> GetAllTemplates(Int32 idAss);
+
+        MENSAGENS_DESTINOS GetDestinoById(Int32 id);
+        Int32 ValidateEditDestino(MENSAGENS_DESTINOS item);
     }
 }

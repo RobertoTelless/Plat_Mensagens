@@ -170,6 +170,9 @@
     <Compile Include="Repositories\AssinanteAnexoRepository.cs" />
     <Compile Include="Repositories\AssinanteRepository.cs" />
     <Compile Include="Repositories\CargoRepository.cs" />
+    <Compile Include="Repositories\CRMRepository.cs" />
+    <Compile Include="Repositories\CRMComentarioRepository.cs" />
+    <Compile Include="Repositories\TipoCRMRepository.cs" />
     <Compile Include="Repositories\EMailAgendaRepository.cs" />
     <Compile Include="Repositories\PosicaoRepository.cs" />
     <Compile Include="Repositories\CategoriaNotificacaoRepository.cs" />
@@ -193,6 +196,7 @@
     <Compile Include="Repositories\TemplateRepository.cs" />
     <Compile Include="Repositories\TipoPessoaRepository.cs" />
     <Compile Include="Repositories\UFRepository.cs" />
+    <Compile Include="Repositories\CRMAnexoRepository.cs" />
     <Compile Include="Repositories\UsuarioAnexoRepository.cs" />
     <Compile Include="Repositories\UsuarioRepository.cs" />
   </ItemGroup>

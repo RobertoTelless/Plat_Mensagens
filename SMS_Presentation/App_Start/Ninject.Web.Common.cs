@@ -82,6 +82,7 @@ namespace Presentation.Start
             kernel.Bind<ICategoriaClienteAppService>().To<CategoriaClienteAppService>();
             kernel.Bind<IPosicaoAppService>().To<PosicaoAppService>();
             kernel.Bind<IEMailAgendaAppService>().To<EMailAgendaAppService>();
+            kernel.Bind<ICRMAppService>().To<CRMAppService>();
 
             kernel.Bind(typeof(IServiceBase<>)).To(typeof(ServiceBase<>));
             kernel.Bind<IUsuarioService>().To<UsuarioService>();
@@ -97,6 +98,7 @@ namespace Presentation.Start
             kernel.Bind<ICategoriaClienteService>().To<CategoriaClienteService>();
             kernel.Bind<IPosicaoService>().To<PosicaoService>();
             kernel.Bind<IEMailAgendaService>().To<EmailAgendaService>();
+            kernel.Bind<ICRMService>().To<CRMService>();
 
             kernel.Bind(typeof(IRepositoryBase<>)).To(typeof(RepositoryBase<>));
             kernel.Bind<IConfiguracaoRepository>().To<ConfiguracaoRepository>();
@@ -125,6 +127,10 @@ namespace Presentation.Start
             kernel.Bind<IGrupoContatoRepository>().To<GrupoContatoRepository>();
             kernel.Bind<IPosicaoRepository>().To<PosicaoRepository>();
             kernel.Bind<IEmailAgendaRepository>().To<EMailAgendaRepository>();
+            kernel.Bind<ICRMRepository>().To<CRMRepository>();
+            kernel.Bind<ICRMAnexoRepository>().To<CRMAnexoRepository>();
+            kernel.Bind<ICRMComentarioRepository>().To<CRMComentarioRepository>();
+            kernel.Bind<ITipoCRMRepository>().To<TipoCRMRepository>();
 
         }
     }

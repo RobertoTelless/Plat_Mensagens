@@ -52,5 +52,9 @@ namespace EntitiesServices.Model
         public virtual DbSet<USUARIO> USUARIO { get; set; }
         public virtual DbSet<USUARIO_ANEXO> USUARIO_ANEXO { get; set; }
         public virtual DbSet<EMAIL_AGENDAMENTO> EMAIL_AGENDAMENTO { get; set; }
+        public virtual DbSet<CRM> CRM { get; set; }
+        public virtual DbSet<CRM_ANEXO> CRM_ANEXO { get; set; }
+        public virtual DbSet<CRM_COMENTARIO> CRM_COMENTARIO { get; set; }
+        public virtual DbSet<TIPO_CRM> TIPO_CRM { get; set; }
     }
 }

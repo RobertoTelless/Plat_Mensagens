@@ -173,8 +173,9 @@
                                                                     <th>WhatsApp</th>
                                                                     <th>Cidade</th>
                                                                     <th>UF</th>
-                                                                    <th>Status Envio</th>
-                                                                    <th>Posição</th>
+                                                                    <th>Envio</th>
+                                                                    <th>Status</th>
+                                                                    <th class="td-one-action">Ações</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -214,6 +215,13 @@
                                                                         {
                                                                             <td><span class="badge badge-warning">Descartado</span></td>
                                                                         }
+                                                                        else if (cond.MEDE_IN_POSICAO == 3)
+                                                                        {
+                                                                            <td><span class="badge badge-warning">Criado CRM</span></td>
+                                                                        }
+                                                                        <td class="td-one-action">
+                                                                            @Html.TableLinkDetails(cond.MEDE_CD_ID, "ConverterMensagemCRM", "fa-code-fork", "Criar Entrada CRM")
+                                                                        </td>
                                                                     </tr>
                                                                 }
                                                             </tbody>

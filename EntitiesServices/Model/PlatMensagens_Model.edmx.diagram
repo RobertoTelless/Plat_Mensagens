@@ -73,6 +73,19 @@
         <AssociationConnector Association="PlatMensagensModel.FK_EMAIL_AGENDAMENTO_ASSINANTE" />
         <AssociationConnector Association="PlatMensagensModel.FK_EMAIL_AGENDAMENTO_CLIENTE" />
         <AssociationConnector Association="PlatMensagensModel.FK_EMAIL_AGENDAMENTO_MENSAGENS" />
+        <EntityTypeShape EntityType="PlatMensagensModel.CRM" Width="1.5" PointX="15.75" PointY="27.625" />
+        <EntityTypeShape EntityType="PlatMensagensModel.CRM_ANEXO" Width="1.5" PointX="18" PointY="28.625" />
+        <EntityTypeShape EntityType="PlatMensagensModel.CRM_COMENTARIO" Width="1.5" PointX="18" PointY="33.25" />
+        <EntityTypeShape EntityType="PlatMensagensModel.TIPO_CRM" Width="1.5" PointX="5.25" PointY="36.75" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CRM_ASSINANTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_TIPO_CRM_ASSINANTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CRM_CLIENTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CRM_ANEXO_CRM" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CRM_COMENTARIO_CRM" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CRM_TIPO_CRM" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CRM_COMENTARIO_USUARIO" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CRM_USUARIO" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CRM_MENSAGENS" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

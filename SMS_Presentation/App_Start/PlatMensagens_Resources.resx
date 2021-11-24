@@ -192,6 +192,9 @@
   <data name="M0033" xml:space="preserve">
     <value>Não é possível excluir esse status de contato. Existem informações vinculadas a ele</value>
   </data>
+  <data name="M0034" xml:space="preserve">
+    <value>Entrada de CRM criada a partir de mensagem</value>
+  </data>
   <data name="M0044" xml:space="preserve">
     <value>Usuário já cadastrado</value>
   </data>

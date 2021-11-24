@@ -45,6 +45,7 @@ namespace SMS_Presentation.Controllers
         private readonly ITemplateAppService temApp;
         private readonly IGrupoAppService gruApp;
         private readonly IEMailAgendaAppService emApp;
+        private readonly ICRMAppService crmApp;
 
         private String msg;
         private Exception exception;
@@ -54,7 +55,7 @@ namespace SMS_Presentation.Controllers
         List<MENSAGENS> listaMaster = new List<MENSAGENS>();
         String extensao;
 
-        public MensagemController(IMensagemAppService baseApps, ILogAppService logApps, IUsuarioAppService usuApps, IClienteAppService cliApps, IConfiguracaoAppService confApps, ITemplateAppService temApps, IGrupoAppService gruApps, IEMailAgendaAppService emApps)
+        public MensagemController(IMensagemAppService baseApps, ILogAppService logApps, IUsuarioAppService usuApps, IClienteAppService cliApps, IConfiguracaoAppService confApps, ITemplateAppService temApps, IGrupoAppService gruApps, IEMailAgendaAppService emApps, ICRMAppService crmApps)
         {
             baseApp = baseApps;
             logApp = logApps;
@@ -64,6 +65,7 @@ namespace SMS_Presentation.Controllers
             temApp = temApps;
             gruApp = gruApps;
             emApp = emApps;
+            crmApp = crmApps;
         }
 
 
@@ -1016,6 +1018,13 @@ namespace SMS_Presentation.Controllers
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
 
+            if (Session["MensMensagem"] != null)
+            {
+                if ((Int32)Session["MensMensagem"] == 40)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0034", CultureInfo.CurrentCulture));
+                }
+            }
             Session["IdMensagem"] = id;
             Session["VoltaMensagem"] = 1;
             MENSAGENS item = baseApp.GetItemById(id);
@@ -2665,5 +2674,35 @@ namespace SMS_Presentation.Controllers
             return File(arquivo, contentType, nomeDownload);
         }
 
+        [HttpGet]
+        public ActionResult ConverterMensagemCRM(Int32 id)
+        {
+            // Recupera Mensagem e contato
+            MENSAGENS_DESTINOS dest = baseApp.GetDestinoById(id);
+            MENSAGENS mensagem = baseApp.GetItemById(dest.MENS_CD_ID);
+            USUARIO usuario = (USUARIO)Session["UserCredentials"];
+
+            // Cria CRM
+            CRM crm = new CRM();
+            crm.ASSI_CD_ID = mensagem.ASSI_CD_ID;
+            crm.CLIE_CD_ID = (Int32)Session["IdCliente"];
+            crm.CRM1_DS_DESCRICAO = "Entrada criada a partir de mensagem";
+            crm.CRM1_DT_CRIACAO = DateTime.Today.Date;
+            crm.CRM1_IN_ATIVO = 1;
+            crm.CRM1_IN_STATUS = 1;
+            crm.CRM1_NM_NOME = "Entrada criada a partir de mensagem";
+            crm.TICR_CD_ID = 1;
+            crm.USUA_CD_ID = usuario.USUA_CD_ID;
+            crm.MENS_CD_ID = mensagem.MENS_CD_ID;
+            Int32 volta = crmApp.ValidateCreate(crm, usuario);
+
+            // Atualiza mensagem
+            dest.MEDE_IN_POSICAO = 4;
+            Int32 volta1 = baseApp.ValidateEditDestino(dest);
+
+            // Retorno
+            Session["MensMensagem"] = 40;
+            return RedirectToAction("VoltarAnexoMensagem");
+        }
     }
 }

@@ -177,6 +177,7 @@
     <Compile Include="Attributes\CustomValidationCPFAttribute.cs" />
     <Compile Include="Attributes\DataAnteriorAttribute.cs" />
     <Compile Include="EntitiesServices\AssinanteService.cs" />
+    <Compile Include="EntitiesServices\CRMService.cs" />
     <Compile Include="EntitiesServices\EmailAgendaService.cs" />
     <Compile Include="EntitiesServices\PosicaoService.cs" />
     <Compile Include="EntitiesServices\CategoriaClienteService.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="EntitiesServices\TemplateService.cs" />
     <Compile Include="EntitiesServices\UsuarioService.cs" />
     <Compile Include="Interfaces\EntitiesServices\IAssinanteService.cs" />
+    <Compile Include="Interfaces\EntitiesServices\ICRMService.cs" />
     <Compile Include="Interfaces\EntitiesServices\IEmailAgendaService.cs" />
     <Compile Include="Interfaces\EntitiesServices\IPosicaoService.cs" />
     <Compile Include="Interfaces\EntitiesServices\ICategoriaClienteService.cs" />
@@ -207,6 +209,9 @@
     <Compile Include="Interfaces\Repositories\IAssinanteAnexoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IAssinanteRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICargoRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ICRMComentarioRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ICRMRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ITipoCRMRepository.cs" />
     <Compile Include="Interfaces\Repositories\IEmailAgendaRepository.cs" />
     <Compile Include="Interfaces\Repositories\IPosicaoRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICategoriaClienteRepository.cs" />
@@ -230,6 +235,7 @@
     <Compile Include="Interfaces\Repositories\ITemplateRepository.cs" />
     <Compile Include="Interfaces\Repositories\ITipoPessoaRepository.cs" />
     <Compile Include="Interfaces\Repositories\IUFRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ICRMAnexoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IUsuarioAnexoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IUsuarioRepository.cs" />
     <Compile Include="Model\ASSINANTE.cs">
@@ -263,6 +269,15 @@
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CONFIGURACAO.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CRM.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CRM_ANEXO.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CRM_COMENTARIO.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\EMAIL_AGENDAMENTO.cs">
@@ -314,6 +329,9 @@
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\TEMPLATE.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TIPO_CRM.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\TIPO_PESSOA.cs">

@@ -28,5 +28,8 @@ namespace ModelServices.Interfaces.EntitiesServices
         UF GetUFbySigla(String sigla);
         List<CATEGORIA_CLIENTE> GetAllTipos();
         List<POSICAO> GetAllPosicao();
+
+        MENSAGENS_DESTINOS GetDestinoById(Int32 id);
+        Int32 EditDestino(MENSAGENS_DESTINOS item);
     }
 }

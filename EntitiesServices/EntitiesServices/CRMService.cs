@@ -16,93 +16,89 @@ using System.Data;
 
 namespace ModelServices.EntitiesServices
 {
-    public class MensagemService : ServiceBase<MENSAGENS>, IMensagemService
+    public class CRMService : ServiceBase<CRM>, ICRMService
     {
-        private readonly IMensagemRepository _baseRepository;
+        private readonly ICRMRepository _baseRepository;
         private readonly ILogRepository _logRepository;
-        private readonly ITemplateRepository _tempRepository;
-        private readonly ICategoriaClienteRepository _tipoRepository;
-        private readonly IUFRepository _ufRepository;
-        private readonly IMensagemAnexoRepository _anexoRepository;
-        private readonly IPosicaoRepository _posRepository;
-        private readonly IMensagemDestinoRepository _destRepository;
+        private readonly ITipoCRMRepository _tipoRepository;
+        private readonly ICRMAnexoRepository _anexoRepository;
+        private readonly IUsuarioRepository _usuRepository;
         protected PlatMensagensEntities Db = new PlatMensagensEntities();
 
-        public MensagemService(IMensagemRepository baseRepository, ILogRepository logRepository, ITemplateRepository tempRepository, ICategoriaClienteRepository tipoRepository, IUFRepository ufRepository, IMensagemAnexoRepository anexoRepository, IPosicaoRepository posRepository, IMensagemDestinoRepository destRepository) : base(baseRepository)
+        public CRMService(ICRMRepository baseRepository, ILogRepository logRepository, ITipoCRMRepository tipoRepository, ICRMAnexoRepository anexoRepository, IUsuarioRepository usuRepository) : base(baseRepository)
         {
             _baseRepository = baseRepository;
             _logRepository = logRepository;
-            _tempRepository = tempRepository;
             _tipoRepository = tipoRepository;
-            _ufRepository = ufRepository;
             _anexoRepository = anexoRepository;
-            _posRepository = posRepository;
-            _destRepository = destRepository;
+            _usuRepository = usuRepository;
         }
 
-        public MENSAGENS CheckExist(MENSAGENS conta, Int32 idAss)
+        public CRM CheckExist(CRM tarefa, Int32 idUsu,  Int32 idAss)
         {
-            MENSAGENS item = _baseRepository.CheckExist(conta, idAss);
+            CRM item = _baseRepository.CheckExist(tarefa, idUsu, idAss);
             return item;
         }
 
-        public List<UF> GetAllUF()
+        public CRM GetItemById(Int32 id)
         {
-            return _ufRepository.GetAllItens();
-        }
-
-        public UF GetUFbySigla(String sigla)
-        {
-            return _ufRepository.GetItemBySigla(sigla);
-        }
-
-        public MENSAGENS_DESTINOS GetDestinoById(Int32 id)
-        {
-            return _destRepository.GetItemById(id);
-        }
-
-        public MENSAGENS GetItemById(Int32 id)
-        {
-            MENSAGENS item = _baseRepository.GetItemById(id);
+            CRM item = _baseRepository.GetItemById(id);
             return item;
         }
 
-        public MENSAGEM_ANEXO GetAnexoById(Int32 id)
+        public List<CRM> GetByDate(DateTime data, Int32 idAss)
         {
-            return _anexoRepository.GetItemById(id);
+            return _baseRepository.GetByDate(data, idAss);
         }
 
-        public List<MENSAGENS> GetAllItens(Int32 idAss)
+        public USUARIO GetUserById(Int32 id)
+        {
+            USUARIO item = _usuRepository.GetItemById(id);
+            return item;
+        }
+
+        public List<CRM> GetByUser(Int32 user)
+        {
+            return _baseRepository.GetByUser(user);
+        }
+
+        public List<CRM> GetTarefaStatus(Int32 tipo, Int32 idAss)
+        {
+            return _baseRepository.GetTarefaStatus(tipo, idAss);
+        }
+
+        public List<CRM> GetAllItens(Int32 idAss)
         {
             return _baseRepository.GetAllItens(idAss);
         }
 
-        public List<MENSAGENS> GetAllItensAdm(Int32 idAss)
+        public List<CRM> GetAllItensAdm(Int32 idAss)
         {
             return _baseRepository.GetAllItensAdm(idAss);
         }
 
-        public List<CATEGORIA_CLIENTE> GetAllTipos()
+        public List<TIPO_CRM> GetAllTipos()
         {
             return _tipoRepository.GetAllItens();
         }
 
-        public List<POSICAO> GetAllPosicao()
+        public List<USUARIO> GetAllUsers(Int32 idAss)
         {
-            return _posRepository.GetAllItens();
+            return _usuRepository.GetAllItens(idAss);
         }
 
-        public List<TEMPLATE> GetAllTemplates(Int32 idAss)
+        public CRM_ANEXO GetAnexoById(Int32 id)
         {
-            return _tempRepository.GetAllItens(idAss);
+            return _anexoRepository.GetItemById(id);
         }
 
-        public List<MENSAGENS> ExecuteFilter(DateTime? criacao, DateTime? envio, String campanha, String texto, Int32? tipo, Int32 idAss)
+        public List<CRM> ExecuteFilter(Int32? tipoId, String nome, String descricao, Int32? idCli, DateTime? data, Int32? status, Int32? usuario, Int32 idAss)
         {
-            return _baseRepository.ExecuteFilter(criacao, envio, campanha, texto, tipo, idAss);
+            return _baseRepository.ExecuteFilter(tipoId, nome, descricao, idCli, data, status, usuario, idAss);
+
         }
 
-        public Int32 Create(MENSAGENS item, LOG log)
+        public Int32 Create(CRM item, LOG log)
         {
             using (DbContextTransaction transaction = Db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
             {
@@ -121,7 +117,7 @@ namespace ModelServices.EntitiesServices
             }
         }
 
-        public Int32 Create(MENSAGENS item)
+        public Int32 Create(CRM item)
         {
             using (DbContextTransaction transaction = Db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
             {
@@ -140,13 +136,14 @@ namespace ModelServices.EntitiesServices
         }
 
 
-        public Int32 Edit(MENSAGENS item, LOG log)
+        public Int32 Edit(CRM item, LOG log)
         {
             using (DbContextTransaction transaction = Db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
             {
                 try
                 {
-                    MENSAGENS obj = _baseRepository.GetById(item.MENS_CD_ID);
+                    item.USUARIO = null;
+                    CRM obj = _baseRepository.GetById(item.CRM1_CD_ID);
                     _baseRepository.Detach(obj);
                     _logRepository.Add(log);
                     _baseRepository.Update(item);
@@ -161,13 +158,13 @@ namespace ModelServices.EntitiesServices
             }
         }
 
-        public Int32 Edit(MENSAGENS item)
+        public Int32 Edit(CRM item)
         {
             using (DbContextTransaction transaction = Db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
             {
                 try
                 {
-                    MENSAGENS obj = _baseRepository.GetById(item.MENS_CD_ID);
+                    CRM obj = _baseRepository.GetById(item.CRM1_CD_ID);
                     _baseRepository.Detach(obj);
                     _baseRepository.Update(item);
                     transaction.Commit();
@@ -181,7 +178,7 @@ namespace ModelServices.EntitiesServices
             }
         }
 
-        public Int32 Delete(MENSAGENS item, LOG log)
+        public Int32 Delete(CRM item, LOG log)
         {
             using (DbContextTransaction transaction = Db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
             {
@@ -200,25 +197,6 @@ namespace ModelServices.EntitiesServices
             }
         }
 
-        public Int32 EditDestino(MENSAGENS_DESTINOS item)
-        {
-            using (DbContextTransaction transaction = Db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
-            {
-                try
-                {
-                    MENSAGENS_DESTINOS obj = _destRepository.GetById(item.MEDE_CD_ID);
-                    _destRepository.Detach(obj);
-                    _destRepository.Update(item);
-                    transaction.Commit();
-                    return 0;
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    throw ex;
-                }
-            }
-        }
 
     }
 }

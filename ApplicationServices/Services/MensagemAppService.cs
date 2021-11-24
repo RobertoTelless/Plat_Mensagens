@@ -46,6 +46,12 @@ namespace ApplicationServices.Services
             return _baseService.GetAnexoById(id);
         }
 
+        public MENSAGENS_DESTINOS GetDestinoById(Int32 id)
+        {
+            MENSAGENS_DESTINOS lista = _baseService.GetDestinoById(id);
+            return lista;
+        }
+
         public List<MENSAGENS> GetAllItensAdm(Int32 idAss)
         {
             List<MENSAGENS> lista = _baseService.GetAllItensAdm(idAss);
@@ -237,6 +243,19 @@ namespace ApplicationServices.Services
 
                 // Persiste
                 return _baseService.Edit(item, log);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public Int32 ValidateEditDestino(MENSAGENS_DESTINOS item)
+        {
+            try
+            {
+                // Persiste
+                return _baseService.EditDestino(item);
             }
             catch (Exception ex)
             {

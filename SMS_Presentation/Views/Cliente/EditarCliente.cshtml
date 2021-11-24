@@ -1099,8 +1099,13 @@
                                                                             {
                                                                                 <td><span class="badge badge-warning">Descartado</span></td>
                                                                             }
+                                                                            else if (cond.MEDE_IN_POSICAO == 4)
+                                                                            {
+                                                                                <td><span class="badge badge-warning">Criado CRM</span></td>
+                                                                            }
                                                                             <td class="td-one-action">
                                                                                 @Html.TableLinkDetails(cond.MENSAGENS.MENS_CD_ID, "VerMensagem", "fa-search", "Ver Mensagem")
+                                                                                @Html.TableLinkDetails(cond.MEDE_CD_ID, "ConverterMensagemCRM", "fa-code-fork", "Criar Entrada CRM")
                                                                             </td>
                                                                         </tr>
                                                                     }

@@ -23,6 +23,8 @@ namespace EntitiesServices.Model
             this.MENSAGENS = new HashSet<MENSAGENS>();
             this.NOTIFICACAO = new HashSet<NOTIFICACAO>();
             this.USUARIO_ANEXO = new HashSet<USUARIO_ANEXO>();
+            this.CRM_COMENTARIO = new HashSet<CRM_COMENTARIO>();
+            this.CRM = new HashSet<CRM>();
         }
     
         public int USUA_CD_ID { get; set; }
@@ -75,5 +77,9 @@ namespace EntitiesServices.Model
         public virtual PERFIL PERFIL { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USUARIO_ANEXO> USUARIO_ANEXO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CRM_COMENTARIO> CRM_COMENTARIO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CRM> CRM { get; set; }
     }
 }
