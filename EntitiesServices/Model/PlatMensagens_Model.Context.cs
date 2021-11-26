@@ -56,5 +56,11 @@ namespace EntitiesServices.Model
         public virtual DbSet<CRM_ANEXO> CRM_ANEXO { get; set; }
         public virtual DbSet<CRM_COMENTARIO> CRM_COMENTARIO { get; set; }
         public virtual DbSet<TIPO_CRM> TIPO_CRM { get; set; }
+        public virtual DbSet<CRM_ACAO> CRM_ACAO { get; set; }
+        public virtual DbSet<CRM_CONTATO> CRM_CONTATO { get; set; }
+        public virtual DbSet<CRM_ORIGEM> CRM_ORIGEM { get; set; }
+        public virtual DbSet<MOTIVO_CANCELAMENTO> MOTIVO_CANCELAMENTO { get; set; }
+        public virtual DbSet<MOTIVO_ENCERRAMENTO> MOTIVO_ENCERRAMENTO { get; set; }
+        public virtual DbSet<TIPO_ACAO> TIPO_ACAO { get; set; }
     }
 }

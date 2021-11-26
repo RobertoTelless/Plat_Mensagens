@@ -69,37 +69,56 @@ namespace DataServices.Repositories
             return query.ToList();
         }
 
-        public List<CRM> ExecuteFilter(Int32? tipoId, String nome, String descricao, Int32? idCli, DateTime? data, Int32? status, Int32? usuario, Int32 idAss)
+        public List<CRM> ExecuteFilter(Int32? status, DateTime? inicio, DateTime? final, Int32? origem, Int32? adic, String nome, String busca, Int32 idAss)
         {
             List<CRM> lista = new List<CRM>();
             IQueryable<CRM> query = Db.CRM;
-            if (tipoId != null)
-            {
-                query = query.Where(p => p.TICR_CD_ID == tipoId);
-            }
-            if (!String.IsNullOrEmpty(nome))
-            {
-                query = query.Where(p => p.CRM1_NM_NOME.Contains(nome));
-            }
-            if (!String.IsNullOrEmpty(descricao))
-            {
-                query = query.Where(p => p.CRM1_DS_DESCRICAO.Contains(descricao));
-            }
-            if (idCli != null)
-            {
-                query = query.Where(p => p.CLIE_CD_ID == idCli);
-            }
-            if (data != DateTime.MinValue)
-            {
-                query = query.Where(p => p.CRM1_DT_CRIACAO == data);
-            }
             if (status != null)
             {
                 query = query.Where(p => p.CRM1_IN_STATUS == status);
             }
-            if (usuario != null)
+            if (origem != null)
             {
-                query = query.Where(p => p.USUA_CD_ID == usuario);
+                query = query.Where(p => p.ORIG_CD_ID == origem);
+            }
+            if (adic != null)
+            {
+                if (adic == 1)
+                {
+                    query = query.Where(p => p.CRM1_IN_ATIVO == 1);
+                }
+                else if (adic == 2)
+                {
+                    query = query.Where(p => p.CRM1_IN_ATIVO == 0);
+                }
+                else if (adic == 3)
+                {
+                    query = query.Where(p => p.CRM1_IN_ATIVO == 2);
+                }
+                else if (adic == 4)
+                {
+                    query = query.Where(p => p.CRM1_IN_ATIVO == 3);
+                }
+                else if (adic == 5)
+                {
+                    query = query.Where(p => p.CRM1_IN_ATIVO == 5);
+                }
+            }
+            if (!String.IsNullOrEmpty(nome))
+            {
+                query = query.Where(p => p.CRM1_NM_NOME.Contains(nome) || p.CRM1_DS_DESCRICAO.Contains(nome));        
+            }
+            if (!String.IsNullOrEmpty(busca))
+            {
+                query = query.Where(p => p.CLIENTE.CLIE_NM_NOME.Contains(busca) || p.CLIENTE.CLIE_NM_RAZAO.Contains(busca) || p.CLIENTE.CLIE_NR_CPF.Contains(busca));
+            }
+            if (inicio != null)
+            {
+                query = query.Where(p => DbFunctions.TruncateTime(p.CRM1_DT_CRIACAO) >= DbFunctions.TruncateTime(inicio));
+            }
+            if (final != null)
+            {
+                query = query.Where(p => DbFunctions.TruncateTime(p.CRM1_DT_CRIACAO) <= DbFunctions.TruncateTime(final));
             }
             if (query != null)
             {

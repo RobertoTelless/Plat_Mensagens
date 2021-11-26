@@ -16,6 +16,6 @@ namespace ModelServices.Interfaces.Repositories
         CRM GetItemById(Int32 id);
         List<CRM> GetAllItens(Int32 idAss);
         List<CRM> GetAllItensAdm(Int32 idAss);
-        List<CRM> ExecuteFilter(Int32? tipoId, String nome, String descricao, Int32? idCli, DateTime? data, Int32? status, Int32? usuario, Int32 idAss);
+        List<CRM> ExecuteFilter(Int32? status, DateTime? inicio, DateTime? final, Int32? origem, Int32? adic, String nome, String busca, Int32 idAss);
     }
 }

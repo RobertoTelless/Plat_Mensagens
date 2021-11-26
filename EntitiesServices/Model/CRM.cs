@@ -19,6 +19,8 @@ namespace EntitiesServices.Model
         {
             this.CRM_ANEXO = new HashSet<CRM_ANEXO>();
             this.CRM_COMENTARIO = new HashSet<CRM_COMENTARIO>();
+            this.CRM_ACAO = new HashSet<CRM_ACAO>();
+            this.CRM_CONTATO = new HashSet<CRM_CONTATO>();
         }
     
         public int CRM1_CD_ID { get; set; }
@@ -37,6 +39,12 @@ namespace EntitiesServices.Model
         public string CRM1_NM_NOME { get; set; }
         public Nullable<int> USUA_CD_ID { get; set; }
         public Nullable<int> MENS_CD_ID { get; set; }
+        public Nullable<int> ORIG_CD_ID { get; set; }
+        public Nullable<int> MOCA_CD_ID { get; set; }
+        public Nullable<int> MOEN_CD_ID { get; set; }
+        public Nullable<int> CRM1_IN_ESTRELA { get; set; }
+        public Nullable<int> PEVE_CD_ID1 { get; set; }
+        public Nullable<int> PEVE_CD_ID2 { get; set; }
     
         public virtual ASSINANTE ASSINANTE { get; set; }
         public virtual CLIENTE CLIENTE { get; set; }
@@ -47,5 +55,12 @@ namespace EntitiesServices.Model
         public virtual TIPO_CRM TIPO_CRM { get; set; }
         public virtual USUARIO USUARIO { get; set; }
         public virtual MENSAGENS MENSAGENS { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CRM_ACAO> CRM_ACAO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CRM_CONTATO> CRM_CONTATO { get; set; }
+        public virtual CRM_ORIGEM CRM_ORIGEM { get; set; }
+        public virtual MOTIVO_CANCELAMENTO MOTIVO_CANCELAMENTO { get; set; }
+        public virtual MOTIVO_ENCERRAMENTO MOTIVO_ENCERRAMENTO { get; set; }
     }
 }

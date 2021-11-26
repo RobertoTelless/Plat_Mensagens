@@ -170,8 +170,14 @@
     <Compile Include="Repositories\AssinanteAnexoRepository.cs" />
     <Compile Include="Repositories\AssinanteRepository.cs" />
     <Compile Include="Repositories\CargoRepository.cs" />
+    <Compile Include="Repositories\CRMOrigemRepository.cs" />
+    <Compile Include="Repositories\CRMAcaoRepository.cs" />
+    <Compile Include="Repositories\CRMContatoRepository.cs" />
     <Compile Include="Repositories\CRMRepository.cs" />
     <Compile Include="Repositories\CRMComentarioRepository.cs" />
+    <Compile Include="Repositories\MotivoEncerramentoRepository.cs" />
+    <Compile Include="Repositories\MotivoCancelamentoRepository.cs" />
+    <Compile Include="Repositories\TipoAcaoRepository.cs" />
     <Compile Include="Repositories\TipoCRMRepository.cs" />
     <Compile Include="Repositories\EMailAgendaRepository.cs" />
     <Compile Include="Repositories\PosicaoRepository.cs" />

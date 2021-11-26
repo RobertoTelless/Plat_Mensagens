@@ -195,6 +195,12 @@
   <data name="M0034" xml:space="preserve">
     <value>Entrada de CRM criada a partir de mensagem</value>
   </data>
+  <data name="M0035" xml:space="preserve">
+    <value>Processo já cadastrado</value>
+  </data>
+  <data name="M0036" xml:space="preserve">
+    <value>Impossível excluir esse processo. Existem ações ainda pendentes.</value>
+  </data>
   <data name="M0044" xml:space="preserve">
     <value>Usuário já cadastrado</value>
   </data>

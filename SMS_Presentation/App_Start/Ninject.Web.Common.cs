@@ -131,6 +131,12 @@ namespace Presentation.Start
             kernel.Bind<ICRMAnexoRepository>().To<CRMAnexoRepository>();
             kernel.Bind<ICRMComentarioRepository>().To<CRMComentarioRepository>();
             kernel.Bind<ITipoCRMRepository>().To<TipoCRMRepository>();
+            kernel.Bind<ITipoAcaoRepository>().To<TipoAcaoRepository>();
+            kernel.Bind<IMotivoCancelamentoRepository>().To<MotivoCancelamentoRepository>();
+            kernel.Bind<IMotivoEncerramentoRepository>().To<MotivoEncerramentoRepository>();
+            kernel.Bind<ICRMOrigemRepository>().To<CRMOrigemRepository>();
+            kernel.Bind<ICRMContatoRepository>().To<CRMContatoRepository>();
+            kernel.Bind<ICRMAcaoRepository>().To<CRMAcaoRepository>();
 
         }
     }

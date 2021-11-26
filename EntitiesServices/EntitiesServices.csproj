@@ -209,8 +209,14 @@
     <Compile Include="Interfaces\Repositories\IAssinanteAnexoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IAssinanteRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICargoRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ICRMOrigemRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ICRMAcaoRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ICRMContatoRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICRMComentarioRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICRMRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IMotivoEncerramentoRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ITipoAcaoRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IMotivoCancelamentoRepository.cs" />
     <Compile Include="Interfaces\Repositories\ITipoCRMRepository.cs" />
     <Compile Include="Interfaces\Repositories\IEmailAgendaRepository.cs" />
     <Compile Include="Interfaces\Repositories\IPosicaoRepository.cs" />
@@ -274,10 +280,19 @@
     <Compile Include="Model\CRM.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\CRM_ACAO.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\CRM_ANEXO.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CRM_COMENTARIO.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CRM_CONTATO.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CRM_ORIGEM.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\EMAIL_AGENDAMENTO.cs">
@@ -299,6 +314,12 @@
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MENSAGENS_DESTINOS.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\MOTIVO_CANCELAMENTO.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\MOTIVO_ENCERRAMENTO.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\NOTIFICACAO.cs">
@@ -329,6 +350,9 @@
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\TEMPLATE.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TIPO_ACAO.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\TIPO_CRM.cs">

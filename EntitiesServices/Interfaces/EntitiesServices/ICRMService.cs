@@ -23,12 +23,22 @@ namespace ModelServices.Interfaces.EntitiesServices
         CRM GetItemById(Int32 id);
         List<CRM> GetAllItens(Int32 idAss);
         List<CRM> GetAllItensAdm(Int32 idAss);
-        List<CRM> ExecuteFilter(Int32? tipoId, String nome, String descricao, Int32? idCli, DateTime? data, Int32? status, Int32? usuario, Int32 idAss);
+        List<CRM> ExecuteFilter(Int32? status, DateTime? inicio, DateTime? final, Int32? origem, Int32? adic, String nome, String busca, Int32 idAss);
 
 
         List<USUARIO> GetAllUsers(Int32 idAss);
         List<TIPO_CRM> GetAllTipos();
+        List<TIPO_ACAO> GetAllTipoAcao();
+        List<CRM_ORIGEM> GetAllOrigens();
+        List<MOTIVO_CANCELAMENTO> GetAllMotivoCancelamento();
+        List<MOTIVO_ENCERRAMENTO> GetAllMotivoEncerramento();
         CRM_ANEXO GetAnexoById(Int32 id);
         USUARIO GetUserById(Int32 id);
+        CRM_COMENTARIO GetComentarioById(Int32 id);
+
+        Int32 EditContato(CRM_CONTATO item);
+        Int32 CreateContato(CRM_CONTATO item);
+        Int32 EditAcao(CRM_ACAO item);
+        Int32 CreateAcao(CRM_ACAO item);
     }
 }

@@ -143,6 +143,7 @@
                                 }
                                 <li class=""><a data-toggle="tab" href="#tab-7">Observações</a></li>
                                 <li class=""><a data-toggle="tab" href="#tab-8">Mensagens</a></li>
+                                <li class=""><a data-toggle="tab" href="#tab-9">Processos - CRM</a></li>
                             }
                         </ul>
                         <div class="tab-content">
@@ -1008,7 +1009,7 @@
                                     </div>
                                 </div>
 
-                                @*Indicadores*@
+                                @*Mensagens*@
                                 <div id="tab-8" class="tab-pane">
                                     <div class="panel-body">
                                         <div class="row">
@@ -1105,7 +1106,7 @@
                                                                             }
                                                                             <td class="td-one-action">
                                                                                 @Html.TableLinkDetails(cond.MENSAGENS.MENS_CD_ID, "VerMensagem", "fa-search", "Ver Mensagem")
-                                                                                @Html.TableLinkDetails(cond.MEDE_CD_ID, "ConverterMensagemCRM", "fa-code-fork", "Criar Entrada CRM")
+                                                                                @Html.TableLinkDetails(cond.MEDE_CD_ID, "ConverterMensagemCRM", "fa-code-fork", "Criar Processo CRM")
                                                                             </td>
                                                                         </tr>
                                                                     }
@@ -1119,7 +1120,15 @@
 
                                     </div>
                                 </div>
-                            </div>
+                            
+                                @*Processos*@
+                                <div id="tab-8" class="tab-pane">
+
+
+
+
+                                </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">

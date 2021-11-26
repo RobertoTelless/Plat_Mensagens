@@ -22,10 +22,21 @@ namespace ApplicationServices.Interfaces
         CRM GetItemById(Int32 id);
         List<CRM> GetAllItens(Int32 idAss);
         List<CRM> GetAllItensAdm(Int32 idAss);
+        List<TIPO_ACAO> GetAllTipoAcao();
+        List<CRM_ORIGEM> GetAllOrigens();
+        List<MOTIVO_CANCELAMENTO> GetAllMotivoCancelamento();
+        List<MOTIVO_ENCERRAMENTO> GetAllMotivoEncerramento();
+        CRM_COMENTARIO GetComentarioById(Int32 id);
 
         List<TIPO_CRM> GetAllTipos();
         USUARIO GetUserById(Int32 id);
         CRM_ANEXO GetAnexoById(Int32 id);
-        Int32 ExecuteFilter(Int32? tipoId, String nome, String descricao, Int32? idCli, DateTime? data, Int32? status, Int32? usuario, Int32 idAss, out List<CRM> objeto);
+        Int32 ExecuteFilter(Int32? status, DateTime? inicio, DateTime? final, Int32? origem, Int32? adic, String nome, String busca, Int32 idAss, out List<CRM> objeto);
+
+        Int32 ValidateEditContato(CRM_CONTATO item);
+        Int32 ValidateCreateContato(CRM_CONTATO item);
+        Int32 ValidateEditAcao(CRM_ACAO item);
+        Int32 ValidateCreateAcao(CRM_ACAO item);
+
     }
 }

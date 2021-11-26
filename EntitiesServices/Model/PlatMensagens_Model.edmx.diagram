@@ -86,6 +86,25 @@
         <AssociationConnector Association="PlatMensagensModel.FK_CRM_COMENTARIO_USUARIO" />
         <AssociationConnector Association="PlatMensagensModel.FK_CRM_USUARIO" />
         <AssociationConnector Association="PlatMensagensModel.FK_CRM_MENSAGENS" />
+        <EntityTypeShape EntityType="PlatMensagensModel.CRM_ACAO" Width="1.5" PointX="21" PointY="33.625" />
+        <EntityTypeShape EntityType="PlatMensagensModel.CRM_CONTATO" Width="1.5" PointX="18" PointY="24.875" />
+        <EntityTypeShape EntityType="PlatMensagensModel.CRM_ORIGEM" Width="1.5" PointX="5.25" PointY="42.75" />
+        <EntityTypeShape EntityType="PlatMensagensModel.MOTIVO_CANCELAMENTO" Width="1.5" PointX="5.25" PointY="21.875" />
+        <EntityTypeShape EntityType="PlatMensagensModel.MOTIVO_ENCERRAMENTO" Width="1.5" PointX="5.25" PointY="45.625" />
+        <EntityTypeShape EntityType="PlatMensagensModel.TIPO_ACAO" Width="1.5" PointX="5.25" PointY="39.75" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CRM_ACAO_ASSINANTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CRM_ORIGEM_ASSINANTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_MOTIVO_CANCELAMENTO_ASSINANTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_MOTIVO_ENCERRAMENTO_ASSINANTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_TIPO_ACAO_ASSINANTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CRM_ACAO_CRM" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CRM_CONTATO_CRM" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CRM_CRM_ORIGEM" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CRM_MOTIVO_CANCELAMENTO" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CRM_MOTIVO_ENCERRAMENTO" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CRM_ACAO_TIPO_ACAO" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CRM_ACAO_USUARIO" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CRM_ACAO_USUARIO1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

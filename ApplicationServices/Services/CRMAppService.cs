@@ -78,13 +78,43 @@ namespace ApplicationServices.Services
             return lista;
         }
 
+        public List<TIPO_ACAO> GetAllTipoAcao()
+        {
+            List<TIPO_ACAO> lista = _baseService.GetAllTipoAcao();
+            return lista;
+        }
+
+        public List<MOTIVO_CANCELAMENTO> GetAllMotivoCancelamento()
+        {
+            List<MOTIVO_CANCELAMENTO> lista = _baseService.GetAllMotivoCancelamento();
+            return lista;
+        }
+
+        public List<MOTIVO_ENCERRAMENTO> GetAllMotivoEncerramento()
+        {
+            List<MOTIVO_ENCERRAMENTO> lista = _baseService.GetAllMotivoEncerramento();
+            return lista;
+        }
+
+        public List<CRM_ORIGEM> GetAllOrigens()
+        {
+            List<CRM_ORIGEM> lista = _baseService.GetAllOrigens();
+            return lista;
+        }
+
         public CRM_ANEXO GetAnexoById(Int32 id)
         {
             CRM_ANEXO lista = _baseService.GetAnexoById(id);
             return lista;
         }
 
-       public Int32 ExecuteFilter(Int32? tipoId, String nome, String descricao, Int32? idCli, DateTime? data, Int32? status, Int32? usuario, Int32 idAss, out List<CRM> objeto)
+        public CRM_COMENTARIO GetComentarioById(Int32 id)
+        {
+            CRM_COMENTARIO lista = _baseService.GetComentarioById(id);
+            return lista;
+        }
+
+        public Int32 ExecuteFilter(Int32? status, DateTime? inicio, DateTime? final, Int32? origem, Int32? adic, String nome, String busca, Int32 idAss, out List<CRM> objeto)
         {
             try
             {
@@ -92,7 +122,7 @@ namespace ApplicationServices.Services
                 Int32 volta = 0;
 
                 // Processa filtro
-                objeto = _baseService.ExecuteFilter(tipoId, nome, descricao, idCli, data, status, usuario, idAss);
+                objeto = _baseService.ExecuteFilter(status, inicio, final, origem, adic, nome, busca, idAss);
                 if (objeto.Count == 0)
                 {
                     volta = 1;
@@ -258,6 +288,13 @@ namespace ApplicationServices.Services
                     item.USUARIO = null;
                 }
 
+                // Verifica integridade
+                List<CRM_ACAO> acao = item.CRM_ACAO.Where(p => p.CRAC_DT_PREVISTA.Value > DateTime.Today.Date).ToList();
+                if (acao.Count > 0)
+                {
+                    return 1;
+                }
+
                 // Monta Log
                 LOG log = new LOG
                 {
@@ -326,5 +363,64 @@ namespace ApplicationServices.Services
                 throw;
             }
         }
+
+        public Int32 ValidateEditContato(CRM_CONTATO item)
+        {
+            try
+            {
+                // Persiste
+                return _baseService.EditContato(item);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public Int32 ValidateCreateContato(CRM_CONTATO item)
+        {
+            try
+            {
+                item.CRCO_IN_ATIVO = 1;
+
+                // Persiste
+                Int32 volta = _baseService.CreateContato(item);
+                return volta;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public Int32 ValidateEditAcao(CRM_ACAO item)
+        {
+            try
+            {
+                // Persiste
+                return _baseService.EditAcao(item);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public Int32 ValidateCreateAcao(CRM_ACAO item)
+        {
+            try
+            {
+                item.CRAC_IN_ATIVO = 1;
+
+                // Persiste
+                Int32 volta = _baseService.CreateAcao(item);
+                return volta;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
     }
 }

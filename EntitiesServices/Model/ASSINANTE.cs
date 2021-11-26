@@ -31,6 +31,11 @@ namespace EntitiesServices.Model
             this.EMAIL_AGENDAMENTO = new HashSet<EMAIL_AGENDAMENTO>();
             this.CRM = new HashSet<CRM>();
             this.TIPO_CRM = new HashSet<TIPO_CRM>();
+            this.CRM_ACAO = new HashSet<CRM_ACAO>();
+            this.CRM_ORIGEM = new HashSet<CRM_ORIGEM>();
+            this.MOTIVO_CANCELAMENTO = new HashSet<MOTIVO_CANCELAMENTO>();
+            this.MOTIVO_ENCERRAMENTO = new HashSet<MOTIVO_ENCERRAMENTO>();
+            this.TIPO_ACAO = new HashSet<TIPO_ACAO>();
         }
     
         public int ASSI_CD_ID { get; set; }
@@ -83,5 +88,15 @@ namespace EntitiesServices.Model
         public virtual ICollection<CRM> CRM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TIPO_CRM> TIPO_CRM { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CRM_ACAO> CRM_ACAO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CRM_ORIGEM> CRM_ORIGEM { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MOTIVO_CANCELAMENTO> MOTIVO_CANCELAMENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MOTIVO_ENCERRAMENTO> MOTIVO_ENCERRAMENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TIPO_ACAO> TIPO_ACAO { get; set; }
     }
 }

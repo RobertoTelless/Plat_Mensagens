@@ -313,6 +313,7 @@
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\ConfiguracaoController.cs" />
     <Compile Include="Controllers\ControleAcessoController.cs" />
+    <Compile Include="Controllers\CRMController.cs" />
     <Compile Include="Controllers\GrupoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MensagemController.cs" />
@@ -3037,6 +3038,8 @@
     <Content Include="Views\Mensagem\VerEMailAgendados.cshtml" />
     <Content Include="Views\Mensagem\IncluirMensagemEMail - Cópia .cshtml" />
     <Content Include="Views\Mensagem\VerAnexoMensagem.cshtml" />
+    <Content Include="Views\CRM\MontarTelaCRMLista.cshtml" />
+    <Content Include="Views\CRM\MontarTelaCRM.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

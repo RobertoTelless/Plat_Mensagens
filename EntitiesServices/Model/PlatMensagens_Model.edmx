@@ -192,10 +192,33 @@
           <Property Name="CRM1_DS_DESCRICAO" Type="varchar" MaxLength="500" />
           <Property Name="CRM1_TX_INFORMACOES_GERAIS" Type="text" />
           <Property Name="CRM1_IN_STATUS" Type="int" Nullable="false" />
+          <Property Name="ORIG_CD_ID" Type="int" />
           <Property Name="CRM1_DT_CANCELAMENTO" Type="date" />
+          <Property Name="MOCA_CD_ID" Type="int" />
           <Property Name="CRM1_DS_MOTIVO_CANCELAMENTO" Type="varchar" MaxLength="500" />
           <Property Name="CRM1_DT_ENCERRAMENTO" Type="date" />
+          <Property Name="MOEN_CD_ID" Type="int" />
           <Property Name="CRM1_DS_INFORMACOES_ENCERRAMENTO" Type="text" />
+          <Property Name="CRM1_IN_ESTRELA" Type="int" />
+          <Property Name="PEVE_CD_ID1" Type="int" />
+          <Property Name="PEVE_CD_ID2" Type="int" />
+        </EntityType>
+        <EntityType Name="CRM_ACAO">
+          <Key>
+            <PropertyRef Name="CRAC_CD_ID" />
+          </Key>
+          <Property Name="CRAC_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CRM1_CD_ID" Type="int" Nullable="false" />
+          <Property Name="ASSI_CD_ID" Type="int" Nullable="false" />
+          <Property Name="CRAC_DT_CRIACAO" Type="datetime" />
+          <Property Name="USUA_CD_ID1" Type="int" />
+          <Property Name="USUA_CD_ID2" Type="int" />
+          <Property Name="CRAC_NM_TITULO" Type="varchar" MaxLength="150" />
+          <Property Name="CRAC_DS_DESCRICAO" Type="varchar" MaxLength="500" />
+          <Property Name="CRAC_DT_PREVISTA" Type="datetime" />
+          <Property Name="TIAC_CD_ID" Type="int" />
+          <Property Name="CRAC_IN_STATUS" Type="int" />
+          <Property Name="CRAC_IN_ATIVO" Type="int" />
         </EntityType>
         <EntityType Name="CRM_ANEXO">
           <Key>
@@ -219,6 +242,29 @@
           <Property Name="CRCM_DT_COMENTARIO" Type="datetime" />
           <Property Name="CRCM_DS_COMENTARIO" Type="varchar" MaxLength="5000" />
           <Property Name="CRCM_IN_ATIVO" Type="int" />
+        </EntityType>
+        <EntityType Name="CRM_CONTATO">
+          <Key>
+            <PropertyRef Name="CRCO_CD_ID" />
+          </Key>
+          <Property Name="CRCO_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CRM1_CD_ID" Type="int" Nullable="false" />
+          <Property Name="CRCO_NM_NOME" Type="varchar" MaxLength="50" />
+          <Property Name="CRCO_NR_TELEFONE" Type="varchar" MaxLength="50" />
+          <Property Name="CRCO_NR_CELULAR" Type="varchar" MaxLength="50" />
+          <Property Name="CRCO_NM_EMAIL" Type="varchar" MaxLength="150" />
+          <Property Name="CRCO_NM_CARGO" Type="varchar" MaxLength="50" />
+          <Property Name="CRCO_IN_PRINCIPAL" Type="int" />
+          <Property Name="CRCO_IN_ATIVO" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CRM_ORIGEM">
+          <Key>
+            <PropertyRef Name="CROR_CD_ID" />
+          </Key>
+          <Property Name="CROR_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ASSI_CD_ID" Type="int" Nullable="false" />
+          <Property Name="CROR_NM_NOME" Type="varchar" MaxLength="50" />
+          <Property Name="CROR_IN_ATIVO" Type="int" />
         </EntityType>
         <EntityType Name="EMAIL_AGENDAMENTO">
           <Key>
@@ -312,6 +358,24 @@
           <Property Name="MEDE_TX_OBSERVACOES" Type="text" />
           <Property Name="MEDE_DS_ERRO_ENVIO" Type="varchar" MaxLength="500" />
         </EntityType>
+        <EntityType Name="MOTIVO_CANCELAMENTO">
+          <Key>
+            <PropertyRef Name="MOCA_CD_ID" />
+          </Key>
+          <Property Name="MOCA_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ASSI_CD_ID" Type="int" Nullable="false" />
+          <Property Name="MOCA_NM_NOME" Type="varchar" MaxLength="50" />
+          <Property Name="MOCA_IN_ATIVO" Type="int" />
+        </EntityType>
+        <EntityType Name="MOTIVO_ENCERRAMENTO">
+          <Key>
+            <PropertyRef Name="MOEN_CD_ID" />
+          </Key>
+          <Property Name="MOEN_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ASSI_CD_ID" Type="int" Nullable="false" />
+          <Property Name="MOEN_NM_NOME" Type="varchar" MaxLength="50" />
+          <Property Name="MOEN_IN_ATIVO" Type="int" />
+        </EntityType>
         <EntityType Name="NOTIFICACAO">
           <Key>
             <PropertyRef Name="NOTI_CD_ID" />
@@ -377,6 +441,15 @@
           <Property Name="TEMP_TX_CORPO" Type="text" />
           <Property Name="TEMP_TX_DADOS" Type="text" />
           <Property Name="TEMP_DT_CRIACAO" Type="date" />
+        </EntityType>
+        <EntityType Name="TIPO_ACAO">
+          <Key>
+            <PropertyRef Name="TIAC_CD_ID" />
+          </Key>
+          <Property Name="TIAC_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ASSI_CD_ID" Type="int" Nullable="false" />
+          <Property Name="TIAC_NM_NOME" Type="varchar" MaxLength="50" />
+          <Property Name="TIAC_IN_ATIVO" Type="int" />
         </EntityType>
         <EntityType Name="TIPO_CRM">
           <Key>
@@ -622,6 +695,66 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CRM_ACAO_ASSINANTE">
+          <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="1" />
+          <End Role="CRM_ACAO" Type="Self.CRM_ACAO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM_ACAO">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CRM_ACAO_CRM">
+          <End Role="CRM" Type="Self.CRM" Multiplicity="1" />
+          <End Role="CRM_ACAO" Type="Self.CRM_ACAO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CRM">
+              <PropertyRef Name="CRM1_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM_ACAO">
+              <PropertyRef Name="CRM1_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CRM_ACAO_TIPO_ACAO">
+          <End Role="TIPO_ACAO" Type="Self.TIPO_ACAO" Multiplicity="0..1" />
+          <End Role="CRM_ACAO" Type="Self.CRM_ACAO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPO_ACAO">
+              <PropertyRef Name="TIAC_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM_ACAO">
+              <PropertyRef Name="TIAC_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CRM_ACAO_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+          <End Role="CRM_ACAO" Type="Self.CRM_ACAO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="USUA_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM_ACAO">
+              <PropertyRef Name="USUA_CD_ID1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CRM_ACAO_USUARIO1">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+          <End Role="CRM_ACAO" Type="Self.CRM_ACAO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="USUA_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM_ACAO">
+              <PropertyRef Name="USUA_CD_ID2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CRM_ANEXO_CRM">
           <End Role="CRM" Type="Self.CRM" Multiplicity="1" />
           <End Role="CRM_ANEXO" Type="Self.CRM_ANEXO" Multiplicity="*" />
@@ -682,6 +815,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CRM_CONTATO_CRM">
+          <End Role="CRM" Type="Self.CRM" Multiplicity="1" />
+          <End Role="CRM_CONTATO" Type="Self.CRM_CONTATO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CRM">
+              <PropertyRef Name="CRM1_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM_CONTATO">
+              <PropertyRef Name="CRM1_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CRM_CRM_ORIGEM">
+          <End Role="CRM_ORIGEM" Type="Self.CRM_ORIGEM" Multiplicity="0..1" />
+          <End Role="CRM" Type="Self.CRM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CRM_ORIGEM">
+              <PropertyRef Name="CROR_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM">
+              <PropertyRef Name="ORIG_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CRM_MENSAGENS">
           <End Role="MENSAGENS" Type="Self.MENSAGENS" Multiplicity="0..1" />
           <End Role="CRM" Type="Self.CRM" Multiplicity="*" />
@@ -691,6 +848,42 @@
             </Principal>
             <Dependent Role="CRM">
               <PropertyRef Name="MENS_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CRM_MOTIVO_CANCELAMENTO">
+          <End Role="MOTIVO_CANCELAMENTO" Type="Self.MOTIVO_CANCELAMENTO" Multiplicity="0..1" />
+          <End Role="CRM" Type="Self.CRM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MOTIVO_CANCELAMENTO">
+              <PropertyRef Name="MOCA_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM">
+              <PropertyRef Name="MOCA_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CRM_MOTIVO_ENCERRAMENTO">
+          <End Role="MOTIVO_ENCERRAMENTO" Type="Self.MOTIVO_ENCERRAMENTO" Multiplicity="0..1" />
+          <End Role="CRM" Type="Self.CRM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MOTIVO_ENCERRAMENTO">
+              <PropertyRef Name="MOEN_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM">
+              <PropertyRef Name="MOEN_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CRM_ORIGEM_ASSINANTE">
+          <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="1" />
+          <End Role="CRM_ORIGEM" Type="Self.CRM_ORIGEM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM_ORIGEM">
+              <PropertyRef Name="ASSI_CD_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -910,6 +1103,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MOTIVO_CANCELAMENTO_ASSINANTE">
+          <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="1" />
+          <End Role="MOTIVO_CANCELAMENTO" Type="Self.MOTIVO_CANCELAMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="MOTIVO_CANCELAMENTO">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MOTIVO_ENCERRAMENTO_ASSINANTE">
+          <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="1" />
+          <End Role="MOTIVO_ENCERRAMENTO" Type="Self.MOTIVO_ENCERRAMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="MOTIVO_ENCERRAMENTO">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_NOTIFICACAO_ANEXO_NOTIFICACAO">
           <End Role="NOTIFICACAO" Type="Self.NOTIFICACAO" Multiplicity="1" />
           <End Role="NOTIFICACAO_ANEXO" Type="Self.NOTIFICACAO_ANEXO" Multiplicity="*" />
@@ -978,6 +1195,18 @@
               <PropertyRef Name="ASSI_CD_ID" />
             </Principal>
             <Dependent Role="TEMPLATE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TIPO_ACAO_ASSINANTE">
+          <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="1" />
+          <End Role="TIPO_ACAO" Type="Self.TIPO_ACAO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="TIPO_ACAO">
               <PropertyRef Name="ASSI_CD_ID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1067,8 +1296,11 @@
           <EntitySet Name="CLIENTE_QUADRO_SOCIETARIO" EntityType="Self.CLIENTE_QUADRO_SOCIETARIO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CONFIGURACAO" EntityType="Self.CONFIGURACAO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CRM" EntityType="Self.CRM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CRM_ACAO" EntityType="Self.CRM_ACAO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CRM_ANEXO" EntityType="Self.CRM_ANEXO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CRM_COMENTARIO" EntityType="Self.CRM_COMENTARIO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CRM_CONTATO" EntityType="Self.CRM_CONTATO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CRM_ORIGEM" EntityType="Self.CRM_ORIGEM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EMAIL_AGENDAMENTO" EntityType="Self.EMAIL_AGENDAMENTO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GRUPO" EntityType="Self.GRUPO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GRUPO_CLIENTE" EntityType="Self.GRUPO_CLIENTE" Schema="dbo" store:Type="Tables" />
@@ -1076,11 +1308,14 @@
           <EntitySet Name="MENSAGEM_ANEXO" EntityType="Self.MENSAGEM_ANEXO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MENSAGENS" EntityType="Self.MENSAGENS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MENSAGENS_DESTINOS" EntityType="Self.MENSAGENS_DESTINOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MOTIVO_CANCELAMENTO" EntityType="Self.MOTIVO_CANCELAMENTO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MOTIVO_ENCERRAMENTO" EntityType="Self.MOTIVO_ENCERRAMENTO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NOTIFICACAO" EntityType="Self.NOTIFICACAO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NOTIFICACAO_ANEXO" EntityType="Self.NOTIFICACAO_ANEXO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PERFIL" EntityType="Self.PERFIL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="POSICAO" EntityType="Self.POSICAO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TEMPLATE" EntityType="Self.TEMPLATE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TIPO_ACAO" EntityType="Self.TIPO_ACAO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TIPO_CRM" EntityType="Self.TIPO_CRM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TIPO_PESSOA" EntityType="Self.TIPO_PESSOA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UF" EntityType="Self.UF" Schema="dbo" store:Type="Tables" />
@@ -1142,6 +1377,26 @@
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
             <End Role="CONFIGURACAO" EntitySet="CONFIGURACAO" />
           </AssociationSet>
+          <AssociationSet Name="FK_CRM_ACAO_ASSINANTE" Association="Self.FK_CRM_ACAO_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="CRM_ACAO" EntitySet="CRM_ACAO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CRM_ACAO_CRM" Association="Self.FK_CRM_ACAO_CRM">
+            <End Role="CRM" EntitySet="CRM" />
+            <End Role="CRM_ACAO" EntitySet="CRM_ACAO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CRM_ACAO_TIPO_ACAO" Association="Self.FK_CRM_ACAO_TIPO_ACAO">
+            <End Role="TIPO_ACAO" EntitySet="TIPO_ACAO" />
+            <End Role="CRM_ACAO" EntitySet="CRM_ACAO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CRM_ACAO_USUARIO" Association="Self.FK_CRM_ACAO_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="CRM_ACAO" EntitySet="CRM_ACAO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CRM_ACAO_USUARIO1" Association="Self.FK_CRM_ACAO_USUARIO1">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="CRM_ACAO" EntitySet="CRM_ACAO" />
+          </AssociationSet>
           <AssociationSet Name="FK_CRM_ANEXO_CRM" Association="Self.FK_CRM_ANEXO_CRM">
             <End Role="CRM" EntitySet="CRM" />
             <End Role="CRM_ANEXO" EntitySet="CRM_ANEXO" />
@@ -1162,9 +1417,29 @@
             <End Role="USUARIO" EntitySet="USUARIO" />
             <End Role="CRM_COMENTARIO" EntitySet="CRM_COMENTARIO" />
           </AssociationSet>
+          <AssociationSet Name="FK_CRM_CONTATO_CRM" Association="Self.FK_CRM_CONTATO_CRM">
+            <End Role="CRM" EntitySet="CRM" />
+            <End Role="CRM_CONTATO" EntitySet="CRM_CONTATO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CRM_CRM_ORIGEM" Association="Self.FK_CRM_CRM_ORIGEM">
+            <End Role="CRM_ORIGEM" EntitySet="CRM_ORIGEM" />
+            <End Role="CRM" EntitySet="CRM" />
+          </AssociationSet>
           <AssociationSet Name="FK_CRM_MENSAGENS" Association="Self.FK_CRM_MENSAGENS">
             <End Role="MENSAGENS" EntitySet="MENSAGENS" />
             <End Role="CRM" EntitySet="CRM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CRM_MOTIVO_CANCELAMENTO" Association="Self.FK_CRM_MOTIVO_CANCELAMENTO">
+            <End Role="MOTIVO_CANCELAMENTO" EntitySet="MOTIVO_CANCELAMENTO" />
+            <End Role="CRM" EntitySet="CRM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CRM_MOTIVO_ENCERRAMENTO" Association="Self.FK_CRM_MOTIVO_ENCERRAMENTO">
+            <End Role="MOTIVO_ENCERRAMENTO" EntitySet="MOTIVO_ENCERRAMENTO" />
+            <End Role="CRM" EntitySet="CRM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CRM_ORIGEM_ASSINANTE" Association="Self.FK_CRM_ORIGEM_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="CRM_ORIGEM" EntitySet="CRM_ORIGEM" />
           </AssociationSet>
           <AssociationSet Name="FK_CRM_TIPO_CRM" Association="Self.FK_CRM_TIPO_CRM">
             <End Role="TIPO_CRM" EntitySet="TIPO_CRM" />
@@ -1238,6 +1513,14 @@
             <End Role="USUARIO" EntitySet="USUARIO" />
             <End Role="MENSAGENS" EntitySet="MENSAGENS" />
           </AssociationSet>
+          <AssociationSet Name="FK_MOTIVO_CANCELAMENTO_ASSINANTE" Association="Self.FK_MOTIVO_CANCELAMENTO_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="MOTIVO_CANCELAMENTO" EntitySet="MOTIVO_CANCELAMENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MOTIVO_ENCERRAMENTO_ASSINANTE" Association="Self.FK_MOTIVO_ENCERRAMENTO_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="MOTIVO_ENCERRAMENTO" EntitySet="MOTIVO_ENCERRAMENTO" />
+          </AssociationSet>
           <AssociationSet Name="FK_NOTIFICACAO_ANEXO_NOTIFICACAO" Association="Self.FK_NOTIFICACAO_ANEXO_NOTIFICACAO">
             <End Role="NOTIFICACAO" EntitySet="NOTIFICACAO" />
             <End Role="NOTIFICACAO_ANEXO" EntitySet="NOTIFICACAO_ANEXO" />
@@ -1261,6 +1544,10 @@
           <AssociationSet Name="FK_TEMPLATE_ASSINANTE" Association="Self.FK_TEMPLATE_ASSINANTE">
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
             <End Role="TEMPLATE" EntitySet="TEMPLATE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TIPO_ACAO_ASSINANTE" Association="Self.FK_TIPO_ACAO_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="TIPO_ACAO" EntitySet="TIPO_ACAO" />
           </AssociationSet>
           <AssociationSet Name="FK_TIPO_CRM_ASSINANTE" Association="Self.FK_TIPO_CRM_ASSINANTE">
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
@@ -1330,6 +1617,11 @@
           <NavigationProperty Name="EMAIL_AGENDAMENTO" Relationship="PlatMensagensModel.FK_EMAIL_AGENDAMENTO_ASSINANTE" FromRole="ASSINANTE" ToRole="EMAIL_AGENDAMENTO" />
           <NavigationProperty Name="CRM" Relationship="PlatMensagensModel.FK_CRM_ASSINANTE" FromRole="ASSINANTE" ToRole="CRM" />
           <NavigationProperty Name="TIPO_CRM" Relationship="PlatMensagensModel.FK_TIPO_CRM_ASSINANTE" FromRole="ASSINANTE" ToRole="TIPO_CRM" />
+          <NavigationProperty Name="CRM_ACAO" Relationship="PlatMensagensModel.FK_CRM_ACAO_ASSINANTE" FromRole="ASSINANTE" ToRole="CRM_ACAO" />
+          <NavigationProperty Name="CRM_ORIGEM" Relationship="PlatMensagensModel.FK_CRM_ORIGEM_ASSINANTE" FromRole="ASSINANTE" ToRole="CRM_ORIGEM" />
+          <NavigationProperty Name="MOTIVO_CANCELAMENTO" Relationship="PlatMensagensModel.FK_MOTIVO_CANCELAMENTO_ASSINANTE" FromRole="ASSINANTE" ToRole="MOTIVO_CANCELAMENTO" />
+          <NavigationProperty Name="MOTIVO_ENCERRAMENTO" Relationship="PlatMensagensModel.FK_MOTIVO_ENCERRAMENTO_ASSINANTE" FromRole="ASSINANTE" ToRole="MOTIVO_ENCERRAMENTO" />
+          <NavigationProperty Name="TIPO_ACAO" Relationship="PlatMensagensModel.FK_TIPO_ACAO_ASSINANTE" FromRole="ASSINANTE" ToRole="TIPO_ACAO" />
         </EntityType>
         <EntityType Name="ASSINANTE_ANEXO">
           <Key>
@@ -1747,6 +2039,8 @@
           <NavigationProperty Name="USUARIO_ANEXO" Relationship="Self.FK_USUARIO_ANEXO_USUARIO" FromRole="USUARIO" ToRole="USUARIO_ANEXO" />
           <NavigationProperty Name="CRM_COMENTARIO" Relationship="PlatMensagensModel.FK_CRM_COMENTARIO_USUARIO" FromRole="USUARIO" ToRole="CRM_COMENTARIO" />
           <NavigationProperty Name="CRM" Relationship="PlatMensagensModel.FK_CRM_USUARIO" FromRole="USUARIO" ToRole="CRM" />
+          <NavigationProperty Name="CRM_ACAO" Relationship="PlatMensagensModel.FK_CRM_ACAO_USUARIO" FromRole="USUARIO" ToRole="CRM_ACAO" />
+          <NavigationProperty Name="CRM_ACAO1" Relationship="PlatMensagensModel.FK_CRM_ACAO_USUARIO1" FromRole="USUARIO" ToRole="CRM_ACAO" />
         </EntityType>
         <EntityType Name="USUARIO_ANEXO">
           <Key>
@@ -2437,6 +2731,64 @@
             <End Role="MENSAGENS" EntitySet="MENSAGENS" />
             <End Role="CRM" EntitySet="CRM" />
           </AssociationSet>
+          <EntitySet Name="CRM_ACAO" EntityType="PlatMensagensModel.CRM_ACAO" />
+          <EntitySet Name="CRM_CONTATO" EntityType="PlatMensagensModel.CRM_CONTATO" />
+          <EntitySet Name="CRM_ORIGEM" EntityType="PlatMensagensModel.CRM_ORIGEM" />
+          <EntitySet Name="MOTIVO_CANCELAMENTO" EntityType="PlatMensagensModel.MOTIVO_CANCELAMENTO" />
+          <EntitySet Name="MOTIVO_ENCERRAMENTO" EntityType="PlatMensagensModel.MOTIVO_ENCERRAMENTO" />
+          <EntitySet Name="TIPO_ACAO" EntityType="PlatMensagensModel.TIPO_ACAO" />
+          <AssociationSet Name="FK_CRM_ACAO_ASSINANTE" Association="PlatMensagensModel.FK_CRM_ACAO_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="CRM_ACAO" EntitySet="CRM_ACAO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CRM_ORIGEM_ASSINANTE" Association="PlatMensagensModel.FK_CRM_ORIGEM_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="CRM_ORIGEM" EntitySet="CRM_ORIGEM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MOTIVO_CANCELAMENTO_ASSINANTE" Association="PlatMensagensModel.FK_MOTIVO_CANCELAMENTO_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="MOTIVO_CANCELAMENTO" EntitySet="MOTIVO_CANCELAMENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MOTIVO_ENCERRAMENTO_ASSINANTE" Association="PlatMensagensModel.FK_MOTIVO_ENCERRAMENTO_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="MOTIVO_ENCERRAMENTO" EntitySet="MOTIVO_ENCERRAMENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TIPO_ACAO_ASSINANTE" Association="PlatMensagensModel.FK_TIPO_ACAO_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="TIPO_ACAO" EntitySet="TIPO_ACAO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CRM_ACAO_CRM" Association="PlatMensagensModel.FK_CRM_ACAO_CRM">
+            <End Role="CRM" EntitySet="CRM" />
+            <End Role="CRM_ACAO" EntitySet="CRM_ACAO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CRM_CONTATO_CRM" Association="PlatMensagensModel.FK_CRM_CONTATO_CRM">
+            <End Role="CRM" EntitySet="CRM" />
+            <End Role="CRM_CONTATO" EntitySet="CRM_CONTATO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CRM_CRM_ORIGEM" Association="PlatMensagensModel.FK_CRM_CRM_ORIGEM">
+            <End Role="CRM_ORIGEM" EntitySet="CRM_ORIGEM" />
+            <End Role="CRM" EntitySet="CRM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CRM_MOTIVO_CANCELAMENTO" Association="PlatMensagensModel.FK_CRM_MOTIVO_CANCELAMENTO">
+            <End Role="MOTIVO_CANCELAMENTO" EntitySet="MOTIVO_CANCELAMENTO" />
+            <End Role="CRM" EntitySet="CRM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CRM_MOTIVO_ENCERRAMENTO" Association="PlatMensagensModel.FK_CRM_MOTIVO_ENCERRAMENTO">
+            <End Role="MOTIVO_ENCERRAMENTO" EntitySet="MOTIVO_ENCERRAMENTO" />
+            <End Role="CRM" EntitySet="CRM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CRM_ACAO_TIPO_ACAO" Association="PlatMensagensModel.FK_CRM_ACAO_TIPO_ACAO">
+            <End Role="TIPO_ACAO" EntitySet="TIPO_ACAO" />
+            <End Role="CRM_ACAO" EntitySet="CRM_ACAO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CRM_ACAO_USUARIO" Association="PlatMensagensModel.FK_CRM_ACAO_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="CRM_ACAO" EntitySet="CRM_ACAO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CRM_ACAO_USUARIO1" Association="PlatMensagensModel.FK_CRM_ACAO_USUARIO1">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="CRM_ACAO" EntitySet="CRM_ACAO" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_TEMPLATE_ASSINANTE">
           <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="0..1" />
@@ -2527,6 +2879,17 @@
           <NavigationProperty Name="USUARIO" Relationship="PlatMensagensModel.FK_CRM_USUARIO" FromRole="CRM" ToRole="USUARIO" />
           <Property Name="MENS_CD_ID" Type="Int32" />
           <NavigationProperty Name="MENSAGENS" Relationship="PlatMensagensModel.FK_CRM_MENSAGENS" FromRole="CRM" ToRole="MENSAGENS" />
+          <Property Name="ORIG_CD_ID" Type="Int32" />
+          <Property Name="MOCA_CD_ID" Type="Int32" />
+          <Property Name="MOEN_CD_ID" Type="Int32" />
+          <Property Name="CRM1_IN_ESTRELA" Type="Int32" />
+          <Property Name="PEVE_CD_ID1" Type="Int32" />
+          <Property Name="PEVE_CD_ID2" Type="Int32" />
+          <NavigationProperty Name="CRM_ACAO" Relationship="PlatMensagensModel.FK_CRM_ACAO_CRM" FromRole="CRM" ToRole="CRM_ACAO" />
+          <NavigationProperty Name="CRM_CONTATO" Relationship="PlatMensagensModel.FK_CRM_CONTATO_CRM" FromRole="CRM" ToRole="CRM_CONTATO" />
+          <NavigationProperty Name="CRM_ORIGEM" Relationship="PlatMensagensModel.FK_CRM_CRM_ORIGEM" FromRole="CRM" ToRole="CRM_ORIGEM" />
+          <NavigationProperty Name="MOTIVO_CANCELAMENTO" Relationship="PlatMensagensModel.FK_CRM_MOTIVO_CANCELAMENTO" FromRole="CRM" ToRole="MOTIVO_CANCELAMENTO" />
+          <NavigationProperty Name="MOTIVO_ENCERRAMENTO" Relationship="PlatMensagensModel.FK_CRM_MOTIVO_ENCERRAMENTO" FromRole="CRM" ToRole="MOTIVO_ENCERRAMENTO" />
         </EntityType>
         <EntityType Name="CRM_ANEXO">
           <Key>
@@ -2670,6 +3033,243 @@
             </Principal>
             <Dependent Role="CRM">
               <PropertyRef Name="MENS_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CRM_ACAO">
+          <Key>
+            <PropertyRef Name="CRAC_CD_ID" />
+          </Key>
+          <Property Name="CRAC_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CRM1_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="ASSI_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="CRAC_DT_CRIACAO" Type="DateTime" Precision="3" />
+          <Property Name="USUA_CD_ID1" Type="Int32" />
+          <Property Name="USUA_CD_ID2" Type="Int32" />
+          <Property Name="CRAC_NM_TITULO" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="CRAC_DS_DESCRICAO" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CRAC_DT_PREVISTA" Type="DateTime" Precision="3" />
+          <Property Name="TIAC_CD_ID" Type="Int32" />
+          <Property Name="CRAC_IN_STATUS" Type="Int32" />
+          <Property Name="CRAC_IN_ATIVO" Type="Int32" />
+          <NavigationProperty Name="ASSINANTE" Relationship="PlatMensagensModel.FK_CRM_ACAO_ASSINANTE" FromRole="CRM_ACAO" ToRole="ASSINANTE" />
+          <NavigationProperty Name="CRM" Relationship="PlatMensagensModel.FK_CRM_ACAO_CRM" FromRole="CRM_ACAO" ToRole="CRM" />
+          <NavigationProperty Name="TIPO_ACAO" Relationship="PlatMensagensModel.FK_CRM_ACAO_TIPO_ACAO" FromRole="CRM_ACAO" ToRole="TIPO_ACAO" />
+          <NavigationProperty Name="USUARIO" Relationship="PlatMensagensModel.FK_CRM_ACAO_USUARIO" FromRole="CRM_ACAO" ToRole="USUARIO" />
+          <NavigationProperty Name="USUARIO1" Relationship="PlatMensagensModel.FK_CRM_ACAO_USUARIO1" FromRole="CRM_ACAO" ToRole="USUARIO" />
+        </EntityType>
+        <EntityType Name="CRM_CONTATO">
+          <Key>
+            <PropertyRef Name="CRCO_CD_ID" />
+          </Key>
+          <Property Name="CRCO_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CRM1_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="CRCO_NM_NOME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRCO_NR_TELEFONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRCO_NR_CELULAR" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRCO_NM_EMAIL" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="CRCO_NM_CARGO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRCO_IN_PRINCIPAL" Type="Int32" />
+          <Property Name="CRCO_IN_ATIVO" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CRM" Relationship="PlatMensagensModel.FK_CRM_CONTATO_CRM" FromRole="CRM_CONTATO" ToRole="CRM" />
+        </EntityType>
+        <EntityType Name="CRM_ORIGEM">
+          <Key>
+            <PropertyRef Name="CROR_CD_ID" />
+          </Key>
+          <Property Name="CROR_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ASSI_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="CROR_NM_NOME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CROR_IN_ATIVO" Type="Int32" />
+          <NavigationProperty Name="ASSINANTE" Relationship="PlatMensagensModel.FK_CRM_ORIGEM_ASSINANTE" FromRole="CRM_ORIGEM" ToRole="ASSINANTE" />
+          <NavigationProperty Name="CRM" Relationship="PlatMensagensModel.FK_CRM_CRM_ORIGEM" FromRole="CRM_ORIGEM" ToRole="CRM" />
+        </EntityType>
+        <EntityType Name="MOTIVO_CANCELAMENTO">
+          <Key>
+            <PropertyRef Name="MOCA_CD_ID" />
+          </Key>
+          <Property Name="MOCA_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ASSI_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="MOCA_NM_NOME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MOCA_IN_ATIVO" Type="Int32" />
+          <NavigationProperty Name="ASSINANTE" Relationship="PlatMensagensModel.FK_MOTIVO_CANCELAMENTO_ASSINANTE" FromRole="MOTIVO_CANCELAMENTO" ToRole="ASSINANTE" />
+          <NavigationProperty Name="CRM" Relationship="PlatMensagensModel.FK_CRM_MOTIVO_CANCELAMENTO" FromRole="MOTIVO_CANCELAMENTO" ToRole="CRM" />
+        </EntityType>
+        <EntityType Name="MOTIVO_ENCERRAMENTO">
+          <Key>
+            <PropertyRef Name="MOEN_CD_ID" />
+          </Key>
+          <Property Name="MOEN_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ASSI_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="MOEN_NM_NOME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MOEN_IN_ATIVO" Type="Int32" />
+          <NavigationProperty Name="ASSINANTE" Relationship="PlatMensagensModel.FK_MOTIVO_ENCERRAMENTO_ASSINANTE" FromRole="MOTIVO_ENCERRAMENTO" ToRole="ASSINANTE" />
+          <NavigationProperty Name="CRM" Relationship="PlatMensagensModel.FK_CRM_MOTIVO_ENCERRAMENTO" FromRole="MOTIVO_ENCERRAMENTO" ToRole="CRM" />
+        </EntityType>
+        <EntityType Name="TIPO_ACAO">
+          <Key>
+            <PropertyRef Name="TIAC_CD_ID" />
+          </Key>
+          <Property Name="TIAC_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ASSI_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="TIAC_NM_NOME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TIAC_IN_ATIVO" Type="Int32" />
+          <NavigationProperty Name="ASSINANTE" Relationship="PlatMensagensModel.FK_TIPO_ACAO_ASSINANTE" FromRole="TIPO_ACAO" ToRole="ASSINANTE" />
+          <NavigationProperty Name="CRM_ACAO" Relationship="PlatMensagensModel.FK_CRM_ACAO_TIPO_ACAO" FromRole="TIPO_ACAO" ToRole="CRM_ACAO" />
+        </EntityType>
+        <Association Name="FK_CRM_ACAO_ASSINANTE">
+          <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="1" />
+          <End Type="PlatMensagensModel.CRM_ACAO" Role="CRM_ACAO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM_ACAO">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CRM_ORIGEM_ASSINANTE">
+          <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="1" />
+          <End Type="PlatMensagensModel.CRM_ORIGEM" Role="CRM_ORIGEM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM_ORIGEM">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MOTIVO_CANCELAMENTO_ASSINANTE">
+          <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="1" />
+          <End Type="PlatMensagensModel.MOTIVO_CANCELAMENTO" Role="MOTIVO_CANCELAMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="MOTIVO_CANCELAMENTO">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MOTIVO_ENCERRAMENTO_ASSINANTE">
+          <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="1" />
+          <End Type="PlatMensagensModel.MOTIVO_ENCERRAMENTO" Role="MOTIVO_ENCERRAMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="MOTIVO_ENCERRAMENTO">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TIPO_ACAO_ASSINANTE">
+          <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="1" />
+          <End Type="PlatMensagensModel.TIPO_ACAO" Role="TIPO_ACAO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="TIPO_ACAO">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CRM_ACAO_CRM">
+          <End Type="PlatMensagensModel.CRM" Role="CRM" Multiplicity="1" />
+          <End Type="PlatMensagensModel.CRM_ACAO" Role="CRM_ACAO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CRM">
+              <PropertyRef Name="CRM1_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM_ACAO">
+              <PropertyRef Name="CRM1_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CRM_CONTATO_CRM">
+          <End Type="PlatMensagensModel.CRM" Role="CRM" Multiplicity="1" />
+          <End Type="PlatMensagensModel.CRM_CONTATO" Role="CRM_CONTATO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CRM">
+              <PropertyRef Name="CRM1_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM_CONTATO">
+              <PropertyRef Name="CRM1_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CRM_CRM_ORIGEM">
+          <End Type="PlatMensagensModel.CRM_ORIGEM" Role="CRM_ORIGEM" Multiplicity="0..1" />
+          <End Type="PlatMensagensModel.CRM" Role="CRM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CRM_ORIGEM">
+              <PropertyRef Name="CROR_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM">
+              <PropertyRef Name="ORIG_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CRM_MOTIVO_CANCELAMENTO">
+          <End Type="PlatMensagensModel.MOTIVO_CANCELAMENTO" Role="MOTIVO_CANCELAMENTO" Multiplicity="0..1" />
+          <End Type="PlatMensagensModel.CRM" Role="CRM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MOTIVO_CANCELAMENTO">
+              <PropertyRef Name="MOCA_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM">
+              <PropertyRef Name="MOCA_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CRM_MOTIVO_ENCERRAMENTO">
+          <End Type="PlatMensagensModel.MOTIVO_ENCERRAMENTO" Role="MOTIVO_ENCERRAMENTO" Multiplicity="0..1" />
+          <End Type="PlatMensagensModel.CRM" Role="CRM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MOTIVO_ENCERRAMENTO">
+              <PropertyRef Name="MOEN_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM">
+              <PropertyRef Name="MOEN_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CRM_ACAO_TIPO_ACAO">
+          <End Type="PlatMensagensModel.TIPO_ACAO" Role="TIPO_ACAO" Multiplicity="0..1" />
+          <End Type="PlatMensagensModel.CRM_ACAO" Role="CRM_ACAO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPO_ACAO">
+              <PropertyRef Name="TIAC_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM_ACAO">
+              <PropertyRef Name="TIAC_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CRM_ACAO_USUARIO">
+          <End Type="PlatMensagensModel.USUARIO" Role="USUARIO" Multiplicity="0..1" />
+          <End Type="PlatMensagensModel.CRM_ACAO" Role="CRM_ACAO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="USUA_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM_ACAO">
+              <PropertyRef Name="USUA_CD_ID1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CRM_ACAO_USUARIO1">
+          <End Type="PlatMensagensModel.USUARIO" Role="USUARIO" Multiplicity="0..1" />
+          <End Type="PlatMensagensModel.CRM_ACAO" Role="CRM_ACAO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="USUA_CD_ID" />
+            </Principal>
+            <Dependent Role="CRM_ACAO">
+              <PropertyRef Name="USUA_CD_ID2" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3105,6 +3705,12 @@
           <EntitySetMapping Name="CRM">
             <EntityTypeMapping TypeName="PlatMensagensModel.CRM">
               <MappingFragment StoreEntitySet="CRM">
+                <ScalarProperty Name="PEVE_CD_ID2" ColumnName="PEVE_CD_ID2" />
+                <ScalarProperty Name="PEVE_CD_ID1" ColumnName="PEVE_CD_ID1" />
+                <ScalarProperty Name="CRM1_IN_ESTRELA" ColumnName="CRM1_IN_ESTRELA" />
+                <ScalarProperty Name="MOEN_CD_ID" ColumnName="MOEN_CD_ID" />
+                <ScalarProperty Name="MOCA_CD_ID" ColumnName="MOCA_CD_ID" />
+                <ScalarProperty Name="ORIG_CD_ID" ColumnName="ORIG_CD_ID" />
                 <ScalarProperty Name="MENS_CD_ID" ColumnName="MENS_CD_ID" />
                 <ScalarProperty Name="USUA_CD_ID" ColumnName="USUA_CD_ID" />
                 <ScalarProperty Name="CRM1_NM_NOME" ColumnName="CRM1_NM_NOME" />
@@ -3156,6 +3762,79 @@
                 <ScalarProperty Name="TICR_NM_NOME" ColumnName="TICR_NM_NOME" />
                 <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
                 <ScalarProperty Name="TICR_CD_ID" ColumnName="TICR_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CRM_ACAO">
+            <EntityTypeMapping TypeName="PlatMensagensModel.CRM_ACAO">
+              <MappingFragment StoreEntitySet="CRM_ACAO">
+                <ScalarProperty Name="CRAC_IN_ATIVO" ColumnName="CRAC_IN_ATIVO" />
+                <ScalarProperty Name="CRAC_IN_STATUS" ColumnName="CRAC_IN_STATUS" />
+                <ScalarProperty Name="TIAC_CD_ID" ColumnName="TIAC_CD_ID" />
+                <ScalarProperty Name="CRAC_DT_PREVISTA" ColumnName="CRAC_DT_PREVISTA" />
+                <ScalarProperty Name="CRAC_DS_DESCRICAO" ColumnName="CRAC_DS_DESCRICAO" />
+                <ScalarProperty Name="CRAC_NM_TITULO" ColumnName="CRAC_NM_TITULO" />
+                <ScalarProperty Name="USUA_CD_ID2" ColumnName="USUA_CD_ID2" />
+                <ScalarProperty Name="USUA_CD_ID1" ColumnName="USUA_CD_ID1" />
+                <ScalarProperty Name="CRAC_DT_CRIACAO" ColumnName="CRAC_DT_CRIACAO" />
+                <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
+                <ScalarProperty Name="CRM1_CD_ID" ColumnName="CRM1_CD_ID" />
+                <ScalarProperty Name="CRAC_CD_ID" ColumnName="CRAC_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CRM_CONTATO">
+            <EntityTypeMapping TypeName="PlatMensagensModel.CRM_CONTATO">
+              <MappingFragment StoreEntitySet="CRM_CONTATO">
+                <ScalarProperty Name="CRCO_IN_ATIVO" ColumnName="CRCO_IN_ATIVO" />
+                <ScalarProperty Name="CRCO_IN_PRINCIPAL" ColumnName="CRCO_IN_PRINCIPAL" />
+                <ScalarProperty Name="CRCO_NM_CARGO" ColumnName="CRCO_NM_CARGO" />
+                <ScalarProperty Name="CRCO_NM_EMAIL" ColumnName="CRCO_NM_EMAIL" />
+                <ScalarProperty Name="CRCO_NR_CELULAR" ColumnName="CRCO_NR_CELULAR" />
+                <ScalarProperty Name="CRCO_NR_TELEFONE" ColumnName="CRCO_NR_TELEFONE" />
+                <ScalarProperty Name="CRCO_NM_NOME" ColumnName="CRCO_NM_NOME" />
+                <ScalarProperty Name="CRM1_CD_ID" ColumnName="CRM1_CD_ID" />
+                <ScalarProperty Name="CRCO_CD_ID" ColumnName="CRCO_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CRM_ORIGEM">
+            <EntityTypeMapping TypeName="PlatMensagensModel.CRM_ORIGEM">
+              <MappingFragment StoreEntitySet="CRM_ORIGEM">
+                <ScalarProperty Name="CROR_IN_ATIVO" ColumnName="CROR_IN_ATIVO" />
+                <ScalarProperty Name="CROR_NM_NOME" ColumnName="CROR_NM_NOME" />
+                <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
+                <ScalarProperty Name="CROR_CD_ID" ColumnName="CROR_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MOTIVO_CANCELAMENTO">
+            <EntityTypeMapping TypeName="PlatMensagensModel.MOTIVO_CANCELAMENTO">
+              <MappingFragment StoreEntitySet="MOTIVO_CANCELAMENTO">
+                <ScalarProperty Name="MOCA_IN_ATIVO" ColumnName="MOCA_IN_ATIVO" />
+                <ScalarProperty Name="MOCA_NM_NOME" ColumnName="MOCA_NM_NOME" />
+                <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
+                <ScalarProperty Name="MOCA_CD_ID" ColumnName="MOCA_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MOTIVO_ENCERRAMENTO">
+            <EntityTypeMapping TypeName="PlatMensagensModel.MOTIVO_ENCERRAMENTO">
+              <MappingFragment StoreEntitySet="MOTIVO_ENCERRAMENTO">
+                <ScalarProperty Name="MOEN_IN_ATIVO" ColumnName="MOEN_IN_ATIVO" />
+                <ScalarProperty Name="MOEN_NM_NOME" ColumnName="MOEN_NM_NOME" />
+                <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
+                <ScalarProperty Name="MOEN_CD_ID" ColumnName="MOEN_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TIPO_ACAO">
+            <EntityTypeMapping TypeName="PlatMensagensModel.TIPO_ACAO">
+              <MappingFragment StoreEntitySet="TIPO_ACAO">
+                <ScalarProperty Name="TIAC_IN_ATIVO" ColumnName="TIAC_IN_ATIVO" />
+                <ScalarProperty Name="TIAC_NM_NOME" ColumnName="TIAC_NM_NOME" />
+                <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
+                <ScalarProperty Name="TIAC_CD_ID" ColumnName="TIAC_CD_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

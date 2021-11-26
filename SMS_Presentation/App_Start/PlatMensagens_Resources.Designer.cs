@@ -295,6 +295,24 @@ namespace SMS_Presentation.App_Start {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Processo já cadastrado.
+        /// </summary>
+        internal static string M0035 {
+            get {
+                return ResourceManager.GetString("M0035", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Impossível excluir esse processo. Existem ações ainda pendentes..
+        /// </summary>
+        internal static string M0036 {
+            get {
+                return ResourceManager.GetString("M0036", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Usuário já cadastrado.
         /// </summary>
         internal static string M0044 {

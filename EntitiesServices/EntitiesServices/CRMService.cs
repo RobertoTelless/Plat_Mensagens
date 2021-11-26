@@ -23,15 +23,30 @@ namespace ModelServices.EntitiesServices
         private readonly ITipoCRMRepository _tipoRepository;
         private readonly ICRMAnexoRepository _anexoRepository;
         private readonly IUsuarioRepository _usuRepository;
+        private readonly ICRMOrigemRepository _oriRepository;
+        private readonly IMotivoCancelamentoRepository _mcRepository;
+        private readonly IMotivoEncerramentoRepository _meRepository;
+        private readonly ITipoAcaoRepository _taRepository;
+        private readonly ICRMAcaoRepository _acaRepository;
+        private readonly ICRMContatoRepository _conRepository;
+        private readonly ICRMComentarioRepository _comRepository;
+
         protected PlatMensagensEntities Db = new PlatMensagensEntities();
 
-        public CRMService(ICRMRepository baseRepository, ILogRepository logRepository, ITipoCRMRepository tipoRepository, ICRMAnexoRepository anexoRepository, IUsuarioRepository usuRepository) : base(baseRepository)
+        public CRMService(ICRMRepository baseRepository, ILogRepository logRepository, ITipoCRMRepository tipoRepository, ICRMAnexoRepository anexoRepository, IUsuarioRepository usuRepository, ICRMOrigemRepository oriRepository, IMotivoCancelamentoRepository mcRepository, IMotivoEncerramentoRepository meRepository, ITipoAcaoRepository taRepository, ICRMAcaoRepository acaRepository, ICRMContatoRepository conRepository, ICRMComentarioRepository comRepository) : base(baseRepository)
         {
             _baseRepository = baseRepository;
             _logRepository = logRepository;
             _tipoRepository = tipoRepository;
             _anexoRepository = anexoRepository;
             _usuRepository = usuRepository;
+            _oriRepository = oriRepository;
+            _mcRepository = mcRepository;
+            _meRepository = meRepository;
+            _taRepository = taRepository;
+            _acaRepository = acaRepository;
+            _conRepository = conRepository;
+            _comRepository = comRepository;
         }
 
         public CRM CheckExist(CRM tarefa, Int32 idUsu,  Int32 idAss)
@@ -82,6 +97,25 @@ namespace ModelServices.EntitiesServices
             return _tipoRepository.GetAllItens();
         }
 
+        public List<TIPO_ACAO> GetAllTipoAcao()
+        {
+            return _taRepository.GetAllItens();
+        }
+        public List<CRM_ORIGEM> GetAllOrigens()
+        {
+            return _oriRepository.GetAllItens();
+        }
+
+        public List<MOTIVO_CANCELAMENTO> GetAllMotivoCancelamento()
+        {
+            return _mcRepository.GetAllItens();
+        }
+
+        public List<MOTIVO_ENCERRAMENTO> GetAllMotivoEncerramento()
+        {
+            return _meRepository.GetAllItens();
+        }
+
         public List<USUARIO> GetAllUsers(Int32 idAss)
         {
             return _usuRepository.GetAllItens(idAss);
@@ -92,9 +126,14 @@ namespace ModelServices.EntitiesServices
             return _anexoRepository.GetItemById(id);
         }
 
-        public List<CRM> ExecuteFilter(Int32? tipoId, String nome, String descricao, Int32? idCli, DateTime? data, Int32? status, Int32? usuario, Int32 idAss)
+        public CRM_COMENTARIO GetComentarioById(Int32 id)
         {
-            return _baseRepository.ExecuteFilter(tipoId, nome, descricao, idCli, data, status, usuario, idAss);
+            return _comRepository.GetItemById(id);
+        }
+
+        public List<CRM> ExecuteFilter(Int32? status, DateTime? inicio, DateTime? final, Int32? origem, Int32? adic, String nome, String busca, Int32 idAss)
+        {
+            return _baseRepository.ExecuteFilter(status, inicio, final, origem, adic, nome, busca, idAss);
 
         }
 
@@ -197,6 +236,81 @@ namespace ModelServices.EntitiesServices
             }
         }
 
+        public Int32 EditContato(CRM_CONTATO item)
+        {
+            using (DbContextTransaction transaction = Db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
+            {
+                try
+                {
+                    CRM_CONTATO obj = _conRepository.GetById(item.CRCO_CD_ID);
+                    _conRepository.Detach(obj);
+                    _conRepository.Update(item);
+                    transaction.Commit();
+                    return 0;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+
+        public Int32 CreateContato(CRM_CONTATO item)
+        {
+            using (DbContextTransaction transaction = Db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
+            {
+                try
+                {
+                    _conRepository.Add(item);
+                    transaction.Commit();
+                    return 0;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+
+        public Int32 EditAcao(CRM_ACAO item)
+        {
+            using (DbContextTransaction transaction = Db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
+            {
+                try
+                {
+                    CRM_ACAO obj = _acaRepository.GetById(item.CRAC_CD_ID);
+                    _acaRepository.Detach(obj);
+                    _acaRepository.Update(item);
+                    transaction.Commit();
+                    return 0;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+
+        public Int32 CreateAcao(CRM_ACAO item)
+        {
+            using (DbContextTransaction transaction = Db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
+            {
+                try
+                {
+                    _acaRepository.Add(item);
+                    transaction.Commit();
+                    return 0;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
 
     }
 }

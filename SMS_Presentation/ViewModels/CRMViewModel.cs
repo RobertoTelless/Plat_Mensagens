@@ -12,7 +12,6 @@ namespace PlatMensagem_Solution.ViewModels
         [Key]
         public int CRM1_CD_ID { get; set; }
         public int ASSI_CD_ID { get; set; }
-        [Required(ErrorMessage = "Campo CONTATO obrigatorio")]
         public int CLIE_CD_ID { get; set; }
         public Nullable<int> TICR_CD_ID { get; set; }
         [Required(ErrorMessage = "Campo DATA DE CRIAÇÃO obrigatorio")]
@@ -37,6 +36,13 @@ namespace PlatMensagem_Solution.ViewModels
         [StringLength(150, MinimumLength = 2, ErrorMessage = "O NOME deve conter no minimo 2 e no máximo 150 caracteres.")]
         public string CRM1_NM_NOME { get; set; }
         public Nullable<int> USUA_CD_ID { get; set; }
+        public Nullable<int> MENS_CD_ID { get; set; }
+        public Nullable<int> ORIG_CD_ID { get; set; }
+        public Nullable<int> MOCA_CD_ID { get; set; }
+        public Nullable<int> MOEN_CD_ID { get; set; }
+        public Nullable<int> CRM1_IN_ESTRELA { get; set; }
+        public Nullable<int> PEVE_CD_ID1 { get; set; }
+        public Nullable<int> PEVE_CD_ID2 { get; set; }
 
         public virtual ASSINANTE ASSINANTE { get; set; }
         public virtual CLIENTE CLIENTE { get; set; }
@@ -46,5 +52,13 @@ namespace PlatMensagem_Solution.ViewModels
         public virtual ICollection<CRM_COMENTARIO> CRM_COMENTARIO { get; set; }
         public virtual TIPO_CRM TIPO_CRM { get; set; }
         public virtual USUARIO USUARIO { get; set; }
+        public virtual MENSAGENS MENSAGENS { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CRM_ACAO> CRM_ACAO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CRM_CONTATO> CRM_CONTATO { get; set; }
+        public virtual CRM_ORIGEM CRM_ORIGEM { get; set; }
+        public virtual MOTIVO_CANCELAMENTO MOTIVO_CANCELAMENTO { get; set; }
+        public virtual MOTIVO_ENCERRAMENTO MOTIVO_ENCERRAMENTO { get; set; }
     }
 }
