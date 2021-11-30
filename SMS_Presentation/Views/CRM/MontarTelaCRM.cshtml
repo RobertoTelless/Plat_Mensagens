@@ -113,7 +113,7 @@
                                      
                                 @Html.ButtonActionSubmit(text: "Filtrar")
                                 @Html.ButtonLinkIndex(text: "Retirar Filtro", controller: "CRM", action: "RetirarFiltroCRM")
-                                @Html.ButtonLinkIndex(text: "Novo Processo", controller: "CRM", action: "IncluirCRM")
+                                @Html.ButtonLinkIndex(text: "Novo Processo", controller: "CRM", action: "IncluirProcessoCRM")
                                 @Html.ButtonLinkIndex(text: "Gerar Relatório", controller: "CRM", action: "GerarRelatorioListaCRM")
                                 @Html.ButtonLinkIndex(text: "Dashboard", controller: "CRM", action: "Voltar")
                             </div>
@@ -199,52 +199,62 @@
                                             {
                                                 <td><span class="badge badge-success">Encerrado</span></td>
                                             }
-                                            <td style="width: auto">@cond.CRM_ACAO.Where(p => p.CRAC_IN_ATIVO == 1).OrderByDescending(m => m.CRAC_DT_PREVISTA).FirstOrDefault().CRAC_DS_DESCRICAO</td>
-                                            @if (cond.CRM_ACAO.Where(p => p.CRAC_IN_ATIVO == 1).OrderByDescending(m => m.CRAC_DT_PREVISTA).FirstOrDefault().CRAC_DT_PREVISTA.Value.Date >= DateTime.Today.Date)
+                                            @if (cond.CRM_ACAO.Count > 0)
                                             {
-                                                <td style="width: auto; color: green; font-weight:bold">@cond.CRM_ACAO.Where(p => p.CRAC_IN_ATIVO == 1).OrderByDescending(m => m.CRAC_DT_PREVISTA).FirstOrDefault().CRAC_DT_PREVISTA.Value.ToShortDateString()</td>
+                                                <td style="width: auto">@cond.CRM_ACAO.Where(p => p.CRAC_IN_ATIVO == 1).OrderByDescending(m => m.CRAC_DT_PREVISTA).FirstOrDefault().CRAC_DS_DESCRICAO</td>
+                                                if (cond.CRM_ACAO.Where(p => p.CRAC_IN_ATIVO == 1).OrderByDescending(m => m.CRAC_DT_PREVISTA).FirstOrDefault().CRAC_DT_PREVISTA.Value.Date >= DateTime.Today.Date)
+                                                {
+                                                    <td style="width: auto; color: green; font-weight:bold">@cond.CRM_ACAO.Where(p => p.CRAC_IN_ATIVO == 1).OrderByDescending(m => m.CRAC_DT_PREVISTA).FirstOrDefault().CRAC_DT_PREVISTA.Value.ToShortDateString()</td>
+                                                }
+                                                else
+                                                {
+                                                    <td style="width: auto; color: red; font-weight:bold">@cond.CRM_ACAO.Where(p => p.CRAC_IN_ATIVO == 1).OrderByDescending(m => m.CRAC_DT_PREVISTA).FirstOrDefault().CRAC_DT_PREVISTA.Value.ToShortDateString()</td>
+                                                }
                                             }
                                             else
                                             {
-                                                <td style="width: auto; color: red; font-weight:bold">@cond.CRM_ACAO.Where(p => p.CRAC_IN_ATIVO == 1).OrderByDescending(m => m.CRAC_DT_PREVISTA).FirstOrDefault().CRAC_DT_PREVISTA.Value.ToShortDateString()</td>
+                                                <td>-</td>
+                                                <td>-</td>
                                             }
                                             <td style="width: auto">@cond.CRM_ORIGEM.CROR_NM_NOME</td>
                                             @if (cond.CRM1_IN_ATIVO == 1)
 	                                        {
                                                 <td><span class="badge badge-primary">Ativo</span></td>
                                             }
-                                            else if (cond.CRM1_IN_STATUS == 2)
+                                            else if (cond.CRM1_IN_ATIVO == 2)
                                             {
                                                 <td><span class="badge badge-warning">Arquivado</span></td>
                                             }
-                                            else if (cond.CRM1_IN_STATUS == 3)
+                                            else if (cond.CRM1_IN_ATIVO == 3)
                                             {
                                                 <td><span class="badge badge-warning">Cancelado</span></td>
                                             }
-                                            else if (cond.CRM1_IN_STATUS == 4)
+                                            else if (cond.CRM1_IN_ATIVO == 4)
                                             {
                                                 <td><span class="badge badge-danger">Falhado</span></td>
                                             }
-                                            else if (cond.CRM1_IN_STATUS == 5)
+                                            else if (cond.CRM1_IN_ATIVO == 5)
                                             {
                                                 <td><span class="badge badge-success">Sucesso</span></td>
                                             }
                                             <td class="td-one-action">
                                                 @if (ViewBag.Perfil == "ADM" || ViewBag.Perfil == "GER"  || ViewBag.Perfil == "OPR" )
                                                 {
-                                                    @Html.TableLinkDetails(cond.CRM1_CD_ID, "EditarProcesso", "fa-edit", "Editar/Consultar")
+                                                    @Html.TableLinkDetails(cond.CRM1_CD_ID, "AcompanharProcessoCRM", "fa-cubes", "Acompanhar")
+                                                    @Html.TableLinkDetails(cond.CRM1_CD_ID, "EditarProcessoCRM", "fa-edit", "Editar/Consultar")
                                                     if (cond.CRM1_IN_ATIVO != 2)
                                                     {
-                                                        <span style="color: #337ab7; cursor:pointer;" alt="Desativar" class="tbl-link fa-lg fa fa-trash-o" onclick="ShowModalExcluir('/CRM/ExcluirProcesso/@cond.CRM1_CD_ID')" title="Arquivar"></span>
+                                                        <span style="color: #337ab7; cursor:pointer;" alt="Desativar" class="tbl-link fa-lg fa fa-folder-open-o" onclick="ShowModalExcluir('/CRM/ExcluirProcesso/@cond.CRM1_CD_ID')" title="Arquivar"></span>
                                                     }
                                                     else if (cond.CRM1_IN_ATIVO == 2)
                                                     {   
                                                         <span style="color: #337ab7; cursor:pointer;" alt="Reativar" class="tbl-link fa-lg fa fa-refresh" onclick="ShowModalReativar('/CRM/ReativarProcesso/@cond.CRM1_CD_ID')" title="Reativar"></span>
                                                     }
+                                                    @Html.TableLinkDetails(cond.CRM1_CD_ID, "CancelarProcessoCRM", "fa-times", "Cancelar")
                                                 }
                                                 else
                                                 {
-                                                    @Html.TableLinkDetails(cond.CLIE_CD_ID, "VisualizarProcesso", "fa-search", "Consultar")
+                                                    @Html.TableLinkDetails(cond.CLIE_CD_ID, "VisualizarProcessoCRM", "fa-search", "Consultar")
                                                 }
                                             </td>
                                         </tr>

@@ -244,7 +244,7 @@ namespace SMS_Presentation.Controllers
 
             CRM item = baseApp.GetItemById(id);
             objetoAntes = (CRM)Session["CRM"];
-            item.CRM1_IN_ATIVO = 0;
+            item.CRM1_IN_ATIVO = 2;
             Int32 volta = baseApp.ValidateDelete(item, usuario);
             if (volta == 1)
             {
@@ -846,7 +846,7 @@ namespace SMS_Presentation.Controllers
         }
 
         [HttpGet]
-        public ActionResult IncluirProcessoCRM()
+        public ActionResult     IncluirProcessoCRM()
         {
             // Verifica se tem usuario logado
             USUARIO usuario = new USUARIO();

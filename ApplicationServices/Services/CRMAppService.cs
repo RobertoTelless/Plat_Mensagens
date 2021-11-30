@@ -162,7 +162,6 @@ namespace ApplicationServices.Services
                 // Completa objeto
                 item.CRM1_IN_ATIVO = 1;
                 item.USUA_CD_ID = usuario.USUA_CD_ID;
-                item.CRM1_IN_STATUS = 1;
 
                 // Monta Log
                 LOG log = new LOG
@@ -268,25 +267,10 @@ namespace ApplicationServices.Services
             {
                 // Verifica integridade referencial
                 // Acerta campos
-                item.CRM1_IN_ATIVO = 0;
+                item.CRM1_IN_ATIVO = 2;
 
-                //Evita erros de serialização
-                if (item.CRM_COMENTARIO != null)
-                {
-                    item.CRM_COMENTARIO = null;
-                }
-                if (item.CRM_ANEXO != null)
-                {
-                    item.CRM_ANEXO = null;
-                }
-                if (item.TIPO_CRM != null)
-                {
-                    item.TIPO_CRM = null;
-                }
-                if (item.USUARIO != null)
-                {
-                    item.USUARIO = null;
-                }
+                // Serializa registro
+                String serial = item.ASSI_CD_ID.ToString() + "|" + item.CLIENTE.CLIE_NM_NOME + "|" + item.CRM1_CD_ID.ToString() + "|" + item.CRM1_DS_DESCRICAO + "|" + item.CRM1_DT_CRIACAO.Value.ToShortDateString() + "|" + item.CRM1_IN_ATIVO.ToString() + "|" + item.CRM1_IN_STATUS.ToString() + "|" + item.CRM1_NM_NOME + "|" + item.CRM_ORIGEM.CROR_NM_NOME + "|" + item.USUARIO.USUA_NM_NOME;
 
                 // Verifica integridade
                 List<CRM_ACAO> acao = item.CRM_ACAO.Where(p => p.CRAC_DT_PREVISTA.Value > DateTime.Today.Date).ToList();
@@ -303,7 +287,7 @@ namespace ApplicationServices.Services
                     ASSI_CD_ID = usuario.ASSI_CD_ID,
                     LOG_IN_ATIVO = 1,
                     LOG_NM_OPERACAO = "DelCRM",
-                    LOG_TX_REGISTRO = Serialization.SerializeJSON<CRM>(item)
+                    LOG_TX_REGISTRO = serial
                 };
 
                 // Persiste
@@ -325,23 +309,8 @@ namespace ApplicationServices.Services
                 // Acerta campos
                 item.CRM1_IN_ATIVO = 1;
 
-                //Evita erros de serialização
-                if (item.CRM_COMENTARIO != null)
-                {
-                    item.CRM_COMENTARIO = null;
-                }
-                if (item.CRM_ANEXO != null)
-                {
-                    item.CRM_ANEXO = null;
-                }
-                if (item.TIPO_CRM != null)
-                {
-                    item.TIPO_CRM = null;
-                }
-                if (item.USUARIO != null)
-                {
-                    item.USUARIO = null;
-                }
+                // Serializa registro
+                String serial = item.ASSI_CD_ID.ToString() + "|" + item.CLIENTE.CLIE_NM_NOME + "|" + item.CRM1_CD_ID.ToString() + "|" + item.CRM1_DS_DESCRICAO + "|" + item.CRM1_DT_CRIACAO.Value.ToShortDateString() + "|" + item.CRM1_IN_ATIVO.ToString() + "|" + item.CRM1_IN_STATUS.ToString() + "|" + item.CRM1_NM_NOME + "|" + item.CRM_ORIGEM.CROR_NM_NOME + "|" + item.USUARIO.USUA_NM_NOME;
 
                 // Monta Log
                 LOG log = new LOG
@@ -351,11 +320,11 @@ namespace ApplicationServices.Services
                     ASSI_CD_ID = usuario.ASSI_CD_ID,
                     LOG_IN_ATIVO = 1,
                     LOG_NM_OPERACAO = "ReatCRM",
-                    LOG_TX_REGISTRO = Serialization.SerializeJSON<CRM>(item)
+                    LOG_TX_REGISTRO = serial
                 };
 
                 // Persiste
-                Int32 volta =  _baseService.Edit(item, log);
+                Int32 volta = _baseService.Edit(item, log);
                 return volta;
             }
             catch (Exception ex)

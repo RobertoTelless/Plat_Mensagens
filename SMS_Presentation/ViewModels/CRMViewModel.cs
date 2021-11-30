@@ -41,6 +41,7 @@ namespace PlatMensagem_Solution.ViewModels
         public Nullable<int> ORIG_CD_ID { get; set; }
         public Nullable<int> MOCA_CD_ID { get; set; }
         public Nullable<int> MOEN_CD_ID { get; set; }
+        [Required(ErrorMessage = "Campo FAVORITO obrigatorio")]
         public Nullable<int> CRM1_IN_ESTRELA { get; set; }
         public Nullable<int> PEVE_CD_ID1 { get; set; }
         public Nullable<int> PEVE_CD_ID2 { get; set; }

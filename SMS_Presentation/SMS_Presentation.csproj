@@ -3038,7 +3038,6 @@
     <Content Include="Views\Mensagem\VerEMailAgendados.cshtml" />
     <Content Include="Views\Mensagem\IncluirMensagemEMail - Cópia .cshtml" />
     <Content Include="Views\Mensagem\VerAnexoMensagem.cshtml" />
-    <Content Include="Views\CRM\MontarTelaCRMLista.cshtml" />
     <Content Include="Views\CRM\MontarTelaCRM.cshtml" />
     <Content Include="Views\CRM\IncluirProcessoCRM.cshtml" />
   </ItemGroup>

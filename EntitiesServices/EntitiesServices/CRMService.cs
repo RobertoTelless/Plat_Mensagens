@@ -181,7 +181,6 @@ namespace ModelServices.EntitiesServices
             {
                 try
                 {
-                    item.USUARIO = null;
                     CRM obj = _baseRepository.GetById(item.CRM1_CD_ID);
                     _baseRepository.Detach(obj);
                     _logRepository.Add(log);
