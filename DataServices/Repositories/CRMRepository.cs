@@ -69,17 +69,21 @@ namespace DataServices.Repositories
             return query.ToList();
         }
 
-        public List<CRM> ExecuteFilter(Int32? status, DateTime? inicio, DateTime? final, Int32? origem, Int32? adic, String nome, String busca, Int32 idAss)
+        public List<CRM> ExecuteFilter(Int32? status, DateTime? inicio, DateTime? final, Int32? origem, Int32? adic, String nome, String busca, Int32? estrela, Int32 idAss)
         {
             List<CRM> lista = new List<CRM>();
             IQueryable<CRM> query = Db.CRM;
-            if (status != null)
+            if (status > 0)
             {
                 query = query.Where(p => p.CRM1_IN_STATUS == status);
             }
             if (origem != null)
             {
                 query = query.Where(p => p.ORIG_CD_ID == origem);
+            }
+            if (estrela != null)
+            {
+                query = query.Where(p => p.CRM1_IN_ESTRELA == estrela);
             }
             if (adic != null)
             {
@@ -89,15 +93,15 @@ namespace DataServices.Repositories
                 }
                 else if (adic == 2)
                 {
-                    query = query.Where(p => p.CRM1_IN_ATIVO == 0);
+                    query = query.Where(p => p.CRM1_IN_ATIVO == 2);
                 }
                 else if (adic == 3)
                 {
-                    query = query.Where(p => p.CRM1_IN_ATIVO == 2);
+                    query = query.Where(p => p.CRM1_IN_ATIVO == 3);
                 }
                 else if (adic == 4)
                 {
-                    query = query.Where(p => p.CRM1_IN_ATIVO == 3);
+                    query = query.Where(p => p.CRM1_IN_ATIVO == 4);
                 }
                 else if (adic == 5)
                 {
@@ -114,11 +118,13 @@ namespace DataServices.Repositories
             }
             if (inicio != null)
             {
-                query = query.Where(p => DbFunctions.TruncateTime(p.CRM1_DT_CRIACAO) >= DbFunctions.TruncateTime(inicio));
+                //query = query.Where(p => DbFunctions.TruncateTime(p.CRM1_DT_CRIACAO) >= DbFunctions.TruncateTime(inicio));
+                query = query.Where(p => DbFunctions.TruncateTime(p.CRM_ACAO.Where(m => m.CRAC_IN_ATIVO == 1).OrderByDescending(m => m.CRAC_DT_PREVISTA).FirstOrDefault().CRAC_DT_PREVISTA) >= DbFunctions.TruncateTime(inicio));
             }
             if (final != null)
             {
-                query = query.Where(p => DbFunctions.TruncateTime(p.CRM1_DT_CRIACAO) <= DbFunctions.TruncateTime(final));
+                //query = query.Where(p => DbFunctions.TruncateTime(p.CRM1_DT_CRIACAO) <= DbFunctions.TruncateTime(final));
+                query = query.Where(p => DbFunctions.TruncateTime(p.CRM_ACAO.Where(m => m.CRAC_IN_ATIVO == 1).OrderByDescending(m => m.CRAC_DT_PREVISTA).FirstOrDefault().CRAC_DT_PREVISTA) <= DbFunctions.TruncateTime(final));
             }
             if (query != null)
             {

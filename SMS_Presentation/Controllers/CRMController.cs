@@ -116,14 +116,18 @@ namespace SMS_Presentation.Controllers
             status.Add(new SelectListItem() { Text = "Proposta Apresentada", Value = "3" });
             status.Add(new SelectListItem() { Text = "Negociação", Value = "4" });
             status.Add(new SelectListItem() { Text = "Encerrado", Value = "5" });
-            ViewBag.Status = new SelectList(visao, "Value", "Text");
+            ViewBag.Status = new SelectList(status, "Value", "Text");
             List<SelectListItem> adic = new List<SelectListItem>();
             adic.Add(new SelectListItem() { Text = "Ativos", Value = "1" });
             adic.Add(new SelectListItem() { Text = "Arquivados", Value = "2" });
             adic.Add(new SelectListItem() { Text = "Cancelados", Value = "3" });
             adic.Add(new SelectListItem() { Text = "Falhados", Value = "4" });
             adic.Add(new SelectListItem() { Text = "Sucesso", Value = "5" });
-            ViewBag.Adic = new SelectList(visao, "Value", "Text");
+            ViewBag.Adic = new SelectList(adic, "Value", "Text");
+            List<SelectListItem> fav = new List<SelectListItem>();
+            fav.Add(new SelectListItem() { Text = "Sim", Value = "1" });
+            fav.Add(new SelectListItem() { Text = "Não", Value = "0" });
+            ViewBag.Favorito = new SelectList(fav, "Value", "Text");
             Session["IncluirCRM"] = 0;
 
             // Indicadores
@@ -147,6 +151,8 @@ namespace SMS_Presentation.Controllers
 
             // Abre view
             Session["VoltaCRM"] = 1;
+            Session["VoltaCliente"] = 3;
+            Session["IncluirCliente"] = 1;
             objeto = new CRM();
             if (Session["FiltroCRM"] != null)
             {
@@ -181,7 +187,7 @@ namespace SMS_Presentation.Controllers
                 // Executa a operação
                 List<CRM> listaObj = new List<CRM>();
                 Session["FiltroCRM"] = item;
-                Int32 volta = baseApp.ExecuteFilter(item.CRM1_IN_STATUS, item.CRM1_DT_CRIACAO, item.CRM1_DT_CANCELAMENTO, item.ORIG_CD_ID, item.CRM1_IN_ATIVO, item.CRM1_NM_NOME, item.CRM1_DS_DESCRICAO, idAss, out listaObj);
+                Int32 volta = baseApp.ExecuteFilter(item.CRM1_IN_STATUS, item.CRM1_DT_CRIACAO, item.CRM1_DT_CANCELAMENTO, item.ORIG_CD_ID, item.CRM1_IN_ATIVO, item.CRM1_NM_NOME, item.CRM1_DS_DESCRICAO, item.CRM1_IN_ESTRELA, idAss, out listaObj);
 
                 // Verifica retorno
                 if (volta == 1)
@@ -284,6 +290,73 @@ namespace SMS_Presentation.Controllers
             return RedirectToAction("MontarTelaCRM");
         }
 
+        [HttpGet]
+        public ActionResult EstrelaSim(Int32 id)
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCRM"] = 2;
+                    return RedirectToAction("MontarTelaCRM");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            CRM item = baseApp.GetItemById(id);
+            objetoAntes = (CRM)Session["CRM"];
+            item.CRM1_IN_ESTRELA = 1;
+            Int32 volta = baseApp.ValidateEdit(item, item, usuario);
+            Session["ListaCRM"] = null;
+            return RedirectToAction("MontarTelaCRM");
+        }
+
+        [HttpGet]
+        public ActionResult EstrelaNao(Int32 id)
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCRM"] = 2;
+                    return RedirectToAction("MontarTelaCRM");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            CRM item = baseApp.GetItemById(id);
+            objetoAntes = (CRM)Session["CRM"];
+            item.CRM1_IN_ESTRELA = 0;
+            Int32 volta = baseApp.ValidateEdit(item, item, usuario);
+            Session["ListaCRM"] = null;
+            return RedirectToAction("MontarTelaCRM");
+        }
 
 
 

@@ -77,6 +77,27 @@
                 </li>
             }
 
+            @*CRM*@
+            @if (((EntitiesServices.Model.PERFIL)Session["Perfil"]).PERF_SG_SIGLA  == "ADM" || ((EntitiesServices.Model.PERFIL)Session["Perfil"]).PERF_SG_SIGLA  == "GER" || ((EntitiesServices.Model.PERFIL)Session["Perfil"]).PERF_SG_SIGLA  == "OPR")
+            {
+                <li class="@Html.IsSelected(controller: "BaseAdmin")">
+                    <a href="@Url.Action("CarregarBase", "BaseAdmin")"><i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">CRM</span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "BaseAdmin", cssClass: "in")">
+                        <li class="@Html.IsSelected(action: "CarregarBase")"><a href="@Url.Action("CarregarBase", "BaseAdmin")"><i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">Central</span> <span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level collapse @Html.IsSelected(controller: "BaseAdmin", cssClass: "in")">
+                                <li class="@Html.IsSelected(action: "MontarTelaCRM")"><a href="@Url.Action("MontarTelaCRM", "CRM")">CRM - Central</a></li>
+                                <li class="@Html.IsSelected(action: "MontarTelaCRMKanban")"><a href="@Url.Action("MontarTelaCRMKanban", "CRM")">CRM - Kanban</a></li>
+                            </ul>                    
+                        </li>
+                        <li class="@Html.IsSelected(action: "CarregarBase")"><a href="@Url.Action("CarregarBase", "BaseAdmin")"><i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">Atalhos</span> <span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level collapse @Html.IsSelected(controller: "BaseAdmin", cssClass: "in")">
+                                <li class="@Html.IsSelected(action: "IncluirProcesso")"><a href="@Url.Action("IncluirProcesso", "CRM")">Incluir Processo</a></li>
+                            </ul>                    
+                        </li>
+                    </ul>
+                </li>
+            }
+
             @*Administração*@
             @if (((EntitiesServices.Model.PERFIL)Session["Perfil"]).PERF_SG_SIGLA  == "ADM" || ((EntitiesServices.Model.PERFIL)Session["Perfil"]).PERF_SG_SIGLA  == "SIN")
             {

@@ -202,6 +202,7 @@
           <Property Name="CRM1_IN_ESTRELA" Type="int" />
           <Property Name="PEVE_CD_ID1" Type="int" />
           <Property Name="PEVE_CD_ID2" Type="int" />
+          <Property Name="CRM1_IN_DUMMY" Type="int" />
         </EntityType>
         <EntityType Name="CRM_ACAO">
           <Key>
@@ -2890,6 +2891,7 @@
           <NavigationProperty Name="CRM_ORIGEM" Relationship="PlatMensagensModel.FK_CRM_CRM_ORIGEM" FromRole="CRM" ToRole="CRM_ORIGEM" />
           <NavigationProperty Name="MOTIVO_CANCELAMENTO" Relationship="PlatMensagensModel.FK_CRM_MOTIVO_CANCELAMENTO" FromRole="CRM" ToRole="MOTIVO_CANCELAMENTO" />
           <NavigationProperty Name="MOTIVO_ENCERRAMENTO" Relationship="PlatMensagensModel.FK_CRM_MOTIVO_ENCERRAMENTO" FromRole="CRM" ToRole="MOTIVO_ENCERRAMENTO" />
+          <Property Name="CRM1_IN_DUMMY" Type="Int32" />
         </EntityType>
         <EntityType Name="CRM_ANEXO">
           <Key>
@@ -3705,6 +3707,7 @@
           <EntitySetMapping Name="CRM">
             <EntityTypeMapping TypeName="PlatMensagensModel.CRM">
               <MappingFragment StoreEntitySet="CRM">
+                <ScalarProperty Name="CRM1_IN_DUMMY" ColumnName="CRM1_IN_DUMMY" />
                 <ScalarProperty Name="PEVE_CD_ID2" ColumnName="PEVE_CD_ID2" />
                 <ScalarProperty Name="PEVE_CD_ID1" ColumnName="PEVE_CD_ID1" />
                 <ScalarProperty Name="CRM1_IN_ESTRELA" ColumnName="CRM1_IN_ESTRELA" />

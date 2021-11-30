@@ -31,7 +31,7 @@ namespace ApplicationServices.Interfaces
         List<TIPO_CRM> GetAllTipos();
         USUARIO GetUserById(Int32 id);
         CRM_ANEXO GetAnexoById(Int32 id);
-        Int32 ExecuteFilter(Int32? status, DateTime? inicio, DateTime? final, Int32? origem, Int32? adic, String nome, String busca, Int32 idAss, out List<CRM> objeto);
+        Int32 ExecuteFilter(Int32? status, DateTime? inicio, DateTime? final, Int32? origem, Int32? adic, String nome, String busca, Int32? estrela, Int32 idAss, out List<CRM> objeto);
 
         Int32 ValidateEditContato(CRM_CONTATO item);
         Int32 ValidateCreateContato(CRM_CONTATO item);

@@ -114,7 +114,7 @@ namespace ApplicationServices.Services
             return lista;
         }
 
-        public Int32 ExecuteFilter(Int32? status, DateTime? inicio, DateTime? final, Int32? origem, Int32? adic, String nome, String busca, Int32 idAss, out List<CRM> objeto)
+        public Int32 ExecuteFilter(Int32? status, DateTime? inicio, DateTime? final, Int32? origem, Int32? adic, String nome, String busca,  Int32? estrela, Int32 idAss, out List<CRM> objeto)
         {
             try
             {
@@ -122,7 +122,7 @@ namespace ApplicationServices.Services
                 Int32 volta = 0;
 
                 // Processa filtro
-                objeto = _baseService.ExecuteFilter(status, inicio, final, origem, adic, nome, busca, idAss);
+                objeto = _baseService.ExecuteFilter(status, inicio, final, origem, adic, nome, busca, estrela, idAss);
                 if (objeto.Count == 0)
                 {
                     volta = 1;

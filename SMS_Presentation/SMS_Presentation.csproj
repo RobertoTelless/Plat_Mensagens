@@ -3050,6 +3050,13 @@
     <Folder Include="Imagens\1\Cliente\4\Fotos\" />
     <Folder Include="Imagens\1\Cliente\6\Fotos\" />
     <Folder Include="Imagens\1\Cliente\7\Anexos\" />
+    <Folder Include="Imagens\1\CRM\13\Anexos\" />
+    <Folder Include="Imagens\1\CRM\1\Anexos\" />
+    <Folder Include="Imagens\1\CRM\3\Anexos\" />
+    <Folder Include="Imagens\1\CRM\4\Anexos\" />
+    <Folder Include="Imagens\1\CRM\6\Anexos\" />
+    <Folder Include="Imagens\1\CRM\7\Anexos\" />
+    <Folder Include="Imagens\1\CRM\8\Anexos\" />
     <Folder Include="Imagens\1\Mensagem\100\Anexos\" />
     <Folder Include="Imagens\1\Mensagem\102\Anexos\" />
     <Folder Include="Imagens\1\Mensagem\103\Anexos\" />

@@ -121,25 +121,6 @@
                     }
                     @Html.ButtonLinkIndex(text: "Voltar", action: "VoltarBase", controller: "Usuario", buttonClass: "primary")
                     @Html.ButtonLinkIndex(text: "Dashboard", action: "Voltar", controller: "Usuario", buttonClass: "warning")
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-user">
-                            <li>
-                                <a href="#">Configuração 1</a>
-                            </li>
-                            <li>
-                                <a href="#">Configuração 2</a>
-                            </li>
-                        </ul>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
                 </div>
 
                 <div class="ibox-content">
@@ -528,15 +509,13 @@
     @Scripts.Render("~/plugins/sweetAlert")
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.js"></script>
     
-    @*<script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function () {
 
             $('.dataTables-example').DataTable({
                 pageLength: 25,
                 dom: '<"html5buttons"B>lTfgitp',
                 buttons: [
-                    { extend: 'copy' },
-                    { extend: 'csv' },
                     { extend: 'excel', title: 'ExampleFile' },
                     { extend: 'pdf', title: 'ExampleFile' },
 
@@ -559,7 +538,7 @@
 
         });
 
-    </script>*@
+    </script>
 
     <script>
         $(function () {
