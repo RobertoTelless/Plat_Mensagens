@@ -37,6 +37,7 @@ namespace PlatMensagem_Solution.ViewModels
         public string CRM1_NM_NOME { get; set; }
         public Nullable<int> USUA_CD_ID { get; set; }
         public Nullable<int> MENS_CD_ID { get; set; }
+        [Required(ErrorMessage = "Campo ORIGEM obrigatorio")]
         public Nullable<int> ORIG_CD_ID { get; set; }
         public Nullable<int> MOCA_CD_ID { get; set; }
         public Nullable<int> MOEN_CD_ID { get; set; }

@@ -112,6 +112,7 @@ namespace SMS_Presentation.Controllers
             Session["MensCRM"] = 0;
 
             Session["VoltaNotificacao"] = 3;
+            Session["VoltaCRM"] = 0;
 
             // Configuracao
             CONFIGURACAO conf = confApp.GetItemById(idAss);

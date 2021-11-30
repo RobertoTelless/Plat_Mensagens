@@ -295,7 +295,7 @@ namespace SMS_Presentation.App_Start {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Processo já cadastrado.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Processo CRM  já cadastrado para este cliente.
         /// </summary>
         internal static string M0035 {
             get {

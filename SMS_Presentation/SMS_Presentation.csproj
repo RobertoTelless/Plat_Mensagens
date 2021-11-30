@@ -3040,6 +3040,7 @@
     <Content Include="Views\Mensagem\VerAnexoMensagem.cshtml" />
     <Content Include="Views\CRM\MontarTelaCRMLista.cshtml" />
     <Content Include="Views\CRM\MontarTelaCRM.cshtml" />
+    <Content Include="Views\CRM\IncluirProcessoCRM.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

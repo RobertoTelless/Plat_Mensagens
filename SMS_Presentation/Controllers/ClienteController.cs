@@ -525,7 +525,7 @@ namespace SMS_Presentation.Controllers
             {
                 return RedirectToAction("VerCardsCliente");
             }
-            if ((Int32)Session["VoltaCliente"] == 3)
+            if ((Int32)Session["VoltaCRM"] == 1)
             {
                 return RedirectToAction("MontarTelaCRM", "CRM");
             }
