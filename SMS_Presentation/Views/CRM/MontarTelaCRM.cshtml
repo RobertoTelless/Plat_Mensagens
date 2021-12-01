@@ -161,7 +161,7 @@
                                         <tr>
                                             
                                             <td class="td-one-action">
-                                                @if (ViewBag.Perfil == "ADM" || ViewBag.Perfil == "GER"  || ViewBag.Perfil == "OPR" )
+                                                @if (cond.CRM1_IN_ATIVO != 3)
                                                 {
                                                     if (cond.CRM1_IN_ESTRELA == 1)
                                                     {
@@ -174,7 +174,14 @@
                                                 }
                                                 else
                                                 {
-                                                    @Html.TableLinkDetails(cond.CLIE_CD_ID, "VisualizarProcesso", "fa-search", "Consultar")
+                                                    if (cond.CRM1_IN_ESTRELA == 1)
+                                                    {
+                                                        <span style="color: #337ab7; cursor:pointer;" alt="Desativar" class="tbl-link fa-lg fa fa-star" title="Arquivar"></span>
+                                                    }
+                                                    else if (cond.CRM1_IN_ESTRELA == 0)
+                                                    {   
+                                                        <span style="color: #337ab7; cursor:pointer;" alt="Reativar" class="tbl-link fa-lg fa fa-star-o" title="Reativar"></span>
+                                                    }
                                                 }
                                             </td>
                                             <td><a href="@Url.Action("EditarCliente", "Cliente", new { id = cond.CLIE_CD_ID })" />@cond.CLIENTE.CLIE_NM_NOME</td>
@@ -238,23 +245,33 @@
                                                 <td><span class="badge badge-success">Sucesso</span></td>
                                             }
                                             <td class="td-one-action">
-                                                @if (ViewBag.Perfil == "ADM" || ViewBag.Perfil == "GER"  || ViewBag.Perfil == "OPR" )
+                                                @if (cond.CRM1_IN_ATIVO == 3)
                                                 {
-                                                    @Html.TableLinkDetails(cond.CRM1_CD_ID, "AcompanharProcessoCRM", "fa-cubes", "Acompanhar")
-                                                    @Html.TableLinkDetails(cond.CRM1_CD_ID, "EditarProcessoCRM", "fa-edit", "Editar/Consultar")
-                                                    if (cond.CRM1_IN_ATIVO != 2)
-                                                    {
-                                                        <span style="color: #337ab7; cursor:pointer;" alt="Desativar" class="tbl-link fa-lg fa fa-folder-open-o" onclick="ShowModalExcluir('/CRM/ExcluirProcesso/@cond.CRM1_CD_ID')" title="Arquivar"></span>
-                                                    }
-                                                    else if (cond.CRM1_IN_ATIVO == 2)
-                                                    {   
-                                                        <span style="color: #337ab7; cursor:pointer;" alt="Reativar" class="tbl-link fa-lg fa fa-refresh" onclick="ShowModalReativar('/CRM/ReativarProcesso/@cond.CRM1_CD_ID')" title="Reativar"></span>
-                                                    }
-                                                    @Html.TableLinkDetails(cond.CRM1_CD_ID, "CancelarProcessoCRM", "fa-times", "Cancelar")
+                                                    @Html.TableLinkDetails(cond.CLIE_CD_ID, "VisualizarProcessoCRM", "fa-search", "Consultar")
                                                 }
                                                 else
                                                 {
-                                                    @Html.TableLinkDetails(cond.CLIE_CD_ID, "VisualizarProcessoCRM", "fa-search", "Consultar")
+                                                    if (ViewBag.Perfil == "ADM" || ViewBag.Perfil == "GER"  || ViewBag.Perfil == "OPR" )
+                                                    {
+                                                        @Html.TableLinkDetails(cond.CRM1_CD_ID, "AcompanharProcessoCRM", "fa-cubes", "Acompanhar")
+                                                        @Html.TableLinkDetails(cond.CRM1_CD_ID, "EditarProcessoCRM", "fa-edit", "Editar/Consultar")
+                                                        if (cond.CRM1_IN_ATIVO != 2)
+                                                        {
+                                                            <span style="color: #337ab7; cursor:pointer;" alt="Desativar" class="tbl-link fa-lg fa fa-folder-open-o" onclick="ShowModalExcluir('/CRM/ExcluirProcesso/@cond.CRM1_CD_ID')" title="Arquivar"></span>
+                                                        }
+                                                        else if (cond.CRM1_IN_ATIVO == 2)
+                                                        {   
+                                                            <span style="color: #337ab7; cursor:pointer;" alt="Reativar" class="tbl-link fa-lg fa fa-refresh" onclick="ShowModalReativar('/CRM/ReativarProcesso/@cond.CRM1_CD_ID')" title="Reativar"></span>
+                                                        }
+                                                        if (cond.CRM1_IN_ATIVO != 3)
+                                                        {
+                                                            @Html.TableLinkDetails(cond.CRM1_CD_ID, "CancelarProcessoCRM", "fa-times", "Cancelar")
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TableLinkDetails(cond.CLIE_CD_ID, "VisualizarProcessoCRM", "fa-search", "Consultar")
+                                                    }
                                                 }
                                             </td>
                                         </tr>

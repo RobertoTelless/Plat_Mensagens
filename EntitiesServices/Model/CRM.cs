@@ -46,6 +46,7 @@ namespace EntitiesServices.Model
         public Nullable<int> PEVE_CD_ID1 { get; set; }
         public Nullable<int> PEVE_CD_ID2 { get; set; }
         public Nullable<int> CRM1_IN_DUMMY { get; set; }
+        public string CRM1_AQ_IMAGEM { get; set; }
     
         public virtual ASSINANTE ASSINANTE { get; set; }
         public virtual CLIENTE CLIENTE { get; set; }

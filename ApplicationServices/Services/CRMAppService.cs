@@ -190,36 +190,65 @@ namespace ApplicationServices.Services
             try
             {
                 // Verificação
-                if (item.CRM1_DT_ENCERRAMENTO < item.CRM1_DT_CRIACAO)
+                if (item.CRM1_DT_ENCERRAMENTO != null)
                 {
-                    return 1;
+                    if (item.CRM1_DT_ENCERRAMENTO < item.CRM1_DT_CRIACAO)
+                    {
+                        return 1;
+                    }
+                    if (item.CRM1_DT_ENCERRAMENTO > DateTime.Today.Date)
+                    {
+                        return 2;
+                    }
                 }
-                if (item.CRM1_DT_ENCERRAMENTO > DateTime.Today.Date)
+                if (item.CRM1_DT_CANCELAMENTO != null)
                 {
-                    return 2;
+                    if (item.CRM1_DT_CANCELAMENTO < item.CRM1_DT_CRIACAO)
+                    {
+                        return 3;
+                    }
+                    if (item.CRM1_DT_CANCELAMENTO > DateTime.Today.Date)
+                    {
+                        return 4;
+                    }
                 }
-                if (item.CRM1_DT_CANCELAMENTO < item.CRM1_DT_CRIACAO)
-                {
-                    return 3;
-                }
-                if (item.CRM1_DT_CANCELAMENTO > DateTime.Today.Date)
-                {
-                    return 4;
-                }
+
+                // Serializa registro
+                String serial = item.ASSI_CD_ID.ToString() + "|" + item.CLIENTE.CLIE_NM_NOME + "|" + item.CRM1_CD_ID.ToString() + "|" + item.CRM1_DS_DESCRICAO + "|" + item.CRM1_DT_CRIACAO.Value.ToShortDateString() + "|" + item.CRM1_IN_ATIVO.ToString() + "|" + item.CRM1_IN_STATUS.ToString() + "|" + item.CRM1_NM_NOME + "|" + item.CRM_ORIGEM.CROR_NM_NOME;
+                String antes = itemAntes.ASSI_CD_ID.ToString() + "|" + itemAntes.CLIENTE.CLIE_NM_NOME + "|" + itemAntes.CRM1_CD_ID.ToString() + "|" + itemAntes.CRM1_DS_DESCRICAO + "|" + itemAntes.CRM1_DT_CRIACAO.Value.ToShortDateString() + "|" + itemAntes.CRM1_IN_ATIVO.ToString() + "|" + itemAntes.CRM1_IN_STATUS.ToString() + "|" + itemAntes.CRM1_NM_NOME + "|" + itemAntes.CRM_ORIGEM.CROR_NM_NOME;
 
                 // Monta Log
-                LOG log = new LOG
+                LOG log = new LOG();
+                if (item.CRM1_DT_CANCELAMENTO != null)
                 {
-                    LOG_DT_DATA = DateTime.Now,
-                    USUA_CD_ID = usuario.USUA_CD_ID,
-                    ASSI_CD_ID = usuario.ASSI_CD_ID,
-                    LOG_NM_OPERACAO = "EditCRM",
-                    LOG_IN_ATIVO = 1,
-                    LOG_TX_REGISTRO = Serialization.SerializeJSON<CRM>(item),
-                    LOG_TX_REGISTRO_ANTES = Serialization.SerializeJSON<CRM>(itemAntes)
-                };
+                    log = new LOG
+                    {
+                        LOG_DT_DATA = DateTime.Now,
+                        USUA_CD_ID = usuario.USUA_CD_ID,
+                        ASSI_CD_ID = usuario.ASSI_CD_ID,
+                        LOG_NM_OPERACAO = "CancCRM",
+                        LOG_IN_ATIVO = 1,
+                        LOG_TX_REGISTRO = serial,
+                        LOG_TX_REGISTRO_ANTES = antes
+                    };
+                }
+                else
+                {
+                    log = new LOG
+                    {
+                        LOG_DT_DATA = DateTime.Now,
+                        USUA_CD_ID = usuario.USUA_CD_ID,
+                        ASSI_CD_ID = usuario.ASSI_CD_ID,
+                        LOG_NM_OPERACAO = "EditCRM",
+                        LOG_IN_ATIVO = 1,
+                        LOG_TX_REGISTRO = serial,
+                        LOG_TX_REGISTRO_ANTES = antes
+                    };
+                }
 
                 // Persiste
+                item.CLIENTE = null;
+                item.CRM_ORIGEM = null;
                 Int32 volta = _baseService.Edit(item, log);
                 return volta;
             }
@@ -233,26 +262,33 @@ namespace ApplicationServices.Services
         {
             try
             {
-                if (item.CRM1_DT_ENCERRAMENTO < item.CRM1_DT_CRIACAO)
+                if (item.CRM1_DT_ENCERRAMENTO != null)
                 {
-                    return 1;
+                    if (item.CRM1_DT_ENCERRAMENTO < item.CRM1_DT_CRIACAO)
+                    {
+                        return 1;
+                    }
+                    if (item.CRM1_DT_ENCERRAMENTO > DateTime.Today.Date)
+                    {
+                        return 2;
+                    }
                 }
-                if (item.CRM1_DT_ENCERRAMENTO > DateTime.Today.Date)
+                if (item.CRM1_DT_CANCELAMENTO != null)
                 {
-                    return 2;
-                }
-                if (item.CRM1_DT_CANCELAMENTO < item.CRM1_DT_CRIACAO)
-                {
-                    return 3;
-                }
-                if (item.CRM1_DT_CANCELAMENTO > DateTime.Today.Date)
-                {
-                    return 4;
+                    if (item.CRM1_DT_CANCELAMENTO < item.CRM1_DT_CRIACAO)
+                    {
+                        return 3;
+                    }
+                    if (item.CRM1_DT_CANCELAMENTO > DateTime.Today.Date)
+                    {
+                        return 4;
+                    }
                 }
 
                 // Persiste
+                item.CLIENTE = null;
+                item.CRM_ORIGEM = null;
                 Int32 volta = _baseService.Edit(item);
-
                 return volta;
             }
             catch (Exception ex)

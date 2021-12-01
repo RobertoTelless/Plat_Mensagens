@@ -52,6 +52,7 @@ namespace DataServices.Repositories
             IQueryable<CRM> query = Db.CRM;
             query = query.Where(p => p.CRM1_CD_ID == id);
             query = query.Include(p => p.CRM_COMENTARIO);
+            query = query.Include(p => p.USUARIO);
             return query.FirstOrDefault();
         }
 

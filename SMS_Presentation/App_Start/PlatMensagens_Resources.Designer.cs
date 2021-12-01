@@ -313,6 +313,24 @@ namespace SMS_Presentation.App_Start {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A data de cancelamento não pode ser inferior a data de criação do processo.
+        /// </summary>
+        internal static string M0037 {
+            get {
+                return ResourceManager.GetString("M0037", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A data de cancelamento não pode ser superior a data corrente.
+        /// </summary>
+        internal static string M0038 {
+            get {
+                return ResourceManager.GetString("M0038", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Usuário já cadastrado.
         /// </summary>
         internal static string M0044 {
