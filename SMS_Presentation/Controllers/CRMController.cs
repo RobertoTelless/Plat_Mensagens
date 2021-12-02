@@ -1290,6 +1290,28 @@ namespace SMS_Presentation.Controllers
             return RedirectToAction("VoltarAnexoCRM");
         }
 
+        public FileResult DownloadCRM(Int32 id)
+        {
+            CRM_ANEXO item = baseApp.GetAnexoById(id);
+            String arquivo = item.CRAN_AQ_ARQUIVO;
+            Int32 pos = arquivo.LastIndexOf("/") + 1;
+            String nomeDownload = arquivo.Substring(pos);
+            String contentType = string.Empty;
+            if (arquivo.Contains(".pdf"))
+            {
+                contentType = "application/pdf";
+            }
+            else if (arquivo.Contains(".jpg"))
+            {
+                contentType = "image/jpg";
+            }
+            else if (arquivo.Contains(".png"))
+            {
+                contentType = "image/png";
+            }
+            return File(arquivo, contentType, nomeDownload);
+        }
+
         [HttpGet]
         public ActionResult CancelarProcessoCRM(Int32 id)
         {
@@ -1559,6 +1581,218 @@ namespace SMS_Presentation.Controllers
             return View(vm);
         }
 
+        [HttpGet]
+        public ActionResult EditarContato(Int32 id)
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
 
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCRM"] = 2;
+                    return RedirectToAction("VoltarAnexoCRM");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Prepara view
+            List<SelectListItem> princ = new List<SelectListItem>();
+            princ.Add(new SelectListItem() { Text = "Sim", Value = "1" });
+            princ.Add(new SelectListItem() { Text = "Não", Value = "0" });
+            ViewBag.Principal = new SelectList(princ, "Value", "Text");
+
+            CRM_CONTATO item = baseApp.GetContatoById(id);
+            objetoAntes = (CRM)Session["CRM"];
+            CRMContatoViewModel vm = Mapper.Map<CRM_CONTATO, CRMContatoViewModel>(item);
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditarContato(CRMContatoViewModel vm)
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            List<SelectListItem> princ = new List<SelectListItem>();
+            princ.Add(new SelectListItem() { Text = "Sim", Value = "1" });
+            princ.Add(new SelectListItem() { Text = "Não", Value = "0" });
+            ViewBag.Principal = new SelectList(princ, "Value", "Text");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Executa a operação
+                    USUARIO usuarioLogado = (USUARIO)Session["UserCredentials"];
+                    CRM_CONTATO item = Mapper.Map<CRMContatoViewModel, CRM_CONTATO>(vm);
+                    Int32 volta = baseApp.ValidateEditContato(item);
+
+                    // Verifica retorno
+                    return RedirectToAction("VoltarAnexoCRM");
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = ex.Message;
+                    return View(vm);
+                }
+            }
+            else
+            {
+                return View(vm);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult ExcluirContato(Int32 id)
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCRM"] = 2;
+                    return RedirectToAction("VoltarAnexoCRM");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            CRM_CONTATO item = baseApp.GetContatoById(id);
+            objetoAntes = (CRM)Session["CRM"];
+            item.CRCO_IN_ATIVO = 0;
+            Int32 volta = baseApp.ValidateEditContato(item);
+            return RedirectToAction("VoltarAnexoCRM");
+        }
+
+        [HttpGet]
+        public ActionResult ReativarContato(Int32 id)
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCRM"] = 2;
+                    return RedirectToAction("VoltarAnexoCRM");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            CRM_CONTATO item = baseApp.GetContatoById(id);
+            objetoAntes = (CRM)Session["CRM"];
+            item.CRCO_IN_ATIVO = 1;
+            Int32 volta = baseApp.ValidateEditContato(item);
+            return RedirectToAction("VoltarAnexoCRM");
+        }
+
+        [HttpGet]
+        public ActionResult IncluirContato()
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCRM"] = 2;
+                    return RedirectToAction("VoltarAnexoCRM");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Prepara view
+            List<SelectListItem> princ = new List<SelectListItem>();
+            princ.Add(new SelectListItem() { Text = "Sim", Value = "1" });
+            princ.Add(new SelectListItem() { Text = "Não", Value = "0" });
+            ViewBag.Principal = new SelectList(princ, "Value", "Text");
+
+            CRM_CONTATO item = new CRM_CONTATO();
+            CRMContatoViewModel vm = Mapper.Map<CRM_CONTATO, CRMContatoViewModel>(item);
+            vm.CRM1_CD_ID = (Int32)Session["IdCRM"];
+            vm.CRCO_IN_ATIVO = 1;
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult IncluirContato(CRMContatoViewModel vm)
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            List<SelectListItem> princ = new List<SelectListItem>();
+            princ.Add(new SelectListItem() { Text = "Sim", Value = "1" });
+            princ.Add(new SelectListItem() { Text = "Não", Value = "0" });
+            ViewBag.Principal = new SelectList(princ, "Value", "Text");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Executa a operação
+                    CRM_CONTATO item = Mapper.Map<CRMContatoViewModel, CRM_CONTATO>(vm);
+                    USUARIO usuarioLogado = (USUARIO)Session["UserCredentials"];
+                    Int32 volta = baseApp.ValidateCreateContato(item);
+                    // Verifica retorno
+                    return RedirectToAction("VoltarAnexoCRM");
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = ex.Message;
+                    return View(vm);
+                }
+            }
+            else
+            {
+                return View(vm);
+            }
+        }
     }
 }

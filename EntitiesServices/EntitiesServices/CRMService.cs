@@ -82,6 +82,11 @@ namespace ModelServices.EntitiesServices
             return _baseRepository.GetTarefaStatus(tipo, idAss);
         }
 
+        public CRM_CONTATO GetContatoById(Int32 id)
+        {
+            return _conRepository.GetItemById(id);
+        }
+
         public List<CRM> GetAllItens(Int32 idAss)
         {
             return _baseRepository.GetAllItens(idAss);

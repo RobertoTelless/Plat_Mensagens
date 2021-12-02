@@ -36,6 +36,7 @@ namespace ModelServices.Interfaces.EntitiesServices
         USUARIO GetUserById(Int32 id);
         CRM_COMENTARIO GetComentarioById(Int32 id);
 
+        CRM_CONTATO GetContatoById(Int32 id);
         Int32 EditContato(CRM_CONTATO item);
         Int32 CreateContato(CRM_CONTATO item);
         Int32 EditAcao(CRM_ACAO item);

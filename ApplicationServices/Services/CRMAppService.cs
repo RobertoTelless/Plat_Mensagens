@@ -66,6 +66,12 @@ namespace ApplicationServices.Services
             return item;
         }
 
+        public CRM_CONTATO GetContatoById(Int32 id)
+        {
+            CRM_CONTATO lista = _baseService.GetContatoById(id);
+            return lista;
+        }
+
         public CRM CheckExist(CRM tarefa, Int32 idUsu, Int32 idAss)
         {
             CRM item = _baseService.CheckExist(tarefa, idUsu, idAss);
