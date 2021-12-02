@@ -880,6 +880,7 @@ namespace SMS_Presentation.Controllers
             Int32 idAss = (Int32)Session["IdAssinante"];
 
             // Prepara listas
+            ViewBag.Usuarios = new SelectList(usuApp.GetAllItens(idAss).OrderBy(p => p.USUA_NM_NOME), "USUA_CD_ID", "USUA_NM_NOME");
             ViewBag.Origem = new SelectList(baseApp.GetAllOrigens().OrderBy(p => p.CROR_NM_NOME), "CROR_CD_ID", "CROR_NM_NOME");
             List<SelectListItem> status = new List<SelectListItem>();
             status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
@@ -916,6 +917,7 @@ namespace SMS_Presentation.Controllers
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
 
+            ViewBag.Usuarios = new SelectList(usuApp.GetAllItens(idAss).OrderBy(p => p.USUA_NM_NOME), "USUA_CD_ID", "USUA_NM_NOME");
             ViewBag.Origem = new SelectList(baseApp.GetAllOrigens().OrderBy(p => p.CROR_NM_NOME), "CROR_CD_ID", "CROR_NM_NOME");
             List<SelectListItem> status = new List<SelectListItem>();
             status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
@@ -962,6 +964,7 @@ namespace SMS_Presentation.Controllers
                     Session["IncluirCRM"] = 1;
                     Session["CRMNovo"] = item.CRM1_CD_ID;
                     Session["IdCRM"] = item.CRM1_CD_ID;
+
 
                     // Processa Anexos
                     if (Session["FileQueueCRM"] != null)
@@ -1478,6 +1481,10 @@ namespace SMS_Presentation.Controllers
                 {
                     ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0024", CultureInfo.CurrentCulture));
                 }
+                if ((Int32)Session["MensCRM"] == 50)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0039", CultureInfo.CurrentCulture));
+                }
             }
 
             // Monta view
@@ -1522,7 +1529,7 @@ namespace SMS_Presentation.Controllers
                     // Executa a operação
                     USUARIO usuario = (USUARIO)Session["UserCredentials"];
                     CRM item = Mapper.Map<CRMViewModel, CRM>(vm);
-                    Int32 volta = baseApp.ValidateEdit(item, objetoAntes, usuario);
+                    Int32 volta = baseApp.ValidateEdit(item, (CRM)Session["CRM"], usuario);
 
                     // Verifica retorno
 
@@ -1635,6 +1642,13 @@ namespace SMS_Presentation.Controllers
             {
                 try
                 {
+                    // Checa principal
+                    if (((CRM)Session["CRM"]).CRM_CONTATO.Where(p => p.CRCO_IN_PRINCIPAL == 1).ToList().Count > 0 & vm.CRCO_IN_PRINCIPAL == 1)
+                    {
+                        Session["MensCRM"] = 50;
+                        return RedirectToAction("VoltarAnexoCRM");
+                    }
+
                     // Executa a operação
                     USUARIO usuarioLogado = (USUARIO)Session["UserCredentials"];
                     CRM_CONTATO item = Mapper.Map<CRMContatoViewModel, CRM_CONTATO>(vm);
@@ -1776,6 +1790,13 @@ namespace SMS_Presentation.Controllers
             {
                 try
                 {
+                    // Checa principal
+                    if (((CRM)Session["CRM"]).CRM_CONTATO.Where(p => p.CRCO_IN_PRINCIPAL == 1).ToList().Count > 0 & vm.CRCO_IN_PRINCIPAL == 1)
+                    {
+                        Session["MensCRM"] = 50;
+                        return RedirectToAction("VoltarAnexoCRM");
+                    }
+
                     // Executa a operação
                     CRM_CONTATO item = Mapper.Map<CRMContatoViewModel, CRM_CONTATO>(vm);
                     USUARIO usuarioLogado = (USUARIO)Session["UserCredentials"];
@@ -1794,5 +1815,38 @@ namespace SMS_Presentation.Controllers
                 return View(vm);
             }
         }
+
+        [HttpGet]
+        public ActionResult AcompanhamentoProcessoCRM(Int32 id)
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCRM"] = 2;
+                    return RedirectToAction("MontarTelaCRM", "CRM");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            Session["IdCRM"] = id;
+            CRM item = baseApp.GetItemById(id);
+            CRMViewModel vm = Mapper.Map<CRM, CRMViewModel>(item);
+            return View(vm);
+        }
+
     }
 }

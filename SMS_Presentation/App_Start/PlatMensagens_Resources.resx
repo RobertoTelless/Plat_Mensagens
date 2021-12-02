@@ -207,6 +207,9 @@
   <data name="M0038" xml:space="preserve">
     <value>A data de cancelamento não pode ser superior a data corrente</value>
   </data>
+  <data name="M0039" xml:space="preserve">
+    <value>Já existe um contato marcado como PRINCIPAL</value>
+  </data>
   <data name="M0044" xml:space="preserve">
     <value>Usuário já cadastrado</value>
   </data>

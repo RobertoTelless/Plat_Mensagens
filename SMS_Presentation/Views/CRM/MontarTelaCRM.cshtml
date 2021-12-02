@@ -245,9 +245,14 @@
                                                 <td><span class="badge badge-success">Sucesso</span></td>
                                             }
                                             <td class="td-one-action">
-                                                @if (cond.CRM1_IN_ATIVO == 3)
+                                                @if (cond.CRM1_IN_ATIVO == 3 || cond.CRM1_IN_ATIVO == 4 || cond.CRM1_IN_ATIVO == 5)
                                                 {
                                                     @Html.TableLinkDetails(cond.CLIE_CD_ID, "VisualizarProcessoCRM", "fa-search", "Consultar")
+                                                }
+                                                else if (cond.CRM1_IN_ATIVO == 2)
+                                                {
+                                                    @Html.TableLinkDetails(cond.CLIE_CD_ID, "VisualizarProcessoCRM", "fa-search", "Consultar")
+                                                    <span style="color: #337ab7; cursor:pointer;" alt="Reativar" class="tbl-link fa-lg fa fa-refresh" onclick="ShowModalReativar('/CRM/ReativarProcesso/@cond.CRM1_CD_ID')" title="Reativar"></span>
                                                 }
                                                 else
                                                 {

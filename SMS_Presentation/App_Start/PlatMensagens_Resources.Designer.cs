@@ -331,6 +331,15 @@ namespace SMS_Presentation.App_Start {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Já existe um contato marcado como PRINCIPAL.
+        /// </summary>
+        internal static string M0039 {
+            get {
+                return ResourceManager.GetString("M0039", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Usuário já cadastrado.
         /// </summary>
         internal static string M0044 {

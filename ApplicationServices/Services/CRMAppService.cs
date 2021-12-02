@@ -17,11 +17,13 @@ namespace ApplicationServices.Services
     {
         private readonly ICRMService _baseService;
         private readonly INotificacaoService _notiService;
+        private readonly IClienteService _cliService;
 
-        public CRMAppService(ICRMService baseService, INotificacaoService notiService): base(baseService)
+        public CRMAppService(ICRMService baseService, INotificacaoService notiService, IClienteService cliService): base(baseService)
         {
             _baseService = baseService;
             _notiService = notiService;
+            _cliService = cliService;
         }
 
         public List<CRM> GetAllItens(Int32 idAss)
@@ -167,7 +169,10 @@ namespace ApplicationServices.Services
 
                 // Completa objeto
                 item.CRM1_IN_ATIVO = 1;
-                item.USUA_CD_ID = usuario.USUA_CD_ID;
+
+                // Serializa registro
+                CLIENTE cli = _cliService.GetItemById(item.CLIE_CD_ID);
+                String serial = item.ASSI_CD_ID.ToString() + "|" + cli.CLIE_NM_NOME + "|" + item.CRM1_DS_DESCRICAO + "|" + item.CRM1_DT_CRIACAO.Value.ToShortDateString() + "|" + item.CRM1_IN_ATIVO.ToString() + "|" + item.CRM1_IN_STATUS.ToString() + "|" + item.CRM1_NM_NOME;
 
                 // Monta Log
                 LOG log = new LOG
@@ -177,11 +182,26 @@ namespace ApplicationServices.Services
                     ASSI_CD_ID = usuario.ASSI_CD_ID,
                     LOG_NM_OPERACAO = "AddCRM",
                     LOG_IN_ATIVO = 1,
-                    LOG_TX_REGISTRO = Serialization.SerializeJSON<CRM>(item)
+                    LOG_TX_REGISTRO = serial
                 };
                 
                 // Persiste
                 Int32 volta = _baseService.Create(item, log);
+
+                // Gera Notificação
+                NOTIFICACAO noti = new NOTIFICACAO();
+                noti.CANO_CD_ID = 1;
+                noti.ASSI_CD_ID = usuario.ASSI_CD_ID;
+                noti.NOTI_DT_EMISSAO = DateTime.Today;
+                noti.NOTI_DT_VALIDADE = DateTime.Today.Date.AddDays(30);
+                noti.NOTI_IN_VISTA = 0;
+                noti.NOTI_NM_TITULO = "Atribuição de Processo CRM";
+                noti.NOTI_IN_ATIVO = 1;
+                noti.NOTI_TX_TEXTO = "ATENÇÃO: O Processo CRM " + item.CRM1_NM_NOME + " do cliente " + cli.CLIE_NM_NOME + " foi colocado sob sua responsabilidade em "  + DateTime.Today.Date.ToLongDateString() + ".";
+                noti.USUA_CD_ID = item.USUA_CD_ID.Value;
+                noti.NOTI_IN_STATUS = 1;
+                noti.NOTI_IN_NIVEL = 1;
+                Int32 volta1 = _notiService.Create(noti);
                 return volta;
             }
             catch (Exception ex)
@@ -220,8 +240,9 @@ namespace ApplicationServices.Services
                 }
 
                 // Serializa registro
-                String serial = item.ASSI_CD_ID.ToString() + "|" + item.CLIENTE.CLIE_NM_NOME + "|" + item.CRM1_CD_ID.ToString() + "|" + item.CRM1_DS_DESCRICAO + "|" + item.CRM1_DT_CRIACAO.Value.ToShortDateString() + "|" + item.CRM1_IN_ATIVO.ToString() + "|" + item.CRM1_IN_STATUS.ToString() + "|" + item.CRM1_NM_NOME + "|" + item.CRM_ORIGEM.CROR_NM_NOME;
-                String antes = itemAntes.ASSI_CD_ID.ToString() + "|" + itemAntes.CLIENTE.CLIE_NM_NOME + "|" + itemAntes.CRM1_CD_ID.ToString() + "|" + itemAntes.CRM1_DS_DESCRICAO + "|" + itemAntes.CRM1_DT_CRIACAO.Value.ToShortDateString() + "|" + itemAntes.CRM1_IN_ATIVO.ToString() + "|" + itemAntes.CRM1_IN_STATUS.ToString() + "|" + itemAntes.CRM1_NM_NOME + "|" + itemAntes.CRM_ORIGEM.CROR_NM_NOME;
+                CLIENTE cli = _cliService.GetItemById(item.CLIE_CD_ID);
+                String serial = item.ASSI_CD_ID.ToString() + "|" + cli.CLIE_NM_NOME + "|" + item.CRM1_CD_ID.ToString() + "|" + item.CRM1_DS_DESCRICAO + "|" + item.CRM1_DT_CRIACAO.Value.ToShortDateString() + "|" + item.CRM1_IN_ATIVO.ToString() + "|" + item.CRM1_IN_STATUS.ToString() + "|" + item.CRM1_NM_NOME + "|" + item.CRM_ORIGEM.CROR_NM_NOME;
+                String antes = itemAntes.ASSI_CD_ID.ToString() + "|" + cli.CLIE_NM_NOME + "|" + itemAntes.CRM1_CD_ID.ToString() + "|" + itemAntes.CRM1_DS_DESCRICAO + "|" + itemAntes.CRM1_DT_CRIACAO.Value.ToShortDateString() + "|" + itemAntes.CRM1_IN_ATIVO.ToString() + "|" + itemAntes.CRM1_IN_STATUS.ToString() + "|" + itemAntes.CRM1_NM_NOME + "|" + itemAntes.CRM_ORIGEM.CROR_NM_NOME;
 
                 // Monta Log
                 LOG log = new LOG();
@@ -256,6 +277,21 @@ namespace ApplicationServices.Services
                 item.CLIENTE = null;
                 item.CRM_ORIGEM = null;
                 Int32 volta = _baseService.Edit(item, log);
+
+                // Gera Notificação
+                NOTIFICACAO noti = new NOTIFICACAO();
+                noti.CANO_CD_ID = 1;
+                noti.ASSI_CD_ID = usuario.ASSI_CD_ID;
+                noti.NOTI_DT_EMISSAO = DateTime.Today;
+                noti.NOTI_DT_VALIDADE = DateTime.Today.Date.AddDays(30);
+                noti.NOTI_IN_VISTA = 0;
+                noti.NOTI_NM_TITULO = "Alteração de Processo CRM";
+                noti.NOTI_IN_ATIVO = 1;
+                noti.NOTI_TX_TEXTO = "ATENÇÃO: O Processo CRM " + item.CRM1_NM_NOME + " do cliente " + cli.CLIE_NM_NOME + " sob sua responsabilidade, foi alterado em " + DateTime.Today.Date.ToLongDateString() + ".";
+                noti.USUA_CD_ID = item.USUA_CD_ID.Value;
+                noti.NOTI_IN_STATUS = 1;
+                noti.NOTI_IN_NIVEL = 1;
+                Int32 volta1 = _notiService.Create(noti);
                 return volta;
             }
             catch (Exception ex)
@@ -311,15 +347,16 @@ namespace ApplicationServices.Services
                 // Acerta campos
                 item.CRM1_IN_ATIVO = 2;
 
-                // Serializa registro
-                String serial = item.ASSI_CD_ID.ToString() + "|" + item.CLIENTE.CLIE_NM_NOME + "|" + item.CRM1_CD_ID.ToString() + "|" + item.CRM1_DS_DESCRICAO + "|" + item.CRM1_DT_CRIACAO.Value.ToShortDateString() + "|" + item.CRM1_IN_ATIVO.ToString() + "|" + item.CRM1_IN_STATUS.ToString() + "|" + item.CRM1_NM_NOME + "|" + item.CRM_ORIGEM.CROR_NM_NOME + "|" + item.USUARIO.USUA_NM_NOME;
-
                 // Verifica integridade
                 List<CRM_ACAO> acao = item.CRM_ACAO.Where(p => p.CRAC_DT_PREVISTA.Value > DateTime.Today.Date).ToList();
                 if (acao.Count > 0)
                 {
                     return 1;
                 }
+
+                // Serializa registro
+                CLIENTE cli = _cliService.GetItemById(item.CLIE_CD_ID);
+                String serial = item.ASSI_CD_ID.ToString() + "|" + cli.CLIE_NM_NOME + "|" + item.CRM1_CD_ID.ToString() + "|" + item.CRM1_DS_DESCRICAO + "|" + item.CRM1_DT_CRIACAO.Value.ToShortDateString() + "|" + item.CRM1_IN_ATIVO.ToString() + "|" + item.CRM1_IN_STATUS.ToString() + "|" + item.CRM1_NM_NOME + "|" + item.CRM_ORIGEM.CROR_NM_NOME;
 
                 // Monta Log
                 LOG log = new LOG
@@ -352,7 +389,8 @@ namespace ApplicationServices.Services
                 item.CRM1_IN_ATIVO = 1;
 
                 // Serializa registro
-                String serial = item.ASSI_CD_ID.ToString() + "|" + item.CLIENTE.CLIE_NM_NOME + "|" + item.CRM1_CD_ID.ToString() + "|" + item.CRM1_DS_DESCRICAO + "|" + item.CRM1_DT_CRIACAO.Value.ToShortDateString() + "|" + item.CRM1_IN_ATIVO.ToString() + "|" + item.CRM1_IN_STATUS.ToString() + "|" + item.CRM1_NM_NOME + "|" + item.CRM_ORIGEM.CROR_NM_NOME + "|" + item.USUARIO.USUA_NM_NOME;
+                CLIENTE cli = _cliService.GetItemById(item.CLIE_CD_ID);
+                String serial = item.ASSI_CD_ID.ToString() + "|" + cli.CLIE_NM_NOME + "|" + item.CRM1_CD_ID.ToString() + "|" + item.CRM1_DS_DESCRICAO + "|" + item.CRM1_DT_CRIACAO.Value.ToShortDateString() + "|" + item.CRM1_IN_ATIVO.ToString() + "|" + item.CRM1_IN_STATUS.ToString() + "|" + item.CRM1_NM_NOME + "|" + item.CRM_ORIGEM.CROR_NM_NOME;
 
                 // Monta Log
                 LOG log = new LOG

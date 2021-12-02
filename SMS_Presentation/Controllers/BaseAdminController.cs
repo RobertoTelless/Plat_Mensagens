@@ -28,6 +28,7 @@ namespace SMS_Presentation.Controllers
         private readonly IClienteAppService cliApp;
         private readonly IMensagemAppService menApp;
         private readonly IEMailAgendaAppService emApp;
+        private readonly ICRMAppService crmApp;
 
         private String msg;
         private Exception exception;
@@ -35,7 +36,7 @@ namespace SMS_Presentation.Controllers
         USUARIO objetoAntes = new USUARIO();
         List<USUARIO> listaMaster = new List<USUARIO>();
 
-        public BaseAdminController(IUsuarioAppService baseApps, ILogAppService logApps, INotificacaoAppService notfApps, IUsuarioAppService usuApps, IConfiguracaoAppService confApps, IAssinanteAppService assApps, IClienteAppService cliApps, IMensagemAppService menApps, IEMailAgendaAppService emApps)
+        public BaseAdminController(IUsuarioAppService baseApps, ILogAppService logApps, INotificacaoAppService notfApps, IUsuarioAppService usuApps, IConfiguracaoAppService confApps, IAssinanteAppService assApps, IClienteAppService cliApps, IMensagemAppService menApps, IEMailAgendaAppService emApps, ICRMAppService crmApps)
         {
             baseApp = baseApps;
             logApp = logApps;
@@ -46,6 +47,7 @@ namespace SMS_Presentation.Controllers
             cliApp = cliApps;
             menApp = menApps;
             emApp = emApps;
+            crmApp = crmApps;
         }
 
         public ActionResult CarregarLandingPage()
@@ -164,6 +166,10 @@ namespace SMS_Presentation.Controllers
             List<EMAIL_AGENDAMENTO> emAg = emApp.GetAllItens(idAss).Where(p => p.EMAG_IN_ENVIADO == 0 & p.EMAG_DT_AGENDAMENTO > DateTime.Now).ToList();
             Session["EMailAgenda"] = emAg;
             ViewBag.SMSEmail = emAg.Count;
+
+            List<CRM> crm = crmApp.GetAllItens(idAss).ToList();
+            Session["CRMAtivos"] = crm;
+            ViewBag.CRMAtivos = crm.Count;
 
             String frase = String.Empty;
             String nome = usu.USUA_NM_NOME.Substring(0, usu.USUA_NM_NOME.IndexOf(" "));

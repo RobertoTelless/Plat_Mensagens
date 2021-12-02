@@ -2998,6 +2998,7 @@
     <Content Include="Views\CRM\VerAnexoCRM.cshtml" />
     <Content Include="Views\CRM\EditarContato.cshtml" />
     <Content Include="Views\CRM\IncluirContato.cshtml" />
+    <Content Include="Views\CRM\AcompanhamentoProcessoCRM.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

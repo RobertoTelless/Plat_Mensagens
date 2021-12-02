@@ -53,6 +53,8 @@ namespace DataServices.Repositories
             query = query.Where(p => p.CRM1_CD_ID == id);
             query = query.Include(p => p.CRM_COMENTARIO);
             query = query.Include(p => p.USUARIO);
+            query = query.Include(p => p.CLIENTE);
+            query = query.Include(p => p.CLIENTE.UF);
             return query.FirstOrDefault();
         }
 
