@@ -205,7 +205,7 @@
 
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 1px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; height: 490px" >
+                                                <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 1px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; height: 520px" >
                                                     <div class="ibox-title">
                                                         <h5 style="color: black">Informações do Processo</h5>
                                                         @if (Model.CRM1_IN_ATIVO == 1)
@@ -242,6 +242,9 @@
                                                                 @Html.TextAreaFor(m => m.CRM1_TX_INFORMACOES_GERAIS, new { @class = "form-control", style = "width: 100%; height: 200px;", autofocus = true, @readonly="readonly" })
                                                             </div>
                                                         </div>
+                                                        <div class="form-group">
+                                                            @Html.ButtonLinkIndex(text: "Editar Processo", action: "VoltarAnexoCRM", controller: "CRM")
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -253,7 +256,7 @@
                             @*Imagens - Foto e Anexos*@
                             <div id="tab-2" class="tab-pane">
                                 <div class="panel-body">
-                                    <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 1px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; height: 250px" >
+                                    <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 1px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; height: 230px" >
                                         <div class="ibox-title"  style="color: black">
                                             <h5>Imagem</h5>
                                         </div>
@@ -291,7 +294,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 1px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; height: 250px" >
+                                    <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 1px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; height: 700px" >
                                         <div class="ibox-title"  style="color: black">
                                             <h5>Anexos</h5>
                                         </div>
@@ -363,7 +366,7 @@
                             @*Contatos*@
                             <div id="tab-3" class="tab-pane">
                                 <div class="panel-body">
-                                    <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 1px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; height: 250px" >
+                                    <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 1px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; height: 700px" >
                                         <div class="ibox-title"  style="color: black">
                                             <h5>Contatos</h5>
                                         </div>
@@ -393,7 +396,6 @@
                                                                             <td>@cond.CRCO_NM_NOME</td>
                                                                             <td>@cond.CRCO_NM_CARGO</td>
                                                                             <td><a href="@Url.Action("EnviarEMailContato", "CRM", new { id = cond.CRCO_CD_ID })" />@cond.CRCO_NM_EMAIL</td>
-                                                                            <td>@cond.CRCO_NM_EMAIL</td>
                                                                             <td>@cond.CRCO_NR_TELEFONE</td>
                                                                             <td><a href="@Url.Action("EnviarSMSContato", "CRM", new { id = cond.CRCO_CD_ID })" />@cond.CRCO_NR_CELULAR</td>
                                                                             @if (cond.CRCO_IN_PRINCIPAL == 1)
@@ -434,7 +436,7 @@
                             @*Comentários*@
                             <div id="tab-4" class="tab-pane">
                                 <div class="panel-body">
-                                    <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 1px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; height: 250px" >
+                                    <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 1px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; height: 1250px" >
                                         <div class="ibox-title"  style="color: black">
                                             <h5>Comentários - Follow-Up</h5>
                                         </div>
@@ -479,7 +481,7 @@
                             @*Ações*@
                             <div id="tab-5" class="tab-pane">
                                 <div class="panel-body">
-                                    <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 1px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; height: 250px" >
+                                    <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 1px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; height: 600px" >
                                         <div class="ibox-title"  style="color: black">
                                             <h5>Ações do Processo</h5>
                                         </div>
@@ -507,29 +509,29 @@
                                                                     {
                                                                         if (cond.CRAC_IN_STATUS == 1)
                                                                         {
-                                                                            <tr style="background-color: lightsteelblue; color: green; font-weight: bold">
+                                                                            <tr style="background-color:lightyellow; color: green">
                                                                                 <td>@cond.CRAC_DT_CRIACAO.Value.ToShortDateString()</td>
                                                                                 <td>@cond.TIPO_ACAO.TIAC_NM_NOME</td>
                                                                                 <td>@cond.CRAC_NM_TITULO</td>
                                                                                 @if (cond.CRAC_DT_PREVISTA.Value.Date > DateTime.Today.Date)
                                                                                 {
-                                                                                    <td style="color: green; font-weight:bold">@cond.CRAC_DT_PREVISTA.Value.ToShortDateString() @cond.CRAC_DT_PREVISTA.Value.ToShortTimeString()</td>
+                                                                                    <td style="color: green;">@cond.CRAC_DT_PREVISTA.Value.ToShortDateString() @cond.CRAC_DT_PREVISTA.Value.ToShortTimeString()</td>
                                                                                 }
                                                                                 else if (cond.CRAC_DT_PREVISTA.Value.Date == DateTime.Today.Date)
                                                                                 {
-                                                                                    <td style="color: orange; font-weight:bold">@cond.CRAC_DT_PREVISTA.Value.ToShortDateString() @cond.CRAC_DT_PREVISTA.Value.ToShortTimeString()</td>
+                                                                                    <td style="color: orange;">@cond.CRAC_DT_PREVISTA.Value.ToShortDateString() @cond.CRAC_DT_PREVISTA.Value.ToShortTimeString()</td>
                                                                                 }
                                                                                 else
                                                                                 {
                                                                                     <td style="color: red; font-weight:bold">@cond.CRAC_DT_PREVISTA.Value.ToShortDateString() @cond.CRAC_DT_PREVISTA.Value.ToShortTimeString()</td>
                                                                                 }
-                                                                                @if ((cond.CRAC_DT_PREVISTA.Value - DateTime.Today.Date).Days > 0)
+                                                                                @if ((cond.CRAC_DT_PREVISTA.Value.Date - DateTime.Today.Date).Days > 0)
                                                                                 {
-                                                                                    <td style="color: green; font-weight:bold">@(cond.CRAC_DT_PREVISTA.Value - DateTime.Today.Date).Days</td>
+                                                                                    <td style="color: green;">@((cond.CRAC_DT_PREVISTA.Value.Date - DateTime.Today.Date).Days)</td>
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    <td style="color: red; font-weight:bold">@(cond.CRAC_DT_PREVISTA.Value - DateTime.Today.Date).Days</td>
+                                                                                    <td style="color: red; font-weight:bold">@((cond.CRAC_DT_PREVISTA.Value.Date - DateTime.Today.Date).Days)</td>
                                                                                 }
                                                                                 @if (cond.CRAC_IN_STATUS == 1)
 	                                                                            {
@@ -556,11 +558,11 @@
                                                                                     }
                                                                                     else if (cond.CRAC_IN_STATUS == 3)
                                                                                     {   
-                                                                                        @Html.TableLinkDetails(cond.CRAC_CD_ID, "VerAcao", "fa-edit", "Consultar")
+                                                                                        @Html.TableLinkDetails(cond.CRAC_CD_ID, "VerAcao", "fa-search", "Consultar")
                                                                                     }
                                                                                     else if (cond.CRAC_IN_STATUS == 4)
                                                                                     {   
-                                                                                        @Html.TableLinkDetails(cond.CRAC_CD_ID, "VerAcao", "fa-edit", "Consultar")
+                                                                                        @Html.TableLinkDetails(cond.CRAC_CD_ID, "VerAcao", "fa-search", "Consultar")
                                                                                         <span style="color: #337ab7; cursor:pointer;" alt="Reativar" class="tbl-link fa-lg fa fa-refresh" onclick="ShowModalReativar('/CRM/ReativarAcao/@cond.CRAC_CD_ID')" title="Reativar"></span>
                                                                                     }
                                                                                 </td>
@@ -574,23 +576,23 @@
                                                                                 <td>@cond.CRAC_NM_TITULO</td>
                                                                                 @if (cond.CRAC_DT_PREVISTA.Value.Date > DateTime.Today.Date)
                                                                                 {
-                                                                                    <td style="color: green; font-weight:bold">@cond.CRAC_DT_PREVISTA.Value.ToShortDateString() @cond.CRAC_DT_PREVISTA.Value.ToShortTimeString()</td>
+                                                                                    <td>@cond.CRAC_DT_PREVISTA.Value.ToShortDateString() @cond.CRAC_DT_PREVISTA.Value.ToShortTimeString()</td>
                                                                                 }
                                                                                 else if (cond.CRAC_DT_PREVISTA.Value.Date == DateTime.Today.Date)
                                                                                 {
-                                                                                    <td style="color: orange; font-weight:bold">@cond.CRAC_DT_PREVISTA.Value.ToShortDateString() @cond.CRAC_DT_PREVISTA.Value.ToShortTimeString()</td>
+                                                                                    <td>@cond.CRAC_DT_PREVISTA.Value.ToShortDateString() @cond.CRAC_DT_PREVISTA.Value.ToShortTimeString()</td>
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    <td style="color: red; font-weight:bold">@cond.CRAC_DT_PREVISTA.Value.ToShortDateString() @cond.CRAC_DT_PREVISTA.Value.ToShortTimeString()</td>
+                                                                                    <td>@cond.CRAC_DT_PREVISTA.Value.ToShortDateString() @cond.CRAC_DT_PREVISTA.Value.ToShortTimeString()</td>
                                                                                 }
                                                                                 @if ((cond.CRAC_DT_PREVISTA.Value - DateTime.Today.Date).Days > 0)
                                                                                 {
-                                                                                    <td style="color: green; font-weight:bold">@(cond.CRAC_DT_PREVISTA.Value - DateTime.Today.Date).Days</td>
+                                                                                    <td>@((cond.CRAC_DT_PREVISTA.Value.Date - DateTime.Today.Date).Days)</td>
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    <td style="color: red; font-weight:bold">@(cond.CRAC_DT_PREVISTA.Value - DateTime.Today.Date).Days</td>
+                                                                                    <td>@((cond.CRAC_DT_PREVISTA.Value.Date - DateTime.Today.Date).Days)</td>
                                                                                 }
                                                                                 @if (cond.CRAC_IN_STATUS == 1)
 	                                                                            {
@@ -610,18 +612,18 @@
                                                                                 }
                                                                                 <td>@cond.USUARIO.USUA_NM_NOME</td>
                                                                                 <td class="td-one-action">
-                                                                                    @if (cond.CRAC_IN_ATIVO == 1 || cond.CRAC_IN_ATIVO == 2)
+                                                                                    @if (cond.CRAC_IN_STATUS == 1 || cond.CRAC_IN_STATUS == 2)
                                                                                     {
                                                                                         @Html.TableLinkDetails(cond.CRAC_CD_ID, "EditarAcao", "fa-edit", "Editar/Consultar")
                                                                                         <span style="color: #337ab7; cursor:pointer;" alt="Desativar" class="tbl-link fa-lg fa fa-trash-o" onclick="ShowModalExcluir('/CRM/ExcluirAcao/@cond.CRAC_CD_ID')" title="Excluir"></span>
                                                                                     }
-                                                                                    else if (cond.CRAC_IN_ATIVO == 3)
+                                                                                    else if (cond.CRAC_IN_STATUS == 3)
                                                                                     {   
-                                                                                        @Html.TableLinkDetails(cond.CRAC_CD_ID, "VerAcao", "fa-edit", "Consultar")
+                                                                                        @Html.TableLinkDetails(cond.CRAC_CD_ID, "VerAcao", "fa-search", "Consultar")
                                                                                     }
-                                                                                    else if (cond.CRAC_IN_ATIVO == 4)
+                                                                                    else if (cond.CRAC_IN_STATUS == 4)
                                                                                     {   
-                                                                                        @Html.TableLinkDetails(cond.CRAC_CD_ID, "VerAcao", "fa-edit", "Consultar")
+                                                                                        @Html.TableLinkDetails(cond.CRAC_CD_ID, "VerAcao", "fa-search", "Consultar")
                                                                                         <span style="color: #337ab7; cursor:pointer;" alt="Reativar" class="tbl-link fa-lg fa fa-refresh" onclick="ShowModalReativar('/CRM/ReativarAcao/@cond.CRAC_CD_ID')" title="Reativar"></span>
                                                                                     }
                                                                                 </td>

@@ -1874,7 +1874,7 @@ namespace SMS_Presentation.Controllers
             CRM item = baseApp.GetItemById(id);
             CRMViewModel vm = Mapper.Map<CRM, CRMViewModel>(item);
             List<CRM_ACAO> acoes = item.CRM_ACAO.ToList().OrderByDescending(p => p.CRAC_DT_CRIACAO).ToList();
-            CRM_ACAO acao = acoes.Where(p => p.CRAC_IN_ATIVO == 1).FirstOrDefault();
+            CRM_ACAO acao = acoes.Where(p => p.CRAC_IN_STATUS == 1).FirstOrDefault();
             Session["Acoes"] = acoes;
             ViewBag.Acoes = acoes;
             ViewBag.Acao = acao;
@@ -2093,6 +2093,21 @@ namespace SMS_Presentation.Controllers
             // Prepara view
             ViewBag.Tipos = new SelectList(baseApp.GetAllTipoAcao().OrderBy(p => p.TIAC_NM_NOME), "TIAC_CD_ID", "TIAC_NM_NOME");
             ViewBag.Usuarios = new SelectList(usuApp.GetAllItens(idAss).OrderBy(p => p.USUA_NM_NOME), "USUA_CD_ID", "USUA_NM_NOME");
+
+            // Monta Status
+            List<SelectListItem> status = new List<SelectListItem>();
+            if (item.CRAC_IN_STATUS == 1)
+            {
+                status.Add(new SelectListItem() { Text = "Pendente", Value = "2" });
+                status.Add(new SelectListItem() { Text = "Encerrada", Value = "3" });
+                ViewBag.Status = new SelectList(status, "Value", "Text");
+            }
+            else if (item.CRAC_IN_STATUS == 2)
+            {
+                status.Add(new SelectListItem() { Text = "Ativa", Value = "1" });
+                status.Add(new SelectListItem() { Text = "Encerrada", Value = "3" });
+                ViewBag.Status = new SelectList(status, "Value", "Text");
+            }
 
             // Processa
             objetoAntes = (CRM)Session["CRM"];
