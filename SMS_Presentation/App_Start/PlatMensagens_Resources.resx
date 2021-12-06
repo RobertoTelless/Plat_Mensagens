@@ -210,6 +210,15 @@
   <data name="M0039" xml:space="preserve">
     <value>Já existe um contato marcado como PRINCIPAL</value>
   </data>
+  <data name="M0040" xml:space="preserve">
+    <value>Impossível incluir nova ação. Já existe uma ação ativa neste momento.</value>
+  </data>
+  <data name="M0041" xml:space="preserve">
+    <value>Impossível editar eta ação. Ela está encerrada ou excluída.</value>
+  </data>
+  <data name="M0042" xml:space="preserve">
+    <value>Impossível reativar esta ação. Já existe uma ação ativa neste momento.</value>
+  </data>
   <data name="M0044" xml:space="preserve">
     <value>Usuário já cadastrado</value>
   </data>

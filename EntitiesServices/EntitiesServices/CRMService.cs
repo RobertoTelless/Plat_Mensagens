@@ -87,6 +87,11 @@ namespace ModelServices.EntitiesServices
             return _conRepository.GetItemById(id);
         }
 
+        public CRM_ACAO GetAcaoById(Int32 id)
+        {
+            return _acaRepository.GetItemById(id);
+        }
+
         public List<CRM> GetAllItens(Int32 idAss)
         {
             return _baseRepository.GetAllItens(idAss);

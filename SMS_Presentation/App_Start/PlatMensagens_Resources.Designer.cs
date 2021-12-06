@@ -340,6 +340,33 @@ namespace SMS_Presentation.App_Start {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Impossível incluir nova ação. Já existe uma ação ativa neste momento..
+        /// </summary>
+        internal static string M0040 {
+            get {
+                return ResourceManager.GetString("M0040", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Impossível editar eta ação. Ela está encerrada ou excluída..
+        /// </summary>
+        internal static string M0041 {
+            get {
+                return ResourceManager.GetString("M0041", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Impossível reativar esta ação. Já existe uma ação ativa neste momento..
+        /// </summary>
+        internal static string M0042 {
+            get {
+                return ResourceManager.GetString("M0042", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Usuário já cadastrado.
         /// </summary>
         internal static string M0044 {

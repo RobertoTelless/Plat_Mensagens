@@ -150,7 +150,7 @@
                                                 <div class="ibox float-e-margins" style="border-bottom: solid; border-bottom-color: darkblue; border-bottom-width: 1px; border-left: solid; border-left-color: darkblue; border-left-width: 1px; border-right: solid; border-right-color: darkblue; border-right-width: 1px; border-top: solid; border-top-color: darkblue; border-top-width: 1px; height: 250px" >
                                                     <div class="ibox-title"  style="color: black">
                                                         <h5>Dados do Cliente</h5>
-                                                        <span class="btn btn-sm btn-primary" onclick="MudaIdClie('@Model.CLIE_CD_ID')" data-toggle="modal" data-target="#exampleModal" style="float: right">Enviar SMS</span>                                                    
+                                                        <span style="float: right"><a href="@Url.Action("EnviarEMailCliente", "CRM", new { id = Model.CLIE_CD_ID})" />Enviar E-Mail</span>
                                                     </div>
                                                     <div class="ibox-content" style="color: black">
                                                         @*<h3 style="color: green"><strong><a href="@Url.Action("EditarCliente", "Cliente", new { id = Model.CLIE_CD_ID })" />@Model.CLIENTE.CLIE_NM_NOME</strong></h3>*@

@@ -34,6 +34,7 @@ namespace ApplicationServices.Interfaces
         Int32 ExecuteFilter(Int32? status, DateTime? inicio, DateTime? final, Int32? origem, Int32? adic, String nome, String busca, Int32? estrela, Int32 idAss, out List<CRM> objeto);
 
         CRM_CONTATO GetContatoById(Int32 id);
+        CRM_ACAO GetAcaoById(Int32 id);
         Int32 ValidateEditContato(CRM_CONTATO item);
         Int32 ValidateCreateContato(CRM_CONTATO item);
         Int32 ValidateEditAcao(CRM_ACAO item);

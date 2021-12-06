@@ -27,6 +27,8 @@ namespace MvcMapping.Mappers
             CreateMap<TEMPLATE, TemplateViewModel>();
             CreateMap<CRM, CRMViewModel>();
             CreateMap<CRM_CONTATO, CRMContatoViewModel>();
+            CreateMap<CRM_COMENTARIO, CRMComentarioViewModel>();
+            CreateMap<CRM_ACAO, CRMAcaoViewModel>();
 
         }
     }

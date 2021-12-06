@@ -74,6 +74,12 @@ namespace ApplicationServices.Services
             return lista;
         }
 
+        public CRM_ACAO GetAcaoById(Int32 id)
+        {
+            CRM_ACAO lista = _baseService.GetAcaoById(id);
+            return lista;
+        }
+
         public CRM CheckExist(CRM tarefa, Int32 idUsu, Int32 idAss)
         {
             CRM item = _baseService.CheckExist(tarefa, idUsu, idAss);

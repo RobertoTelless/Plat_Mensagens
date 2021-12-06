@@ -26,6 +26,7 @@ using EntitiesServices.Attributes;
 using OfficeOpenXml.Table;
 using EntitiesServices.WorkClasses;
 using System.Threading.Tasks;
+using CrossCutting;
 
 namespace SMS_Presentation.Controllers
 {
@@ -1165,6 +1166,15 @@ namespace SMS_Presentation.Controllers
             return RedirectToAction("EditarProcessoCRM", new { id = (Int32)Session["IdCRM"] });
         }
 
+        public ActionResult VoltarAcompanhamentoCRM()
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            return RedirectToAction("AcompanhamentoProcessoCRM", new { id = (Int32)Session["IdCRM"] });
+        }
+
         [HttpGet]
         public ActionResult VerAnexoCRM(Int32 id)
         {
@@ -1842,11 +1852,620 @@ namespace SMS_Presentation.Controllers
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
 
+            // Mensagens
+            if (Session["MensCRM"] != null)
+            {
+                if ((Int32)Session["MensCRM"] == 42)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0040", CultureInfo.CurrentCulture));
+                }
+                if ((Int32)Session["MensCRM"] == 43)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0041", CultureInfo.CurrentCulture));
+                }
+                if ((Int32)Session["MensCRM"] == 44)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0042", CultureInfo.CurrentCulture));
+                }
+            }
+
+            // Processa...
             Session["IdCRM"] = id;
             CRM item = baseApp.GetItemById(id);
             CRMViewModel vm = Mapper.Map<CRM, CRMViewModel>(item);
+            List<CRM_ACAO> acoes = item.CRM_ACAO.ToList().OrderByDescending(p => p.CRAC_DT_CRIACAO).ToList();
+            CRM_ACAO acao = acoes.Where(p => p.CRAC_IN_ATIVO == 1).FirstOrDefault();
+            Session["Acoes"] = acoes;
+            ViewBag.Acoes = acoes;
+            ViewBag.Acao = acao;
             return View(vm);
         }
 
+        public ActionResult GerarRelatorioDetalheCRM()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult EnviarEMailContato(Int32 id)
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 crm = (Int32)Session["IdCRM"];
+            CRM item = baseApp.GetItemById(crm);
+            CRM_CONTATO cont = baseApp.GetContatoById(id);
+            ViewBag.Contato = cont;
+            MensagemViewModel mens = new MensagemViewModel();
+            mens.NOME = cont.CRCO_NM_NOME;
+            mens.ID = id;
+            mens.MODELO = cont.CRCO_NM_EMAIL;
+            return View(mens);
+        }
+
+        [HttpPost]
+        public ActionResult EnviarEMailContato(MensagemViewModel vm)
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idNot = (Int32)Session["IdCRM"];
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Executa a operação
+                    USUARIO usuarioLogado = (USUARIO)Session["UserCredentials"];
+                    Int32 volta = ProcessaEnvioEMailContato(vm, usuarioLogado);
+
+                    // Verifica retorno
+                    if (volta == 1)
+                    {
+
+                    }
+
+                    // Sucesso
+                    return RedirectToAction("AcompanhamentoProcessoCRM", new { id = idNot });
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = ex.Message;
+                    return View(vm);
+                }
+            }
+            else
+            {
+                return View(vm);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult EnviarSMSContato(Int32 id)
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 crm = (Int32)Session["IdCRM"];
+            CRM item = baseApp.GetItemById(crm);
+            CRM_CONTATO cont = baseApp.GetContatoById(id);
+            Session["Contato"] = cont;
+            ViewBag.Contato = cont;
+            MensagemViewModel mens = new MensagemViewModel();
+            mens.NOME = cont.CRCO_NM_NOME;
+            mens.ID = id;
+            mens.MODELO = cont.CRCO_NR_CELULAR;
+            return View(mens);
+        }
+
+        [HttpPost]
+        public ActionResult EnviarSMSContato(MensagemViewModel vm)
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idNot = (Int32)Session["IdCRM"];
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Executa a operação
+                    USUARIO usuarioLogado = (USUARIO)Session["UserCredentials"];
+                    Int32 volta = ProcessaEnvioSMSContato(vm, usuarioLogado);
+
+                    // Verifica retorno
+                    if (volta == 1)
+                    {
+
+                    }
+
+                    // Sucesso
+                    return RedirectToAction("AcompanhamentoProcessoCRM", new { id = idNot });
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = ex.Message;
+                    return View(vm);
+                }
+            }
+            else
+            {
+                return View(vm);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult IncluirComentarioCRM()
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 id = (Int32)Session["IdCRM"];
+            CRM item = baseApp.GetItemById(id);
+            USUARIO usuarioLogado = (USUARIO)Session["UserCredentials"];
+            CRM_COMENTARIO coment = new CRM_COMENTARIO();
+            CRMComentarioViewModel vm = Mapper.Map<CRM_COMENTARIO, CRMComentarioViewModel>(coment);
+            vm.CRCM_DT_COMENTARIO = DateTime.Now;
+            vm.CRCM_IN_ATIVO = 1;
+            vm.CRCM_CD_ID = item.CRM1_CD_ID;
+            vm.USUARIO = usuarioLogado;
+            vm.USUA_CD_ID = usuarioLogado.USUA_CD_ID;
+            return View(vm);
+        }
+
+        [HttpPost]
+        public ActionResult IncluirComentarioCRM(CRMComentarioViewModel vm)
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idNot = (Int32)Session["IdCRM"];
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Executa a operação
+                    CRM_COMENTARIO item = Mapper.Map<CRMComentarioViewModel, CRM_COMENTARIO>(vm);
+                    USUARIO usuarioLogado = (USUARIO)Session["UserCredentials"];
+                    CRM not = baseApp.GetItemById(idNot);
+
+                    item.USUARIO = null;
+                    not.CRM_COMENTARIO.Add(item);
+                    objetoAntes = not;
+                    Int32 volta = baseApp.ValidateEdit(not, objetoAntes);
+
+                    // Verifica retorno
+
+                    // Sucesso
+                    return RedirectToAction("AcompanhamentoProcessoCRM", new { id = idNot });
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = ex.Message;
+                    return View(vm);
+                }
+            }
+            else
+            {
+                return View(vm);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult EditarAcao(Int32 id)
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCRM"] = 2;
+                    return RedirectToAction("VoltarAcompanhamentoCRM");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Verifica se pode editar ação
+            CRM_ACAO item = baseApp.GetAcaoById(id);
+            if (item.CRAC_IN_STATUS > 2)
+            {
+                Session["MensCRM"] = 43;
+                return RedirectToAction("VoltarAcompanhamentoCRM");
+            }
+
+            // Prepara view
+            ViewBag.Tipos = new SelectList(baseApp.GetAllTipoAcao().OrderBy(p => p.TIAC_NM_NOME), "TIAC_CD_ID", "TIAC_NM_NOME");
+            ViewBag.Usuarios = new SelectList(usuApp.GetAllItens(idAss).OrderBy(p => p.USUA_NM_NOME), "USUA_CD_ID", "USUA_NM_NOME");
+
+            // Processa
+            objetoAntes = (CRM)Session["CRM"];
+            CRMAcaoViewModel vm = Mapper.Map<CRM_ACAO, CRMAcaoViewModel>(item);
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditarAcao(CRMAcaoViewModel vm)
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+            ViewBag.Tipos = new SelectList(baseApp.GetAllTipoAcao().OrderBy(p => p.TIAC_NM_NOME), "TIAC_CD_ID", "TIAC_NM_NOME");
+            ViewBag.Usuarios = new SelectList(usuApp.GetAllItens(idAss).OrderBy(p => p.USUA_NM_NOME), "USUA_CD_ID", "USUA_NM_NOME");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Executa a operação
+                    CRM_ACAO item = Mapper.Map<CRMAcaoViewModel, CRM_ACAO>(vm);
+                    USUARIO usuarioLogado = (USUARIO)Session["UserCredentials"];
+                    Int32 volta = baseApp.ValidateEditAcao(item);
+
+                    // Verifica retorno
+                    return RedirectToAction("VoltarAcompanhamentoCRM");
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = ex.Message;
+                    return View(vm);
+                }
+            }
+            else
+            {
+                return View(vm);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult ExcluirAcao(Int32 id)
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCRM"] = 2;
+                    return RedirectToAction("VoltarAcompanhamentoCRM");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Processa
+            CRM_ACAO item = baseApp.GetAcaoById(id);
+            objetoAntes = (CRM)Session["CRM"];
+            item.CRAC_IN_ATIVO = 0;
+            item.CRAC_IN_STATUS = 4;
+            Int32 volta = baseApp.ValidateEditAcao(item);
+            return RedirectToAction("VoltarAcompanhamentoCRM");
+        }
+
+        [HttpGet]
+        public ActionResult ReativarAcao(Int32 id)
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCRM"] = 2;
+                    return RedirectToAction("VoltarAcompanhamentoCRM");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Verifica se pode reativar ação
+            List<CRM_ACAO> acoes = (List<CRM_ACAO>)Session["Acoes"];
+            if (acoes.Where(p => p.CRAC_IN_STATUS == 1).ToList().Count > 0)
+            {
+                Session["MensCRM"] = 44;
+                return RedirectToAction("VoltarAcompanhamentoCRM");
+            }
+
+            // Processa
+            CRM_ACAO item = baseApp.GetAcaoById(id);
+            objetoAntes = (CRM)Session["CRM"];
+            item.CRAC_IN_ATIVO = 1;
+            item.CRAC_IN_STATUS = 1;
+            Int32 volta = baseApp.ValidateEditAcao(item);
+            return RedirectToAction("VoltarAcompanhamentoCRM");
+        }
+
+        public ActionResult VerAcao(Int32 id)
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCRM"] = 2;
+                    return RedirectToAction("VoltarAcompanhamentoCRM");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Processa
+            CRM_ACAO item = baseApp.GetAcaoById(id);
+            objetoAntes = (CRM)Session["CRM"];
+            CRMAcaoViewModel vm = Mapper.Map<CRM_ACAO, CRMAcaoViewModel>(item);
+            return View(vm);
+        }
+
+        [HttpGet]
+        public ActionResult IncluirAcao()
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCRM"] = 2;
+                    return RedirectToAction("VoltarAcompanhamentoCRM");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Verifica se pode inlcuir ação
+            List<CRM_ACAO> acoes = (List<CRM_ACAO>)Session["Acoes"];
+            if (acoes.Where(p => p.CRAC_IN_STATUS == 1).ToList().Count > 0)
+            {
+                Session["MensCRM"] = 42;
+                return RedirectToAction("VoltarAcompanhamentoCRM");
+            }
+
+            // Prepara view
+            ViewBag.Tipos = new SelectList(baseApp.GetAllTipoAcao().OrderBy(p => p.TIAC_NM_NOME), "TIAC_CD_ID", "TIAC_NM_NOME");
+            ViewBag.Usuarios = new SelectList(usuApp.GetAllItens(idAss).OrderBy(p => p.USUA_NM_NOME), "USUA_CD_ID", "USUA_NM_NOME");
+
+            CRM_ACAO item = new CRM_ACAO();
+            CRMAcaoViewModel vm = Mapper.Map<CRM_ACAO, CRMAcaoViewModel>(item);
+            vm.CRM1_CD_ID = (Int32)Session["IdCRM"];
+            vm.CRAC_IN_ATIVO = 1;
+            vm.ASSI_CD_ID = idAss;
+            vm.CRAC_DT_CRIACAO = DateTime.Now;
+            vm.CRAC_IN_STATUS = 1;
+            vm.USUA_CD_ID1 = usuario.USUA_CD_ID;
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult IncluirAcao(CRMAcaoViewModel vm)
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+            ViewBag.Tipos = new SelectList(baseApp.GetAllTipoAcao().OrderBy(p => p.TIAC_NM_NOME), "TIAC_CD_ID", "TIAC_NM_NOME");
+            ViewBag.Usuarios = new SelectList(usuApp.GetAllItens(idAss).OrderBy(p => p.USUA_NM_NOME), "USUA_CD_ID", "USUA_NM_NOME");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Executa a operação
+                    CRM_ACAO item = Mapper.Map<CRMAcaoViewModel, CRM_ACAO>(vm);
+                    USUARIO usuarioLogado = (USUARIO)Session["UserCredentials"];
+                    Int32 volta = baseApp.ValidateCreateAcao(item);
+
+                    // Verifica retorno
+                    return RedirectToAction("VoltarAcompanhamentoCRM");
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = ex.Message;
+                    return View(vm);
+                }
+            }
+            else
+            {
+                return View(vm);
+            }
+        }
+
+        [ValidateInput(false)]
+        public Int32 ProcessaEnvioSMSContato(MensagemViewModel vm, USUARIO usuario)
+        {
+            // Recupera contatos
+            Int32 idAss = (Int32)Session["IdAssinante"];
+            CRM_CONTATO cont = (CRM_CONTATO)Session["Contato"];
+
+            // Processa SMS
+            CONFIGURACAO conf = confApp.GetItemById(usuario.ASSI_CD_ID);
+
+            // Monta token
+            String text = conf.CONF_SG_LOGIN_SMS + ":" + conf.CONF_SG_SENHA_SMS;
+            byte[] textBytes = Encoding.UTF8.GetBytes(text);
+            String token = Convert.ToBase64String(textBytes);
+            String auth = "Basic " + token;
+
+            // Prepara texto
+            String texto = vm.MENS_TX_SMS;
+
+            // Prepara corpo do SMS e trata link
+            StringBuilder str = new StringBuilder();
+            str.AppendLine(vm.MENS_TX_SMS);
+            if (!String.IsNullOrEmpty(vm.LINK))
+            {
+                if (!vm.LINK.Contains("www."))
+                {
+                    vm.LINK = "www." + vm.LINK;
+                }
+                if (!vm.LINK.Contains("http://"))
+                {
+                    vm.LINK = "http://" + vm.LINK;
+                }
+                str.AppendLine("<a href='" + vm.LINK + "'>Clique aqui para maiores informações</a>");
+                texto += "  " + vm.LINK;
+            }
+            String body = str.ToString();
+            String smsBody = body;
+            String erro = null;
+                
+            // inicia processo
+            String resposta = String.Empty;
+
+            // Monta destinatarios
+            try
+            {
+                String listaDest = "55" + Regex.Replace(cont.CRCO_NR_CELULAR, "[^a-zA-Z0-9_.]+", "", RegexOptions.Compiled).ToString();
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://api-v2.smsfire.com.br/sms/send/bulk");
+                httpWebRequest.Headers["Authorization"] = auth;
+                httpWebRequest.ContentType = "application/json";
+                httpWebRequest.Method = "POST";
+                String customId = Cryptography.GenerateRandomPassword(8);
+                String data = String.Empty;
+                String json = String.Empty;
+                    
+                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                {
+                    json = String.Concat("{\"destinations\": [{\"to\": \"", listaDest, "\", \"text\": \"", texto, "\", \"customId\": \"" + customId + "\", \"from\": \"PlatMensagens\"}]}");
+                    streamWriter.Write(json);
+                }
+
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    resposta = result;
+                }
+            }
+            catch (Exception ex)
+            {
+                erro = ex.Message;
+            }
+            return 0;
+        }
+
+        [ValidateInput(false)]
+        public Int32 ProcessaEnvioEMailContato(MensagemViewModel vm, USUARIO usuario)
+        {
+            // Recupera contatos
+            Int32 idAss = (Int32)Session["IdAssinante"];
+            CRM_CONTATO cont = (CRM_CONTATO)Session["Contato"];
+
+            // Processa e-mail
+            CONFIGURACAO conf = confApp.GetItemById(usuario.ASSI_CD_ID);
+
+            // Prepara cabeçalho
+            String cab = "Prezado Sr." + cont.CRCO_NM_NOME;
+
+            // Prepara rodape
+            ASSINANTE assi = (ASSINANTE)Session["Assinante"];
+            String rod = assi.ASSI_NM_NOME;
+
+            // Prepara corpo do e-mail e trata link
+            String corpo = vm.MENS_TX_TEXTO;
+            StringBuilder str = new StringBuilder();
+            str.AppendLine(corpo);
+            if (!String.IsNullOrEmpty(vm.MENS_NM_LINK))
+            {
+                if (!vm.MENS_NM_LINK.Contains("www."))
+                {
+                    vm.MENS_NM_LINK = "www." + vm.MENS_NM_LINK;
+                }
+                if (!vm.MENS_NM_LINK.Contains("http://"))
+                {
+                    vm.MENS_NM_LINK = "http://" + vm.MENS_NM_LINK;
+                }
+                str.AppendLine("<a href='" + vm.MENS_NM_LINK + "'>Clique aqui para maiores informações</a>");
+            }
+            String body = str.ToString();                  
+            String emailBody = cab + body + rod;
+
+            // Monta e-mail
+            NetworkCredential net = new NetworkCredential(conf.CONF_NM_EMAIL_EMISSOO, conf.CONF_NM_SENHA_EMISSOR);
+            Email mensagem = new Email();
+            mensagem.ASSUNTO = "Contato";
+            mensagem.CORPO = emailBody;
+            mensagem.DEFAULT_CREDENTIALS = false;
+            mensagem.EMAIL_DESTINO = cont.CRCO_NM_EMAIL;
+            mensagem.EMAIL_EMISSOR = conf.CONF_NM_EMAIL_EMISSOO;
+            mensagem.ENABLE_SSL = true;
+            mensagem.NOME_EMISSOR = usuario.ASSINANTE.ASSI_NM_NOME;
+            mensagem.PORTA = conf.CONF_NM_PORTA_SMTP;
+            mensagem.PRIORIDADE = System.Net.Mail.MailPriority.High;
+            mensagem.SENHA_EMISSOR = conf.CONF_NM_SENHA_EMISSOR;
+            mensagem.SMTP = conf.CONF_NM_HOST_SMTP;
+            mensagem.IS_HTML = true;
+            mensagem.NETWORK_CREDENTIAL = net;
+
+            // Envia mensagem
+            try
+            {
+                Int32 voltaMail = CommunicationPackage.SendEmail(mensagem);
+            }
+            catch (Exception ex)
+            {
+                String erro = ex.Message;
+            }
+            return 0;
+        }
     }
 }
