@@ -92,6 +92,12 @@ namespace ApplicationServices.Services
             return lista;
         }
 
+        public List<CRM_ACAO> GetAllAcoes(Int32 idAss)
+        {
+            List<CRM_ACAO> lista = _baseService.GetAllAcoes(idAss);
+            return lista;
+        }
+
         public List<TIPO_ACAO> GetAllTipoAcao()
         {
             List<TIPO_ACAO> lista = _baseService.GetAllTipoAcao();

@@ -62,5 +62,9 @@ namespace EntitiesServices.Model
         public virtual DbSet<MOTIVO_CANCELAMENTO> MOTIVO_CANCELAMENTO { get; set; }
         public virtual DbSet<MOTIVO_ENCERRAMENTO> MOTIVO_ENCERRAMENTO { get; set; }
         public virtual DbSet<TIPO_ACAO> TIPO_ACAO { get; set; }
+        public virtual DbSet<AGENDA> AGENDA { get; set; }
+        public virtual DbSet<AGENDA_ANEXO> AGENDA_ANEXO { get; set; }
+        public virtual DbSet<AGENDA_VINCULO> AGENDA_VINCULO { get; set; }
+        public virtual DbSet<CATEGORIA_AGENDA> CATEGORIA_AGENDA { get; set; }
     }
 }

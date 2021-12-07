@@ -37,6 +37,7 @@ namespace SMS_Presentation.Controllers
         private readonly IUsuarioAppService usuApp;
         private readonly IConfiguracaoAppService confApp;
         private readonly IMensagemAppService menApp;
+        private readonly IAgendaAppService ageApp;
 
         private String msg;
         private Exception exception;
@@ -45,13 +46,14 @@ namespace SMS_Presentation.Controllers
         List<CRM> listaMaster = new List<CRM>();
         String extensao;
 
-        public CRMController(ICRMAppService baseApps, ILogAppService logApps, IUsuarioAppService usuApps, IConfiguracaoAppService confApps, IMensagemAppService menApps)
+        public CRMController(ICRMAppService baseApps, ILogAppService logApps, IUsuarioAppService usuApps, IConfiguracaoAppService confApps, IMensagemAppService menApps, IAgendaAppService ageApps)
         {
             baseApp = baseApps;
             logApp = logApps;
             usuApp = usuApps;
             confApp = confApps;
             menApp = menApps;
+            ageApp = ageApps;
         }
 
         [HttpGet]
@@ -156,6 +158,23 @@ namespace SMS_Presentation.Controllers
                 {
                     ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0038", CultureInfo.CurrentCulture));
                 }
+                if ((Int32)Session["MensCRM"] == 60)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0043", CultureInfo.CurrentCulture));
+                }
+                if ((Int32)Session["MensCRM"] == 61)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0046", CultureInfo.CurrentCulture));
+                }
+                if ((Int32)Session["MensCRM"] == 62)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0047", CultureInfo.CurrentCulture));
+                }
+                if ((Int32)Session["MensCRM"] == 63)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0048", CultureInfo.CurrentCulture));
+                }
+
             }
 
             // Abre view
@@ -169,6 +188,121 @@ namespace SMS_Presentation.Controllers
             return View(objeto);
         }
 
+        [HttpGet]
+        public ActionResult MontarTelaKanbanCRM()
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCRM"] = 2;
+                    return RedirectToAction("CarregarBase", "BaseAdmin");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+
+            // Carrega listas
+            if ((List<CRM>)Session["ListaCRM"] == null)
+            {
+                listaMaster = baseApp.GetAllItens(idAss);
+                Session["ListaCRM"] = listaMaster;
+            }
+            Session["CRM"] = null;
+            ViewBag.Listas = (List<CRM>)Session["ListaCRM"];
+            ViewBag.Title = "CRM";
+            ViewBag.Origem = new SelectList(baseApp.GetAllOrigens().OrderBy(p => p.CROR_NM_NOME), "CROR_CD_ID", "CROR_NM_NOME");
+            List<SelectListItem> visao = new List<SelectListItem>();
+            visao.Add(new SelectListItem() { Text = "Lista", Value = "1" });
+            visao.Add(new SelectListItem() { Text = "Kanban", Value = "2" });
+            ViewBag.Visao = new SelectList(visao, "Value", "Text");
+            List<SelectListItem> status = new List<SelectListItem>();
+            status.Add(new SelectListItem() { Text = "Prospecção", Value = "1" });
+            status.Add(new SelectListItem() { Text = "Contato Realizado", Value = "2" });
+            status.Add(new SelectListItem() { Text = "Proposta Apresentada", Value = "3" });
+            status.Add(new SelectListItem() { Text = "Negociação", Value = "4" });
+            status.Add(new SelectListItem() { Text = "Encerrado", Value = "5" });
+            ViewBag.Status = new SelectList(status, "Value", "Text");
+            List<SelectListItem> adic = new List<SelectListItem>();
+            adic.Add(new SelectListItem() { Text = "Ativos", Value = "1" });
+            adic.Add(new SelectListItem() { Text = "Arquivados", Value = "2" });
+            adic.Add(new SelectListItem() { Text = "Cancelados", Value = "3" });
+            adic.Add(new SelectListItem() { Text = "Falhados", Value = "4" });
+            adic.Add(new SelectListItem() { Text = "Sucesso", Value = "5" });
+            ViewBag.Adic = new SelectList(adic, "Value", "Text");
+            List<SelectListItem> fav = new List<SelectListItem>();
+            fav.Add(new SelectListItem() { Text = "Sim", Value = "1" });
+            fav.Add(new SelectListItem() { Text = "Não", Value = "0" });
+            ViewBag.Favorito = new SelectList(fav, "Value", "Text");
+            Session["IncluirCRM"] = 0;
+
+            // Indicadores
+            ViewBag.Perfil = usuario.PERFIL.PERF_SG_SIGLA;
+
+            if (Session["MensCRM"] != null)
+            {
+                if ((Int32)Session["MensCRM"] == 2)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0011", CultureInfo.CurrentCulture));
+                }
+                if ((Int32)Session["MensCRM"] == 3)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0035", CultureInfo.CurrentCulture));
+                }
+                if ((Int32)Session["MensCRM"] == 4)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0036", CultureInfo.CurrentCulture));
+                }
+                if ((Int32)Session["MensCRM"] == 30)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0037", CultureInfo.CurrentCulture));
+                }
+                if ((Int32)Session["MensCRM"] == 31)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0038", CultureInfo.CurrentCulture));
+                }
+                if ((Int32)Session["MensCRM"] == 60)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0043", CultureInfo.CurrentCulture));
+                }
+                if ((Int32)Session["MensCRM"] == 61)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0046", CultureInfo.CurrentCulture));
+                }
+                if ((Int32)Session["MensCRM"] == 62)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0047", CultureInfo.CurrentCulture));
+                }
+                if ((Int32)Session["MensCRM"] == 63)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0048", CultureInfo.CurrentCulture));
+                }
+            }
+
+            // Abre view
+            Session["VoltaCRM"] = 1;
+            Session["IncluirCliente"] = 0;
+            objeto = new CRM();
+            if (Session["FiltroCRM"] != null)
+            {
+                objeto = (CRM)Session["FiltroCRM"];
+            }
+            return View(objeto);
+        }
+        
         public ActionResult RetirarFiltroCRM()
         {
 
@@ -1428,6 +1562,108 @@ namespace SMS_Presentation.Controllers
         }
 
         [HttpGet]
+        public ActionResult EncerrarProcessoCRM(Int32 id)
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCRM"] = 2;
+                    return RedirectToAction("MontarTelaCRM", "CRM");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Prepara listas
+            ViewBag.Motivos = new SelectList(baseApp.GetAllMotivoEncerramento().OrderBy(p => p.MOEN_NM_NOME), "MOEN_CD_ID", "MOEN_NM_NOME");
+            Session["IncluirCRM"] = 0;
+            Session["CRM"] = null;
+
+            // Recupera
+            Session["CRMNovo"] = 0;
+            CRM item = baseApp.GetItemById(id);
+
+            // Checa ações
+            Session["TemAcao"] = 0;
+            if (item.CRM_ACAO.Where(p => p.CRAC_IN_ATIVO == 1).ToList().Count > 0)
+            {
+                Session["TemAcao"] = 1;
+            }
+
+            // Prepara view
+            CRMViewModel vm = Mapper.Map<CRM, CRMViewModel>(item);
+            vm.CRM1_DT_ENCERRAMENTO = DateTime.Today.Date;
+            vm.CRM1_IN_ATIVO = 5;
+            vm.CRM1_IN_STATUS = 5;
+            return View(vm);
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public ActionResult EncerrarProcessoCRM(CRMViewModel vm)
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+            ViewBag.Motivos = new SelectList(baseApp.GetAllMotivoEncerramento().OrderBy(p => p.MOEN_NM_NOME), "MOEN_CD_ID", "MOEN_NM_NOME");
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Executa a operação
+                    CRM item = Mapper.Map<CRMViewModel, CRM>(vm);
+                    USUARIO usuario = (USUARIO)Session["UserCredentials"];
+                    Int32 volta = baseApp.ValidateEdit(item, item, usuario);
+
+                    // Verifica retorno
+                    if (volta == 1)
+                    {
+                        Session["MensCRM"] = 60;
+                        return RedirectToAction("MontarTelaCRM");
+                    }
+                    if (volta == 2)
+                    {
+                        Session["MensCRM"] = 61;
+                        return RedirectToAction("MontarTelaCRM");
+                    }
+
+                    // Listas
+                    listaMaster = new List<CRM>();
+                    Session["ListaCRM"] = null;
+                    Session["IncluirCRM"] = 1;
+                    Session["CRMNovo"] = item.CRM1_CD_ID;
+                    Session["IdCRM"] = item.CRM1_CD_ID;
+                    return RedirectToAction("MontarTelaCRM");
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = ex.Message;
+                    return View(vm);
+                }
+            }
+            else
+            {
+                return View(vm);
+            }
+        }
+
+        [HttpGet]
         public ActionResult EditarProcessoCRM(Int32 id)
         {
 
@@ -1542,6 +1778,26 @@ namespace SMS_Presentation.Controllers
                     Int32 volta = baseApp.ValidateEdit(item, (CRM)Session["CRM"], usuario);
 
                     // Verifica retorno
+                    if (volta == 1)
+                    {
+                        Session["MensCRM"] = 60;
+                        return RedirectToAction("MontarTelaCRM");
+                    }
+                    if (volta == 2)
+                    {
+                        Session["MensCRM"] = 61;
+                        return RedirectToAction("MontarTelaCRM");
+                    }
+                    if (volta == 3)
+                    {
+                        Session["MensCRM"] = 62;
+                        return RedirectToAction("MontarTelaCRM");
+                    }
+                    if (volta == 4)
+                    {
+                        Session["MensCRM"] = 63;
+                        return RedirectToAction("MontarTelaCRM");
+                    }
 
                     // Sucesso
                     listaMaster = new List<CRM>();
@@ -2260,6 +2516,37 @@ namespace SMS_Presentation.Controllers
             return View(vm);
         }
 
+        public ActionResult VerAcoesUsuarioCRM()
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCRM"] = 2;
+                    return RedirectToAction("VoltarAcompanhamentoCRM");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Processa
+            List<CRM_ACAO> lista = baseApp.GetAllAcoes(idAss).Where(p => p.USUA_CD_ID2 == usuario.USUA_CD_ID).OrderByDescending(m => m.CRAC_DT_PREVISTA).ToList();
+            ViewBag.Lista = lista;
+            return View();
+        }
+
         [HttpGet]
         public ActionResult IncluirAcao()
         {
@@ -2297,6 +2584,10 @@ namespace SMS_Presentation.Controllers
             // Prepara view
             ViewBag.Tipos = new SelectList(baseApp.GetAllTipoAcao().OrderBy(p => p.TIAC_NM_NOME), "TIAC_CD_ID", "TIAC_NM_NOME");
             ViewBag.Usuarios = new SelectList(usuApp.GetAllItens(idAss).OrderBy(p => p.USUA_NM_NOME), "USUA_CD_ID", "USUA_NM_NOME");
+            List<SelectListItem> agenda = new List<SelectListItem>();
+            agenda.Add(new SelectListItem() { Text = "Sim", Value = "1" });
+            agenda.Add(new SelectListItem() { Text = "Não", Value = "2" });
+            ViewBag.Agenda = new SelectList(agenda, "Value", "Text");
 
             CRM_ACAO item = new CRM_ACAO();
             CRMAcaoViewModel vm = Mapper.Map<CRM_ACAO, CRMAcaoViewModel>(item);
@@ -2306,6 +2597,7 @@ namespace SMS_Presentation.Controllers
             vm.CRAC_DT_CRIACAO = DateTime.Now;
             vm.CRAC_IN_STATUS = 1;
             vm.USUA_CD_ID1 = usuario.USUA_CD_ID;
+            vm.CRIA_AGENDA = 2;
             return View(vm);
         }
 
@@ -2328,6 +2620,22 @@ namespace SMS_Presentation.Controllers
                     CRM_ACAO item = Mapper.Map<CRMAcaoViewModel, CRM_ACAO>(vm);
                     USUARIO usuarioLogado = (USUARIO)Session["UserCredentials"];
                     Int32 volta = baseApp.ValidateCreateAcao(item);
+
+                    // Processa agenda
+                    if (vm.CRIA_AGENDA == 1)
+                    {
+                        AGENDA ag = new AGENDA();
+                        ag.AGEN_DS_DESCRICAO = "Ação: " + vm.CRAC_DS_DESCRICAO;
+                        ag.AGEN_DT_DATA = vm.CRAC_DT_PREVISTA.Value;
+                        ag.AGEN_HR_HORA = vm.CRAC_DT_PREVISTA.Value.TimeOfDay;
+                        ag.AGEN_IN_ATIVO = 1;
+                        ag.AGEN_IN_STATUS = 1;
+                        ag.AGEN_NM_TITULO = vm.CRAC_NM_TITULO;
+                        ag.ASSI_CD_ID = idAss;
+                        ag.CAAG_CD_ID = 1;
+                        ag.USUA_CD_ID = usuarioLogado.USUA_CD_ID;
+                        Int32 voltaAg = ageApp.ValidateCreate(ag, usuarioLogado);
+                    }
 
                     // Verifica retorno
                     return RedirectToAction("VoltarAcompanhamentoCRM");
@@ -2482,5 +2790,731 @@ namespace SMS_Presentation.Controllers
             }
             return 0;
         }
+
+        [HttpPost]
+        public JsonResult GetProcessos()
+        {
+            Int32 idAss = (Int32)Session["IdAssinante"];
+            USUARIO usuario = (USUARIO)Session["UserCredentials"];
+            listaMaster = baseApp.GetAllItens(idAss);
+            var listaHash = new List<Hashtable>();
+            foreach (var item in listaMaster)
+            {
+                var hash = new Hashtable();
+                hash.Add("CRM1_IN_STATUS", item.CRM1_IN_STATUS);
+                hash.Add("CRM1_CD_ID", item.CRM1_CD_ID);
+                hash.Add("CRM1_NM_NOME", item.CRM1_NM_NOME);
+                hash.Add("CRM1_DT_CRIACAO", item.CRM1_DT_CRIACAO.Value.ToString("dd/MM/yyyy"));
+                hash.Add("CRM1_DT_ENCERRAMENTO", item.CRM1_DT_ENCERRAMENTO.Value.ToString("dd/MM/yyyy"));
+                hash.Add("CRM1_NM_CLIENTE", item.CLIENTE.CLIE_NM_NOME);
+                listaHash.Add(hash);
+            }
+            return Json(listaHash);
+        }
+
+        [HttpPost]
+        public JsonResult EditarStatusCRM(Int32 id, Int32 status, DateTime? dtEnc)
+        {
+            CRM crm = baseApp.GetById(id);
+            crm.CRM1_IN_STATUS = status;
+            crm.CRM1_DT_ENCERRAMENTO = dtEnc;
+            crm.MOEN_CD_ID = 1;
+            crm.CRM1_DS_INFORMACOES_ENCERRAMENTO = "Processo Encerrado";
+
+            //CRM item = new CRM();
+            //item.TARE_CD_ID = tarefa.TARE_CD_ID;
+            //item.TARE_DS_DESCRICAO = tarefa.TARE_DS_DESCRICAO;
+            //item.TARE_DT_CADASTRO = tarefa.TARE_DT_CADASTRO;
+            //item.TARE_DT_ESTIMADA = tarefa.TARE_DT_ESTIMADA;
+            //item.TARE_DT_REALIZADA = dtEnc;
+            //item.TARE_IN_ATIVO = tarefa.TARE_IN_ATIVO;
+            //item.TARE_IN_AVISA = tarefa.TARE_IN_AVISA;
+            //item.TARE_IN_PRIORIDADE = tarefa.TARE_IN_PRIORIDADE;
+            //item.TARE_IN_STATUS = tarefa.TARE_IN_STATUS;
+            //item.TARE_NM_LOCAL = tarefa.TARE_NM_LOCAL;
+            //item.TARE_NM_TITULO = tarefa.TARE_NM_TITULO;
+            //item.TARE_TX_OBSERVACOES = tarefa.TARE_TX_OBSERVACOES;
+            //item.TITR_CD_ID = tarefa.TITR_CD_ID;
+            //item.USUA_CD_ID = tarefa.USUA_CD_ID;
+
+            try
+            {
+                // Executa a operação
+                USUARIO usuarioLogado = (USUARIO)Session["UserCredentials"];
+                Int32 volta = baseApp.ValidateEdit(crm, crm, usuarioLogado);
+
+                // Verifica retorno
+                if (volta == 1)
+                {
+                    return Json(PlatMensagens_Resources.ResourceManager.GetString("M0043", CultureInfo.CurrentCulture));
+                }
+                if (volta == 2)
+                {
+                    return Json(PlatMensagens_Resources.ResourceManager.GetString("M0046", CultureInfo.CurrentCulture));
+                }
+
+                Session["ListaCRM"] = null;
+                return Json("SUCCESS");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+                return Json(ex.Message);
+            }
+        }
+
+        public ActionResult GerarRelatorioDetalhe()
+        {
+            // Prepara geração
+            CRM aten = baseApp.GetItemById((Int32)Session["IdCRM"]);
+            String data = DateTime.Today.Date.ToShortDateString();
+            data = data.Substring(0, 2) + data.Substring(3, 2) + data.Substring(6, 4);
+            String nomeRel = "CRM" + aten.CRM1_CD_ID.ToString() + "_" + data + ".pdf";
+            Font meuFont = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            Font meuFont1 = FontFactory.GetFont("Arial", 9, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            Font meuFont2 = FontFactory.GetFont("Arial", 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            Font meuFontBold = FontFactory.GetFont("Arial", 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            Font meuFontVerde = FontFactory.GetFont("Arial", 9, iTextSharp.text.Font.BOLD, BaseColor.GREEN);
+            Font meuFontAzul= FontFactory.GetFont("Arial", 9, iTextSharp.text.Font.BOLD, BaseColor.BLUE);
+            Font meuFontVermelho = FontFactory.GetFont("Arial", 9, iTextSharp.text.Font.BOLD, BaseColor.RED);
+
+            // Cria documento
+            Document pdfDoc = new Document(PageSize.A4, 10, 10, 10, 10);
+            PdfWriter pdfWriter = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
+            pdfDoc.Open();
+
+            // Linha horizontal
+            Paragraph line1 = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLUE, Element.ALIGN_LEFT, 1)));
+            pdfDoc.Add(line1);
+
+            // Cabeçalho
+            PdfPTable table = new PdfPTable(5);
+            table.WidthPercentage = 100;
+            table.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
+            table.SpacingBefore = 1f;
+            table.SpacingAfter = 1f;
+
+            PdfPCell cell = new PdfPCell();
+            cell.Border = 0;
+            Image image = Image.GetInstance(Server.MapPath("~/Imagens/base/favicon_SystemBR.jpg"));
+            image.ScaleAbsolute(50, 50);
+            cell.AddElement(image);
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Paragraph("Processo CRM - Detalhes", meuFont2))
+            {
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                HorizontalAlignment = Element.ALIGN_CENTER
+            };
+            cell.Border = 0;
+            cell.Colspan = 4;
+            table.AddCell(cell);
+
+            pdfDoc.Add(table);
+
+            // Linha Horizontal
+            line1 = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLUE, Element.ALIGN_LEFT, 1)));
+            pdfDoc.Add(line1);
+            line1 = new Paragraph("  ");
+            pdfDoc.Add(line1);
+
+            // Dados do Cliente
+            table = new PdfPTable(new float[] { 120f, 120f, 120f, 120f });
+            table.WidthPercentage = 100;
+            table.HorizontalAlignment = 0;
+            table.SpacingBefore = 1f;
+            table.SpacingAfter = 1f;
+
+            cell = new PdfPCell(new Paragraph("Dados do Cliente", meuFontBold));
+            cell.Border = 0;
+            cell.Colspan = 4;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Paragraph("Nome: " + aten.CLIENTE.CLIE_NM_NOME, meuFontVerde));
+            cell.Border = 0;
+            cell.Colspan = 4;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+
+            if (aten.CLIENTE.CLIE_NM_ENDERECO != null)
+            {
+                cell = new PdfPCell(new Paragraph("Endereço: " + aten.CLIENTE.CLIE_NM_ENDERECO + " " + aten.CLIENTE.CLIE_NR_NUMERO + " " + aten.CLIENTE.CLIE_NM_COMPLEMENTO, meuFont));
+                cell.Border = 0;
+                cell.Colspan = 4;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                if (aten.CLIENTE.UF != null)
+                {
+                    cell = new PdfPCell(new Paragraph("          " + aten.CLIENTE.CLIE_NM_BAIRRO + " - " + aten.CLIENTE.CLIE_NM_CIDADE + " - " + aten.CLIENTE.UF.UF_SG_SIGLA + " - " + aten.CLIENTE.CLIE_NR_CEP, meuFont));
+                    cell.Border = 0;
+                    cell.Colspan = 4;
+                    cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                    cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table.AddCell(cell);
+                }
+                else
+                {
+                    cell = new PdfPCell(new Paragraph("          " + aten.CLIENTE.CLIE_NM_BAIRRO + " - " + aten.CLIENTE.CLIE_NM_CIDADE + " - " + aten.CLIENTE.CLIE_NR_CEP, meuFont));
+                    cell.Border = 0;
+                    cell.Colspan = 4;
+                    cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                    cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table.AddCell(cell);
+                }
+            }
+            else
+            {
+                cell = new PdfPCell(new Paragraph("Endereço: -", meuFont));
+                cell.Border = 0;
+                cell.Colspan = 4;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+
+            cell = new PdfPCell(new Paragraph("Telefone: " + aten.CLIENTE.CLIE_NR_TELEFONE, meuFont));
+            cell.Border = 0;
+            cell.Colspan = 1;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+            cell = new PdfPCell(new Paragraph("Celular: " + aten.CLIENTE.CLIE_NR_CELULAR, meuFont));
+            cell.Border = 0;
+            cell.Colspan = 1;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+            cell = new PdfPCell(new Paragraph("E-Mail: " + aten.CLIENTE.CLIE_NM_EMAIL, meuFont));
+            cell.Border = 0;
+            cell.Colspan = 2;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+            pdfDoc.Add(table);
+
+            // Linha Horizontal
+            line1 = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLUE, Element.ALIGN_LEFT, 1)));
+            pdfDoc.Add(line1);
+
+            // Dados do Processo
+            table = new PdfPTable(new float[] { 120f, 120f, 120f, 120f });
+            table.WidthPercentage = 100;
+            table.HorizontalAlignment = 0;
+            table.SpacingBefore = 1f;
+            table.SpacingAfter = 1f;
+
+            cell = new PdfPCell(new Paragraph("Dados do Processo", meuFontBold));
+            cell.Border = 0;
+            cell.Colspan = 4;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Paragraph("Nome: " + aten.CRM1_NM_NOME, meuFontVerde));
+            cell.Border = 0;
+            cell.Colspan = 3;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+            if (aten.CRM1_IN_STATUS == 1)
+            {
+                cell = new PdfPCell(new Paragraph("Status: Prospecção", meuFontAzul));
+            }
+            else if (aten.CRM1_IN_STATUS == 2)
+            {
+                cell = new PdfPCell(new Paragraph("Status: Contato Realizado", meuFontAzul));
+            }
+            else if (aten.CRM1_IN_STATUS == 3)
+            {
+                cell = new PdfPCell(new Paragraph("Status: Proposta Enviada", meuFontAzul));
+            }
+            else if (aten.CRM1_IN_STATUS == 4)
+            {
+                cell = new PdfPCell(new Paragraph("Status: Em Negociação", meuFontAzul));
+            }
+            else if (aten.CRM1_IN_STATUS == 5)
+            {
+                cell = new PdfPCell(new Paragraph("Status: Encerrado", meuFontAzul));
+            }
+            cell.Border = 0;
+            cell.Colspan = 1;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Paragraph("Descrição: " + aten.CRM1_DS_DESCRICAO, meuFontVerde));
+            cell.Border = 0;
+            cell.Colspan = 4;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Paragraph("Informações: " + aten.CRM1_TX_INFORMACOES_GERAIS, meuFontVerde));
+            cell.Border = 0;
+            cell.Colspan = 4;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Paragraph("Criação: " + aten.CRM1_DT_CRIACAO.Value.ToShortDateString(), meuFont));
+            cell.Border = 0;
+            cell.Colspan = 1;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+            cell = new PdfPCell(new Paragraph("Responsável: " + aten.USUARIO.USUA_NM_NOME, meuFont));
+            cell.Border = 0;
+            cell.Colspan = 1;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+            cell = new PdfPCell(new Paragraph("Origem: " + aten.CRM_ORIGEM.CROR_NM_NOME, meuFont));
+            cell.Border = 0;
+            cell.Colspan = 2;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+
+            if (aten.CRM1_IN_ATIVO == 3)
+            {
+                cell = new PdfPCell(new Paragraph("Data Cancelamento: " + aten.CRM1_DT_CANCELAMENTO.Value.ToShortDateString(), meuFont));
+                cell.Border = 0;
+                cell.Colspan = 1;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+                cell = new PdfPCell(new Paragraph("Motivo: " + aten.MOTIVO_CANCELAMENTO.MOCA_NM_NOME, meuFont));
+                cell.Border = 0;
+                cell.Colspan = 1;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+                cell = new PdfPCell(new Paragraph("Descrição: " + aten.CRM1_DS_MOTIVO_CANCELAMENTO, meuFont));
+                cell.Border = 0;
+                cell.Colspan = 2;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+
+            if (aten.CRM1_IN_STATUS == 5)
+            {
+                cell = new PdfPCell(new Paragraph("Data Encerramento: " + aten.CRM1_DT_ENCERRAMENTO.Value.ToShortDateString(), meuFont));
+                cell.Border = 0;
+                cell.Colspan = 1;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+                cell = new PdfPCell(new Paragraph("Motivo: " + aten.MOTIVO_ENCERRAMENTO.MOEN_NM_NOME, meuFont));
+                cell.Border = 0;
+                cell.Colspan = 1;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+                cell = new PdfPCell(new Paragraph("Descrição: " + aten.CRM1_DS_INFORMACOES_ENCERRAMENTO, meuFont));
+                cell.Border = 0;
+                cell.Colspan = 2;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+            }
+            pdfDoc.Add(table);
+
+            // Linha Horizontal
+            line1 = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLUE, Element.ALIGN_LEFT, 1)));
+            pdfDoc.Add(line1);
+
+            // Contatos
+            table = new PdfPTable(new float[] { 120f, 120f, 120f, 120f });
+            table.WidthPercentage = 100;
+            table.HorizontalAlignment = 0;
+            table.SpacingBefore = 1f;
+            table.SpacingAfter = 1f;
+
+            cell = new PdfPCell(new Paragraph("Contatos", meuFontBold));
+            cell.Border = 0;
+            cell.Colspan = 4;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+
+            if (aten.CRM_CONTATO.Count > 0)
+            {
+                table = new PdfPTable(new float[] { 130f, 100f, 100f, 80f, 80f });
+                table.WidthPercentage = 100;
+                table.HorizontalAlignment = 0;
+                table.SpacingBefore = 1f;
+                table.SpacingAfter = 1f;
+
+                cell = new PdfPCell(new Paragraph("Nome", meuFont))
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                table.AddCell(cell);
+                cell = new PdfPCell(new Paragraph("Cargo", meuFont))
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                table.AddCell(cell);
+                cell = new PdfPCell(new Paragraph("E-Mail", meuFont))
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                table.AddCell(cell);
+                cell = new PdfPCell(new Paragraph("Telefone", meuFont))
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                table.AddCell(cell);
+                cell = new PdfPCell(new Paragraph("Celular", meuFont))
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                table.AddCell(cell);
+
+                foreach (CRM_CONTATO item in aten.CRM_CONTATO)
+                {
+                    cell = new PdfPCell(new Paragraph(item.CRCO_NM_NOME, meuFont))
+                    {
+                        VerticalAlignment = Element.ALIGN_MIDDLE,
+                        HorizontalAlignment = Element.ALIGN_LEFT
+                    };
+                    table.AddCell(cell);
+                    cell = new PdfPCell(new Paragraph(item.CRCO_NM_CARGO, meuFont))
+                    {
+                        VerticalAlignment = Element.ALIGN_MIDDLE,
+                        HorizontalAlignment = Element.ALIGN_LEFT
+                    };
+                    table.AddCell(cell);
+                    cell = new PdfPCell(new Paragraph(item.CRCO_NM_EMAIL, meuFont))
+                    {
+                        VerticalAlignment = Element.ALIGN_MIDDLE,
+                        HorizontalAlignment = Element.ALIGN_LEFT
+                    };
+                    table.AddCell(cell);
+                    cell = new PdfPCell(new Paragraph(item.CRCO_NR_TELEFONE, meuFont))
+                    {
+                        VerticalAlignment = Element.ALIGN_MIDDLE,
+                        HorizontalAlignment = Element.ALIGN_LEFT
+                    };
+                    cell = new PdfPCell(new Paragraph(item.CRCO_NR_CELULAR, meuFont))
+                    {
+                        VerticalAlignment = Element.ALIGN_MIDDLE,
+                        HorizontalAlignment = Element.ALIGN_LEFT
+                    };
+                    table.AddCell(cell);
+                }
+                pdfDoc.Add(table);
+            }
+
+            // Linha Horizontal
+            line1 = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLUE, Element.ALIGN_LEFT, 1)));
+            pdfDoc.Add(line1);
+
+            // Dados Ações
+            table = new PdfPTable(new float[] { 120f, 120f, 120f, 120f });
+            table.WidthPercentage = 100;
+            table.HorizontalAlignment = 0;
+            table.SpacingBefore = 1f;
+            table.SpacingAfter = 1f;
+
+            cell = new PdfPCell(new Paragraph("Ações", meuFontBold));
+            cell.Border = 0;
+            cell.Colspan = 4;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+
+            if (aten.CRM_ACAO.Count > 0)
+            {
+                table = new PdfPTable(new float[] { 120f, 80f, 80f, 100f, 80f });
+                table.WidthPercentage = 100;
+                table.HorizontalAlignment = 0;
+                table.SpacingBefore = 1f;
+                table.SpacingAfter = 1f;
+
+                cell = new PdfPCell(new Paragraph("Título", meuFont))
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                table.AddCell(cell);
+                cell = new PdfPCell(new Paragraph("Criação", meuFont))
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                table.AddCell(cell);
+                cell = new PdfPCell(new Paragraph("Previsão", meuFont))
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                table.AddCell(cell);
+                cell = new PdfPCell(new Paragraph("Dias (Prevista)", meuFont))
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                table.AddCell(cell);
+                cell = new PdfPCell(new Paragraph("Status", meuFont))
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                table.AddCell(cell);
+
+                foreach (CRM_ACAO item in aten.CRM_ACAO)
+                {
+                    cell = new PdfPCell(new Paragraph(item.CRAC_NM_TITULO, meuFont))
+                    {
+                        VerticalAlignment = Element.ALIGN_MIDDLE,
+                        HorizontalAlignment = Element.ALIGN_LEFT
+                    };
+                    table.AddCell(cell);
+                    cell = new PdfPCell(new Paragraph(item.CRAC_DT_CRIACAO.Value.ToShortDateString(), meuFont))
+                    {
+                        VerticalAlignment = Element.ALIGN_MIDDLE,
+                        HorizontalAlignment = Element.ALIGN_LEFT
+                    };
+                    table.AddCell(cell);
+                    if (item.CRAC_DT_PREVISTA > DateTime.Today.Date)
+                    {
+                        cell = new PdfPCell(new Paragraph(item.CRAC_DT_PREVISTA.Value.ToShortDateString(), meuFontVerde))
+                        {
+                            VerticalAlignment = Element.ALIGN_MIDDLE,
+                            HorizontalAlignment = Element.ALIGN_LEFT
+                        };
+                    }
+                    else if (item.CRAC_DT_PREVISTA == DateTime.Today.Date)
+                    {
+                        cell = new PdfPCell(new Paragraph(item.CRAC_DT_PREVISTA.Value.ToShortDateString(), meuFontAzul))
+                        {
+                            VerticalAlignment = Element.ALIGN_MIDDLE,
+                            HorizontalAlignment = Element.ALIGN_LEFT
+                        };
+                    }
+                    else
+                    {
+                        cell = new PdfPCell(new Paragraph(item.CRAC_DT_PREVISTA.Value.ToShortDateString(), meuFontAzul))
+                        {
+                            VerticalAlignment = Element.ALIGN_MIDDLE,
+                            HorizontalAlignment = Element.ALIGN_LEFT
+                        };
+                    }
+                    table.AddCell(cell);
+
+                    if ((item.CRAC_DT_PREVISTA.Value.Date - DateTime.Today.Date).Days > 0)
+                    {
+                        cell = new PdfPCell(new Paragraph((item.CRAC_DT_PREVISTA.Value.Date - DateTime.Today.Date).Days.ToString(), meuFontVerde))
+                        {
+                            VerticalAlignment = Element.ALIGN_MIDDLE,
+                            HorizontalAlignment = Element.ALIGN_LEFT
+                        };
+                    }
+                    else
+                    {
+                        cell = new PdfPCell(new Paragraph((item.CRAC_DT_PREVISTA.Value.Date - DateTime.Today.Date).Days.ToString(), meuFontVermelho))
+                        {
+                            VerticalAlignment = Element.ALIGN_MIDDLE,
+                            HorizontalAlignment = Element.ALIGN_LEFT
+                        };
+                    }
+                    table.AddCell(cell);
+
+                    if (item.CRAC_IN_STATUS == 1)
+                    {
+                        cell = new PdfPCell(new Paragraph("Ativa", meuFontVerde))
+                        {
+                            VerticalAlignment = Element.ALIGN_MIDDLE,
+                            HorizontalAlignment = Element.ALIGN_LEFT
+                        };
+                    }
+                    else if (item.CRAC_IN_STATUS == 2)
+                    {
+                        cell = new PdfPCell(new Paragraph("Pendente", meuFont))
+                        {
+                            VerticalAlignment = Element.ALIGN_MIDDLE,
+                            HorizontalAlignment = Element.ALIGN_LEFT
+                        };
+                    }
+                    else if (item.CRAC_IN_STATUS == 3)
+                    {
+                        cell = new PdfPCell(new Paragraph("Encerrada", meuFontAzul))
+                        {
+                            VerticalAlignment = Element.ALIGN_MIDDLE,
+                            HorizontalAlignment = Element.ALIGN_LEFT
+                        };
+                    }
+                    else if (item.CRAC_IN_STATUS == 4)
+                    {
+                        cell = new PdfPCell(new Paragraph("Excluída", meuFontVermelho))
+                        {
+                            VerticalAlignment = Element.ALIGN_MIDDLE,
+                            HorizontalAlignment = Element.ALIGN_LEFT
+                        };
+                    }
+                    table.AddCell(cell);
+                }
+                pdfDoc.Add(table);
+            }
+
+            // Finaliza
+            pdfWriter.CloseStream = false;
+            pdfDoc.Close();
+            Response.Buffer = true;
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=" + nomeRel);
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Write(pdfDoc);
+            Response.End();
+
+            return RedirectToAction("VoltarAnexoCRM");
+        }
+
+        public ActionResult VerCRMExpansao()
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCRM"] = 2;
+                    return RedirectToAction("Voltar");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Processa
+            DateTime inicio = Convert.ToDateTime("01/" + DateTime.Today.Date.Month.ToString().PadLeft(2, '0') + "/" + DateTime.Today.Date.Year.ToString());
+            DateTime hoje = DateTime.Today.Date;
+            Session["Hoje"] = hoje;
+            if (Session["ListaCRMCheia"] == null)
+            {
+                List<CRM> listaCRMCheia = baseApp.GetAllItensAdm(idAss);
+                Session["ListaCRMCheia"] = listaCRMCheia;
+            }
+            if (Session["ListaCRM"] == null)
+            {
+                List<CRM> listaCRM = baseApp.GetAllItens(idAss);
+                Session["ListaCRM"] = listaCRM;
+            }
+            // Retorna
+            return View();
+        }
+
+        public JsonResult GetDadosProcessosStatus()
+        {
+            Int32 idAss = (Int32)Session["IdAssinante"];
+            List<String> desc = new List<String>();
+            List<Int32> quant = new List<Int32>();
+            List<String> cor = new List<String>();
+            List<CRM> listaCRMCheia = new List<CRM>();
+
+            if (Session["ListaCRMCheia"] == null)
+            {
+                listaCRMCheia = baseApp.GetAllItensAdm(idAss);
+                Session["ListaCRMCheia"] = listaCRMCheia;
+            }
+            else
+            {
+                listaCRMCheia = (List<CRM>)Session["ListaCRMCheia"];
+            }
+
+            // Prepara
+            List<CRMDTOViewModel> lista = new List<CRMDTOViewModel>();
+            CRMDTOViewModel dto = new CRMDTOViewModel();
+
+            // Carrega vetores
+            Int32 prosp = listaCRMCheia.Where(p => p.CRM1_IN_STATUS == 1).ToList().Count;
+            desc.Add("Prospecção");
+            quant.Add(prosp);
+            dto.DESCRICAO = "Prospecção";
+            dto.QUANTIDADE = prosp;
+            lista.Add(dto);
+
+            Int32 cont = listaCRMCheia.Where(p => p.CRM1_IN_STATUS == 2).ToList().Count;
+            desc.Add("Contato Realizado");
+            quant.Add(cont);
+            dto.DESCRICAO = "Contato Realizado";
+            dto.QUANTIDADE = prosp;
+            lista.Add(dto);
+
+            Int32 prop = listaCRMCheia.Where(p => p.CRM1_IN_STATUS == 3).ToList().Count;
+            desc.Add("Proposta Enviada");
+            quant.Add(prop);
+            dto.DESCRICAO = "Proposta Enviada";
+            dto.QUANTIDADE = prop;
+            lista.Add(dto);
+
+            Int32 neg = listaCRMCheia.Where(p => p.CRM1_IN_STATUS == 4).ToList().Count;
+            desc.Add("Em Negociação");
+            quant.Add(neg);
+            dto.DESCRICAO = "Em Negociação";
+            dto.QUANTIDADE = neg;
+            lista.Add(dto);
+
+            Int32 enc = listaCRMCheia.Where(p => p.CRM1_IN_STATUS == 5).ToList().Count;
+            desc.Add("Encerrado");
+            quant.Add(enc);
+            dto.DESCRICAO = "Encerrado";
+            dto.QUANTIDADE = enc;
+            lista.Add(dto);
+            Session["ListaProcessosStatus"] = lista;
+
+            cor.Add("#359E18");
+            cor.Add("#FFAE00");
+            cor.Add("#FF7F00");
+            cor.Add("#D63131");
+            cor.Add("#27A1C6");
+
+            // retorna
+            Hashtable result = new Hashtable();
+            result.Add("labels", desc);
+            result.Add("valores", quant);
+            result.Add("cores", cor);
+            return Json(result);
+        }
+
+        public ActionResult VerProcessosStatusExpansao()
+        {
+            // Prepara view
+            List<CRMDTOViewModel> lista = (List<CRMDTOViewModel>)Session["ListaProcessosStatus"];
+            ViewBag.Lista = lista;
+            return View();
+        }
+
     }
 }

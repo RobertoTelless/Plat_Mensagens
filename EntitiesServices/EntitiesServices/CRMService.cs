@@ -77,6 +77,11 @@ namespace ModelServices.EntitiesServices
             return _baseRepository.GetByUser(user);
         }
 
+        public List<CRM_ACAO> GetAllAcoes(Int32 idAss)
+        {
+            return _acaRepository.GetAllItens(idAss);
+        }
+
         public List<CRM> GetTarefaStatus(Int32 tipo, Int32 idAss)
         {
             return _baseRepository.GetTarefaStatus(tipo, idAss);

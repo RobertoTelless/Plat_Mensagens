@@ -85,13 +85,13 @@
                     <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "BaseAdmin", cssClass: "in")">
                         <li class="@Html.IsSelected(action: "CarregarBase")"><a href="@Url.Action("CarregarBase", "BaseAdmin")"><i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">Central</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-third-level collapse @Html.IsSelected(controller: "BaseAdmin", cssClass: "in")">
-                                <li class="@Html.IsSelected(action: "MontarTelaCRM")"><a href="@Url.Action("MontarTelaCRM", "CRM")">CRM - Central</a></li>
-                                <li class="@Html.IsSelected(action: "MontarTelaCRMKanban")"><a href="@Url.Action("MontarTelaCRMKanban", "CRM")">CRM - Kanban</a></li>
+                                <li class="@Html.IsSelected(action: "MontarTelaCRM")"><a href="@Url.Action("MontarTelaCRM", "CRM")">CRM - Lista</a></li>
+                                <li class="@Html.IsSelected(action: "MontarTelaKanbanCRM")"><a href="@Url.Action("MontarTelaKanbanCRM", "CRM")">CRM - Kanban</a></li>
                             </ul>                    
                         </li>
-                        <li class="@Html.IsSelected(action: "CarregarBase")"><a href="@Url.Action("CarregarBase", "BaseAdmin")"><i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">Atalhos</span> <span class="fa arrow"></span></a>
+                        <li class="@Html.IsSelected(action: "CarregarBase")"><a href="@Url.Action("CarregarBase", "BaseAdmin")"><i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">Utilitários</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-third-level collapse @Html.IsSelected(controller: "BaseAdmin", cssClass: "in")">
-                                <li class="@Html.IsSelected(action: "IncluirProcesso")"><a href="@Url.Action("IncluirProcesso", "CRM")">Incluir Processo</a></li>
+                                <li class="@Html.IsSelected(action: "MontarTelaAgenda")"><a href="@Url.Action("MontarTelaAgenda", "Agenda")">Agenda</a></li>
                             </ul>                    
                         </li>
                     </ul>

@@ -105,6 +105,18 @@
         <AssociationConnector Association="PlatMensagensModel.FK_CRM_ACAO_TIPO_ACAO" />
         <AssociationConnector Association="PlatMensagensModel.FK_CRM_ACAO_USUARIO" />
         <AssociationConnector Association="PlatMensagensModel.FK_CRM_ACAO_USUARIO1" />
+        <EntityTypeShape EntityType="PlatMensagensModel.AGENDA" Width="1.5" PointX="20.5" PointY="28.25" />
+        <EntityTypeShape EntityType="PlatMensagensModel.AGENDA_ANEXO" Width="1.5" PointX="22.75" PointY="29.25" />
+        <EntityTypeShape EntityType="PlatMensagensModel.AGENDA_VINCULO" Width="1.5" PointX="23.75" PointY="34.25" />
+        <EntityTypeShape EntityType="PlatMensagensModel.CATEGORIA_AGENDA" Width="1.5" PointX="5.25" PointY="18.5" />
+        <AssociationConnector Association="PlatMensagensModel.FK_AGENDA_ANEXO_AGENDA" />
+        <AssociationConnector Association="PlatMensagensModel.FK_AGENDA_ASSINANTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_AGENDA_CATEGORIA_AGENDA" />
+        <AssociationConnector Association="PlatMensagensModel.FK_AGENDA_USUARIO" />
+        <AssociationConnector Association="PlatMensagensModel.FK_AGENDA_USUARIO1" />
+        <AssociationConnector Association="PlatMensagensModel.FK_AGENDA_VINCULO_AGENDA" />
+        <AssociationConnector Association="PlatMensagensModel.FK_AGENDA_VINCULO_USUARIO" />
+        <AssociationConnector Association="PlatMensagensModel.FK_CATEGORIA_AGENDA_ASSINANTE" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

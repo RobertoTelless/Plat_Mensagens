@@ -29,6 +29,7 @@ namespace MvcMapping.Mappers
             CreateMap<CRM_CONTATO, CRMContatoViewModel>();
             CreateMap<CRM_COMENTARIO, CRMComentarioViewModel>();
             CreateMap<CRM_ACAO, CRMAcaoViewModel>();
+            CreateMap<AGENDA, AgendaViewModel>();
 
         }
     }

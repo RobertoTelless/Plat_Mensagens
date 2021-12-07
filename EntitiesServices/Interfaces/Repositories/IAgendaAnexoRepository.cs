@@ -7,9 +7,9 @@ using EntitiesServices.Model;
 
 namespace ModelServices.Interfaces.Repositories
 {
-    public interface ICRMAcaoRepository : IRepositoryBase<CRM_ACAO>
+    public interface IAgendaAnexoRepository : IRepositoryBase<AGENDA_ANEXO>
     {
-        List<CRM_ACAO> GetAllItens(Int32 idAss);
-        CRM_ACAO GetItemById(Int32 id);
+        List<AGENDA_ANEXO> GetAllItens();
+        AGENDA_ANEXO GetItemById(Int32 id);
     }
 }

@@ -34,6 +34,8 @@ namespace PlatMensagem_Solution.ViewModels
         public Nullable<int> CRAC_IN_STATUS { get; set; }
         public Nullable<int> CRAC_IN_ATIVO { get; set; }
 
+        public Nullable<int> CRIA_AGENDA { get; set; }
+
         public virtual ASSINANTE ASSINANTE { get; set; }
         public virtual CRM CRM { get; set; }
         public virtual TIPO_ACAO TIPO_ACAO { get; set; }

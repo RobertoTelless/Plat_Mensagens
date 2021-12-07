@@ -367,6 +367,15 @@ namespace SMS_Presentation.App_Start {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A data de encerramento não pode ser inferior a data de criação.
+        /// </summary>
+        internal static string M0043 {
+            get {
+                return ResourceManager.GetString("M0043", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Usuário já cadastrado.
         /// </summary>
         internal static string M0044 {
@@ -381,6 +390,33 @@ namespace SMS_Presentation.App_Start {
         internal static string M0045 {
             get {
                 return ResourceManager.GetString("M0045", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A data de encerramento não pode ser superior a data corrente.
+        /// </summary>
+        internal static string M0046 {
+            get {
+                return ResourceManager.GetString("M0046", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A data de cancelamento não pode ser inferior a data de criação.
+        /// </summary>
+        internal static string M0047 {
+            get {
+                return ResourceManager.GetString("M0047", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A data de cancelamento não pode ser superior a data corrente.
+        /// </summary>
+        internal static string M0048 {
+            get {
+                return ResourceManager.GetString("M0048", resourceCulture);
             }
         }
         

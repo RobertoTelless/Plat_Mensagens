@@ -27,6 +27,9 @@ namespace EntitiesServices.Model
             this.CRM = new HashSet<CRM>();
             this.CRM_ACAO = new HashSet<CRM_ACAO>();
             this.CRM_ACAO1 = new HashSet<CRM_ACAO>();
+            this.AGENDA = new HashSet<AGENDA>();
+            this.AGENDA1 = new HashSet<AGENDA>();
+            this.AGENDA_VINCULO = new HashSet<AGENDA_VINCULO>();
         }
     
         public int USUA_CD_ID { get; set; }
@@ -87,5 +90,11 @@ namespace EntitiesServices.Model
         public virtual ICollection<CRM_ACAO> CRM_ACAO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CRM_ACAO> CRM_ACAO1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AGENDA> AGENDA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AGENDA> AGENDA1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AGENDA_VINCULO> AGENDA_VINCULO { get; set; }
     }
 }

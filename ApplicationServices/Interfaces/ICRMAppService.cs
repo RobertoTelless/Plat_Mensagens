@@ -28,6 +28,7 @@ namespace ApplicationServices.Interfaces
         List<MOTIVO_ENCERRAMENTO> GetAllMotivoEncerramento();
         CRM_COMENTARIO GetComentarioById(Int32 id);
 
+        List<CRM_ACAO> GetAllAcoes(Int32 idAss);
         List<TIPO_CRM> GetAllTipos();
         USUARIO GetUserById(Int32 id);
         CRM_ANEXO GetAnexoById(Int32 id);

@@ -36,6 +36,8 @@ namespace EntitiesServices.Model
             this.MOTIVO_CANCELAMENTO = new HashSet<MOTIVO_CANCELAMENTO>();
             this.MOTIVO_ENCERRAMENTO = new HashSet<MOTIVO_ENCERRAMENTO>();
             this.TIPO_ACAO = new HashSet<TIPO_ACAO>();
+            this.AGENDA = new HashSet<AGENDA>();
+            this.CATEGORIA_AGENDA = new HashSet<CATEGORIA_AGENDA>();
         }
     
         public int ASSI_CD_ID { get; set; }
@@ -98,5 +100,9 @@ namespace EntitiesServices.Model
         public virtual ICollection<MOTIVO_ENCERRAMENTO> MOTIVO_ENCERRAMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TIPO_ACAO> TIPO_ACAO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AGENDA> AGENDA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CATEGORIA_AGENDA> CATEGORIA_AGENDA { get; set; }
     }
 }
