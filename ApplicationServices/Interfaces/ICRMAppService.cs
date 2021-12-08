@@ -39,7 +39,7 @@ namespace ApplicationServices.Interfaces
         Int32 ValidateEditContato(CRM_CONTATO item);
         Int32 ValidateCreateContato(CRM_CONTATO item);
         Int32 ValidateEditAcao(CRM_ACAO item);
-        Int32 ValidateCreateAcao(CRM_ACAO item);
+        Int32 ValidateCreateAcao(CRM_ACAO item, USUARIO usuario);
 
     }
 }

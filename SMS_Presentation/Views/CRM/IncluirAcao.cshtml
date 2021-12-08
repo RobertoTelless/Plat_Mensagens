@@ -69,7 +69,7 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-xs-12">
                                     Cria Agenda?*
-                                    @Html.DropDownListFor(m => m.CRIA_AGENDA, (SelectList)ViewBag.Tipos, "Selecionar", new { @class = "form-control", autofocus = true })
+                                    @Html.DropDownListFor(m => m.CRIA_AGENDA, (SelectList)ViewBag.Agenda, "Selecionar", new { @class = "form-control", autofocus = true })
                                     @Html.ValidationMessageFor(m => m.CRIA_AGENDA, "", new { @style = "color:red" })
                                 </div>
                             </div>

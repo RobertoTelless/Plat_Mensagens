@@ -159,6 +159,7 @@
                         </div>
                     </div>
                     @Html.ButtonLinkIndex(text: "CRM - Processos", action: "MontarTelaCRM", controller: "CRM", buttonClass: "btn btn-xs btn-primary")
+                    @Html.ButtonLinkIndex(text: "Agenda", action: "MontarTelaAgendaCalendario", controller: "Agenda", buttonClass: "btn btn-xs btn-primary")
                 </div>
             </div>
             <br />
@@ -353,7 +354,7 @@
                                             <h2 class="no-margins">@ViewBag.CRMAtivos</h2>
                                             <br />
                                             <br />
-                                            @Html.ButtonLinkIndex(text: "Ver", controller: "CRM", action: "VerCRMExpansao", buttonClass: "white")
+                                            @Html.ButtonLinkIndex(text: "Ver", controller: "CRM", action: "VerProcessosStatusExpansao", buttonClass: "white")
                                         </div>
                                     </div>
                                 </div>                            

@@ -467,7 +467,7 @@ namespace ApplicationServices.Services
             }
         }
 
-        public Int32 ValidateCreateAcao(CRM_ACAO item)
+        public Int32 ValidateCreateAcao(CRM_ACAO item, USUARIO usuario)
         {
             try
             {
@@ -475,6 +475,21 @@ namespace ApplicationServices.Services
 
                 // Persiste
                 Int32 volta = _baseService.CreateAcao(item);
+
+                // Gera Notificação
+                NOTIFICACAO noti = new NOTIFICACAO();
+                noti.CANO_CD_ID = 1;
+                noti.ASSI_CD_ID = usuario.ASSI_CD_ID;
+                noti.NOTI_DT_EMISSAO = DateTime.Today;
+                noti.NOTI_DT_VALIDADE = DateTime.Today.Date.AddDays(30);
+                noti.NOTI_IN_VISTA = 0;
+                noti.NOTI_NM_TITULO = "Atribuição de Ação de`Processo CRM";
+                noti.NOTI_IN_ATIVO = 1;
+                noti.NOTI_TX_TEXTO = "ATENÇÃO: A Ação " + item.CRAC_NM_TITULO + " do processo CRM " + item.CRM.CRM1_NM_NOME + " foi colocada sob sua responsabilidade em " + DateTime.Today.Date.ToLongDateString() + ".";
+                noti.USUA_CD_ID = usuario.USUA_CD_ID;
+                noti.NOTI_IN_STATUS = 1;
+                noti.NOTI_IN_NIVEL = 1;
+                Int32 volta1 = _notiService.Create(noti);
                 return volta;
             }
             catch (Exception ex)

@@ -2619,7 +2619,7 @@ namespace SMS_Presentation.Controllers
                     // Executa a operação
                     CRM_ACAO item = Mapper.Map<CRMAcaoViewModel, CRM_ACAO>(vm);
                     USUARIO usuarioLogado = (USUARIO)Session["UserCredentials"];
-                    Int32 volta = baseApp.ValidateCreateAcao(item);
+                    Int32 volta = baseApp.ValidateCreateAcao(item, usuarioLogado);
 
                     // Processa agenda
                     if (vm.CRIA_AGENDA == 1)
@@ -2633,6 +2633,7 @@ namespace SMS_Presentation.Controllers
                         ag.AGEN_NM_TITULO = vm.CRAC_NM_TITULO;
                         ag.ASSI_CD_ID = idAss;
                         ag.CAAG_CD_ID = 1;
+                        ag.AGEN_CD_USUARIO = vm.USUA_CD_ID2;
                         ag.USUA_CD_ID = usuarioLogado.USUA_CD_ID;
                         Int32 voltaAg = ageApp.ValidateCreate(ag, usuarioLogado);
                     }
@@ -2805,7 +2806,14 @@ namespace SMS_Presentation.Controllers
                 hash.Add("CRM1_CD_ID", item.CRM1_CD_ID);
                 hash.Add("CRM1_NM_NOME", item.CRM1_NM_NOME);
                 hash.Add("CRM1_DT_CRIACAO", item.CRM1_DT_CRIACAO.Value.ToString("dd/MM/yyyy"));
-                hash.Add("CRM1_DT_ENCERRAMENTO", item.CRM1_DT_ENCERRAMENTO.Value.ToString("dd/MM/yyyy"));
+                if (item.CRM1_DT_ENCERRAMENTO != null)
+                {
+                    hash.Add("CRM1_DT_ENCERRAMENTO", item.CRM1_DT_ENCERRAMENTO.Value.ToString("dd/MM/yyyy"));
+                }
+                else
+                {
+                    hash.Add("CRM1_DT_ENCERRAMENTO", "-");
+                }
                 hash.Add("CRM1_NM_CLIENTE", item.CLIENTE.CLIE_NM_NOME);
                 listaHash.Add(hash);
             }
@@ -3468,13 +3476,15 @@ namespace SMS_Presentation.Controllers
             Int32 cont = listaCRMCheia.Where(p => p.CRM1_IN_STATUS == 2).ToList().Count;
             desc.Add("Contato Realizado");
             quant.Add(cont);
+            dto = new CRMDTOViewModel();
             dto.DESCRICAO = "Contato Realizado";
-            dto.QUANTIDADE = prosp;
+            dto.QUANTIDADE = cont;
             lista.Add(dto);
 
             Int32 prop = listaCRMCheia.Where(p => p.CRM1_IN_STATUS == 3).ToList().Count;
             desc.Add("Proposta Enviada");
             quant.Add(prop);
+            dto = new CRMDTOViewModel();
             dto.DESCRICAO = "Proposta Enviada";
             dto.QUANTIDADE = prop;
             lista.Add(dto);
@@ -3482,6 +3492,7 @@ namespace SMS_Presentation.Controllers
             Int32 neg = listaCRMCheia.Where(p => p.CRM1_IN_STATUS == 4).ToList().Count;
             desc.Add("Em Negociação");
             quant.Add(neg);
+            dto = new CRMDTOViewModel();
             dto.DESCRICAO = "Em Negociação";
             dto.QUANTIDADE = neg;
             lista.Add(dto);
@@ -3489,6 +3500,7 @@ namespace SMS_Presentation.Controllers
             Int32 enc = listaCRMCheia.Where(p => p.CRM1_IN_STATUS == 5).ToList().Count;
             desc.Add("Encerrado");
             quant.Add(enc);
+            dto = new CRMDTOViewModel();
             dto.DESCRICAO = "Encerrado";
             dto.QUANTIDADE = enc;
             lista.Add(dto);
@@ -3508,11 +3520,90 @@ namespace SMS_Presentation.Controllers
             return Json(result);
         }
 
+        public JsonResult GetDadosProcessosSituacao()
+        {
+            Int32 idAss = (Int32)Session["IdAssinante"];
+            List<String> desc = new List<String>();
+            List<Int32> quant = new List<Int32>();
+            List<String> cor = new List<String>();
+            List<CRM> listaCRMCheia = new List<CRM>();
+
+            if (Session["ListaCRMCheia"] == null)
+            {
+                listaCRMCheia = baseApp.GetAllItensAdm(idAss);
+                Session["ListaCRMCheia"] = listaCRMCheia;
+            }
+            else
+            {
+                listaCRMCheia = (List<CRM>)Session["ListaCRMCheia"];
+            }
+
+            // Prepara
+            List<CRMDTOViewModel> listaSit = new List<CRMDTOViewModel>();
+            CRMDTOViewModel dto = new CRMDTOViewModel();
+
+            // Carrega vetores
+            Int32 prosp = listaCRMCheia.Where(p => p.CRM1_IN_ATIVO == 1).ToList().Count;
+            desc.Add("Ativos");
+            quant.Add(prosp);
+            dto.DESCRICAO = "Ativos";
+            dto.QUANTIDADE = prosp;
+            listaSit.Add(dto);
+
+            Int32 cont = listaCRMCheia.Where(p => p.CRM1_IN_ATIVO == 2).ToList().Count;
+            desc.Add("Arquivados");
+            quant.Add(cont);
+            dto = new CRMDTOViewModel();
+            dto.DESCRICAO = "Arquivados";
+            dto.QUANTIDADE = cont;
+            listaSit.Add(dto);
+
+            Int32 prop = listaCRMCheia.Where(p => p.CRM1_IN_ATIVO == 3).ToList().Count;
+            desc.Add("Cancelados");
+            quant.Add(prop);
+            dto = new CRMDTOViewModel();
+            dto.DESCRICAO = "Cancelados";
+            dto.QUANTIDADE = prop;
+            listaSit.Add(dto);
+
+            Int32 neg = listaCRMCheia.Where(p => p.CRM1_IN_ATIVO == 4).ToList().Count;
+            desc.Add("Falhados");
+            quant.Add(neg);
+            dto = new CRMDTOViewModel();
+            dto.DESCRICAO = "Falhados";
+            dto.QUANTIDADE = neg;
+            listaSit.Add(dto);
+
+            Int32 enc = listaCRMCheia.Where(p => p.CRM1_IN_ATIVO == 5).ToList().Count;
+            desc.Add("Sucesso");
+            quant.Add(enc);
+            dto = new CRMDTOViewModel();
+            dto.DESCRICAO = "Sucesso";
+            dto.QUANTIDADE = enc;
+            listaSit.Add(dto);
+            Session["ListaProcessosSituacao"] = listaSit;
+
+            cor.Add("#359E18");
+            cor.Add("#FFAE00");
+            cor.Add("#FF7F00");
+            cor.Add("#D63131");
+            cor.Add("#27A1C6");
+
+            // retorna
+            Hashtable result = new Hashtable();
+            result.Add("labels", desc);
+            result.Add("valores", quant);
+            result.Add("cores", cor);
+            return Json(result);
+        }
+
         public ActionResult VerProcessosStatusExpansao()
         {
             // Prepara view
             List<CRMDTOViewModel> lista = (List<CRMDTOViewModel>)Session["ListaProcessosStatus"];
+            //List<CRMDTOViewModel> listaSit = (List<CRMDTOViewModel>)Session["ListaProcessosSituacao"];
             ViewBag.Lista = lista;
+            //ViewBag.ListaSit = listaSit;
             return View();
         }
 

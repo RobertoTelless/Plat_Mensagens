@@ -387,7 +387,7 @@
                             + '<div class="agile-detail">'
                             + '<i class="fa fa-clock-o"></i>'
                             + ' Início: ' + e.CRM1_DT_CRIACAO
-                            + '<i class="fa fa-clock-o"></i>'
+                            + '<br /><i class="fa fa-clock-o"></i>'
                             + ' Final: ' + e.CRM1_DT_ENCERRAMENTO
                             + '</li>');
                         element1.addClass('success-element');
@@ -432,7 +432,7 @@
         });
 
         function redirectEditar(id) {
-            window.open("/CRM/EditarProcessoCRM/" + id, '_self');
+            window.open("/CRM/AcompanhamentoProcessoCRM/" + id, '_self');
         }
 
         function EditarStatus(id, status) {
