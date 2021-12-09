@@ -3027,6 +3027,7 @@
     <Content Include="Views\Agenda\VerTimelineAgenda.cshtml" />
     <Content Include="Views\CRM\VerCRMExpansao.cshtml" />
     <Content Include="Views\CRM\VerProcessosStatusExpansao.cshtml" />
+    <Content Include="Views\CRM\EnviarEmailCliente.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

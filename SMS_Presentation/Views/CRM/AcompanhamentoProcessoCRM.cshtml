@@ -535,7 +535,7 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    @foreach (var cond in (ViewBag.Acoes as List<EntitiesServices.Model.CRM_ACAO>))
+                                                                    @foreach (var cond in ((ViewBag.Acoes as List<EntitiesServices.Model.CRM_ACAO>)))
                                                                     {
                                                                         if (cond.CRAC_IN_STATUS == 1)
                                                                         {
@@ -1262,14 +1262,14 @@
 
         function ShowModalExcluir(url) {
             $('#modal').find('.modal-footer').prepend('<a id="btnModal" alt="Desativar" class="btn btn-primary" href="' + url + '" target="_self" title="Desativar">Confirmar</a>');
-            $('#modal').find('.modal-body').html('Confirma exclusão do Contato?');
+            $('#modal').find('.modal-body').html('Confirma exclusão da Ação?');
             $('#modal').find('.modal-header').prepend('<h5 id="modalTitle" class="modal-title">Confimar Exclusão</h5>');
             $('#modal').modal('show');
         }
 
         function ShowModalReativar(url) {
             $('#modal').find('.modal-footer').prepend('<a id="btnModal" alt="Reativar" class="btn btn-primary" href="' + url + '" target="_self" title="Reativar">Confirmar</a>');
-            $('#modal').find('.modal-body').html('Confirma reativação do Contato?');
+            $('#modal').find('.modal-body').html('Confirma reativação da Ação?');
             $('#modal').find('.modal-header').prepend('<h5 id="modalTitle" class="modal-title">Confimar Reativação</h5>');
             $('#modal').modal('show');
         }

@@ -38,6 +38,7 @@ namespace SMS_Presentation.Controllers
         private readonly IConfiguracaoAppService confApp;
         private readonly IMensagemAppService menApp;
         private readonly IAgendaAppService ageApp;
+        private readonly IClienteAppService cliApp;
 
         private String msg;
         private Exception exception;
@@ -46,7 +47,7 @@ namespace SMS_Presentation.Controllers
         List<CRM> listaMaster = new List<CRM>();
         String extensao;
 
-        public CRMController(ICRMAppService baseApps, ILogAppService logApps, IUsuarioAppService usuApps, IConfiguracaoAppService confApps, IMensagemAppService menApps, IAgendaAppService ageApps)
+        public CRMController(ICRMAppService baseApps, ILogAppService logApps, IUsuarioAppService usuApps, IConfiguracaoAppService confApps, IMensagemAppService menApps, IAgendaAppService ageApps, IClienteAppService cliApps)
         {
             baseApp = baseApps;
             logApp = logApps;
@@ -54,6 +55,7 @@ namespace SMS_Presentation.Controllers
             confApp = confApps;
             menApp = menApps;
             ageApp = ageApps;
+            cliApp = cliApps;
         }
 
         [HttpGet]
@@ -3605,6 +3607,136 @@ namespace SMS_Presentation.Controllers
             ViewBag.Lista = lista;
             //ViewBag.ListaSit = listaSit;
             return View();
+        }
+
+        [HttpGet]
+        [ValidateInput(false)]
+        public ActionResult EnviarEMailCliente(Int32 id)
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+            USUARIO usuario = (USUARIO)Session["UserCredentials"];
+
+            if (Session["MensMensagem"] != null)
+            {
+                if ((Int32)Session["MensMensagem"] == 66)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0026", CultureInfo.CurrentCulture));
+                }
+            }
+
+            // recupera cliente e assinante
+            CLIENTE cli = cliApp.GetItemById(id);
+            ASSINANTE assi = (ASSINANTE)Session["Assinante"];
+
+            // Prepara mensagem
+            String header = "Prezado <b>" + cli.CLIE_NM_NOME + "</b>";
+            String body = String.Empty;
+            String footer = "<b>" + assi.ASSI_NM_NOME + "</b>";
+
+            // Mota vm
+            MensagemViewModel vm = new MensagemViewModel();
+            vm.ASSI_CD_ID = idAss;
+            vm.MENS_DT_CRIACAO = DateTime.Now;
+            vm.MENS_IN_ATIVO = 1;
+            vm.USUA_CD_ID = usuario.USUA_CD_ID;
+            vm.MENS_NM_CABECALHO = header;
+            vm.MENS_NM_RODAPE = footer;
+            vm.MENS_IN_TIPO = 1;
+            vm.MODELO = "Mensagem para " + cli.CLIE_NM_NOME;
+            vm.ID = cli.CLIE_CD_ID;
+            return View(vm);
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        [ValidateInput(false)]
+        public ActionResult EnviarEMailCliente(MensagemViewModel vm)
+        {
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+          
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Checa corpo da mensagem
+                    if (String.IsNullOrEmpty(vm.MENS_TX_TEXTO))
+                    {
+                        Session["MensMensagem"] = 66;
+                        return RedirectToAction("EnviarEMailCliente");
+                    }
+
+                    // Prepara
+                    MENSAGENS item = Mapper.Map<MensagemViewModel, MENSAGENS>(vm);
+                    USUARIO usuario = (USUARIO)Session["UserCredentials"];
+                    CLIENTE cli = cliApp.GetItemById(vm.ID.Value);
+                    ASSINANTE assi = (ASSINANTE)Session["Assinante"];
+
+                    // Monta corpo do e-mail e trata link
+                    String corpo = vm.MENS_TX_TEXTO;
+                    StringBuilder str = new StringBuilder();
+                    str.AppendLine(corpo);
+                    if (!String.IsNullOrEmpty(vm.MENS_NM_LINK))
+                    {
+                        if (!vm.MENS_NM_LINK.Contains("www."))
+                        {
+                            vm.MENS_NM_LINK = "www." + vm.MENS_NM_LINK;
+                        }
+                        if (!vm.MENS_NM_LINK.Contains("http://"))
+                        {
+                            vm.MENS_NM_LINK = "http://" + vm.MENS_NM_LINK;
+                        }
+                        str.AppendLine("<a href='" + vm.MENS_NM_LINK + "'>Clique aqui para maiores informações</a>");
+                    }
+                    String body = str.ToString();
+                    String emailBody = vm.MENS_NM_CABECALHO + body + vm.MENS_NM_RODAPE;
+
+                    // Monta e-mail
+                    CONFIGURACAO conf = confApp.GetItemById(usuario.ASSI_CD_ID);
+                    NetworkCredential net = new NetworkCredential(conf.CONF_NM_EMAIL_EMISSOO, conf.CONF_NM_SENHA_EMISSOR);
+                    Email mensagem = new Email();
+                    mensagem.ASSUNTO = "Mensagem para " + cli;
+                    mensagem.CORPO = emailBody;
+                    mensagem.DEFAULT_CREDENTIALS = false;
+                    mensagem.EMAIL_DESTINO = cli.CLIE_NM_EMAIL;
+                    mensagem.EMAIL_EMISSOR = conf.CONF_NM_EMAIL_EMISSOO;
+                    mensagem.ENABLE_SSL = true;
+                    mensagem.NOME_EMISSOR = assi.ASSI_NM_NOME;
+                    mensagem.PORTA = conf.CONF_NM_PORTA_SMTP;
+                    mensagem.PRIORIDADE = System.Net.Mail.MailPriority.High;
+                    mensagem.SENHA_EMISSOR = conf.CONF_NM_SENHA_EMISSOR;
+                    mensagem.SMTP = conf.CONF_NM_HOST_SMTP;
+                    mensagem.IS_HTML = true;
+                    mensagem.NETWORK_CREDENTIAL = net;
+
+                    // Envia mensagem
+                    try
+                    {
+                        Int32 voltaMail = CommunicationPackage.SendEmail(mensagem);
+                    }
+                    catch (Exception ex)
+                    {
+                        String erro = ex.Message;
+                    }
+                    return RedirectToAction("VoltarAcompanhamentoCRM");
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = ex.Message;
+                    return View(vm);
+                }
+            }
+            else
+            {
+                return View(vm);
+            }
         }
 
     }

@@ -473,6 +473,9 @@ namespace ApplicationServices.Services
             {
                 item.CRAC_IN_ATIVO = 1;
 
+                // Recupera CRM
+                CRM crm = _baseService.GetItemById(item.CRM1_CD_ID);
+
                 // Persiste
                 Int32 volta = _baseService.CreateAcao(item);
 
@@ -483,9 +486,9 @@ namespace ApplicationServices.Services
                 noti.NOTI_DT_EMISSAO = DateTime.Today;
                 noti.NOTI_DT_VALIDADE = DateTime.Today.Date.AddDays(30);
                 noti.NOTI_IN_VISTA = 0;
-                noti.NOTI_NM_TITULO = "Atribuição de Ação de`Processo CRM";
+                noti.NOTI_NM_TITULO = "Atribuição de Ação de Processo CRM";
                 noti.NOTI_IN_ATIVO = 1;
-                noti.NOTI_TX_TEXTO = "ATENÇÃO: A Ação " + item.CRAC_NM_TITULO + " do processo CRM " + item.CRM.CRM1_NM_NOME + " foi colocada sob sua responsabilidade em " + DateTime.Today.Date.ToLongDateString() + ".";
+                noti.NOTI_TX_TEXTO = "ATENÇÃO: A Ação " + item.CRAC_NM_TITULO + " do processo CRM " + crm.CRM1_NM_NOME + " foi colocada sob sua responsabilidade em " + DateTime.Today.Date.ToLongDateString() + ".";
                 noti.USUA_CD_ID = usuario.USUA_CD_ID;
                 noti.NOTI_IN_STATUS = 1;
                 noti.NOTI_IN_NIVEL = 1;
