@@ -66,5 +66,8 @@ namespace EntitiesServices.Model
         public virtual DbSet<AGENDA_ANEXO> AGENDA_ANEXO { get; set; }
         public virtual DbSet<AGENDA_VINCULO> AGENDA_VINCULO { get; set; }
         public virtual DbSet<CATEGORIA_AGENDA> CATEGORIA_AGENDA { get; set; }
+        public virtual DbSet<ASSINANTE_PAGAMENTO> ASSINANTE_PAGAMENTO { get; set; }
+        public virtual DbSet<PLANO> PLANO { get; set; }
+        public virtual DbSet<PLANO_PERIODICIDADE> PLANO_PERIODICIDADE { get; set; }
     }
 }

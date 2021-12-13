@@ -84,6 +84,7 @@ namespace Presentation.Start
             kernel.Bind<IEMailAgendaAppService>().To<EMailAgendaAppService>();
             kernel.Bind<ICRMAppService>().To<CRMAppService>();
             kernel.Bind<IAgendaAppService>().To<AgendaAppService>();
+            kernel.Bind<IPlanoAppService>().To<PlanoAppService>();
 
             kernel.Bind(typeof(IServiceBase<>)).To(typeof(ServiceBase<>));
             kernel.Bind<IUsuarioService>().To<UsuarioService>();
@@ -101,6 +102,7 @@ namespace Presentation.Start
             kernel.Bind<IEMailAgendaService>().To<EmailAgendaService>();
             kernel.Bind<ICRMService>().To<CRMService>();
             kernel.Bind<IAgendaService>().To<AgendaService>();
+            kernel.Bind<IPlanoService>().To<PlanoService>();
 
             kernel.Bind(typeof(IRepositoryBase<>)).To(typeof(RepositoryBase<>));
             kernel.Bind<IConfiguracaoRepository>().To<ConfiguracaoRepository>();
@@ -142,6 +144,8 @@ namespace Presentation.Start
             kernel.Bind<ICategoriaAgendaRepository>().To<CategoriaAgendaRepository>();
             kernel.Bind<IAgendaAnexoRepository>().To<AgendaAnexoRepository>();
             kernel.Bind<IAgendaRepository>().To<AgendaRepository>();
+            kernel.Bind<IPlanoRepository>().To<PlanoRepository>();
+            kernel.Bind<IPeriodicidadePlanoRepository>().To<PeriodicidadePlanoRepository>();
 
         }
     }

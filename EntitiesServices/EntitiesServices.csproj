@@ -180,6 +180,7 @@
     <Compile Include="EntitiesServices\AssinanteService.cs" />
     <Compile Include="EntitiesServices\CRMService.cs" />
     <Compile Include="EntitiesServices\EmailAgendaService.cs" />
+    <Compile Include="EntitiesServices\PlanoService.cs" />
     <Compile Include="EntitiesServices\PosicaoService.cs" />
     <Compile Include="EntitiesServices\CategoriaClienteService.cs" />
     <Compile Include="EntitiesServices\GrupoService.cs" />
@@ -196,6 +197,7 @@
     <Compile Include="Interfaces\EntitiesServices\IAssinanteService.cs" />
     <Compile Include="Interfaces\EntitiesServices\ICRMService.cs" />
     <Compile Include="Interfaces\EntitiesServices\IEmailAgendaService.cs" />
+    <Compile Include="Interfaces\EntitiesServices\IPlanoService.cs" />
     <Compile Include="Interfaces\EntitiesServices\IPosicaoService.cs" />
     <Compile Include="Interfaces\EntitiesServices\ICategoriaClienteService.cs" />
     <Compile Include="Interfaces\EntitiesServices\IGrupoService.cs" />
@@ -213,6 +215,8 @@
     <Compile Include="Interfaces\Repositories\IAssinanteAnexoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IAssinanteRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICargoRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IPlanoRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IPeriodicidadePlanoRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICategoriaAgendaRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICRMOrigemRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICRMAcaoRepository.cs" />
@@ -262,6 +266,9 @@
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ASSINANTE_ANEXO.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ASSINANTE_PAGAMENTO.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CARGO.cs">
@@ -346,6 +353,12 @@
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PERFIL.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PLANO.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PLANO_PERIODICIDADE.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PlatMensagens_Model.Context.cs">

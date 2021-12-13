@@ -117,6 +117,13 @@
         <AssociationConnector Association="PlatMensagensModel.FK_AGENDA_VINCULO_AGENDA" />
         <AssociationConnector Association="PlatMensagensModel.FK_AGENDA_VINCULO_USUARIO" />
         <AssociationConnector Association="PlatMensagensModel.FK_CATEGORIA_AGENDA_ASSINANTE" />
+        <EntityTypeShape EntityType="PlatMensagensModel.ASSINANTE_PAGAMENTO" Width="1.5" PointX="5.625" PointY="14.25" />
+        <EntityTypeShape EntityType="PlatMensagensModel.PLANO" Width="1.5" PointX="3" PointY="1.125" />
+        <EntityTypeShape EntityType="PlatMensagensModel.PLANO_PERIODICIDADE" Width="1.5" PointX="0.75" PointY="2.5" />
+        <AssociationConnector Association="PlatMensagensModel.FK_ASSINANTE_PAGAMENTO_ASSINANTE" />
+        <AssociationConnector Association="PlatMensagensModel.FK_ASSINANTE_PLANO" />
+        <AssociationConnector Association="PlatMensagensModel.FK_ASSINANTE_PAGAMENTO_PLANO" />
+        <AssociationConnector Association="PlatMensagensModel.FK_PLANO_PLANO_PERIODICIDADE" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

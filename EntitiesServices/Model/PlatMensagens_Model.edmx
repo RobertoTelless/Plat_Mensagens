@@ -49,6 +49,7 @@
           </Key>
           <Property Name="ASSI_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TIPE_CD_ID" Type="int" />
+          <Property Name="PLAN_CD_ID" Type="int" />
           <Property Name="ASSI_NM_NOME" Type="varchar" MaxLength="50" />
           <Property Name="ASSI_IN_ATIVO" Type="int" Nullable="false" />
           <Property Name="ASSI_DT_INICIO" Type="date" />
@@ -66,6 +67,8 @@
           <Property Name="UF_CD_ID" Type="int" />
           <Property Name="ASSI_NR_CEP" Type="varchar" MaxLength="10" />
           <Property Name="ASSI_AQ_FOTO" Type="varchar" MaxLength="250" />
+          <Property Name="ASSI_NR_TELEFONE" Type="varchar" MaxLength="50" />
+          <Property Name="ASSIN_NR_CELULAR" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ASSINANTE_ANEXO">
           <Key>
@@ -78,6 +81,18 @@
           <Property Name="ASAN_IN_TIPO" Type="int" Nullable="false" />
           <Property Name="ASAN_AQ_ARQUIVO" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="ASAN_IN_ATIVO" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ASSINANTE_PAGAMENTO">
+          <Key>
+            <PropertyRef Name="ASPA_CD_ID" />
+          </Key>
+          <Property Name="ASPA_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ASSI_CD_ID" Type="int" Nullable="false" />
+          <Property Name="ASPA_DT_PAGAMENTO" Type="date" />
+          <Property Name="ASPA_VL_VALOR" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PLAN_CD_ID" Type="int" />
+          <Property Name="ASPA_DT_PROXIMO" Type="date" />
+          <Property Name="ASPA_IN_ATIVO" Type="int" />
         </EntityType>
         <EntityType Name="CARGO">
           <Key>
@@ -464,6 +479,37 @@
           <Property Name="PERF_SG_SIGLA" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="PERF_NM_NOME" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="PLANO">
+          <Key>
+            <PropertyRef Name="PLAN_CD_ID" />
+          </Key>
+          <Property Name="PLAN_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PLAN_NM_NOME" Type="varchar" MaxLength="50" />
+          <Property Name="PLAN_DT_CRIACAO" Type="date" />
+          <Property Name="PLAN_IN_ATIVO" Type="int" />
+          <Property Name="PLAN_DS_DESCRICAO" Type="varchar" MaxLength="500" />
+          <Property Name="PLAN_NR_USUARIOS" Type="int" />
+          <Property Name="PLAN_NR_CONTATOS" Type="int" />
+          <Property Name="PLAN_NR_EMAIL" Type="int" />
+          <Property Name="PLAN_NR_SMS" Type="int" />
+          <Property Name="PLAN_NR_WHATSAPP" Type="int" />
+          <Property Name="PLAN_NR_PROCESSOS" Type="int" />
+          <Property Name="PLAN_NR_ACOES" Type="int" />
+          <Property Name="PLAN_VL_PRECO" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PLPE_CD_ID" Type="int" />
+          <Property Name="PLAN_DT_VALIDADE" Type="date" />
+          <Property Name="PLAN_VL_PROMOCAO" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PLAN_TX_SITE" Type="varchar" MaxLength="5000" />
+        </EntityType>
+        <EntityType Name="PLANO_PERIODICIDADE">
+          <Key>
+            <PropertyRef Name="PLPE_CD_ID" />
+          </Key>
+          <Property Name="PLPE_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PLPE_NM_NOME" Type="varchar" MaxLength="50" />
+          <Property Name="PLPE_NR_DIAS" Type="int" />
+          <Property Name="PLPE_IN_ATIVO" Type="int" />
+        </EntityType>
         <EntityType Name="POSICAO">
           <Key>
             <PropertyRef Name="POSI_CD_ID" />
@@ -669,6 +715,42 @@
             </Principal>
             <Dependent Role="ASSINANTE_ANEXO">
               <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ASSINANTE_PAGAMENTO_ASSINANTE">
+          <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="1" />
+          <End Role="ASSINANTE_PAGAMENTO" Type="Self.ASSINANTE_PAGAMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="ASSINANTE_PAGAMENTO">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ASSINANTE_PAGAMENTO_PLANO">
+          <End Role="PLANO" Type="Self.PLANO" Multiplicity="0..1" />
+          <End Role="ASSINANTE_PAGAMENTO" Type="Self.ASSINANTE_PAGAMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PLANO">
+              <PropertyRef Name="PLAN_CD_ID" />
+            </Principal>
+            <Dependent Role="ASSINANTE_PAGAMENTO">
+              <PropertyRef Name="PLAN_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ASSINANTE_PLANO">
+          <End Role="PLANO" Type="Self.PLANO" Multiplicity="0..1" />
+          <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PLANO">
+              <PropertyRef Name="PLAN_CD_ID" />
+            </Principal>
+            <Dependent Role="ASSINANTE">
+              <PropertyRef Name="PLAN_CD_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1320,6 +1402,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PLANO_PLANO_PERIODICIDADE">
+          <End Role="PLANO_PERIODICIDADE" Type="Self.PLANO_PERIODICIDADE" Multiplicity="0..1" />
+          <End Role="PLANO" Type="Self.PLANO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PLANO_PERIODICIDADE">
+              <PropertyRef Name="PLPE_CD_ID" />
+            </Principal>
+            <Dependent Role="PLANO">
+              <PropertyRef Name="PLPE_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_POSICAO_ASSINANTE">
           <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="1" />
           <End Role="POSICAO" Type="Self.POSICAO" Multiplicity="*" />
@@ -1434,6 +1528,7 @@
           <EntitySet Name="AGENDA_VINCULO" EntityType="Self.AGENDA_VINCULO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ASSINANTE" EntityType="Self.ASSINANTE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ASSINANTE_ANEXO" EntityType="Self.ASSINANTE_ANEXO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ASSINANTE_PAGAMENTO" EntityType="Self.ASSINANTE_PAGAMENTO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CARGO" EntityType="Self.CARGO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CATEGORIA_AGENDA" EntityType="Self.CATEGORIA_AGENDA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CATEGORIA_CLIENTE" EntityType="Self.CATEGORIA_CLIENTE" Schema="dbo" store:Type="Tables" />
@@ -1462,6 +1557,8 @@
           <EntitySet Name="NOTIFICACAO" EntityType="Self.NOTIFICACAO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NOTIFICACAO_ANEXO" EntityType="Self.NOTIFICACAO_ANEXO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PERFIL" EntityType="Self.PERFIL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PLANO" EntityType="Self.PLANO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PLANO_PERIODICIDADE" EntityType="Self.PLANO_PERIODICIDADE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="POSICAO" EntityType="Self.POSICAO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TEMPLATE" EntityType="Self.TEMPLATE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TIPO_ACAO" EntityType="Self.TIPO_ACAO" Schema="dbo" store:Type="Tables" />
@@ -1501,6 +1598,18 @@
           <AssociationSet Name="FK_ASSINANTE_ANEXO_ASSINANTE" Association="Self.FK_ASSINANTE_ANEXO_ASSINANTE">
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
             <End Role="ASSINANTE_ANEXO" EntitySet="ASSINANTE_ANEXO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ASSINANTE_PAGAMENTO_ASSINANTE" Association="Self.FK_ASSINANTE_PAGAMENTO_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="ASSINANTE_PAGAMENTO" EntitySet="ASSINANTE_PAGAMENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ASSINANTE_PAGAMENTO_PLANO" Association="Self.FK_ASSINANTE_PAGAMENTO_PLANO">
+            <End Role="PLANO" EntitySet="PLANO" />
+            <End Role="ASSINANTE_PAGAMENTO" EntitySet="ASSINANTE_PAGAMENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ASSINANTE_PLANO" Association="Self.FK_ASSINANTE_PLANO">
+            <End Role="PLANO" EntitySet="PLANO" />
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
           </AssociationSet>
           <AssociationSet Name="FK_ASSINANTE_TIPO_PESSOA" Association="Self.FK_ASSINANTE_TIPO_PESSOA">
             <End Role="TIPO_PESSOA" EntitySet="TIPO_PESSOA" />
@@ -1718,6 +1827,10 @@
             <End Role="USUARIO" EntitySet="USUARIO" />
             <End Role="NOTIFICACAO" EntitySet="NOTIFICACAO" />
           </AssociationSet>
+          <AssociationSet Name="FK_PLANO_PLANO_PERIODICIDADE" Association="Self.FK_PLANO_PLANO_PERIODICIDADE">
+            <End Role="PLANO_PERIODICIDADE" EntitySet="PLANO_PERIODICIDADE" />
+            <End Role="PLANO" EntitySet="PLANO" />
+          </AssociationSet>
           <AssociationSet Name="FK_POSICAO_ASSINANTE" Association="Self.FK_POSICAO_ASSINANTE">
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
             <End Role="POSICAO" EntitySet="POSICAO" />
@@ -1805,6 +1918,11 @@
           <NavigationProperty Name="TIPO_ACAO" Relationship="PlatMensagensModel.FK_TIPO_ACAO_ASSINANTE" FromRole="ASSINANTE" ToRole="TIPO_ACAO" />
           <NavigationProperty Name="AGENDA" Relationship="PlatMensagensModel.FK_AGENDA_ASSINANTE" FromRole="ASSINANTE" ToRole="AGENDA" />
           <NavigationProperty Name="CATEGORIA_AGENDA" Relationship="PlatMensagensModel.FK_CATEGORIA_AGENDA_ASSINANTE" FromRole="ASSINANTE" ToRole="CATEGORIA_AGENDA" />
+          <Property Name="PLAN_CD_ID" Type="Int32" />
+          <Property Name="ASSI_NR_TELEFONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ASSIN_NR_CELULAR" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ASSINANTE_PAGAMENTO" Relationship="PlatMensagensModel.FK_ASSINANTE_PAGAMENTO_ASSINANTE" FromRole="ASSINANTE" ToRole="ASSINANTE_PAGAMENTO" />
+          <NavigationProperty Name="PLANO" Relationship="PlatMensagensModel.FK_ASSINANTE_PLANO" FromRole="ASSINANTE" ToRole="PLANO" />
         </EntityType>
         <EntityType Name="ASSINANTE_ANEXO">
           <Key>
@@ -3011,6 +3129,25 @@
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
             <End Role="CATEGORIA_AGENDA" EntitySet="CATEGORIA_AGENDA" />
           </AssociationSet>
+          <EntitySet Name="ASSINANTE_PAGAMENTO" EntityType="PlatMensagensModel.ASSINANTE_PAGAMENTO" />
+          <EntitySet Name="PLANO" EntityType="PlatMensagensModel.PLANO" />
+          <EntitySet Name="PLANO_PERIODICIDADE" EntityType="PlatMensagensModel.PLANO_PERIODICIDADE" />
+          <AssociationSet Name="FK_ASSINANTE_PAGAMENTO_ASSINANTE" Association="PlatMensagensModel.FK_ASSINANTE_PAGAMENTO_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="ASSINANTE_PAGAMENTO" EntitySet="ASSINANTE_PAGAMENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ASSINANTE_PLANO" Association="PlatMensagensModel.FK_ASSINANTE_PLANO">
+            <End Role="PLANO" EntitySet="PLANO" />
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ASSINANTE_PAGAMENTO_PLANO" Association="PlatMensagensModel.FK_ASSINANTE_PAGAMENTO_PLANO">
+            <End Role="PLANO" EntitySet="PLANO" />
+            <End Role="ASSINANTE_PAGAMENTO" EntitySet="ASSINANTE_PAGAMENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PLANO_PLANO_PERIODICIDADE" Association="PlatMensagensModel.FK_PLANO_PLANO_PERIODICIDADE">
+            <End Role="PLANO_PERIODICIDADE" EntitySet="PLANO_PERIODICIDADE" />
+            <End Role="PLANO" EntitySet="PLANO" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_TEMPLATE_ASSINANTE">
           <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="0..1" />
@@ -3651,6 +3788,103 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ASSINANTE_PAGAMENTO">
+          <Key>
+            <PropertyRef Name="ASPA_CD_ID" />
+          </Key>
+          <Property Name="ASPA_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ASSI_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="ASPA_DT_PAGAMENTO" Type="DateTime" Precision="0" />
+          <Property Name="ASPA_VL_VALOR" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PLAN_CD_ID" Type="Int32" />
+          <Property Name="ASPA_DT_PROXIMO" Type="DateTime" Precision="0" />
+          <Property Name="ASPA_IN_ATIVO" Type="Int32" />
+          <NavigationProperty Name="ASSINANTE" Relationship="PlatMensagensModel.FK_ASSINANTE_PAGAMENTO_ASSINANTE" FromRole="ASSINANTE_PAGAMENTO" ToRole="ASSINANTE" />
+          <NavigationProperty Name="PLANO" Relationship="PlatMensagensModel.FK_ASSINANTE_PAGAMENTO_PLANO" FromRole="ASSINANTE_PAGAMENTO" ToRole="PLANO" />
+        </EntityType>
+        <EntityType Name="PLANO">
+          <Key>
+            <PropertyRef Name="PLAN_CD_ID" />
+          </Key>
+          <Property Name="PLAN_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PLAN_NM_NOME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PLAN_DT_CRIACAO" Type="DateTime" Precision="0" />
+          <Property Name="PLAN_IN_ATIVO" Type="Int32" />
+          <Property Name="PLAN_DS_DESCRICAO" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PLAN_NR_USUARIOS" Type="Int32" />
+          <Property Name="PLAN_NR_CONTATOS" Type="Int32" />
+          <Property Name="PLAN_NR_EMAIL" Type="Int32" />
+          <Property Name="PLAN_NR_SMS" Type="Int32" />
+          <Property Name="PLAN_NR_WHATSAPP" Type="Int32" />
+          <Property Name="PLAN_NR_PROCESSOS" Type="Int32" />
+          <Property Name="PLAN_NR_ACOES" Type="Int32" />
+          <Property Name="PLAN_VL_PRECO" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PLPE_CD_ID" Type="Int32" />
+          <Property Name="PLAN_DT_VALIDADE" Type="DateTime" Precision="0" />
+          <Property Name="PLAN_VL_PROMOCAO" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PLAN_TX_SITE" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ASSINANTE" Relationship="PlatMensagensModel.FK_ASSINANTE_PLANO" FromRole="PLANO" ToRole="ASSINANTE" />
+          <NavigationProperty Name="ASSINANTE_PAGAMENTO" Relationship="PlatMensagensModel.FK_ASSINANTE_PAGAMENTO_PLANO" FromRole="PLANO" ToRole="ASSINANTE_PAGAMENTO" />
+          <NavigationProperty Name="PLANO_PERIODICIDADE" Relationship="PlatMensagensModel.FK_PLANO_PLANO_PERIODICIDADE" FromRole="PLANO" ToRole="PLANO_PERIODICIDADE" />
+        </EntityType>
+        <EntityType Name="PLANO_PERIODICIDADE">
+          <Key>
+            <PropertyRef Name="PLPE_CD_ID" />
+          </Key>
+          <Property Name="PLPE_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PLPE_NM_NOME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PLPE_NR_DIAS" Type="Int32" />
+          <Property Name="PLPE_IN_ATIVO" Type="Int32" />
+          <NavigationProperty Name="PLANO" Relationship="PlatMensagensModel.FK_PLANO_PLANO_PERIODICIDADE" FromRole="PLANO_PERIODICIDADE" ToRole="PLANO" />
+        </EntityType>
+        <Association Name="FK_ASSINANTE_PAGAMENTO_ASSINANTE">
+          <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="1" />
+          <End Type="PlatMensagensModel.ASSINANTE_PAGAMENTO" Role="ASSINANTE_PAGAMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="ASSINANTE_PAGAMENTO">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ASSINANTE_PLANO">
+          <End Type="PlatMensagensModel.PLANO" Role="PLANO" Multiplicity="0..1" />
+          <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PLANO">
+              <PropertyRef Name="PLAN_CD_ID" />
+            </Principal>
+            <Dependent Role="ASSINANTE">
+              <PropertyRef Name="PLAN_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ASSINANTE_PAGAMENTO_PLANO">
+          <End Type="PlatMensagensModel.PLANO" Role="PLANO" Multiplicity="0..1" />
+          <End Type="PlatMensagensModel.ASSINANTE_PAGAMENTO" Role="ASSINANTE_PAGAMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PLANO">
+              <PropertyRef Name="PLAN_CD_ID" />
+            </Principal>
+            <Dependent Role="ASSINANTE_PAGAMENTO">
+              <PropertyRef Name="PLAN_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PLANO_PLANO_PERIODICIDADE">
+          <End Type="PlatMensagensModel.PLANO_PERIODICIDADE" Role="PLANO_PERIODICIDADE" Multiplicity="0..1" />
+          <End Type="PlatMensagensModel.PLANO" Role="PLANO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PLANO_PERIODICIDADE">
+              <PropertyRef Name="PLPE_CD_ID" />
+            </Principal>
+            <Dependent Role="PLANO">
+              <PropertyRef Name="PLPE_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3660,6 +3894,9 @@
           <EntitySetMapping Name="ASSINANTE">
             <EntityTypeMapping TypeName="PlatMensagensModel.ASSINANTE">
               <MappingFragment StoreEntitySet="ASSINANTE">
+                <ScalarProperty Name="ASSIN_NR_CELULAR" ColumnName="ASSIN_NR_CELULAR" />
+                <ScalarProperty Name="ASSI_NR_TELEFONE" ColumnName="ASSI_NR_TELEFONE" />
+                <ScalarProperty Name="PLAN_CD_ID" ColumnName="PLAN_CD_ID" />
                 <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
                 <ScalarProperty Name="TIPE_CD_ID" ColumnName="TIPE_CD_ID" />
                 <ScalarProperty Name="ASSI_NM_NOME" ColumnName="ASSI_NM_NOME" />
@@ -4266,6 +4503,52 @@
                 <ScalarProperty Name="CAAG_NM_NOME" ColumnName="CAAG_NM_NOME" />
                 <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
                 <ScalarProperty Name="CAAG_CD_ID" ColumnName="CAAG_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ASSINANTE_PAGAMENTO">
+            <EntityTypeMapping TypeName="PlatMensagensModel.ASSINANTE_PAGAMENTO">
+              <MappingFragment StoreEntitySet="ASSINANTE_PAGAMENTO">
+                <ScalarProperty Name="ASPA_IN_ATIVO" ColumnName="ASPA_IN_ATIVO" />
+                <ScalarProperty Name="ASPA_DT_PROXIMO" ColumnName="ASPA_DT_PROXIMO" />
+                <ScalarProperty Name="PLAN_CD_ID" ColumnName="PLAN_CD_ID" />
+                <ScalarProperty Name="ASPA_VL_VALOR" ColumnName="ASPA_VL_VALOR" />
+                <ScalarProperty Name="ASPA_DT_PAGAMENTO" ColumnName="ASPA_DT_PAGAMENTO" />
+                <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
+                <ScalarProperty Name="ASPA_CD_ID" ColumnName="ASPA_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PLANO">
+            <EntityTypeMapping TypeName="PlatMensagensModel.PLANO">
+              <MappingFragment StoreEntitySet="PLANO">
+                <ScalarProperty Name="PLAN_TX_SITE" ColumnName="PLAN_TX_SITE" />
+                <ScalarProperty Name="PLAN_VL_PROMOCAO" ColumnName="PLAN_VL_PROMOCAO" />
+                <ScalarProperty Name="PLAN_DT_VALIDADE" ColumnName="PLAN_DT_VALIDADE" />
+                <ScalarProperty Name="PLPE_CD_ID" ColumnName="PLPE_CD_ID" />
+                <ScalarProperty Name="PLAN_VL_PRECO" ColumnName="PLAN_VL_PRECO" />
+                <ScalarProperty Name="PLAN_NR_ACOES" ColumnName="PLAN_NR_ACOES" />
+                <ScalarProperty Name="PLAN_NR_PROCESSOS" ColumnName="PLAN_NR_PROCESSOS" />
+                <ScalarProperty Name="PLAN_NR_WHATSAPP" ColumnName="PLAN_NR_WHATSAPP" />
+                <ScalarProperty Name="PLAN_NR_SMS" ColumnName="PLAN_NR_SMS" />
+                <ScalarProperty Name="PLAN_NR_EMAIL" ColumnName="PLAN_NR_EMAIL" />
+                <ScalarProperty Name="PLAN_NR_CONTATOS" ColumnName="PLAN_NR_CONTATOS" />
+                <ScalarProperty Name="PLAN_NR_USUARIOS" ColumnName="PLAN_NR_USUARIOS" />
+                <ScalarProperty Name="PLAN_DS_DESCRICAO" ColumnName="PLAN_DS_DESCRICAO" />
+                <ScalarProperty Name="PLAN_IN_ATIVO" ColumnName="PLAN_IN_ATIVO" />
+                <ScalarProperty Name="PLAN_DT_CRIACAO" ColumnName="PLAN_DT_CRIACAO" />
+                <ScalarProperty Name="PLAN_NM_NOME" ColumnName="PLAN_NM_NOME" />
+                <ScalarProperty Name="PLAN_CD_ID" ColumnName="PLAN_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PLANO_PERIODICIDADE">
+            <EntityTypeMapping TypeName="PlatMensagensModel.PLANO_PERIODICIDADE">
+              <MappingFragment StoreEntitySet="PLANO_PERIODICIDADE">
+                <ScalarProperty Name="PLPE_IN_ATIVO" ColumnName="PLPE_IN_ATIVO" />
+                <ScalarProperty Name="PLPE_NR_DIAS" ColumnName="PLPE_NR_DIAS" />
+                <ScalarProperty Name="PLPE_NM_NOME" ColumnName="PLPE_NM_NOME" />
+                <ScalarProperty Name="PLPE_CD_ID" ColumnName="PLPE_CD_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

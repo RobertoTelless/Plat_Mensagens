@@ -319,6 +319,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MensagemController.cs" />
     <Compile Include="Controllers\NotificacaoController.cs" />
+    <Compile Include="Controllers\PlanoController.cs" />
     <Compile Include="Controllers\TemplateController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Extensions\HMTLHelperExtensions.cs" />
@@ -337,6 +338,7 @@
     <Compile Include="ViewModels\CRMViewModel.cs" />
     <Compile Include="ViewModels\ConfiguracaoViewModel.cs" />
     <Compile Include="ViewModels\CRMDTOViewModel.cs" />
+    <Compile Include="ViewModels\PlanoViewModel.cs" />
     <Compile Include="ViewModels\PosicaoViewModel.cs" />
     <Compile Include="ViewModels\GrupoContatoViewModel.cs" />
     <Compile Include="ViewModels\CategoriaClienteViewModel.cs" />
@@ -3028,11 +3030,16 @@
     <Content Include="Views\CRM\VerCRMExpansao.cshtml" />
     <Content Include="Views\CRM\VerProcessosStatusExpansao.cshtml" />
     <Content Include="Views\CRM\EnviarEmailCliente.cshtml" />
+    <Content Include="Views\Plano\MontarTelaPlano.cshtml" />
+    <Content Include="Views\Plano\IncluirPlano.cshtml" />
+    <Content Include="Views\Plano\EditarPlano.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Filters\" />
-    <Folder Include="Imagens\1\Agenda\" />
+    <Folder Include="Imagens\1\Agenda\1\Anexos\" />
+    <Folder Include="Imagens\1\Agenda\2\Anexos\" />
+    <Folder Include="Imagens\1\Agenda\3\Anexos\" />
     <Folder Include="Imagens\1\Cliente\10\Anexos\" />
     <Folder Include="Imagens\1\Cliente\10\Fotos\" />
     <Folder Include="Imagens\1\Cliente\11\Anexos\" />

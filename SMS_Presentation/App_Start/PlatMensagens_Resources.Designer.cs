@@ -421,6 +421,24 @@ namespace SMS_Presentation.App_Start {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Plano já cadastrado.
+        /// </summary>
+        internal static string M0049 {
+            get {
+                return ResourceManager.GetString("M0049", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Impossível excluir esse Plano. Existem assinantes vinculados a ele.
+        /// </summary>
+        internal static string M0050 {
+            get {
+                return ResourceManager.GetString("M0050", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a A Senha não pode ficar em branco.
         /// </summary>
         internal static string M0073 {

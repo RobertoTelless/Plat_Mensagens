@@ -112,6 +112,7 @@ namespace SMS_Presentation.Controllers
             Session["MensMensagem"] = 0;
             Session["MensGrupo"] = 0;
             Session["MensCRM"] = 0;
+            Session["MensPlano"] = 0;
 
             Session["VoltaNotificacao"] = 3;
             Session["VoltaCRM"] = 0;
@@ -227,6 +228,10 @@ namespace SMS_Presentation.Controllers
                 ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0011", CultureInfo.CurrentCulture));
             }
             if ((Int32)Session["MensCRM"] == 2)
+            {
+                ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0011", CultureInfo.CurrentCulture));
+            }
+            if ((Int32)Session["MensPlano"] == 2)
             {
                 ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0011", CultureInfo.CurrentCulture));
             }

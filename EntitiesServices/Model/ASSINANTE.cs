@@ -38,6 +38,7 @@ namespace EntitiesServices.Model
             this.TIPO_ACAO = new HashSet<TIPO_ACAO>();
             this.AGENDA = new HashSet<AGENDA>();
             this.CATEGORIA_AGENDA = new HashSet<CATEGORIA_AGENDA>();
+            this.ASSINANTE_PAGAMENTO = new HashSet<ASSINANTE_PAGAMENTO>();
         }
     
         public int ASSI_CD_ID { get; set; }
@@ -59,6 +60,9 @@ namespace EntitiesServices.Model
         public Nullable<int> UF_CD_ID { get; set; }
         public string ASSI_NR_CEP { get; set; }
         public string ASSI_AQ_FOTO { get; set; }
+        public Nullable<int> PLAN_CD_ID { get; set; }
+        public string ASSI_NR_TELEFONE { get; set; }
+        public string ASSIN_NR_CELULAR { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ASSINANTE_ANEXO> ASSINANTE_ANEXO { get; set; }
@@ -104,5 +108,8 @@ namespace EntitiesServices.Model
         public virtual ICollection<AGENDA> AGENDA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CATEGORIA_AGENDA> CATEGORIA_AGENDA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ASSINANTE_PAGAMENTO> ASSINANTE_PAGAMENTO { get; set; }
+        public virtual PLANO PLANO { get; set; }
     }
 }
