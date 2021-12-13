@@ -268,6 +268,9 @@
     <Compile Include="Model\ASSINANTE_ANEXO.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\ASSINANTE_CONSUMO.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\ASSINANTE_PAGAMENTO.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>

@@ -69,5 +69,6 @@ namespace EntitiesServices.Model
         public virtual DbSet<ASSINANTE_PAGAMENTO> ASSINANTE_PAGAMENTO { get; set; }
         public virtual DbSet<PLANO> PLANO { get; set; }
         public virtual DbSet<PLANO_PERIODICIDADE> PLANO_PERIODICIDADE { get; set; }
+        public virtual DbSet<ASSINANTE_CONSUMO> ASSINANTE_CONSUMO { get; set; }
     }
 }

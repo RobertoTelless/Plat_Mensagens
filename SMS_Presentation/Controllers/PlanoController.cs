@@ -312,7 +312,7 @@ namespace SMS_Presentation.Controllers
             Int32 idAss = (Int32)Session["IdAssinante"];
 
             PLANO item = baseApp.GetItemById(id);
-            Session["Grupo"] = item;
+            Session["Plano"] = item;
 
             // Indicadores
             ViewBag.Periodicidades = new SelectList(baseApp.GetAllPeriodicidades().OrderBy(p => p.PLPE_NM_NOME), "PLPE_CD_ID", "PLPE_NM_NOME");
@@ -440,6 +440,72 @@ namespace SMS_Presentation.Controllers
             Int32 volta = baseApp.ValidateReativar(item, usuario);
             Session["ListaPlano"] = null;
             return RedirectToAction("MontarTelaPlano");
+        }
+
+        [HttpGet]
+        public ActionResult VerPlano(Int32 id)
+        {
+
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            PLANO item = baseApp.GetItemById(id);
+            Session["Plano"] = item;
+
+            // Indicadores
+
+            // Mensagens
+            if (Session["MensPlano"] != null)
+            {
+
+
+            }
+
+            objetoAntes = item;
+            Session["IdPlano"] = id;
+            PlanoViewModel vm = Mapper.Map<PLANO, PlanoViewModel>(item);
+            return View(vm);
+        }
+
+        [HttpGet]
+        public ActionResult VerAssinante(Int32 id)
+        {
+
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+            Session["IdAssinante"] = id;
+            Session["VoltaAssinante"] = 2;
+            return RedirectToAction("VerAssinante", "Assinante");
         }
 
         public ActionResult GerarRelatorioListaPlano()

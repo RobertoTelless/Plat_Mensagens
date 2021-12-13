@@ -82,6 +82,21 @@
           <Property Name="ASAN_AQ_ARQUIVO" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="ASAN_IN_ATIVO" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="ASSINANTE_CONSUMO">
+          <Key>
+            <PropertyRef Name="ASCO_CD_ID" />
+          </Key>
+          <Property Name="ASCO_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ASSI_CD_ID" Type="int" Nullable="false" />
+          <Property Name="ASCO_DT_REFERENCIA" Type="date" />
+          <Property Name="ASCO_NR_USUARIO" Type="int" />
+          <Property Name="ASCO_NR_CONTATO" Type="int" />
+          <Property Name="ASCO_NR_EMAIL" Type="int" />
+          <Property Name="ASCO_NR_SMS" Type="int" />
+          <Property Name="ASCO_NR_WHATSAPP" Type="int" />
+          <Property Name="ASCO_NR_PROCESSO" Type="int" />
+          <Property Name="ASCO_NR_ACOES" Type="int" />
+        </EntityType>
         <EntityType Name="ASSINANTE_PAGAMENTO">
           <Key>
             <PropertyRef Name="ASPA_CD_ID" />
@@ -714,6 +729,18 @@
               <PropertyRef Name="ASSI_CD_ID" />
             </Principal>
             <Dependent Role="ASSINANTE_ANEXO">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ASSINANTE_CONSUMO_ASSINANTE">
+          <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="1" />
+          <End Role="ASSINANTE_CONSUMO" Type="Self.ASSINANTE_CONSUMO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="ASSINANTE_CONSUMO">
               <PropertyRef Name="ASSI_CD_ID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1528,6 +1555,7 @@
           <EntitySet Name="AGENDA_VINCULO" EntityType="Self.AGENDA_VINCULO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ASSINANTE" EntityType="Self.ASSINANTE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ASSINANTE_ANEXO" EntityType="Self.ASSINANTE_ANEXO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ASSINANTE_CONSUMO" EntityType="Self.ASSINANTE_CONSUMO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ASSINANTE_PAGAMENTO" EntityType="Self.ASSINANTE_PAGAMENTO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CARGO" EntityType="Self.CARGO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CATEGORIA_AGENDA" EntityType="Self.CATEGORIA_AGENDA" Schema="dbo" store:Type="Tables" />
@@ -1598,6 +1626,10 @@
           <AssociationSet Name="FK_ASSINANTE_ANEXO_ASSINANTE" Association="Self.FK_ASSINANTE_ANEXO_ASSINANTE">
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
             <End Role="ASSINANTE_ANEXO" EntitySet="ASSINANTE_ANEXO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ASSINANTE_CONSUMO_ASSINANTE" Association="Self.FK_ASSINANTE_CONSUMO_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="ASSINANTE_CONSUMO" EntitySet="ASSINANTE_CONSUMO" />
           </AssociationSet>
           <AssociationSet Name="FK_ASSINANTE_PAGAMENTO_ASSINANTE" Association="Self.FK_ASSINANTE_PAGAMENTO_ASSINANTE">
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
@@ -1923,6 +1955,7 @@
           <Property Name="ASSIN_NR_CELULAR" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ASSINANTE_PAGAMENTO" Relationship="PlatMensagensModel.FK_ASSINANTE_PAGAMENTO_ASSINANTE" FromRole="ASSINANTE" ToRole="ASSINANTE_PAGAMENTO" />
           <NavigationProperty Name="PLANO" Relationship="PlatMensagensModel.FK_ASSINANTE_PLANO" FromRole="ASSINANTE" ToRole="PLANO" />
+          <NavigationProperty Name="ASSINANTE_CONSUMO" Relationship="PlatMensagensModel.FK_ASSINANTE_CONSUMO_ASSINANTE" FromRole="ASSINANTE" ToRole="ASSINANTE_CONSUMO" />
         </EntityType>
         <EntityType Name="ASSINANTE_ANEXO">
           <Key>
@@ -3148,6 +3181,11 @@
             <End Role="PLANO_PERIODICIDADE" EntitySet="PLANO_PERIODICIDADE" />
             <End Role="PLANO" EntitySet="PLANO" />
           </AssociationSet>
+          <EntitySet Name="ASSINANTE_CONSUMO" EntityType="PlatMensagensModel.ASSINANTE_CONSUMO" />
+          <AssociationSet Name="FK_ASSINANTE_CONSUMO_ASSINANTE" Association="PlatMensagensModel.FK_ASSINANTE_CONSUMO_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="ASSINANTE_CONSUMO" EntitySet="ASSINANTE_CONSUMO" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_TEMPLATE_ASSINANTE">
           <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="0..1" />
@@ -3885,6 +3923,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ASSINANTE_CONSUMO">
+          <Key>
+            <PropertyRef Name="ASCO_CD_ID" />
+          </Key>
+          <Property Name="ASCO_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ASSI_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="ASCO_DT_REFERENCIA" Type="DateTime" Precision="0" />
+          <Property Name="ASCO_NR_USUARIO" Type="Int32" />
+          <Property Name="ASCO_NR_CONTATO" Type="Int32" />
+          <Property Name="ASCO_NR_EMAIL" Type="Int32" />
+          <Property Name="ASCO_NR_SMS" Type="Int32" />
+          <Property Name="ASCO_NR_WHATSAPP" Type="Int32" />
+          <Property Name="ASCO_NR_PROCESSO" Type="Int32" />
+          <Property Name="ASCO_NR_ACOES" Type="Int32" />
+          <NavigationProperty Name="ASSINANTE" Relationship="PlatMensagensModel.FK_ASSINANTE_CONSUMO_ASSINANTE" FromRole="ASSINANTE_CONSUMO" ToRole="ASSINANTE" />
+        </EntityType>
+        <Association Name="FK_ASSINANTE_CONSUMO_ASSINANTE">
+          <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="1" />
+          <End Type="PlatMensagensModel.ASSINANTE_CONSUMO" Role="ASSINANTE_CONSUMO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="ASSINANTE_CONSUMO">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4549,6 +4615,22 @@
                 <ScalarProperty Name="PLPE_NR_DIAS" ColumnName="PLPE_NR_DIAS" />
                 <ScalarProperty Name="PLPE_NM_NOME" ColumnName="PLPE_NM_NOME" />
                 <ScalarProperty Name="PLPE_CD_ID" ColumnName="PLPE_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ASSINANTE_CONSUMO">
+            <EntityTypeMapping TypeName="PlatMensagensModel.ASSINANTE_CONSUMO">
+              <MappingFragment StoreEntitySet="ASSINANTE_CONSUMO">
+                <ScalarProperty Name="ASCO_NR_ACOES" ColumnName="ASCO_NR_ACOES" />
+                <ScalarProperty Name="ASCO_NR_PROCESSO" ColumnName="ASCO_NR_PROCESSO" />
+                <ScalarProperty Name="ASCO_NR_WHATSAPP" ColumnName="ASCO_NR_WHATSAPP" />
+                <ScalarProperty Name="ASCO_NR_SMS" ColumnName="ASCO_NR_SMS" />
+                <ScalarProperty Name="ASCO_NR_EMAIL" ColumnName="ASCO_NR_EMAIL" />
+                <ScalarProperty Name="ASCO_NR_CONTATO" ColumnName="ASCO_NR_CONTATO" />
+                <ScalarProperty Name="ASCO_NR_USUARIO" ColumnName="ASCO_NR_USUARIO" />
+                <ScalarProperty Name="ASCO_DT_REFERENCIA" ColumnName="ASCO_DT_REFERENCIA" />
+                <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
+                <ScalarProperty Name="ASCO_CD_ID" ColumnName="ASCO_CD_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

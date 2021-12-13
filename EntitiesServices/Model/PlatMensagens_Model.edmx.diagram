@@ -124,6 +124,8 @@
         <AssociationConnector Association="PlatMensagensModel.FK_ASSINANTE_PLANO" />
         <AssociationConnector Association="PlatMensagensModel.FK_ASSINANTE_PAGAMENTO_PLANO" />
         <AssociationConnector Association="PlatMensagensModel.FK_PLANO_PLANO_PERIODICIDADE" />
+        <EntityTypeShape EntityType="PlatMensagensModel.ASSINANTE_CONSUMO" Width="1.5" PointX="5.25" PointY="48.5" />
+        <AssociationConnector Association="PlatMensagensModel.FK_ASSINANTE_CONSUMO_ASSINANTE" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
