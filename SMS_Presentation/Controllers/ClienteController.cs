@@ -420,6 +420,10 @@ namespace SMS_Presentation.Controllers
                 {
                     ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0021", CultureInfo.CurrentCulture));
                 }
+                if ((Int32)Session["MensCliente"] == 50)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0052", CultureInfo.CurrentCulture));
+                }
 
 
 
@@ -557,6 +561,15 @@ namespace SMS_Presentation.Controllers
                 return RedirectToAction("Login", "ControleAcesso");
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Verifica possibilidade
+            Int32 numUsu = baseApp.GetAllItens(idAss).Count;
+            PLANO plano = (PLANO)Session["Plano"];
+            if (plano.PLAN_NR_CONTATOS <= numUsu)
+            {
+                Session["MensCliente"] = 50;
+                return RedirectToAction("MontarTelaCliente", "Cliente");
+            }
 
             // Prepara listas
             ViewBag.Tipos = new SelectList(baseApp.GetAllTipos().OrderBy(p => p.CACL_NM_NOME), "CACL_CD_ID", "CACL_NM_NOME");
@@ -1038,6 +1051,15 @@ namespace SMS_Presentation.Controllers
                 return RedirectToAction("Login", "ControleAcesso");
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Verifica possibilidade
+            Int32 numUsu = baseApp.GetAllItens(idAss).Count;
+            PLANO plano = (PLANO)Session["Plano"];
+            if (plano.PLAN_NR_CONTATOS <= numUsu)
+            {
+                Session["MensCliente"] = 50;
+                return RedirectToAction("MontarTelaCliente", "Cliente");
+            }
 
             // Prepara view
             CLIENTE item = baseApp.GetItemById(id);

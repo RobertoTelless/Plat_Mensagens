@@ -645,6 +645,8 @@
                                                                                     @if (cond.CRAC_IN_STATUS == 1 || cond.CRAC_IN_STATUS == 2)
                                                                                     {
                                                                                         @Html.TableLinkDetails(cond.CRAC_CD_ID, "EditarAcao", "fa-edit", "Editar/Consultar")
+                                                                                        @Html.TableLinkDetails(cond.CRAC_CD_ID, "EncerrarAcao", "fa-check", "Encerrar")
+                                                                                        <span style="color: #337ab7; cursor:pointer;" alt="Encerrar" class="tbl-link fa-lg fa fa-check" onclick="ShowModalEncerrar('/CRM/EncerrarAcao/@cond.CRAC_CD_ID')" title="Encerrar"></span>
                                                                                         <span style="color: #337ab7; cursor:pointer;" alt="Desativar" class="tbl-link fa-lg fa fa-trash-o" onclick="ShowModalExcluir('/CRM/ExcluirAcao/@cond.CRAC_CD_ID')" title="Excluir"></span>
                                                                                     }
                                                                                     else if (cond.CRAC_IN_STATUS == 3)
@@ -1271,6 +1273,12 @@
             $('#modal').find('.modal-footer').prepend('<a id="btnModal" alt="Reativar" class="btn btn-primary" href="' + url + '" target="_self" title="Reativar">Confirmar</a>');
             $('#modal').find('.modal-body').html('Confirma reativação da Ação?');
             $('#modal').find('.modal-header').prepend('<h5 id="modalTitle" class="modal-title">Confimar Reativação</h5>');
+            $('#modal').modal('show');
+        }
+        function ShowModalEncerrar(url) {
+            $('#modal').find('.modal-footer').prepend('<a id="btnModal" alt="Reativar" class="btn btn-primary" href="' + url + '" target="_self" title="Encerrar">Confirmar</a>');
+            $('#modal').find('.modal-body').html('Confirma Encerramento da Ação?');
+            $('#modal').find('.modal-header').prepend('<h5 id="modalTitle" class="modal-title">Confimar Encerramento</h5>');
             $('#modal').modal('show');
         }
     </script>

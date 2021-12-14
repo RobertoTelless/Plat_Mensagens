@@ -35,6 +35,10 @@ namespace SMS_Presentation.Controllers
         private readonly IPlanoAppService baseApp;
         private readonly ILogAppService logApp;
         private readonly IConfiguracaoAppService confApp;
+        private readonly IMensagemAppService menApp;
+        private readonly IUsuarioAppService usuApp;
+        private readonly ICRMAppService crmApp;
+        private readonly IClienteAppService cliApp;
 
         private String msg;
         private Exception exception;
@@ -43,11 +47,15 @@ namespace SMS_Presentation.Controllers
         List<PLANO> listaMaster = new List<PLANO>();
         String extensao;
 
-        public PlanoController(IPlanoAppService baseApps, ILogAppService logApps, IConfiguracaoAppService confApps)
+        public PlanoController(IPlanoAppService baseApps, ILogAppService logApps, IConfiguracaoAppService confApps, IMensagemAppService menApps, IUsuarioAppService usuApps, ICRMAppService crmApps, IClienteAppService cliApps)
         {
             baseApp = baseApps;
             logApp = logApps;
             confApp = confApps;
+            menApp = menApps;
+            usuApp = usuApps;
+            crmApp = crmApps;
+            cliApp = cliApps;
         }
 
         [HttpGet]
@@ -97,6 +105,7 @@ namespace SMS_Presentation.Controllers
             if ((List<PLANO>)Session["ListaPlano"] == null)
             {
                 listaMaster = baseApp.GetAllItens();
+                listaMaster = listaMaster.Where(p => p.PLAN_DT_VALIDADE.Value.Date >= DateTime.Today.Date).ToList();
                 Session["ListaPlano"] = listaMaster;
             }
             Session["Plano"] = null;
@@ -124,6 +133,67 @@ namespace SMS_Presentation.Controllers
             {
                 objeto = (PLANO)Session["FiltroPlano"];
             }
+            return View(objeto);
+        }
+
+        [HttpGet]
+        public ActionResult MontarTelaResumoMensagens()
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensPlano"] = 2;
+                    return RedirectToAction("CarregarBase", "BaseAdmin");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Recupera Plano
+            PLANO plano = (PLANO)Session["Plano"];
+
+            // Carrega listas
+            List<MENSAGENS> lt = menApp.GetAllItens(idAss);
+            List<MENSAGENS> lm = lt.Where(p => p.MENS_DT_ENVIO != null).ToList();
+            lm = lm.Where(p => p.MENS_DT_ENVIO.Value.Month == DateTime.Today.Date.Month & p.MENS_DT_ENVIO.Value.Year == DateTime.Today.Date.Year).ToList();
+
+            Int32 smsMes = lm.Where(p => p.MENS_IN_TIPO == 2).ToList().Count;
+            Int32 emailMes = lm.Where(p => p.MENS_IN_TIPO == 1).ToList().Count;
+            Int32 zapMes = lm.Where(p => p.MENS_IN_TIPO == 3).ToList().Count;
+            ViewBag.Email = emailMes;
+            ViewBag.Zap = zapMes;
+
+            ViewBag.SMSMes = smsMes.ToString() + "/" + plano.PLAN_NR_SMS.ToString();
+            ViewBag.EmailsMes = emailMes.ToString() + "/" + plano.PLAN_NR_EMAIL.ToString();
+            ViewBag.WhatsAppMes = zapMes.ToString() + "/" + plano.PLAN_NR_WHATSAPP.ToString();
+            ViewBag.TotalMes = lm.Count.ToString();
+            ViewBag.FalhasMes = lm.Where(p => p.MENS_TX_RETORNO != null).ToList().Count.ToString();
+
+            ViewBag.SMS = lt.Where(p => p.MENS_IN_TIPO == 2).ToList().Count.ToString();
+            ViewBag.Emails = lt.Where(p => p.MENS_IN_TIPO == 1).ToList().Count.ToString();
+            ViewBag.WhatsApp = lt.Where(p => p.MENS_IN_TIPO == 3).ToList().Count.ToString();
+            ViewBag.Total = lt.Count.ToString();
+            ViewBag.Falhas = lt.Where(p => p.MENS_TX_RETORNO != null).ToList().Count.ToString();
+
+            ViewBag.Usuarios = usuApp.GetAllItens(idAss).Count.ToString() + "/" + plano.PLAN_NR_USUARIOS.ToString();
+            ViewBag.Contatos = cliApp.GetAllItens(idAss).Count.ToString() + "/" + plano.PLAN_NR_CONTATOS.ToString();
+            ViewBag.Processos = crmApp.GetAllItens(idAss).Count.ToString() + "/" + plano.PLAN_NR_PROCESSOS.ToString();
+            ViewBag.Acoes = crmApp.GetAllAcoes(idAss).Count.ToString() + "/" + plano.PLAN_NR_ACOES.ToString();
+
+            objeto = new PLANO();
             return View(objeto);
         }
 

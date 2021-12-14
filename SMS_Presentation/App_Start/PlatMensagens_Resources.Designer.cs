@@ -439,6 +439,60 @@ namespace SMS_Presentation.App_Start {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Impossível incluir/reativar usuário. Número de usuários ativos excede o contratado no Plano de Assinatura.
+        /// </summary>
+        internal static string M0051 {
+            get {
+                return ResourceManager.GetString("M0051", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Impossível incluir/reativar contato. Número de contatos ativos excede o contratado no Plano de Assinatura.
+        /// </summary>
+        internal static string M0052 {
+            get {
+                return ResourceManager.GetString("M0052", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Impossível enviar este e-mail. O número de e-mails enviados no mês corrente ultrapassa o contratado no Plano de Assinatura.
+        /// </summary>
+        internal static string M0053 {
+            get {
+                return ResourceManager.GetString("M0053", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Impossível enviar este SMS. O número de SMSs enviados no mês corrente ultrapassa o contratado no Plano de Assinatura.
+        /// </summary>
+        internal static string M0054 {
+            get {
+                return ResourceManager.GetString("M0054", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Impossível incluir/reativar processos. Número de processos ativos excede o contratado no Plano de Assinatura.
+        /// </summary>
+        internal static string M0055 {
+            get {
+                return ResourceManager.GetString("M0055", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Impossível incluir/reativar ações nos processos. Número de ações ativas excede o contratado no Plano de Assinatura.
+        /// </summary>
+        internal static string M0056 {
+            get {
+                return ResourceManager.GetString("M0056", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a A Senha não pode ficar em branco.
         /// </summary>
         internal static string M0073 {

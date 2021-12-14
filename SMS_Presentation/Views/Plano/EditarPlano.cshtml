@@ -79,67 +79,122 @@
                                                     @Html.ValidationMessageFor(m => m.PLAN_DS_DESCRICAO, "", new { @style = "color:red" })
                                                 </div>
                                             </div>
+                                            @if (Model.ASSINANTE.Count == 0)
+                                            {
+                                                <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
+                                                    <h5 style="color:green; font-weight: bold; margin-left: 15px; margin-right: 15px;">Se estes campos forem deixados zerados, não haverá limite definido</h5>
+                                                    <div class="col-lg-2 col-md-2 col-xs-12">
+                                                        Num.Usuários
+                                                        @Html.TextBoxFor(m => m.PLAN_NR_USUARIOS, new { @class = "form-control touchspin2", autofocus = true })
+                                                        @Html.ValidationMessageFor(m => m.PLAN_NR_USUARIOS, "", new { @style = "color:red" })
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-xs-12">
+                                                        Num.Contatos
+                                                        @Html.TextBoxFor(m => m.PLAN_NR_CONTATOS, new { @class = "form-control touchspin2", autofocus = true })
+                                                        @Html.ValidationMessageFor(m => m.PLAN_NR_CONTATOS, "", new { @style = "color:red" })
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-xs-12">
+                                                        Num.E-Mails/Mês
+                                                        @Html.TextBoxFor(m => m.PLAN_NR_EMAIL, new { @class = "form-control touchspin2", autofocus = true })
+                                                        @Html.ValidationMessageFor(m => m.PLAN_NR_EMAIL, "", new { @style = "color:red" })
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-xs-12">
+                                                        Num.SMS/Mês
+                                                        @Html.TextBoxFor(m => m.PLAN_NR_SMS, new { @class = "form-control touchspin2", autofocus = true })
+                                                        @Html.ValidationMessageFor(m => m.PLAN_NR_SMS, "", new { @style = "color:red" })
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-xs-12">
+                                                        Num.WhatsApp/Mês
+                                                        @Html.TextBoxFor(m => m.PLAN_NR_WHATSAPP, new { @class = "form-control touchspin2", autofocus = true })
+                                                        @Html.ValidationMessageFor(m => m.PLAN_NR_WHATSAPP, "", new { @style = "color:red" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
+                                                    <div class="col-lg-2 col-md-2 col-xs-12">
+                                                        Num.Processos
+                                                        @Html.TextBoxFor(m => m.PLAN_NR_PROCESSOS, new { @class = "form-control touchspin2", autofocus = true })
+                                                        @Html.ValidationMessageFor(m => m.PLAN_NR_PROCESSOS, "", new { @style = "color:red" })
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-xs-12">
+                                                        Num.Ações
+                                                        @Html.TextBoxFor(m => m.PLAN_NR_ACOES, new { @class = "form-control touchspin2", autofocus = true })
+                                                        @Html.ValidationMessageFor(m => m.PLAN_NR_ACOES, "", new { @style = "color:red" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
+                                                    <div class="col-lg-2 col-md-2 col-xs-12">
+                                                        Preço (R$)
+                                                        @Html.TextBoxFor(m => m.PLAN_VL_PRECO, new { @class = "form-control", autofocus = true })
+                                                        @Html.ValidationMessageFor(m => m.PLAN_VL_PRECO, "", new { @style = "color:red" })
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-xs-12">
+                                                        Preço Promoção (R$)
+                                                        @Html.TextBoxFor(m => m.PLAN_VL_PROMOCAO, new { @class = "form-control", autofocus = true })
+                                                        @Html.ValidationMessageFor(m => m.PLAN_VL_PROMOCAO, "", new { @style = "color:red" })
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-3 col-xs-12">
+                                                        Periodicidade*
+                                                        @Html.DropDownListFor(m => m.PLPE_CD_ID, (SelectList)ViewBag.Periodicidades, "Selecionar", new { @class = "form-control", autofocus = true })
+                                                        @Html.ValidationMessageFor(m => m.PLPE_CD_ID, "", new { @style = "color:red" })
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
+                                                    <h5 style="color:green; font-weight: bold; margin-left: 15px; margin-right: 15px;">Se estes campos forem deixados zerados, não haverá limite definido</h5>
+                                                    <div class="col-lg-2 col-md-2 col-xs-12">
+                                                        Num.Usuários
+                                                        @Html.TextBoxFor(m => m.PLAN_NR_USUARIOS, new { @class = "form-control", autofocus = true, @readonly="readonly" })
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-xs-12">
+                                                        Num.Contatos
+                                                        @Html.TextBoxFor(m => m.PLAN_NR_CONTATOS, new { @class = "form-control", autofocus = true, @readonly="readonly" })
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-xs-12">
+                                                        Num.E-Mails/Mês
+                                                        @Html.TextBoxFor(m => m.PLAN_NR_EMAIL, new { @class = "form-control", autofocus = true, @readonly="readonly" })
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-xs-12">
+                                                        Num.SMS/Mês
+                                                        @Html.TextBoxFor(m => m.PLAN_NR_SMS, new { @class = "form-control", autofocus = true, @readonly="readonly" })
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-xs-12">
+                                                        Num.WhatsApp/Mês
+                                                        @Html.TextBoxFor(m => m.PLAN_NR_WHATSAPP, new { @class = "form-control", autofocus = true, @readonly="readonly" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
+                                                    <div class="col-lg-2 col-md-2 col-xs-12">
+                                                        Num.Processos
+                                                        @Html.TextBoxFor(m => m.PLAN_NR_PROCESSOS, new { @class = "form-control", autofocus = true, @readonly="readonly" })
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-xs-12">
+                                                        Num.Ações
+                                                        @Html.TextBoxFor(m => m.PLAN_NR_ACOES, new { @class = "form-control", autofocus = true, @readonly="readonly" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
+                                                    <div class="col-lg-2 col-md-2 col-xs-12">
+                                                        Preço (R$)
+                                                        @Html.TextBoxFor(m => m.PLAN_VL_PRECO, new { @class = "form-control", autofocus = true, @readonly="readonly" })
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-xs-12">
+                                                        Preço Promoção (R$)
+                                                        @Html.TextBoxFor(m => m.PLAN_VL_PROMOCAO, new { @class = "form-control", autofocus = true, @readonly="readonly" })
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-3 col-xs-12">
+                                                        Periodicidade
+                                                        @Html.TextBoxFor(m => m.PLANO_PERIODICIDADE.PLPE_NM_NOME, new { @class = "form-control", autofocus = true, @readonly="readonly" })
+                                                    </div>
+                                                </div>
+                                            }
+
                                             <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
-                                                <div class="col-lg-2 col-md-2 col-xs-12">
-                                                    Num.Usuários
-                                                    @Html.TextBoxFor(m => m.PLAN_NR_USUARIOS, new { @class = "form-control touchspin2", autofocus = true })
-                                                    @Html.ValidationMessageFor(m => m.PLAN_NR_USUARIOS, "", new { @style = "color:red" })
-                                                </div>
-                                                <div class="col-lg-2 col-md-2 col-xs-12">
-                                                    Num.Contatos
-                                                    @Html.TextBoxFor(m => m.PLAN_NR_CONTATOS, new { @class = "form-control touchspin2", autofocus = true })
-                                                    @Html.ValidationMessageFor(m => m.PLAN_NR_CONTATOS, "", new { @style = "color:red" })
-                                                </div>
-                                                <div class="col-lg-2 col-md-2 col-xs-12">
-                                                    Num.E-Mails/Mês
-                                                    @Html.TextBoxFor(m => m.PLAN_NR_EMAILS, new { @class = "form-control touchspin2", autofocus = true })
-                                                    @Html.ValidationMessageFor(m => m.PLAN_NR_EMAILS, "", new { @style = "color:red" })
-                                                </div>
-                                                <div class="col-lg-2 col-md-2 col-xs-12">
-                                                    Num.SMS/Mês
-                                                    @Html.TextBoxFor(m => m.PLAN_NR_SMS, new { @class = "form-control touchspin2", autofocus = true })
-                                                    @Html.ValidationMessageFor(m => m.PLAN_NR_SMS, "", new { @style = "color:red" })
-                                                </div>
-                                                <div class="col-lg-2 col-md-2 col-xs-12">
-                                                    Num.WhatsApp/Mês
-                                                    @Html.TextBoxFor(m => m.PLAN_NR_WHATSAPP, new { @class = "form-control touchspin2", autofocus = true })
-                                                    @Html.ValidationMessageFor(m => m.PLAN_NR_WHATSAPP, "", new { @style = "color:red" })
-                                                </div>
-                                            </div>
-                                            <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
-                                                <div class="col-lg-2 col-md-2 col-xs-12">
-                                                    Num.Processos
-                                                    @Html.TextBoxFor(m => m.PLAN_NR_PROCESSOS, new { @class = "form-control touchspin2", autofocus = true })
-                                                    @Html.ValidationMessageFor(m => m.PLAN_NR_PROCESSOS, "", new { @style = "color:red" })
-                                                </div>
-                                                <div class="col-lg-2 col-md-2 col-xs-12">
-                                                    Num.Ações
-                                                    @Html.TextBoxFor(m => m.PLAN_NR_ACOES, new { @class = "form-control touchspin2", autofocus = true })
-                                                    @Html.ValidationMessageFor(m => m.PLAN_NR_ACOES, "", new { @style = "color:red" })
-                                                </div>
-                                            </div>
-                                            <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
-                                                <div class="col-lg-2 col-md-2 col-xs-12">
-                                                    Preço (R$)
-                                                    @Html.TextBoxFor(m => m.PLAN_VL_PRECO, new { @class = "form-control", autofocus = true })
-                                                    @Html.ValidationMessageFor(m => m.PLAN_VL_PRECO, "", new { @style = "color:red" })
-                                                </div>
-                                                <div class="col-lg-2 col-md-2 col-xs-12">
-                                                    Preço Promoção (R$)
-                                                    @Html.TextBoxFor(m => m.PLAN_VL_PROMOCAO, new { @class = "form-control", autofocus = true })
-                                                    @Html.ValidationMessageFor(m => m.PLAN_VL_PROMOCAO, "", new { @style = "color:red" })
-                                                </div>
-                                                <div class="col-lg-3 col-md-3 col-xs-12">
-                                                    Periodicidade*
-                                                    @Html.DropDownListFor(m => m.PLPE_CD_ID, (SelectList)ViewBag.Periodicidades, "Selecionar", new { @class = "form-control", autofocus = true })
-                                                    @Html.ValidationMessageFor(m => m.PLPE_CD_ID, "", new { @style = "color:red" })
-                                                </div>
-                                            </div>
-                                            <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
-                                                <h5 style="color:darkblue; font-weight: bold">Se este campo for deixado em branco, o site exibirá a Descrição acima</h5>
+                                                <h5 style="color:darkblue; font-weight: bold; margin-left: 15px; margin-right: 15px;">Se este campo for deixado em branco, o site exibirá a Descrição acima</h5>
                                                 <div class="col-lg-12 col-md-12 col-xs-12">
                                                     Texto do Site*
-                                                    @Html.TextAreaFor(m => m.PLAN_TX_SITE new { @class = "form-control", style = "width: 100%; height: 100px;", autofocus = true })
+                                                    @Html.TextAreaFor(m => m.PLAN_TX_SITE, new { @class = "form-control", style = "width: 100%; height: 100px;", autofocus = true })
                                                     @Html.ValidationMessageFor(m => m.PLAN_TX_SITE, "", new { @style = "color:red" })
                                                 </div>
                                             </div>
@@ -153,7 +208,7 @@
                                 </div>
 
                                 @*Assinantes*@
-                                <div id="tab-3" class="tab-pane">
+                                <div id="tab-2" class="tab-pane">
                                     <div class="panel-body">
                                         <div class="row">
                                             <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">

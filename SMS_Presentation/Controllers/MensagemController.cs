@@ -1473,6 +1473,15 @@ namespace SMS_Presentation.Controllers
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
 
+            // Verifica possibilidade
+            Int32 num = baseApp.GetAllItens(idAss).Where(p => p.MENS_IN_TIPO.Value == 1 & p.MENS_DT_ENVIO.Value.Month == DateTime.Today.Date.Month & p.MENS_DT_ENVIO.Value.Year == DateTime.Today.Date.Year).ToList().Count;
+            PLANO plano = (PLANO)Session["Plano"];
+            if (plano.PLAN_NR_CONTATOS <= num)
+            {
+                Session["MensMensagem"] = 50;
+                return RedirectToAction("CarregarBase", "BaseAdmin");
+            }
+
             // Prepara listas
             ViewBag.Clientes = new SelectList(cliApp.GetAllItens(idAss).OrderBy(p => p.CLIE_NM_NOME), "CLIE_CD_ID", "CLIE_NM_NOME");
             ViewBag.Grupos = new SelectList(gruApp.GetAllItens(idAss).OrderBy(p => p.GRUP_NM_NOME), "GRUP_CD_ID", "GRUP_NM_NOME");
@@ -2226,7 +2235,16 @@ namespace SMS_Presentation.Controllers
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
 
-            // Prepara listas
+            // Verifica possibilidade
+            Int32 num = baseApp.GetAllItens(idAss).Where(p => p.MENS_IN_TIPO.Value == 2 & p.MENS_DT_ENVIO.Value.Month == DateTime.Today.Date.Month & p.MENS_DT_ENVIO.Value.Year == DateTime.Today.Date.Year).ToList().Count;
+            PLANO plano = (PLANO)Session["Plano"];
+            if (plano.PLAN_NR_SMS <= num)
+            {
+                Session["MensMensagem"] = 51;
+                return RedirectToAction("CarregarBase", "BaseAdmin");
+            }
+
+            // Prepara listas   
             ViewBag.Clientes = new SelectList(cliApp.GetAllItens(idAss).OrderBy(p => p.CLIE_NM_NOME), "CLIE_CD_ID", "CLIE_NM_NOME");
             ViewBag.Grupos = new SelectList(gruApp.GetAllItens(idAss).OrderBy(p => p.GRUP_NM_NOME), "GRUP_CD_ID", "GRUP_NM_NOME");
             ViewBag.Cats = new SelectList(baseApp.GetAllTipos().OrderBy(p => p.CACL_NM_NOME), "CACL_CD_ID", "CACL_NM_NOME");

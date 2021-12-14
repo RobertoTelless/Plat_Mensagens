@@ -3034,6 +3034,7 @@
     <Content Include="Views\Plano\IncluirPlano.cshtml" />
     <Content Include="Views\Plano\EditarPlano.cshtml" />
     <Content Include="Views\Plano\VerPlano.cshtml" />
+    <Content Include="Views\Plano\MontarTelaResumoMensagens.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

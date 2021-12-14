@@ -31,7 +31,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalDesc">Descrição do Processo</h5>
+                        <h5 class="modal-title" id="modalDesc">Descrição do Plano</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -139,7 +139,7 @@
                                                     @Html.TableLinkDetails(cond.PLAN_CD_ID, "EditarPlano", "fa-edit", "Editar")
                                                     if (cond.PLAN_IN_ATIVO == 1)
                                                     {
-                                                        <span style="color: #337ab7; cursor:pointer;" alt="Desativar" class="tbl-link fa-lg fa fa-folder-open-o" onclick="ShowModalExcluir('/Plano/ExcluirPlano/@cond.PLAN_CD_ID')" title="Arquivar"></span>
+                                                        <span style="color: #337ab7; cursor:pointer;" alt="Desativar" class="tbl-link fa-lg fa fa-trash-o" onclick="ShowModalExcluir('/Plano/ExcluirPlano/@cond.PLAN_CD_ID')" title="Excluir"></span>
                                                     }
                                                     else
                                                     {

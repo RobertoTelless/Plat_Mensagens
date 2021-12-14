@@ -154,6 +154,7 @@ namespace SMS_Presentation.Controllers
                 Session["Ativa"] = "1";
                 Session["Login"] = 1;
                 Session["IdAssinante"] = usuario.ASSI_CD_ID;
+                Session["Plano"] = usuario.ASSINANTE.PLANO;
 
                 // Route
                 if (usuario.USUA_IN_PROVISORIO == 1)

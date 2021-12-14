@@ -155,6 +155,7 @@ namespace SMS_Presentation.Controllers
 
             List<MENSAGENS> lt = menApp.GetAllItens(idAss);
             List<MENSAGENS> lm = lt.Where(p => p.MENS_DT_ENVIO != null).ToList();
+            lm = lm.Where(p => p.MENS_DT_ENVIO.Value.Month == DateTime.Today.Date.Month & p.MENS_DT_ENVIO.Value.Year == DateTime.Today.Date.Year).ToList();
             ViewBag.SMS = lm.Where(p => p.MENS_IN_TIPO == 2).ToList().Count;
             ViewBag.Emails = lm.Where(p => p.MENS_IN_TIPO == 1).ToList().Count;
             ViewBag.Total = lm.Count;
@@ -234,6 +235,14 @@ namespace SMS_Presentation.Controllers
             if ((Int32)Session["MensPlano"] == 2)
             {
                 ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0011", CultureInfo.CurrentCulture));
+            }
+            if ((Int32)Session["MensMensagem"] == 50)
+            {
+                ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0053", CultureInfo.CurrentCulture));
+            }
+            if ((Int32)Session["MensMensagem"] == 51)
+            {
+                ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0054", CultureInfo.CurrentCulture));
             }
             return View(vm);
         }

@@ -135,6 +135,10 @@ namespace SMS_Presentation.Controllers
                 {
                     ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0045", CultureInfo.CurrentCulture));
                 }
+                if ((Int32)Session["MensUsuario"] == 50)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0051", CultureInfo.CurrentCulture));
+                }
             }
 
             // Abre view
@@ -314,6 +318,15 @@ namespace SMS_Presentation.Controllers
             // Prepara listas
             ViewBag.Perfis = new SelectList((List<PERFIL>)Session["Perfis"], "PERF_CD_ID", "PERF_NM_NOME");
             ViewBag.Cargos = new SelectList(baseApp.GetAllCargos(), "CARG_CD_ID", "CARG_NM_NOME");
+
+            // Verifica possibilidade
+            Int32 numUsu = baseApp.GetAllItens(idAss).Count;
+            PLANO plano = (PLANO)Session["Plano"];
+            if (plano.PLAN_NR_USUARIOS <= numUsu)
+            {
+                Session["MensUsuario"] = 50;
+                return RedirectToAction("MontarTelaUsuario", "Usuario");
+            }
 
             // Prepara view
             USUARIO item = new USUARIO();
@@ -751,6 +764,15 @@ namespace SMS_Presentation.Controllers
                 return RedirectToAction("Login", "ControleAcesso");
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Verifica possibilidade
+            Int32 numUsu = baseApp.GetAllItens(idAss).Count;
+            PLANO plano = (PLANO)Session["Plano"];
+            if (plano.PLAN_NR_USUARIOS <= numUsu)
+            {
+                Session["MensUsuario"] = 50;
+                return RedirectToAction("MontarTelaUsuario", "Usuario");
+            }
 
             // Executar
             USUARIO item = baseApp.GetItemById(id);

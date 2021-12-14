@@ -176,6 +176,14 @@ namespace SMS_Presentation.Controllers
                 {
                     ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0048", CultureInfo.CurrentCulture));
                 }
+                if ((Int32)Session["MensCRM"] == 50)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0055", CultureInfo.CurrentCulture));
+                }
+                if ((Int32)Session["MensCRM"] == 51)
+                {
+                    ModelState.AddModelError("", PlatMensagens_Resources.ResourceManager.GetString("M0056", CultureInfo.CurrentCulture));
+                }
 
             }
 
@@ -426,6 +434,15 @@ namespace SMS_Presentation.Controllers
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
 
+            // Verifica possibilidade
+            Int32 num = baseApp.GetAllItens(idAss).Count;
+            PLANO plano = (PLANO)Session["Plano"];
+            if (plano.PLAN_NR_PROCESSOS <= num)
+            {
+                Session["MensCRM"] = 50;
+                return RedirectToAction("MontarTelaCRM", "CRM");
+            }
+
             CRM item = baseApp.GetItemById(id);
             objetoAntes = (CRM)Session["CRM"];
             item.CRM1_IN_ATIVO = 1;
@@ -500,6 +517,38 @@ namespace SMS_Presentation.Controllers
             Int32 volta = baseApp.ValidateEdit(item, item);
             Session["ListaCRM"] = null;
             return RedirectToAction("MontarTelaCRM");
+        }
+
+        [HttpGet]
+        public ActionResult EncerrarAcao(Int32 id)
+        {
+            // Verifica se tem usuario logado
+            USUARIO usuario = new USUARIO();
+            if ((String)Session["Ativa"] == null)
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            if ((USUARIO)Session["UserCredentials"] != null)
+            {
+                usuario = (USUARIO)Session["UserCredentials"];
+
+                // Verfifica permissão
+                if (usuario.PERFIL.PERF_SG_SIGLA == "VIS")
+                {
+                    Session["MensCRM"] = 2;
+                    return RedirectToAction("MontarTelaCRM");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "ControleAcesso");
+            }
+            Int32 idAss = (Int32)Session["IdAssinante"];
+
+            CRM_ACAO item = baseApp.GetAcaoById(id);
+            item.CRAC_IN_STATUS = 3;
+            Int32 volta = baseApp.ValidateEditAcao(item);
+            return RedirectToAction("AcompanhamentoProcessoCRM");
         }
 
         public ActionResult GerarRelatorioListaCRM()
@@ -1015,6 +1064,15 @@ namespace SMS_Presentation.Controllers
                 return RedirectToAction("Login", "ControleAcesso");
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Verifica possibilidade
+            Int32 num = baseApp.GetAllItens(idAss).Count;
+            PLANO plano = (PLANO)Session["Plano"];
+            if (plano.PLAN_NR_PROCESSOS <= num)
+            {
+                Session["MensCRM"] = 50;
+                return RedirectToAction("MontarTelaCRM", "CRM");
+            }
 
             // Prepara listas
             ViewBag.Usuarios = new SelectList(usuApp.GetAllItens(idAss).OrderBy(p => p.USUA_NM_NOME), "USUA_CD_ID", "USUA_NM_NOME");
@@ -2469,6 +2527,15 @@ namespace SMS_Presentation.Controllers
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
 
+            // Verifica possibilidade
+            Int32 num = baseApp.GetAllAcoes(idAss).Count;
+            PLANO plano = (PLANO)Session["Plano"];
+            if (plano.PLAN_NR_ACOES <= num)
+            {
+                Session["MensCRM"] = 51;
+                return RedirectToAction("MontarTelaCRM", "CRM");
+            }
+
             // Verifica se pode reativar ação
             List<CRM_ACAO> acoes = (List<CRM_ACAO>)Session["Acoes"];
             if (acoes.Where(p => p.CRAC_IN_STATUS == 1).ToList().Count > 0)
@@ -2574,6 +2641,15 @@ namespace SMS_Presentation.Controllers
                 return RedirectToAction("Login", "ControleAcesso");
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
+
+            // Verifica possibilidade
+            Int32 num = baseApp.GetAllAcoes(idAss).Count;
+            PLANO plano = (PLANO)Session["Plano"];
+            if (plano.PLAN_NR_ACOES <= num)
+            {
+                Session["MensCRM"] = 51;
+                return RedirectToAction("MontarTelaCRM", "CRM");
+            }
 
             // Verifica se pode inlcuir ação
             List<CRM_ACAO> acoes = (List<CRM_ACAO>)Session["Acoes"];

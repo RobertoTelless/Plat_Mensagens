@@ -243,6 +243,24 @@
   <data name="M0050" xml:space="preserve">
     <value>Impossível excluir esse Plano. Existem assinantes vinculados a ele</value>
   </data>
+  <data name="M0051" xml:space="preserve">
+    <value>Impossível incluir/reativar usuário. Número de usuários ativos excede o contratado no Plano de Assinatura</value>
+  </data>
+  <data name="M0052" xml:space="preserve">
+    <value>Impossível incluir/reativar contato. Número de contatos ativos excede o contratado no Plano de Assinatura</value>
+  </data>
+  <data name="M0053" xml:space="preserve">
+    <value>Impossível enviar este e-mail. O número de e-mails enviados no mês corrente ultrapassa o contratado no Plano de Assinatura</value>
+  </data>
+  <data name="M0054" xml:space="preserve">
+    <value>Impossível enviar este SMS. O número de SMSs enviados no mês corrente ultrapassa o contratado no Plano de Assinatura</value>
+  </data>
+  <data name="M0055" xml:space="preserve">
+    <value>Impossível incluir/reativar processos. Número de processos ativos excede o contratado no Plano de Assinatura</value>
+  </data>
+  <data name="M0056" xml:space="preserve">
+    <value>Impossível incluir/reativar ações nos processos. Número de ações ativas excede o contratado no Plano de Assinatura</value>
+  </data>
   <data name="M0073" xml:space="preserve">
     <value>A Senha não pode ficar em branco</value>
   </data>

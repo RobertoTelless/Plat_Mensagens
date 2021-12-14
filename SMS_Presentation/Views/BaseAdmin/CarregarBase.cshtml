@@ -125,7 +125,7 @@
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <span class="label label-warning pull-right">Hoje</span>
-                            <h5>Resumo de Envio de Mensagens</h5>
+                            <h5>Resumo de Envio de Mensagens (Mês)</h5>
                         </div>
                         <div class="ibox-content">
                             <div class="row">
@@ -153,14 +153,13 @@
                                     <h4>@ViewBag.Falhas</h4>
                                 </div>
                                 <div class="col-xs-4">
-                                    @Html.ButtonLinkIndex(text: "Mensagens", action: "MontarTelaMensagem", controller: "Mensagem")
+                                    @Html.ButtonLinkIndex(text: "Resumo", action: "MontarTelaResumoMensagens", controller: "Plano")
                                 </div>
                             </div>
                         </div>
                     </div>
                     @Html.ButtonLinkIndex(text: "CRM - Processos", action: "MontarTelaCRM", controller: "CRM", buttonClass: "btn btn-xs btn-primary")
                     @Html.ButtonLinkIndex(text: "Agenda", action: "MontarTelaAgendaCalendario", controller: "Agenda", buttonClass: "btn btn-xs btn-primary")
-                    @Html.ButtonLinkIndex(text: "Consumo", action: "MontarTelaVerConsumo", controller: "BaseAdmin", buttonClass: "btn btn-xs btn-warning")
                 </div>
             </div>
             <br />
