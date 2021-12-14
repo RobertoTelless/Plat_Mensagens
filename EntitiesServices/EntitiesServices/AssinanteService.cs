@@ -23,15 +23,20 @@ namespace ModelServices.EntitiesServices
         private readonly ITipoPessoaRepository _tpRepository;
         private readonly IUFRepository _ufRepository;
         private readonly IAssinanteAnexoRepository _anexoRepository;
+        private readonly IAssinantePagamentoRepository _pagRepository;
+        private readonly IPlanoRepository _plaRepository;
+
         protected PlatMensagensEntities Db = new PlatMensagensEntities();
 
-        public AssinanteService(IAssinanteRepository baseRepository, ILogRepository logRepository, ITipoPessoaRepository tpRepository, IUFRepository ufRepository, IAssinanteAnexoRepository anexoRepository) : base(baseRepository)
+        public AssinanteService(IAssinanteRepository baseRepository, ILogRepository logRepository, ITipoPessoaRepository tpRepository, IUFRepository ufRepository, IAssinanteAnexoRepository anexoRepository, IAssinantePagamentoRepository pagRepository, IPlanoRepository plaRepository) : base(baseRepository)
         {
             _baseRepository = baseRepository;
             _logRepository = logRepository;
             _tpRepository = tpRepository;
             _ufRepository = ufRepository;
             _anexoRepository = anexoRepository;
+            _pagRepository = pagRepository;
+            _plaRepository = plaRepository;
         }
 
         public ASSINANTE CheckExist(ASSINANTE conta)
@@ -67,6 +72,11 @@ namespace ModelServices.EntitiesServices
             return _tpRepository.GetAllItens();
         }
 
+        public List<PLANO> GetAllPlanos()
+        {
+            return _plaRepository.GetAllItens();
+        }
+
         public List<UF> GetAllUF()
         {
             return _ufRepository.GetAllItens();
@@ -77,9 +87,9 @@ namespace ModelServices.EntitiesServices
             return _anexoRepository.GetItemById(id);
         }
 
-        public List<ASSINANTE> ExecuteFilter(Int32 tipo, String nome)
+        public List<ASSINANTE> ExecuteFilter(Int32 tipo, String nome, String cpf, String cnpj)
         {
-            List<ASSINANTE> lista = _baseRepository.ExecuteFilter(tipo, nome);
+            List<ASSINANTE> lista = _baseRepository.ExecuteFilter(tipo, nome, cpf, cnpj);
             return lista;
         }
 
@@ -169,6 +179,49 @@ namespace ModelServices.EntitiesServices
                 {
                     _logRepository.Add(log);
                     _baseRepository.Remove(item);
+                    transaction.Commit();
+                    return 0;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+
+        public ASSINANTE_PAGAMENTO GetPagtoById(Int32 id)
+        {
+            return _pagRepository.GetItemById(id);
+        }
+
+        public Int32 EditPagto(ASSINANTE_PAGAMENTO item)
+        {
+            using (DbContextTransaction transaction = Db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
+            {
+                try
+                {
+                    ASSINANTE_PAGAMENTO obj = _pagRepository.GetById(item.ASPA_CD_ID);
+                    _pagRepository.Detach(obj);
+                    _pagRepository.Update(item);
+                    transaction.Commit();
+                    return 0;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+
+        public Int32 CreatePagto(ASSINANTE_PAGAMENTO item)
+        {
+            using (DbContextTransaction transaction = Db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
+            {
+                try
+                {
+                    _pagRepository.Add(item);
                     transaction.Commit();
                     return 0;
                 }

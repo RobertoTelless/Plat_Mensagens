@@ -15,7 +15,7 @@ namespace DataServices.Repositories
         public ASSINANTE CheckExist(ASSINANTE conta)
         {
             IQueryable<ASSINANTE> query = Db.ASSINANTE;
-            query = query.Where(p => p.ASSI_NM_NOME == conta.ASSI_NM_NOME);
+            query = query.Where(p => p.ASSI_NR_CPF == conta.ASSI_NR_CPF || p.ASSI_NR_CNPJ == conta.ASSI_NR_CNPJ);
             return query.FirstOrDefault();
         }
 
@@ -24,24 +24,23 @@ namespace DataServices.Repositories
             IQueryable<ASSINANTE> query = Db.ASSINANTE;
             query = query.Where(p => p.ASSI_CD_ID == id);
             query = query.Include(p => p.USUARIO);
+            query = query.Include(p => p.PLANO);
             return query.FirstOrDefault();
         }
 
         public List<ASSINANTE> GetAllItens()
         {
             IQueryable<ASSINANTE> query = Db.ASSINANTE.Where(p => p.ASSI_IN_ATIVO == 1);
-            query = query.Include(p => p.USUARIO);
             return query.ToList();
         }
 
         public List<ASSINANTE> GetAllItensAdm()
         {
             IQueryable<ASSINANTE> query = Db.ASSINANTE;
-            query = query.Include(p => p.USUARIO);
             return query.ToList();
         }
 
-        public List<ASSINANTE> ExecuteFilter(Int32 tipo, String nome)
+        public List<ASSINANTE> ExecuteFilter(Int32 tipo, String nome, String cpf, String cnpj)
         {
             List<ASSINANTE> lista = new List<ASSINANTE>();
             IQueryable<ASSINANTE> query = Db.ASSINANTE;
@@ -52,6 +51,14 @@ namespace DataServices.Repositories
             if (!String.IsNullOrEmpty(nome))
             {
                 query = query.Where(p => p.ASSI_NM_NOME.Contains(nome));
+            }
+            if (!String.IsNullOrEmpty(cpf))
+            {
+                query = query.Where(p => p.ASSI_NR_CPF == cpf);
+            }
+            if (!String.IsNullOrEmpty(cnpj))
+            {
+                query = query.Where(p => p.ASSI_NR_CNPJ == cnpj);
             }
             if (query != null)
             {

@@ -11,19 +11,18 @@ using System.Data.Entity;
 
 namespace DataServices.Repositories
 {
-    public class AssinanteAnexoRepository : RepositoryBase<ASSINANTE_ANEXO>, IAssinanteAnexoRepository
+    public class AssinantePagamentoRepository : RepositoryBase<ASSINANTE_PAGAMENTO>, IAssinantePagamentoRepository
     {
-        public List<ASSINANTE_ANEXO> GetAllItens()
+        public List<ASSINANTE_PAGAMENTO> GetAllItens()
         {
-            return Db.ASSINANTE_ANEXO.ToList();
+            return Db.ASSINANTE_PAGAMENTO.ToList();
         }
 
-        public ASSINANTE_ANEXO GetItemById(Int32 id)
+        public ASSINANTE_PAGAMENTO GetItemById(Int32 id)
         {
-            IQueryable<ASSINANTE_ANEXO> query = Db.ASSINANTE_ANEXO.Where(p => p.ASAN_CD_ID == id);
+            IQueryable<ASSINANTE_PAGAMENTO> query = Db.ASSINANTE_PAGAMENTO.Where(p => p.ASPA_CD_ID == id);
             return query.FirstOrDefault();
         }
-
     }
 }
  

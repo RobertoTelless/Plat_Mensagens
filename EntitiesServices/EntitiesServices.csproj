@@ -178,6 +178,7 @@
     <Compile Include="Attributes\DataAnteriorAttribute.cs" />
     <Compile Include="EntitiesServices\AgendaService.cs" />
     <Compile Include="EntitiesServices\AssinanteService.cs" />
+    <Compile Include="EntitiesServices\AssinanteCnpjService.cs" />
     <Compile Include="EntitiesServices\CRMService.cs" />
     <Compile Include="EntitiesServices\EmailAgendaService.cs" />
     <Compile Include="EntitiesServices\PlanoService.cs" />
@@ -195,6 +196,7 @@
     <Compile Include="EntitiesServices\UsuarioService.cs" />
     <Compile Include="Interfaces\EntitiesServices\IAgendaService.cs" />
     <Compile Include="Interfaces\EntitiesServices\IAssinanteService.cs" />
+    <Compile Include="Interfaces\EntitiesServices\IAssinanteCnpjService.cs" />
     <Compile Include="Interfaces\EntitiesServices\ICRMService.cs" />
     <Compile Include="Interfaces\EntitiesServices\IEmailAgendaService.cs" />
     <Compile Include="Interfaces\EntitiesServices\IPlanoService.cs" />
@@ -215,6 +217,8 @@
     <Compile Include="Interfaces\Repositories\IAssinanteAnexoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IAssinanteRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICargoRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IAssinantePagamentoRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IAssinanteCnpjRepository.cs" />
     <Compile Include="Interfaces\Repositories\IPlanoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IPeriodicidadePlanoRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICategoriaAgendaRepository.cs" />
@@ -272,6 +276,9 @@
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ASSINANTE_PAGAMENTO.cs">
+      <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ASSINANTE_QUADRO_SOCIETARIO.cs">
       <DependentUpon>PlatMensagens_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CARGO.cs">

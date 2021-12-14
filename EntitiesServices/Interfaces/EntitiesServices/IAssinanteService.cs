@@ -20,11 +20,16 @@ namespace ModelServices.Interfaces.EntitiesServices
         ASSINANTE GetItemById(Int32 id);
         List<ASSINANTE> GetAllItens();
         List<ASSINANTE> GetAllItensAdm();
-        List<ASSINANTE> ExecuteFilter(Int32 tipo, String nome);
+        List<ASSINANTE> ExecuteFilter(Int32 tipo, String nome, String cpf, String cnpj);
 
         List<TIPO_PESSOA> GetAllTiposPessoa();
+        List<PLANO> GetAllPlanos();
         List<UF> GetAllUF();
         ASSINANTE_ANEXO GetAnexoById(Int32 id);
         UF GetUFBySigla(String sigla);
+
+        ASSINANTE_PAGAMENTO GetPagtoById(Int32 id);
+        Int32 EditPagto(ASSINANTE_PAGAMENTO item);
+        Int32 CreatePagto(ASSINANTE_PAGAMENTO item);
     }
 }

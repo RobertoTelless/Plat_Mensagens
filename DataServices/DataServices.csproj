@@ -172,6 +172,8 @@
     <Compile Include="Repositories\AssinanteAnexoRepository.cs" />
     <Compile Include="Repositories\AssinanteRepository.cs" />
     <Compile Include="Repositories\CargoRepository.cs" />
+    <Compile Include="Repositories\AssinantePagamentoRepository.cs" />
+    <Compile Include="Repositories\AssinanteCnpjRepository.cs" />
     <Compile Include="Repositories\PlanoRepository.cs" />
     <Compile Include="Repositories\PeriodicidadePlanoRepository.cs" />
     <Compile Include="Repositories\CategoriaAgendaRepository.cs" />

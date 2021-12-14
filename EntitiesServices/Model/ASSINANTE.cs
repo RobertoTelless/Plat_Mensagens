@@ -40,6 +40,7 @@ namespace EntitiesServices.Model
             this.CATEGORIA_AGENDA = new HashSet<CATEGORIA_AGENDA>();
             this.ASSINANTE_PAGAMENTO = new HashSet<ASSINANTE_PAGAMENTO>();
             this.ASSINANTE_CONSUMO = new HashSet<ASSINANTE_CONSUMO>();
+            this.ASSINANTE_QUADRO_SOCIETARIO = new HashSet<ASSINANTE_QUADRO_SOCIETARIO>();
         }
     
         public int ASSI_CD_ID { get; set; }
@@ -114,5 +115,7 @@ namespace EntitiesServices.Model
         public virtual PLANO PLANO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ASSINANTE_CONSUMO> ASSINANTE_CONSUMO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ASSINANTE_QUADRO_SOCIETARIO> ASSINANTE_QUADRO_SOCIETARIO { get; set; }
     }
 }

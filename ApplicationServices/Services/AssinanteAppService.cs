@@ -56,9 +56,19 @@ namespace ApplicationServices.Services
             return _baseService.GetAllTiposPessoa();
         }
 
+        public List<PLANO> GetAllPlanos()
+        {
+            return _baseService.GetAllPlanos();
+        }
+
         public ASSINANTE_ANEXO GetAnexoById(Int32 id)
         {
             return _baseService.GetAnexoById(id);
+        }
+
+        public ASSINANTE_PAGAMENTO GetPagtoById(Int32 id)
+        {
+            return _baseService.GetPagtoById(id);
         }
 
         public List<UF> GetAllUF()
@@ -66,7 +76,7 @@ namespace ApplicationServices.Services
             return _baseService.GetAllUF();
         }
 
-        public Int32 ExecuteFilter(Int32 tipo, String nome, out List<ASSINANTE> objeto)
+        public Int32 ExecuteFilter(Int32 tipo, String nome, String cpf, String cnpj, out List<ASSINANTE> objeto)
         {
             try
             {
@@ -74,7 +84,7 @@ namespace ApplicationServices.Services
                 Int32 volta = 0;
 
                 // Processa filtro
-                objeto = _baseService.ExecuteFilter(tipo, nome);
+                objeto = _baseService.ExecuteFilter(tipo, nome, cpf, cnpj);
                 if (objeto.Count == 0)
                 {
                     volta = 1;
@@ -126,16 +136,16 @@ namespace ApplicationServices.Services
             try
             {
                 // Monta Log
-                LOG log = new LOG();
-                //{
-                //    LOG_DT_DATA = DateTime.Now,
-                //    ASSI_CD_ID = usuario.ASSI_CD_ID,
-                //    USUA_CD_ID = usuario.USUA_CD_ID,
-                //    LOG_NM_OPERACAO = "EditASSI",
-                //    LOG_IN_ATIVO = 1,
-                //    LOG_TX_REGISTRO = Serialization.SerializeJSON<ASSINANTE>(item),
-                //    LOG_TX_REGISTRO_ANTES = Serialization.SerializeJSON<ASSINANTE>(itemAntes)
-                //};
+                LOG log = new LOG()
+                {
+                    LOG_DT_DATA = DateTime.Now,
+                    ASSI_CD_ID = usuario.ASSI_CD_ID,
+                    USUA_CD_ID = usuario.USUA_CD_ID,
+                    LOG_NM_OPERACAO = "EditASSI",
+                    LOG_IN_ATIVO = 1,
+                    LOG_TX_REGISTRO = Serialization.SerializeJSON<ASSINANTE>(item),
+                    LOG_TX_REGISTRO_ANTES = Serialization.SerializeJSON<ASSINANTE>(itemAntes)
+                };
 
                 // Persiste
                 return _baseService.Edit(item, log);
@@ -201,6 +211,35 @@ namespace ApplicationServices.Services
 
                 // Persiste
                 return _baseService.Edit(item, log);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public Int32 ValidateEditPagto(ASSINANTE_PAGAMENTO item)
+        {
+            try
+            {
+                // Persiste
+                return _baseService.EditPagto(item);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public Int32 ValidateCreatePagto(ASSINANTE_PAGAMENTO item)
+        {
+            try
+            {
+                item.ASPA_IN_ATIVO = 1;
+
+                // Persiste
+                Int32 volta = _baseService.CreatePagto(item);
+                return volta;
             }
             catch (Exception ex)
             {

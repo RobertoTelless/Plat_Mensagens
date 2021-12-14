@@ -261,6 +261,9 @@
   <data name="M0056" xml:space="preserve">
     <value>Impossível incluir/reativar ações nos processos. Número de ações ativas excede o contratado no Plano de Assinatura</value>
   </data>
+  <data name="M0057" xml:space="preserve">
+    <value>Assinante já cadastrado</value>
+  </data>
   <data name="M0073" xml:space="preserve">
     <value>A Senha não pode ficar em branco</value>
   </data>

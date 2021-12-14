@@ -18,11 +18,17 @@ namespace ApplicationServices.Interfaces
         List<ASSINANTE> GetAllItens();
         List<ASSINANTE> GetAllItensAdm();
         ASSINANTE GetItemById(Int32 id);
-        Int32 ExecuteFilter(Int32 tipo, String nome, out List<ASSINANTE> objeto);
+        Int32 ExecuteFilter(Int32 tipo, String nome, String cpf, String cnpj, out List<ASSINANTE> objeto);
 
         List<TIPO_PESSOA> GetAllTiposPessoa();
+        List<PLANO> GetAllPlanos();
         List<UF> GetAllUF();
         ASSINANTE_ANEXO GetAnexoById(Int32 id);
         UF GetUFBySigla(String sigla);
+
+        ASSINANTE_PAGAMENTO GetPagtoById(Int32 id);
+        Int32 ValidateEditPagto(ASSINANTE_PAGAMENTO item);
+        Int32 ValidateCreatePagto(ASSINANTE_PAGAMENTO item);
+
     }
 }

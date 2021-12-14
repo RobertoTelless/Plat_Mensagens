@@ -31,6 +31,8 @@ namespace MvcMapping.Mappers
             CreateMap<CRMAcaoViewModel, CRM_ACAO>();
             CreateMap<AgendaViewModel, AGENDA>();
             CreateMap<PlanoViewModel, PLANO>();
+            CreateMap<AssinanteViewModel, ASSINANTE>();
+            CreateMap<AssinantePagamentoViewModel, ASSINANTE_PAGAMENTO>();
 
         }
     }

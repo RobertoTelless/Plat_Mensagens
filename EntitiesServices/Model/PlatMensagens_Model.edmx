@@ -109,6 +109,19 @@
           <Property Name="ASPA_DT_PROXIMO" Type="date" />
           <Property Name="ASPA_IN_ATIVO" Type="int" />
         </EntityType>
+        <EntityType Name="ASSINANTE_QUADRO_SOCIETARIO">
+          <Key>
+            <PropertyRef Name="ASQS_CD_ID" />
+          </Key>
+          <Property Name="ASQS_CD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ASSI_CD_ID" Type="int" Nullable="false" />
+          <Property Name="ASQS_NM_QUALIFICACAO" Type="varchar" MaxLength="100" />
+          <Property Name="ASQS_NM_PAIS_ORIGEM" Type="varchar" MaxLength="50" />
+          <Property Name="ASQS_NM_REPRESENTANTE_LEGAL" Type="varchar" MaxLength="50" />
+          <Property Name="ASQS_NM_QUALIFICACAO_REP_LEGAL" Type="varchar" MaxLength="100" />
+          <Property Name="ASQS_NM_NOME" Type="varchar" MaxLength="150" />
+          <Property Name="ASQS_IN_ATIVO" Type="int" />
+        </EntityType>
         <EntityType Name="CARGO">
           <Key>
             <PropertyRef Name="CARG_CD_ID" />
@@ -778,6 +791,18 @@
             </Principal>
             <Dependent Role="ASSINANTE">
               <PropertyRef Name="PLAN_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ASSINANTE_QUADRO_SOCIETARIO_ASSINANTE">
+          <End Role="ASSINANTE" Type="Self.ASSINANTE" Multiplicity="1" />
+          <End Role="ASSINANTE_QUADRO_SOCIETARIO" Type="Self.ASSINANTE_QUADRO_SOCIETARIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="ASSINANTE_QUADRO_SOCIETARIO">
+              <PropertyRef Name="ASSI_CD_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1557,6 +1582,7 @@
           <EntitySet Name="ASSINANTE_ANEXO" EntityType="Self.ASSINANTE_ANEXO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ASSINANTE_CONSUMO" EntityType="Self.ASSINANTE_CONSUMO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ASSINANTE_PAGAMENTO" EntityType="Self.ASSINANTE_PAGAMENTO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ASSINANTE_QUADRO_SOCIETARIO" EntityType="Self.ASSINANTE_QUADRO_SOCIETARIO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CARGO" EntityType="Self.CARGO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CATEGORIA_AGENDA" EntityType="Self.CATEGORIA_AGENDA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CATEGORIA_CLIENTE" EntityType="Self.CATEGORIA_CLIENTE" Schema="dbo" store:Type="Tables" />
@@ -1642,6 +1668,10 @@
           <AssociationSet Name="FK_ASSINANTE_PLANO" Association="Self.FK_ASSINANTE_PLANO">
             <End Role="PLANO" EntitySet="PLANO" />
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ASSINANTE_QUADRO_SOCIETARIO_ASSINANTE" Association="Self.FK_ASSINANTE_QUADRO_SOCIETARIO_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="ASSINANTE_QUADRO_SOCIETARIO" EntitySet="ASSINANTE_QUADRO_SOCIETARIO" />
           </AssociationSet>
           <AssociationSet Name="FK_ASSINANTE_TIPO_PESSOA" Association="Self.FK_ASSINANTE_TIPO_PESSOA">
             <End Role="TIPO_PESSOA" EntitySet="TIPO_PESSOA" />
@@ -1956,6 +1986,7 @@
           <NavigationProperty Name="ASSINANTE_PAGAMENTO" Relationship="PlatMensagensModel.FK_ASSINANTE_PAGAMENTO_ASSINANTE" FromRole="ASSINANTE" ToRole="ASSINANTE_PAGAMENTO" />
           <NavigationProperty Name="PLANO" Relationship="PlatMensagensModel.FK_ASSINANTE_PLANO" FromRole="ASSINANTE" ToRole="PLANO" />
           <NavigationProperty Name="ASSINANTE_CONSUMO" Relationship="PlatMensagensModel.FK_ASSINANTE_CONSUMO_ASSINANTE" FromRole="ASSINANTE" ToRole="ASSINANTE_CONSUMO" />
+          <NavigationProperty Name="ASSINANTE_QUADRO_SOCIETARIO" Relationship="PlatMensagensModel.FK_ASSINANTE_QUADRO_SOCIETARIO_ASSINANTE" FromRole="ASSINANTE" ToRole="ASSINANTE_QUADRO_SOCIETARIO" />
         </EntityType>
         <EntityType Name="ASSINANTE_ANEXO">
           <Key>
@@ -3186,6 +3217,11 @@
             <End Role="ASSINANTE" EntitySet="ASSINANTE" />
             <End Role="ASSINANTE_CONSUMO" EntitySet="ASSINANTE_CONSUMO" />
           </AssociationSet>
+          <EntitySet Name="ASSINANTE_QUADRO_SOCIETARIO" EntityType="PlatMensagensModel.ASSINANTE_QUADRO_SOCIETARIO" />
+          <AssociationSet Name="FK_ASSINANTE_QUADRO_SOCIETARIO_ASSINANTE" Association="PlatMensagensModel.FK_ASSINANTE_QUADRO_SOCIETARIO_ASSINANTE">
+            <End Role="ASSINANTE" EntitySet="ASSINANTE" />
+            <End Role="ASSINANTE_QUADRO_SOCIETARIO" EntitySet="ASSINANTE_QUADRO_SOCIETARIO" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_TEMPLATE_ASSINANTE">
           <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="0..1" />
@@ -3951,6 +3987,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ASSINANTE_QUADRO_SOCIETARIO">
+          <Key>
+            <PropertyRef Name="ASQS_CD_ID" />
+          </Key>
+          <Property Name="ASQS_CD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ASSI_CD_ID" Type="Int32" Nullable="false" />
+          <Property Name="ASQS_NM_QUALIFICACAO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ASQS_NM_PAIS_ORIGEM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ASQS_NM_REPRESENTANTE_LEGAL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ASQS_NM_QUALIFICACAO_REP_LEGAL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ASQS_NM_NOME" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ASQS_IN_ATIVO" Type="Int32" />
+          <NavigationProperty Name="ASSINANTE" Relationship="PlatMensagensModel.FK_ASSINANTE_QUADRO_SOCIETARIO_ASSINANTE" FromRole="ASSINANTE_QUADRO_SOCIETARIO" ToRole="ASSINANTE" />
+        </EntityType>
+        <Association Name="FK_ASSINANTE_QUADRO_SOCIETARIO_ASSINANTE">
+          <End Type="PlatMensagensModel.ASSINANTE" Role="ASSINANTE" Multiplicity="1" />
+          <End Type="PlatMensagensModel.ASSINANTE_QUADRO_SOCIETARIO" Role="ASSINANTE_QUADRO_SOCIETARIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSINANTE">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Principal>
+            <Dependent Role="ASSINANTE_QUADRO_SOCIETARIO">
+              <PropertyRef Name="ASSI_CD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4631,6 +4693,20 @@
                 <ScalarProperty Name="ASCO_DT_REFERENCIA" ColumnName="ASCO_DT_REFERENCIA" />
                 <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
                 <ScalarProperty Name="ASCO_CD_ID" ColumnName="ASCO_CD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ASSINANTE_QUADRO_SOCIETARIO">
+            <EntityTypeMapping TypeName="PlatMensagensModel.ASSINANTE_QUADRO_SOCIETARIO">
+              <MappingFragment StoreEntitySet="ASSINANTE_QUADRO_SOCIETARIO">
+                <ScalarProperty Name="ASQS_IN_ATIVO" ColumnName="ASQS_IN_ATIVO" />
+                <ScalarProperty Name="ASQS_NM_NOME" ColumnName="ASQS_NM_NOME" />
+                <ScalarProperty Name="ASQS_NM_QUALIFICACAO_REP_LEGAL" ColumnName="ASQS_NM_QUALIFICACAO_REP_LEGAL" />
+                <ScalarProperty Name="ASQS_NM_REPRESENTANTE_LEGAL" ColumnName="ASQS_NM_REPRESENTANTE_LEGAL" />
+                <ScalarProperty Name="ASQS_NM_PAIS_ORIGEM" ColumnName="ASQS_NM_PAIS_ORIGEM" />
+                <ScalarProperty Name="ASQS_NM_QUALIFICACAO" ColumnName="ASQS_NM_QUALIFICACAO" />
+                <ScalarProperty Name="ASSI_CD_ID" ColumnName="ASSI_CD_ID" />
+                <ScalarProperty Name="ASQS_CD_ID" ColumnName="ASQS_CD_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
