@@ -76,7 +76,7 @@ namespace ApplicationServices.Services
             return _baseService.GetAllUF();
         }
 
-        public Int32 ExecuteFilter(Int32 tipo, String nome, String cpf, String cnpj, out List<ASSINANTE> objeto)
+        public Int32 ExecuteFilter(Int32 tipo, String nome, String cpf, String cnpj, Int32 status, out List<ASSINANTE> objeto)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace ApplicationServices.Services
                 Int32 volta = 0;
 
                 // Processa filtro
-                objeto = _baseService.ExecuteFilter(tipo, nome, cpf, cnpj);
+                objeto = _baseService.ExecuteFilter(tipo, nome, cpf, cnpj, status);
                 if (objeto.Count == 0)
                 {
                     volta = 1;
@@ -168,6 +168,7 @@ namespace ApplicationServices.Services
 
                 // Acerta campos
                 item.ASSI_IN_ATIVO = 0;
+                item.ASSI_IN_STATUS = 2;
 
                 // Monta Log
                 LOG log = new LOG
@@ -197,6 +198,7 @@ namespace ApplicationServices.Services
 
                 // Acerta campos
                 item.ASSI_IN_ATIVO = 1;
+                item.ASSI_IN_STATUS = 1;
 
                 // Monta Log
                 LOG log = new LOG

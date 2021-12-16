@@ -1,7 +1,159 @@
-﻿
+﻿@using Presentation.Extensions
+@using CrossCutting;
+@model EntitiesServices.Model.ASSINANTE
 @{
-    ViewBag.Title = "VerCardsAssinante";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="page-title"> 
+        <h3 class="title">Assinantes</h3> 
+        <br />
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("CarregarBase", "BaseAdmin")">Dashboard</a>
+            </li>
+            <li>
+                <a href="@Url.Action("MontarTelaAssinante", "Assinante")">Assinantes</a>
+            </li>
+            <li class="active">
+                <strong>Assinantes</strong>
+            </li>
+        </ol>
+        <br />
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-xs-12 ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Filtros</h5>
+                </div>
+
+                @using (Html.BeginForm("FiltrarAssinante", "Assinante", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    <div class="ibox-content">
+                        <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
+                            <div class="col-lg-2 col-md-2 col-xs-12">
+                                Tipo
+                                @Html.DropDownListFor(m => m.TIPE_CD_ID, (SelectList)ViewBag.TiposPessoa, "Selecionar", new { @class = "form-control", autofocus = true })
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-xs-12">
+                                Nome/Razão Social
+                                <select name="ASSI_CD_ID" id="lstCliente" class="form-control" data-val="true" style="display: none;">
+                                    <option>Selecionar</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-xs-12">
+                                CPF
+                                @Html.TextBoxFor(m => m.ASSI_NR_CPF, new { @class = "form-control", @id = "cpf", autofocus = true })
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-xs-12">
+                                CNPJ
+                                @Html.TextBoxFor(m => m.ASSI_NR_CNPJ, new { @class = "form-control", @id = "cnpj", autofocus = true })
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-xs-12">
+                                Status
+                                @Html.DropDownListFor(m => m.ASSI_IN_STATUS, (SelectList)ViewBag.Status, "Selecionar", new { @class = "form-control", autofocus = true })
+                            </div>
+                        </div>
+                        <div class="form-group" style=" margin-left: -15px; margin-right: -15px;">
+                            <div class="col-lg-12 col-md-12 col-xs-12">
+                                @Html.ButtonActionSubmit(text: "Filtrar")
+                                @Html.ButtonLinkIndex(text: "Retirar Filtro", controller: "Assinante", action: "RetirarFiltroAssinante")
+                                @Html.ButtonLinkIndex(text: "Exibir Todos", controller: "Assinante", action: "MostrarTudoAssinante")
+                                @Html.ButtonLinkIndex(text: "Novo Assinante", controller: "Assinante", action: "IncluirAssinante")
+                                @Html.ButtonLinkIndex(text: "Exibir Lista", controller: "Assinante", action: "MontarTelaAssinante")
+                                @Html.ButtonLinkIndex(text: "Dashboard", controller: "Assinante", action: "Voltar")
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-xs-12 ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Assinantes</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                            @if ((ViewBag.Listas as List<EntitiesServices.Model.ASSINANTE>).Count > 0)
+                            {
+                                foreach (var cond in (ViewBag.Listas as List<EntitiesServices.Model.ASSINANTE>))
+                                {
+                                    <div class="col-lg-4">
+                                        <div class="contact-box" style="height: 300px;">
+                                            <a href="@Url.Action("VerAssinante", "Assinante", new { id = cond.ASSI_CD_ID })">
+                                                <div class="col-sm-4">
+                                                    @if (!String.IsNullOrEmpty(cond.ASSI_AQ_FOTO))
+                                                    {
+                                                        <div class="text-center">
+                                                            <img alt="image" class="img-circle m-t-xs img-responsive" src="@Url.Content(cond.ASSI_AQ_FOTO)">
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="text-center">
+                                                            <img src="~/Imagens/Base/icone_imagem.jpg" style="width: auto; height: auto; max-height: 55px; max-width: 45px;">
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <h3><strong>@cond.ASSI_NM_NOME</strong></h3>
+                                                    <p><i class="fa fa-map-marker"></i> @cond.ASSI_NM_EMAIL</p>
+                                                    <address>
+                                                        <strong>@cond.ASSI_NM_RAZAO_SOCIAL</strong><br>
+                                                        @cond.ASSI_NM_ENDERECO<br>
+                                                        @cond.ASSI_NR_NUMERO<br />
+                                                        @cond.ASSI_NM_BAIRRO @cond.ASSI_NM_CIDADE @cond.UF.UF_SG_SIGLA<br>
+                                                        @cond.ASSI_NR_CEP<br>
+                                                        <abbr title="Fone">P:</abbr> @cond.ASSI_NR_TELEFONE
+                                                        <abbr title="Cel">P:</abbr> @cond.ASSIN_NR_CELULAR
+                                                    </address>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                }   
+                            }
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link href="~/Content/themes/base/all.css" rel="stylesheet" />  
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/jasnyBootstrapStyles")
 }
 
-<h2>VerCardsAssinante</h2>
+@section Scripts {
 
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/bundles/inputmask")
+    @Scripts.Render("~/plugins/jasnyBootstrap")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.js"></script>
+    
+   
+    <script type="text/javascript">
+        $(function () {
+            $("#cpf").mask("999.999.999-99");
+            $("#cnpj").mask("99.999.999/9999-99");
+        });
+    </script>
+}
+
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+    </script>
+}

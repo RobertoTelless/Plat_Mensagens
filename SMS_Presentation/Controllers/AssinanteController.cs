@@ -35,6 +35,7 @@ namespace SMS_Presentation.Controllers
         private readonly IUsuarioAppService usuApp;
         private readonly IConfiguracaoAppService confApp;
         private readonly IAssinanteCnpjAppService ccnpjApp;
+        private readonly IPlanoAppService plaApp;
 
         private String msg;
         private Exception exception;
@@ -43,12 +44,13 @@ namespace SMS_Presentation.Controllers
         List<ASSINANTE> listaMaster = new List<ASSINANTE>();
         String extensao;
 
-        public AssinanteController(IAssinanteAppService baseApps, IUsuarioAppService usuApps, IConfiguracaoAppService confApps, IAssinanteCnpjAppService ccnpjApps)
+        public AssinanteController(IAssinanteAppService baseApps, IUsuarioAppService usuApps, IConfiguracaoAppService confApps, IAssinanteCnpjAppService ccnpjApps, IPlanoAppService plaApps)
         {
             baseApp = baseApps;
             usuApp = usuApps;
             confApp = confApps;
             ccnpjApp = ccnpjApps;
+            plaApp = plaApps;
         }
 
         [HttpGet]
@@ -349,6 +351,13 @@ namespace SMS_Presentation.Controllers
 
             // Indicadores
             ViewBag.Perfil = usuario.PERFIL.PERF_SG_SIGLA;
+            ViewBag.TiposPessoa = new SelectList(baseApp.GetAllTiposPessoa().OrderBy(p => p.TIPE_NM_NOME), "TIPE_CD_ID", "TIPE_NM_NOME");
+            List<SelectListItem> status = new List<SelectListItem>();
+            status.Add(new SelectListItem() { Text = "Ativo", Value = "1" });
+            status.Add(new SelectListItem() { Text = "Inativo", Value = "2" });
+            status.Add(new SelectListItem() { Text = "Demonstração", Value = "3" });
+            status.Add(new SelectListItem() { Text = "Isento", Value = "4" });
+            ViewBag.Status = new SelectList(status, "Value", "Text");
 
             if (Session["MensAssi"] != null)
             {
@@ -421,7 +430,7 @@ namespace SMS_Presentation.Controllers
                 // Executa a operação
                 List<ASSINANTE> listaObj = new List<ASSINANTE>();
                 Session["FiltroAssi"] = item;
-                Int32 volta = baseApp.ExecuteFilter(item.TIPE_CD_ID.Value, item.ASSI_NM_NOME, item.ASSI_NR_CPF, item.ASSI_NR_CNPJ, out listaObj);
+                Int32 volta = baseApp.ExecuteFilter(item.TIPE_CD_ID.Value, item.ASSI_NM_NOME, item.ASSI_NR_CPF, item.ASSI_NR_CNPJ, item.ASSI_IN_STATUS.Value, out listaObj);
 
                 // Verifica retorno
                 if (volta == 1)
@@ -490,13 +499,18 @@ namespace SMS_Presentation.Controllers
             ViewBag.Planos = new SelectList(baseApp.GetAllPlanos().OrderBy(p => p.PLAN_NM_NOME), "PLAN_CD_ID", "PLAN_NM_NOME");
             ViewBag.UF = new SelectList(baseApp.GetAllUF().OrderBy(p => p.UF_SG_SIGLA), "UF_CD_ID", "UF_NM_NOME");
             ViewBag.TiposPessoa = new SelectList(baseApp.GetAllTiposPessoa().OrderBy(p => p.TIPE_NM_NOME), "TIPE_CD_ID", "TIPE_NM_NOME");
+            ViewBag.TiposPessoa = new SelectList(baseApp.GetAllTiposPessoa().OrderBy(p => p.TIPE_NM_NOME), "TIPE_CD_ID", "TIPE_NM_NOME");
+            List<SelectListItem> status = new List<SelectListItem>();
+            status.Add(new SelectListItem() { Text = "Ativo", Value = "1" });
+            status.Add(new SelectListItem() { Text = "Demonstração", Value = "3" });
+            status.Add(new SelectListItem() { Text = "Isento", Value = "4" });
+            ViewBag.Status = new SelectList(status, "Value", "Text");
 
             // Prepara view
             ASSINANTE item = new ASSINANTE();
             AssinanteViewModel vm = Mapper.Map<ASSINANTE, AssinanteViewModel>(item);
             vm.ASSI_DT_INICIO = DateTime.Today.Date;
             vm.ASSI_IN_ATIVO = 1;
-            vm.ASSI_IN_STATUS = 1;
             vm.ASSI_IN_TIPO = 1;
             return View(vm);
         }
@@ -637,7 +651,7 @@ namespace SMS_Presentation.Controllers
 
             Session["VoltaAssi"] = 1;
             objetoAntes = item;
-            Session["IdAssi"] = id;
+             = id;
             Session["VoltaCep"] = 1;
             AssinanteViewModel vm = Mapper.Map<ASSINANTE, AssinanteViewModel>(item);
             return View(vm);
@@ -885,6 +899,13 @@ namespace SMS_Presentation.Controllers
             }
             ViewBag.Listas = (List<ASSINANTE>)Session["ListaAssi"];
             ViewBag.Title = "Assinantes";
+            ViewBag.TiposPessoa = new SelectList(baseApp.GetAllTiposPessoa().OrderBy(p => p.TIPE_NM_NOME), "TIPE_CD_ID", "TIPE_NM_NOME");
+            List<SelectListItem> status = new List<SelectListItem>();
+            status.Add(new SelectListItem() { Text = "Ativo", Value = "1" });
+            status.Add(new SelectListItem() { Text = "Inativo", Value = "2" });
+            status.Add(new SelectListItem() { Text = "Demonstração", Value = "3" });
+            status.Add(new SelectListItem() { Text = "Isento", Value = "4" });
+            ViewBag.Status = new SelectList(status, "Value", "Text");
 
             // Abre view
             Session["VoltaAssi"] = 2;
@@ -1163,10 +1184,21 @@ namespace SMS_Presentation.Controllers
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
 
+            // Recupera assinante
+            ASSINANTE assi = baseApp.GetItemById((Int32)Session["IdAssi"]);
+
+            // Recupera dados do Plano
+            PLANO plano = plaApp.GetItemById(assi.PLAN_CD_ID.Value);
+            Decimal valor = plano.PLAN_VL_PRECO.Value;
+            Int32 dias = plano.PLANO_PERIODICIDADE.PLPE_NR_DIAS.Value;
+
             // Prepara view
             ASSINANTE_PAGAMENTO item = baseApp.GetPagtoById(id);
             objetoAntes = (ASSINANTE)Session["Assinante"];
             AssinantePagamentoViewModel vm = Mapper.Map<ASSINANTE_PAGAMENTO, AssinantePagamentoViewModel>(item);
+            vm.NOME_PLANO = plano.PLAN_NM_NOME;
+            vm.PERIODICIDADE = plano.PLANO_PERIODICIDADE.PLPE_NM_NOME;
+            vm.INICIO = assi.ASSI_DT_INICIO;
             return View(vm);
         }
 
@@ -1294,11 +1326,26 @@ namespace SMS_Presentation.Controllers
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
 
+            // Recupera assinante
+            ASSINANTE assi = baseApp.GetItemById((Int32)Session["IdAssi"]);
+
+            // Recupera dados do Plano
+            PLANO plano = plaApp.GetItemById(assi.PLAN_CD_ID.Value);
+            Decimal valor = plano.PLAN_VL_PRECO.Value;
+            Int32 dias = plano.PLANO_PERIODICIDADE.PLPE_NR_DIAS.Value;
+
             // Prepara view
             ASSINANTE_PAGAMENTO item = new ASSINANTE_PAGAMENTO();
             AssinantePagamentoViewModel vm = Mapper.Map<ASSINANTE_PAGAMENTO, AssinantePagamentoViewModel>(item);
             vm.ASSI_CD_ID = (Int32)Session["IdAssi"];
             vm.ASPA_IN_ATIVO = 1;
+            vm.ASPA_VL_VALOR = valor;
+            vm.ASPA_DT_PAGAMENTO = DateTime.Today.Date;
+            vm.PLAN_CD_ID = plano.PLAN_CD_ID;
+            vm.ASPA_DT_PROXIMO = DateTime.Today.Date.AddDays(dias);
+            vm.NOME_PLANO = plano.PLAN_NM_NOME;
+            vm.PERIODICIDADE = plano.PLANO_PERIODICIDADE.PLPE_NM_NOME;
+            vm.INICIO = assi.ASSI_DT_INICIO;
             return View(vm);
         }
 

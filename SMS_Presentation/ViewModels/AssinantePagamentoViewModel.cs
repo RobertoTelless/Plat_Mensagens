@@ -23,6 +23,9 @@ namespace PlatMensagem_Solution.ViewModels
         [DataType(DataType.Date, ErrorMessage = "A DATA DO PRÓXIMO deve ser uma data válida")]
         public Nullable<System.DateTime> ASPA_DT_PROXIMO { get; set; }
         public Nullable<int> ASPA_IN_ATIVO { get; set; }
+        public String NOME_PLANO { get; set; }
+        public String PERIODICIDADE { get; set; }
+        public Nullable<System.DateTime> INICIO { get; set; }
 
         public virtual ASSINANTE ASSINANTE { get; set; }
         public virtual PLANO PLANO { get; set; }

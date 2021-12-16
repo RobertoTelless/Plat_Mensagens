@@ -20,7 +20,7 @@ namespace ModelServices.Interfaces.EntitiesServices
         ASSINANTE GetItemById(Int32 id);
         List<ASSINANTE> GetAllItens();
         List<ASSINANTE> GetAllItensAdm();
-        List<ASSINANTE> ExecuteFilter(Int32 tipo, String nome, String cpf, String cnpj);
+        List<ASSINANTE> ExecuteFilter(Int32 tipo, String nome, String cpf, String cnpj, Int32 status);
 
         List<TIPO_PESSOA> GetAllTiposPessoa();
         List<PLANO> GetAllPlanos();

@@ -40,13 +40,17 @@ namespace DataServices.Repositories
             return query.ToList();
         }
 
-        public List<ASSINANTE> ExecuteFilter(Int32 tipo, String nome, String cpf, String cnpj)
+        public List<ASSINANTE> ExecuteFilter(Int32 tipo, String nome, String cpf, String cnpj, Int32 status)
         {
             List<ASSINANTE> lista = new List<ASSINANTE>();
             IQueryable<ASSINANTE> query = Db.ASSINANTE;
             if (tipo > 0)
             {
                 query = query.Where(p => p.ASSI_IN_TIPO == tipo);
+            }
+            if (status > 0)
+            {
+                query = query.Where(p => p.ASSI_IN_STATUS == status);
             }
             if (!String.IsNullOrEmpty(nome))
             {

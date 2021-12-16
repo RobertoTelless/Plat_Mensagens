@@ -87,9 +87,9 @@ namespace ModelServices.EntitiesServices
             return _anexoRepository.GetItemById(id);
         }
 
-        public List<ASSINANTE> ExecuteFilter(Int32 tipo, String nome, String cpf, String cnpj)
+        public List<ASSINANTE> ExecuteFilter(Int32 tipo, String nome, String cpf, String cnpj, Int32 status)
         {
-            List<ASSINANTE> lista = _baseRepository.ExecuteFilter(tipo, nome, cpf, cnpj);
+            List<ASSINANTE> lista = _baseRepository.ExecuteFilter(tipo, nome, cpf, cnpj, status);
             return lista;
         }
 

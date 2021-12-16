@@ -18,7 +18,7 @@ namespace ApplicationServices.Interfaces
         List<ASSINANTE> GetAllItens();
         List<ASSINANTE> GetAllItensAdm();
         ASSINANTE GetItemById(Int32 id);
-        Int32 ExecuteFilter(Int32 tipo, String nome, String cpf, String cnpj, out List<ASSINANTE> objeto);
+        Int32 ExecuteFilter(Int32 tipo, String nome, String cpf, String cnpj, Int32 status, out List<ASSINANTE> objeto);
 
         List<TIPO_PESSOA> GetAllTiposPessoa();
         List<PLANO> GetAllPlanos();
