@@ -36,6 +36,7 @@ namespace SMS_Presentation.Controllers
         private readonly IConfiguracaoAppService confApp;
         private readonly IAssinanteCnpjAppService ccnpjApp;
         private readonly IPlanoAppService plaApp;
+        private readonly ITemplateAppService temApp;
 
         private String msg;
         private Exception exception;
@@ -44,13 +45,14 @@ namespace SMS_Presentation.Controllers
         List<ASSINANTE> listaMaster = new List<ASSINANTE>();
         String extensao;
 
-        public AssinanteController(IAssinanteAppService baseApps, IUsuarioAppService usuApps, IConfiguracaoAppService confApps, IAssinanteCnpjAppService ccnpjApps, IPlanoAppService plaApps)
+        public AssinanteController(IAssinanteAppService baseApps, IUsuarioAppService usuApps, IConfiguracaoAppService confApps, IAssinanteCnpjAppService ccnpjApps, IPlanoAppService plaApps, ITemplateAppService temApps)
         {
             baseApp = baseApps;
             usuApp = usuApps;
             confApp = confApps;
             ccnpjApp = ccnpjApps;
             plaApp = plaApps;
+            temApp = temApps;
         }
 
         [HttpGet]
@@ -91,7 +93,7 @@ namespace SMS_Presentation.Controllers
 
                 // Monta token
                 Int32 idAss = (Int32)Session["IdAssinante"];
-                CONFIGURACAO conf = confApp.GetItemById(idAss);
+                CONFIGURACAO conf = confApp.GetItemById(1);
                 String text = conf.CONF_SG_LOGIN_SMS + ":" + conf.CONF_SG_SENHA_SMS;
                 byte[] textBytes = Encoding.UTF8.GetBytes(text);
                 String token = Convert.ToBase64String(textBytes);
@@ -499,7 +501,6 @@ namespace SMS_Presentation.Controllers
             ViewBag.Planos = new SelectList(baseApp.GetAllPlanos().OrderBy(p => p.PLAN_NM_NOME), "PLAN_CD_ID", "PLAN_NM_NOME");
             ViewBag.UF = new SelectList(baseApp.GetAllUF().OrderBy(p => p.UF_SG_SIGLA), "UF_CD_ID", "UF_NM_NOME");
             ViewBag.TiposPessoa = new SelectList(baseApp.GetAllTiposPessoa().OrderBy(p => p.TIPE_NM_NOME), "TIPE_CD_ID", "TIPE_NM_NOME");
-            ViewBag.TiposPessoa = new SelectList(baseApp.GetAllTiposPessoa().OrderBy(p => p.TIPE_NM_NOME), "TIPE_CD_ID", "TIPE_NM_NOME");
             List<SelectListItem> status = new List<SelectListItem>();
             status.Add(new SelectListItem() { Text = "Ativo", Value = "1" });
             status.Add(new SelectListItem() { Text = "Demonstração", Value = "3" });
@@ -547,6 +548,96 @@ namespace SMS_Presentation.Controllers
                     // Cria pastas
                     String caminho = "/Imagens/Assinante/" + item.ASSI_CD_ID.ToString() + "/Anexos/";
                     Directory.CreateDirectory(Server.MapPath(caminho));
+                    caminho = "/Imagens/" + item.ASSI_CD_ID.ToString() + "/";
+                    Directory.CreateDirectory(Server.MapPath(caminho));
+                    caminho = "/Imagens/" + item.ASSI_CD_ID.ToString() + "/Agenda/";
+                    Directory.CreateDirectory(Server.MapPath(caminho));
+                    caminho = "/Imagens/" + item.ASSI_CD_ID.ToString() + "/Cliente/";
+                    Directory.CreateDirectory(Server.MapPath(caminho));
+                    caminho = "/Imagens/" + item.ASSI_CD_ID.ToString() + "/CRM/";
+                    Directory.CreateDirectory(Server.MapPath(caminho));
+                    caminho = "/Imagens/" + item.ASSI_CD_ID.ToString() + "/Mensagens/";
+                    Directory.CreateDirectory(Server.MapPath(caminho));
+                    caminho = "/Imagens/" + item.ASSI_CD_ID.ToString() + "/Notificacao/";
+                    Directory.CreateDirectory(Server.MapPath(caminho));
+                    caminho = "/Imagens/" + item.ASSI_CD_ID.ToString() + "/Usuario/";
+                    Directory.CreateDirectory(Server.MapPath(caminho));
+
+                    // Cria instancia de tabelas auxiliares
+                    TEMPLATE temp = temApp.GetByCode("NEWPWD");
+                    TEMPLATE t = new TEMPLATE();
+                    t.TEMP_IN_ATIVO = 1;
+                    t.TEMP_SG_SIGLA = temp.TEMP_SG_SIGLA;
+                    t.ASSI_CD_ID = item.ASSI_CD_ID;
+                    t.TEMP_TX_CABECALHO = temp.TEMP_TX_CABECALHO;
+                    t.TEMP_TX_CORPO = temp.TEMP_TX_CORPO;
+                    t.TEMP_TX_DADOS = temp.TEMP_TX_DADOS;
+                    t.TEMP_NM_NOME = temp.TEMP_NM_NOME;
+                    t.TEMP_IN_TIPO = temp.TEMP_IN_TIPO;
+                    t.TEMP_DT_CRIACAO = DateTime.Today.Date;
+                    Int32 voltaTem = temApp.ValidateCreate(t, usuario);
+
+                    temp = temApp.GetByCode("TEMPBAS");
+                    t = new TEMPLATE();
+                    t.TEMP_IN_ATIVO = 1;
+                    t.TEMP_SG_SIGLA = temp.TEMP_SG_SIGLA;
+                    t.ASSI_CD_ID = item.ASSI_CD_ID;
+                    t.TEMP_TX_CABECALHO = temp.TEMP_TX_CABECALHO;
+                    t.TEMP_TX_CORPO = temp.TEMP_TX_CORPO;
+                    t.TEMP_TX_DADOS = temp.TEMP_TX_DADOS;
+                    t.TEMP_NM_NOME = temp.TEMP_NM_NOME;
+                    t.TEMP_IN_TIPO = temp.TEMP_IN_TIPO;
+                    t.TEMP_DT_CRIACAO = DateTime.Today.Date;
+                    voltaTem = temApp.ValidateCreate(t, usuario);
+
+                    temp = temApp.GetByCode("SMSBAS");
+                    t = new TEMPLATE();
+                    t.TEMP_IN_ATIVO = 1;
+                    t.TEMP_SG_SIGLA = temp.TEMP_SG_SIGLA;
+                    t.ASSI_CD_ID = item.ASSI_CD_ID;
+                    t.TEMP_TX_CABECALHO = temp.TEMP_TX_CABECALHO;
+                    t.TEMP_TX_CORPO = temp.TEMP_TX_CORPO;
+                    t.TEMP_TX_DADOS = temp.TEMP_TX_DADOS;
+                    t.TEMP_NM_NOME = temp.TEMP_NM_NOME;
+                    t.TEMP_IN_TIPO = temp.TEMP_IN_TIPO;
+                    t.TEMP_DT_CRIACAO = DateTime.Today.Date;
+                    voltaTem = temApp.ValidateCreate(t, usuario);
+
+                    // Cria usuário master
+                    USUARIO us = new USUARIO();
+                    us.ASSI_CD_ID = item.ASSI_CD_ID;
+                    us.CARG_CD_ID = 1;
+                    us.CAUS_CD_ID = 1;
+                    us.USUA_AQ_FOTO = "~/Imagens/Base/icone_imagem.jpg";
+                    us.USUA_DT_ACESSO = DateTime.Today.Date;
+                    us.USUA_DT_CADASTRO = DateTime.Today.Date;
+                    us.USUA_IN_ATIVO = 1;
+                    us.USUA_IN_BLOQUEADO = 0;
+                    us.USUA_IN_LOGADO = 0;
+                    us.USUA_IN_LOGIN_PROVISORIO = 0;
+                    us.USUA_IN_PROVISORIO = 0;
+                    us.USUA_IN_SISTEMA = 1;
+                    us.USUA_NM_EMAIL = item.ASSI_NM_EMAIL;
+                    us.USUA_NM_LOGIN = "BASE";
+                    us.USUA_NM_NOME = item.ASSI_NM_NOME;
+                    us.USUA_NM_SENHA = "11112222";
+                    us.USUA_NR_ACESSOS = 0;
+                    us.USUA_NR_CELULAR = item.ASSIN_NR_CELULAR;
+                    us.USUA_NR_CPF = item.ASSI_NR_CPF;
+                    us.USUA_NR_FALHAS = 0;
+                    us.USUA_NR_MATRICULA = "0";
+                    us.USUA_NR_RG = "-";
+                    us.USUA_NR_TELEFONE = item.ASSI_NR_TELEFONE;
+                    us.PERF_CD_ID = 1;
+                    Int32 voltaUsu = usuApp.ValidateCreate(us, usuario);
+
+                    // Envia e-mail para assinante
+
+
+
+
+
+
 
                     // Sucesso
                     listaMaster = new List<ASSINANTE>();
@@ -651,7 +742,7 @@ namespace SMS_Presentation.Controllers
 
             Session["VoltaAssi"] = 1;
             objetoAntes = item;
-             = id;
+            Session["idAssi"] = id;
             Session["VoltaCep"] = 1;
             AssinanteViewModel vm = Mapper.Map<ASSINANTE, AssinanteViewModel>(item);
             return View(vm);

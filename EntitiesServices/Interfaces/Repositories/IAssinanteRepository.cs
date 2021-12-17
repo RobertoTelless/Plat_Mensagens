@@ -13,7 +13,7 @@ namespace ModelServices.Interfaces.Repositories
         ASSINANTE GetItemById(Int32 id);
         List<ASSINANTE> GetAllItens();
         List<ASSINANTE> GetAllItensAdm();
-        List<ASSINANTE> ExecuteFilter(Int32 tipo, String nome, String cpf, String cnpj, Int32 );
+        List<ASSINANTE> ExecuteFilter(Int32 tipo, String nome, String cpf, String cnpj, Int32 xx);
     }
 }
 

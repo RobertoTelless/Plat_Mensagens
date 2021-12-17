@@ -3113,6 +3113,7 @@
     <Folder Include="Imagens\1\Usuario\2\Anexos\" />
     <Folder Include="Imagens\1\Usuario\3\Anexos\" />
     <Folder Include="Imagens\1\Usuario\3\Fotos\" />
+    <Folder Include="Imagens\Assinante\1\Anexos\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

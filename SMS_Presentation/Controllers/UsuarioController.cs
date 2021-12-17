@@ -107,7 +107,6 @@ namespace SMS_Presentation.Controllers
             Int32 usuariosPossiveis = 1000;
             ViewBag.UsuariosPossiveis = usuariosPossiveis;
 
-
             // Mensagens
             if (Session["MensUsuario"] != null)
             {

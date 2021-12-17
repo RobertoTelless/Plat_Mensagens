@@ -88,7 +88,7 @@ namespace SMS_Presentation.Controllers
             var usuario = (USUARIO)Session["UserCredentials"];
             Int32 idAss = (Int32)Session["IdAssinante"];
 
-            ViewBag.Tipos = new SelectList(baseApp.GetAllTipos(idAss), "CAAG_CD_ID", "CAAG_NM_NOME");
+            ViewBag.Tipos = new SelectList(baseApp.GetAllTipos(1), "CAAG_CD_ID", "CAAG_NM_NOME");
             ViewBag.Usuarios = new SelectList(usuApp.GetAllItens(idAss), "USUA_CD_ID", "USUA_NM_NOME");
 
             AGENDA item = new AGENDA();
@@ -194,7 +194,7 @@ namespace SMS_Presentation.Controllers
             ViewBag.Listas = ((List<AGENDA>)Session["ListaAgenda"]).OrderBy(x => x.AGEN_DT_DATA.Date).ThenBy(x => x.AGEN_HR_HORA).ToList<AGENDA>();
             ViewBag.Itens = ((List<AGENDA>)Session["ListaAgenda"]).Count;
             ViewBag.Title = "Agenda";
-            ViewBag.Tipos = new SelectList(baseApp.GetAllTipos(idAss), "CAAG_CD_ID", "CAAG_NM_NOME");
+            ViewBag.Tipos = new SelectList(baseApp.GetAllTipos(1), "CAAG_CD_ID", "CAAG_NM_NOME");
 
             // Indicadores
             ViewBag.Perfil = usuario.PERFIL.PERF_SG_SIGLA;
@@ -313,7 +313,7 @@ namespace SMS_Presentation.Controllers
             }
             // Prepara listas
             Int32 idAss = (Int32)Session["IdAssinante"];
-            ViewBag.Tipos = new SelectList(baseApp.GetAllTipos(idAss), "CAAG_CD_ID", "CAAG_NM_NOME");
+            ViewBag.Tipos = new SelectList(baseApp.GetAllTipos(1), "CAAG_CD_ID", "CAAG_NM_NOME");
             ViewBag.Usuarios = new SelectList(usuApp.GetAllItens(idAss), "USUA_CD_ID", "USUA_NM_NOME");
 
             // Prepara view
@@ -340,7 +340,7 @@ namespace SMS_Presentation.Controllers
             var result = new Hashtable();
             Int32 idAss = (Int32)Session["IdAssinante"];
 
-            ViewBag.Tipos = new SelectList(baseApp.GetAllTipos(idAss), "CAAG_CD_ID", "CAAG_NM_NOME");
+            ViewBag.Tipos = new SelectList(baseApp.GetAllTipos(1), "CAAG_CD_ID", "CAAG_NM_NOME");
             ViewBag.Usuarios = new SelectList(usuApp.GetAllItens(idAss), "USUA_CD_ID", "USUA_NM_NOME");
             if (ModelState.IsValid)
             {
@@ -440,7 +440,7 @@ namespace SMS_Presentation.Controllers
             // Prepara view
             Int32 idAss = (Int32)Session["IdAssinante"];
 
-            ViewBag.Tipos = new SelectList(baseApp.GetAllTipos(idAss), "CAAG_CD_ID", "CAAG_NM_NOME");
+            ViewBag.Tipos = new SelectList(baseApp.GetAllTipos(1), "CAAG_CD_ID", "CAAG_NM_NOME");
             ViewBag.Usuarios = new SelectList(usuApp.GetAllItens(idAss), "USUA_CD_ID", "USUA_NM_NOME");
             List<SelectListItem> status = new List<SelectListItem>();
             status.Add(new SelectListItem() { Text = "Ativo", Value = "1" });
@@ -464,7 +464,7 @@ namespace SMS_Presentation.Controllers
                 return RedirectToAction("Login", "ControleAcesso");
             }
             Int32 idAss = (Int32)Session["IdAssinante"];
-            ViewBag.Tipos = new SelectList(baseApp.GetAllTipos(idAss), "CAAG_CD_ID", "CAAG_NM_NOME");
+            ViewBag.Tipos = new SelectList(baseApp.GetAllTipos(1), "CAAG_CD_ID", "CAAG_NM_NOME");
             ViewBag.Usuarios = new SelectList(usuApp.GetAllItens(idAss), "USUA_CD_ID", "USUA_NM_NOME");
             List<SelectListItem> status = new List<SelectListItem>();
             status.Add(new SelectListItem() { Text = "Ativo", Value = "1" });
@@ -747,7 +747,7 @@ namespace SMS_Presentation.Controllers
             USUARIO usuario = (USUARIO)Session["UserCredentials"];
             Int32 idAss = (Int32)Session["IdAssinante"];
             ViewBag.Title = "Agenda";
-            ViewBag.Tipos = new SelectList(baseApp.GetAllTipos(idAss), "CAAG_CD_ID", "CAAG_NM_NOME");
+            ViewBag.Tipos = new SelectList(baseApp.GetAllTipos(1), "CAAG_CD_ID", "CAAG_NM_NOME");
             if (Session["ListaAgendaTimeLine"] == null)
             {
                 Session["ListaAgendaTimeLine"] = baseApp.GetByUser(usuario.USUA_CD_ID, idAss).Where(x => x.AGEN_DT_DATA.Date == DateTime.Now.Date).ToList<AGENDA>();

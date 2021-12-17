@@ -1040,7 +1040,7 @@ namespace SMS_Presentation.Controllers
         }
 
         [HttpGet]
-        public ActionResult     IncluirProcessoCRM()
+        public ActionResult IncluirProcessoCRM()
         {
             // Verifica se tem usuario logado
             USUARIO usuario = new USUARIO();
@@ -1152,14 +1152,12 @@ namespace SMS_Presentation.Controllers
                     caminho = "/Imagens/" + idAss.ToString() + "/CRM/" + item.CRM1_CD_ID.ToString() + "/Anexos/";
                     Directory.CreateDirectory(Server.MapPath(caminho));
 
-
                     // Listas
                     listaMaster = new List<CRM>();
                     Session["ListaCRM"] = null;
                     Session["IncluirCRM"] = 1;
                     Session["CRMNovo"] = item.CRM1_CD_ID;
                     Session["IdCRM"] = item.CRM1_CD_ID;
-
 
                     // Processa Anexos
                     if (Session["FileQueueCRM"] != null)
